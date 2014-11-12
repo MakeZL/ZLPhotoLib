@@ -6,29 +6,33 @@
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>DAE90A31-9DC9-44B3-A438-04B96911C7C2</string>
+	<key>IDESourceControlProjectName</key>
+	<string>ZLAssetsPickerDemo</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>6F25C20F4B9AE193EDDA0012F1EF5B839701B9C9</key>
+		<key>7036AA8BA4DD2B540413F1DE968E96C85757A868</key>
 		<string>https://github.com/MakeZL/ZLAssetsPickerDemo.git</string>
 	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>ZLAssetsPickerDemo.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>6F25C20F4B9AE193EDDA0012F1EF5B839701B9C9</key>
-		<string>%E7%9B%B8%E5%86%8CDemo/</string>
+		<key>7036AA8BA4DD2B540413F1DE968E96C85757A868</key>
+		<string>../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>https://github.com/MakeZL/ZLAssetsPickerDemo.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>6F25C20F4B9AE193EDDA0012F1EF5B839701B9C9</string>
+	<string>7036AA8BA4DD2B540413F1DE968E96C85757A868</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>6F25C20F4B9AE193EDDA0012F1EF5B839701B9C9</string>
+			<string>7036AA8BA4DD2B540413F1DE968E96C85757A868</string>
 			<key>IDESourceControlWCCName</key>
 			<string>%E7%9B%B8%E5%86%8CDemo</string>
 		</dict>

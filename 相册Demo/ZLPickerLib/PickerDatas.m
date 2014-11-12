@@ -87,7 +87,6 @@
                 
             }else{
                 // 完毕调用回调方法
-                [self.groups addObject:dataArray];
                 callBack(dataArray);
             }
             
@@ -115,7 +114,7 @@
                 }else{
                     g2=@"ZLPhotos";
                 }
-                NSString *groupName=g2;//组的name
+//                NSString *groupName=g2;//组的name
                 
 //                PickerGroup *groupModel = [[PickerGroup alloc] init];
 //                groupModel.groupName = groupName;

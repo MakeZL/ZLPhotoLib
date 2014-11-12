@@ -122,12 +122,12 @@
     PickerDatas *datas = [PickerDatas defaultPicker];
     
     // 获取所有的图片URLs
-    [datas getAllGroupWithPhotos:^(id obj) {
+    [datas getAllPhotos:^(id obj) {
         NSLog(@"%@",obj);
         self.groups = obj;
         
-        [self.tableView reloadData];
-//        self.collectionView.dataArray = obj;
+//        [self.tableView reloadData];
+        self.collectionView.dataArray = obj;
     }];
 }
 
