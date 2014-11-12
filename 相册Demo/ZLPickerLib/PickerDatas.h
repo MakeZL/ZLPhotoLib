@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+@class PickerGroup;
+
 // 回调
 typedef void(^callBackBlock)(id obj);
 
@@ -33,5 +35,9 @@ typedef void(^callBackBlock)(id obj);
  */
 - (void) getAllGroupWithPhotos : (callBackBlock ) callBack;
 
+/**
+ *  传入一个组获取组里面的图片
+ */
+- (void) getGroupPhotosWithGroup : (PickerGroup *) pickerGroup finished : (callBackBlock ) callBack;
 
 @end

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4801778E1A1368B80026F494 /* PickerAssetsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4801778D1A1368B80026F494 /* PickerAssetsViewController.m */; };
 		4867EAA81A11ED8600F299A1 /* PickerGroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4867EAA71A11ED8600F299A1 /* PickerGroupViewController.m */; };
 		4867EAE41A120B8C00F299A1 /* PickerGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 4867EAE31A120B8C00F299A1 /* PickerGroup.m */; };
 		48B3E1761A11BABC0079F464 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B3E1751A11BABC0079F464 /* main.m */; };
@@ -34,6 +35,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4801778C1A1368B80026F494 /* PickerAssetsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerAssetsViewController.h; sourceTree = "<group>"; };
+		4801778D1A1368B80026F494 /* PickerAssetsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerAssetsViewController.m; sourceTree = "<group>"; };
 		4867EAA61A11ED8600F299A1 /* PickerGroupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerGroupViewController.h; sourceTree = "<group>"; };
 		4867EAA71A11ED8600F299A1 /* PickerGroupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerGroupViewController.m; sourceTree = "<group>"; };
 		4867EAE21A120B8C00F299A1 /* PickerGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerGroup.h; sourceTree = "<group>"; };
@@ -160,6 +163,8 @@
 				4867EAA71A11ED8600F299A1 /* PickerGroupViewController.m */,
 				4867EAE21A120B8C00F299A1 /* PickerGroup.h */,
 				4867EAE31A120B8C00F299A1 /* PickerGroup.m */,
+				4801778C1A1368B80026F494 /* PickerAssetsViewController.h */,
+				4801778D1A1368B80026F494 /* PickerAssetsViewController.m */,
 			);
 			path = ZLPickerLib;
 			sourceTree = "<group>";
@@ -273,6 +278,7 @@
 				48B3E1A01A11BAF80079F464 /* PickerCollectionView.m in Sources */,
 				4867EAE41A120B8C00F299A1 /* PickerGroup.m in Sources */,
 				48B3E1A81A11CD630079F464 /* PickerViewController.m in Sources */,
+				4801778E1A1368B80026F494 /* PickerAssetsViewController.m in Sources */,
 				48B3E1761A11BABC0079F464 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

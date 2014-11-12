@@ -13,13 +13,14 @@
 
 @interface PickerCollectionView () <UICollectionViewDataSource,UICollectionViewDelegate>
 
-@property (nonatomic , strong) NSMutableDictionary *dict;
 @property (nonatomic , strong) ALAssetsLibrary *assetsLibrary;
+@property (nonatomic , strong) NSMutableArray *images;
 
 @end
 
 @implementation PickerCollectionView
 
+#pragma mark -getter
 - (ALAssetsLibrary *)assetsLibrary{
     if (!_assetsLibrary) {
         self.assetsLibrary = [[ALAssetsLibrary alloc] init];
@@ -27,20 +28,33 @@
     return _assetsLibrary;
 }
 
-- (NSMutableDictionary *)dict{
-    if (!_dict) {
-        _dict = [NSMutableDictionary dictionary];
+- (NSMutableArray *)images{
+    if (!_images) {
+        _images = [NSMutableArray array];
     }
-    return _dict;
+    return _images;
 }
 
+#pragma mark -setter
 - (void)setDataArray:(NSArray *)dataArray{
     _dataArray = dataArray;
 
+    for (int i = 0; i < dataArray.count; i++) {
+        id resource = dataArray[i];
+        if ([resource isKindOfClass:[UIImage class]]) {
+            [self.images addObject:resource];
+        }else if([resource isKindOfClass:[NSString class]]){
+                // 如果不存在Asset就去请求加载
+            [self getAssetURLWithImage:resource];
+        }else if ([resource isKindOfClass:[ALAsset class]]){
+            [self getAssetWithImage:resource];
+        }
+    }
+    
     [self reloadData];
+    
 }
 
-#pragma mark -getter
 - (instancetype)initWithFrame:(CGRect)frame collectionViewLayout:(UICollectionViewLayout *)layout{
     if (self = [super initWithFrame:frame collectionViewLayout:layout]) {
         
@@ -57,7 +71,7 @@
 }
 
 - (NSInteger) collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
-    return self.dataArray.count;
+    return self.images.count;
 }
 
 - (UICollectionViewCell *) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
@@ -69,34 +83,34 @@
     cellImgView.clipsToBounds = YES;
     [cell.contentView addSubview:cellImgView];
     
-    id resource = self.dataArray[indexPath.item];
-    if ([resource isKindOfClass:[UIImage class]]) {
-        cellImgView.image = resource;
-    }else if([resource isKindOfClass:[NSString class]]){
-        if ([self.dict objectForKey:@(indexPath.row)]) {
-            cellImgView.image = self.dict[@(indexPath.row)];
-        }else{
-            // 如果不存在Asset就去请求加载
-            [self getAssetURLWithImage:resource atIndexPath:indexPath];
-        }
-    }
+    cellImgView.image = self.images[indexPath.item];
     
     return cell;
 }
 
 #pragma mark 根据URL来获取图片
-- (void) getAssetURLWithImage:(NSString *) assetUrl atIndexPath:(NSIndexPath *)indexPath{
+- (void) getAssetURLWithImage:(NSString *) assetUrl{
     [self.assetsLibrary assetForURL:[NSURL URLWithString:assetUrl] resultBlock:^(ALAsset *asset)
-    {
-        //在这里使用asset来获取图片
-        ALAssetRepresentation *assetRep = [asset defaultRepresentation];
-        CGImageRef imgRef = [assetRep fullResolutionImage];
-        UIImage *img = [UIImage imageWithCGImage:imgRef
-                                           scale:assetRep.scale
-                                     orientation:(UIImageOrientation)assetRep.orientation];
-        self.dict[@(indexPath.row)] = img;
-        [self reloadData];
-    } failureBlock:nil];
+     {
+         //在这里使用asset来获取图片
+         ALAssetRepresentation *assetRep = [asset defaultRepresentation];
+         CGImageRef imgRef = [assetRep fullResolutionImage];
+         UIImage *img = [UIImage imageWithCGImage:imgRef
+                                            scale:assetRep.scale
+                                      orientation:(UIImageOrientation)assetRep.orientation];
+         [self.images addObject:img];
+     } failureBlock:nil];
+}
+
+#pragma mark 根据ALAsset来获取
+- (void) getAssetWithImage:(ALAsset *) asset{
+    //在这里使用asset来获取图片
+    ALAssetRepresentation *assetRep = [asset defaultRepresentation];
+    CGImageRef imgRef = [asset thumbnail];
+    UIImage *img = [UIImage imageWithCGImage:imgRef
+                                       scale:assetRep.scale
+                                 orientation:(UIImageOrientation)assetRep.orientation];
+    [self.images addObject:img];
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{

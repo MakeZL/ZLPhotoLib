@@ -16,10 +16,11 @@
 #import "PickerDatas.h"
 #import "PickerGroupViewController.h"
 #import "PickerGroup.h"
+#import "PickerAssetsViewController.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 
 @interface PickerGroupViewController () <UITableViewDataSource,UITableViewDelegate>
-@property (nonatomic , weak) PickerCollectionView *collectionView;
+@property (nonatomic , weak) PickerAssetsViewController *collectionVc;
 @property (nonatomic , weak) UITableView *tableView;
 @property (nonatomic , strong) NSArray *groups;
 
@@ -38,31 +39,12 @@
     return _tableView;
 }
 
-#pragma mark -getter
-- (PickerCollectionView *)collectionView{
-    if (!_collectionView) {
-        
-        CGFloat cellW = (self.view.frame.size.width - CELL_MARGIN * CELL_ROW + 1) / CELL_ROW;
-        UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-        layout.itemSize = CGSizeMake(cellW, cellW);
-        layout.minimumInteritemSpacing = 0;
-        layout.minimumLineSpacing = CELL_LINE_MARGIN;
-        
-        PickerCollectionView *collectionView = [[PickerCollectionView alloc] initWithFrame:CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height - 64) collectionViewLayout:layout];
-        [self.view addSubview:collectionView];
-        self.collectionView = collectionView;
-        
-    }
-    return _collectionView;
-}
 
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     self.navigationController.navigationBar.backgroundColor = [UIColor redColor];
-    
-    [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"cell"];
     
     UIButton *leftBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     leftBtn.backgroundColor = [UIColor grayColor];
@@ -104,7 +86,7 @@
     PickerGroup *group = self.groups[indexPath.row];
     cell.textLabel.text = group.groupName;
     cell.imageView.contentMode = UIViewContentModeScaleAspectFill;
-    cell.imageView.image = [group.groups lastObject];
+    cell.imageView.image = group.thumbImage;
     
     return cell;
     
@@ -115,6 +97,15 @@
     return 80;
 }
 
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    PickerGroup *group = self.groups[indexPath.row];
+    PickerAssetsViewController *assetsVc = [[PickerAssetsViewController alloc] init];
+    assetsVc.group = group;
+    [self.navigationController pushViewController:assetsVc animated:YES];
+//    self.collectionView.dataArray = group.thumbsAssets;
+}
+
 #pragma mark -<Images Datas>
 
 -(void)getImgs{
@@ -122,12 +113,11 @@
     PickerDatas *datas = [PickerDatas defaultPicker];
     
     // 获取所有的图片URLs
-    [datas getAllPhotos:^(id obj) {
+    [datas getAllGroupWithPhotos:^(id obj) {
         NSLog(@"%@",obj);
         self.groups = obj;
-        
-//        [self.tableView reloadData];
-        self.collectionView.dataArray = obj;
+        [self.tableView reloadData];
+//        self.collectionView.dataArray = obj;
     }];
 }
 
@@ -138,12 +128,12 @@
 }
 
 - (void) done{
-    if ([self.delegate respondsToSelector:@selector(pickerViewControllerDonePictures:)]) {
-        
-        [self.delegate pickerViewControllerDonePictures:self.collectionView.selectPictureArray];
-    }
-    [self dismissViewControllerAnimated:YES completion:nil];
-    NSLog(@"%@",self.collectionView.selectPictureArray);
+//    if ([self.delegate respondsToSelector:@selector(pickerViewControllerDonePictures:)]) {
+//        
+//        [self.delegate pickerViewControllerDonePictures:self.collectionView.selectPictureArray];
+//    }
+//    [self dismissViewControllerAnimated:YES completion:nil];
+//    NSLog(@"%@",self.collectionView.selectPictureArray);
 }
 
 

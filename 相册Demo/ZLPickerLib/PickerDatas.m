@@ -7,7 +7,7 @@
 //
 
 #import "PickerDatas.h"
-//#import "PickerGroup.h"
+#import "PickerGroup.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 
 
@@ -19,7 +19,7 @@
 @property (nonatomic , assign , getter=isResourceURLs) BOOL resourceURLs;
 @property (nonatomic , strong) NSMutableArray *groups;
 
-//@property (nonatomic , strong) PickerGroup *currentGroupModel;
+@property (nonatomic , strong) PickerGroup *currentGroupModel;
 
 
 @end
@@ -111,9 +111,8 @@
                 NSString *g2=[[arr objectAtIndex:0] substringFromIndex:5];
                 if ([g2 isEqualToString:@"Camera Roll"]) {
                     g2=@"相机胶卷";
-                }else{
-                    g2=@"ZLPhotos";
                 }
+                NSLog(@"%@",g2);
 //                NSString *groupName=g2;//组的name
                 
 //                PickerGroup *groupModel = [[PickerGroup alloc] init];
@@ -150,6 +149,7 @@
         
         ALAssetsGroupEnumerationResultsBlock groupEnumerAtion = ^(ALAsset *result, NSUInteger index, BOOL *stop){
             if (result!=NULL) {
+                
 //                if (self.isResourceURLs) {
 //                    // URL
 //                    NSString *urlStr=[NSString stringWithFormat:@"%@",result.defaultRepresentation.url];
@@ -157,17 +157,19 @@
 //                }else{
                     // 图片
                     if ([[result valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
-                        UIImage *image = [UIImage imageWithCGImage:result.defaultRepresentation.fullScreenImage];
-                        [dataArray addObject:image];
-//                        self.currentGroupModel.groups = dataArray;
+//                        UIImage *image = [UIImage imageWithCGImage:result.defaultRepresentation.fullScreenImage];
+                        UIImage *image = [UIImage imageWithCGImage:result.thumbnail];
+//                        [dataArray addObject:image];
+                        if (!self.currentGroupModel.thumbImage) {
+                            self.currentGroupModel.thumbImage = image;
+                        }
                     }
 //                }
                 
                 
             }else{
                 // 完毕调用回调方法
-//                [self.groups addObject:self.currentGroupModel];
-//                callBack(dataArray);
+                [self.groups addObject:self.currentGroupModel];
             }
             
         };
@@ -178,7 +180,7 @@
             
             if (group == nil)
             {
-                callBack(self.groups);
+                callBack(dataArray);
             }
             
             if (group!=nil) {
@@ -190,15 +192,20 @@
                 arr=[g1 componentsSeparatedByString:@","];
                 NSString *g2=[[arr objectAtIndex:0] substringFromIndex:5];
                 if ([g2 isEqualToString:@"Camera Roll"]) {
-                    g2=@"相机胶卷";
-                }else{
-                    g2=@"ZLPhotos";
+                    g2 = @"相机胶卷";
+                }else if ([g2 isEqualToString:@"My Photo Stream"]){
+                    g2 = @"我的相机流";
                 }
+                
                 NSString *groupName=g2;//组的name
                 
-//                PickerGroup *groupModel = [[PickerGroup alloc] init];
-//                groupModel.groupName = groupName;
-//                self.currentGroupModel = groupModel;
+                PickerGroup *groupModel = [[PickerGroup alloc] init];
+                groupModel.groupName = groupName;
+                groupModel.realGroupName = g;
+                self.currentGroupModel = groupModel;
+                
+                
+                [dataArray addObject:groupModel];
                 
                 [group enumerateAssetsUsingBlock:groupEnumerAtion];
                 
@@ -211,6 +218,79 @@
                              failureBlock:failureblock];
     });
     
+}
+
+
+/**
+ *  传入一个组获取组里面的图片
+ */
+- (void) getGroupPhotosWithGroup : (PickerGroup *) pickerGroup finished : (callBackBlock ) callBack{
+    __block PickerGroup *backGroup = [[PickerGroup alloc] init];
+    // 缩略图
+    NSMutableArray *thumbImgs = [NSMutableArray array];
+    // 原图
+    NSMutableArray *assets = [NSMutableArray array];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        ALAssetsLibraryAccessFailureBlock failureblock = ^(NSError *myerror){
+            NSLog(@"相册访问失败 =%@", [myerror localizedDescription]);
+            if ([myerror.localizedDescription rangeOfString:@"Global denied access"].location!=NSNotFound) {
+                NSLog(@"无法访问相册.请在'设置->定位服务'设置为打开状态.");
+            }else{
+                NSLog(@"相册访问失败.");
+            }
+        };
+        
+        ALAssetsGroupEnumerationResultsBlock groupEnumerAtion = ^(ALAsset *result, NSUInteger index, BOOL *stop){
+            if (result!=NULL) {
+                
+                [assets addObject:result];
+                // 图片
+//                if ([[result valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
+//                    // 添加缩略图
+//                    UIImage *image = [UIImage imageWithCGImage:result.thumbnail];
+//                    [thumbImgs addObject:image];
+//                    
+//                    UIImage *fullScreenImage = [UIImage imageWithCGImage:result.defaultRepresentation.fullScreenImage];
+//                    [assets addObject:fullScreenImage];
+//                    
+//                }
+                
+            }else{
+                // 完毕调用回调方法
+                backGroup.thumbsAssets = thumbImgs;
+                backGroup.assets = assets;
+                callBack(backGroup);
+            }
+            
+        };
+        
+        
+        ALAssetsLibraryGroupsEnumerationResultsBlock
+        libraryGroupsEnumeration = ^(ALAssetsGroup* group, BOOL* stop){
+            
+            if (group!=nil) {
+                
+                NSString *g=[NSString stringWithFormat:@"%@",group];//获取相簿的组
+                
+                if ([g isEqualToString:pickerGroup.realGroupName]) {
+                    
+                    [group enumerateAssetsUsingBlock:groupEnumerAtion];
+                    
+                    *stop = YES;
+                }
+                
+                
+            }
+        };
+        
+        ALAssetsLibrary* library = [[ALAssetsLibrary alloc] init];
+        [library enumerateGroupsWithTypes:ALAssetsGroupAll
+                               usingBlock:libraryGroupsEnumeration
+                             failureBlock:failureblock];
+    });
+    
+
+
 }
 
 @end
