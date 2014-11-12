@@ -39,8 +39,6 @@
     return _tableView;
 }
 
-
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -103,7 +101,6 @@
     
     // 获取所有的图片URLs
     [datas getAllGroupWithPhotos:^(id obj) {
-//        NSLog(@"%@",obj);
         self.groups = obj;
         [self.tableView reloadData];
     }];

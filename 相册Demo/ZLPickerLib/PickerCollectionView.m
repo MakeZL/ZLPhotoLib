@@ -16,6 +16,11 @@
 @property (nonatomic , strong) ALAssetsLibrary *assetsLibrary;
 @property (nonatomic , strong) NSMutableArray *images;
 
+/**
+ *  选中的索引值，为了防止重用
+ */
+@property (nonatomic , strong) NSMutableArray *selectsIndexPath;
+
 @end
 
 @implementation PickerCollectionView
@@ -33,6 +38,13 @@
         _images = [NSMutableArray array];
     }
     return _images;
+}
+
+- (NSMutableArray *)selectsIndexPath{
+    if (!_selectsIndexPath) {
+        _selectsIndexPath = [NSMutableArray array];
+    }
+    return _selectsIndexPath;
 }
 
 #pragma mark -setter
@@ -83,6 +95,8 @@
     cellImgView.clipsToBounds = YES;
     [cell.contentView addSubview:cellImgView];
     
+    cellImgView.maskViewFlag = ([self.selectsIndexPath containsObject:@(indexPath.row)]);
+    
     cellImgView.image = self.images[indexPath.item];
     
     return cell;
@@ -93,12 +107,7 @@
     [self.assetsLibrary assetForURL:[NSURL URLWithString:assetUrl] resultBlock:^(ALAsset *asset)
      {
          //在这里使用asset来获取图片
-         ALAssetRepresentation *assetRep = [asset defaultRepresentation];
-         CGImageRef imgRef = [assetRep fullResolutionImage];
-         UIImage *img = [UIImage imageWithCGImage:imgRef
-                                            scale:assetRep.scale
-                                      orientation:(UIImageOrientation)assetRep.orientation];
-         [self.images addObject:img];
+         [self getAssetWithImage:asset];
      } failureBlock:nil];
 }
 
@@ -116,11 +125,14 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     
     PickerCollectionViewCell *cell = (PickerCollectionViewCell *) [collectionView cellForItemAtIndexPath:indexPath];
+    
     PickerImageView *pickerImageView = [cell.contentView.subviews lastObject];
     // 如果没有就添加到数组里面，存在就移除
     if (pickerImageView.isMaskViewFlag) {
+        [self.selectsIndexPath removeObject:@(indexPath.row)];
         [self.selectPictureArray removeObject:pickerImageView.image];
     }else{
+        [self.selectsIndexPath addObject:@(indexPath.row)];
         [self.selectPictureArray addObject:pickerImageView.image];
     }
     pickerImageView.maskViewFlag = ([pickerImageView isKindOfClass:[PickerImageView class]]) && !pickerImageView.isMaskViewFlag;

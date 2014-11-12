@@ -63,16 +63,14 @@
 
 - (void)setAnimationRightTick:(BOOL)animationRightTick{
     _animationRightTick = animationRightTick;
-    
-    
     self.tickImageView.hidden = !animationRightTick;
-    [self.tickImageView.layer removeAllAnimations];
-    
-    CAKeyframeAnimation *scaoleAnimation = [CAKeyframeAnimation animationWithKeyPath:@"transform.scale.x"];
-    scaoleAnimation.duration = .25;
-    scaoleAnimation.autoreverses = YES;
-    scaoleAnimation.values = @[@(-1),@(1),@(-1)];
-    scaoleAnimation.fillMode = kCAFillModeForwards;
-    [self.tickImageView.layer addAnimation:scaoleAnimation forKey:@"transform.scale.x"];
+//    [self.tickImageView.layer removeAllAnimations];
+//    
+//    CAKeyframeAnimation *scaoleAnimation = [CAKeyframeAnimation animationWithKeyPath:@"transform.scale.x"];
+//    scaoleAnimation.duration = .25;
+//    scaoleAnimation.autoreverses = YES;
+//    scaoleAnimation.values = @[@(-1),@(1),@(-1)];
+//    scaoleAnimation.fillMode = kCAFillModeForwards;
+//    [self.tickImageView.layer addAnimation:scaoleAnimation forKey:@"transform.scale.x"];
 }
 @end
