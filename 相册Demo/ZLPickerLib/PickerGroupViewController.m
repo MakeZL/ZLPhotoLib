@@ -53,17 +53,7 @@
     [leftBtn addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:leftBtn];
-//    [self.view addSubview:leftBtn];
-    
-    UIButton *customBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    customBtn.backgroundColor = [UIColor grayColor];
-    customBtn.frame = CGRectMake(280, 0, 40, 40);
-    [customBtn setTitle:@"完成" forState:UIControlStateNormal];
-    [customBtn addTarget:self action:@selector(done) forControlEvents:UIControlEventTouchUpInside];
-//    [self.view addSubview:customBtn];
-    
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:customBtn];
-    
+
     // 获取图片
     [self getImgs];
 }
@@ -127,14 +117,6 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void) done{
-//    if ([self.delegate respondsToSelector:@selector(pickerViewControllerDonePictures:)]) {
-//        
-//        [self.delegate pickerViewControllerDonePictures:self.collectionView.selectPictureArray];
-//    }
-//    [self dismissViewControllerAnimated:YES completion:nil];
-//    NSLog(@"%@",self.collectionView.selectPictureArray);
-}
 
 
 

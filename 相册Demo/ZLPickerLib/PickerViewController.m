@@ -7,6 +7,8 @@
 //
 
 
+#define PICKER_TAKE_DONE @"PICKER_TAKE_DONE"
+
 #import "PickerViewController.h"
 #import "PickerGroupViewController.h"
 
@@ -42,6 +44,27 @@
     
     self.view.backgroundColor = [UIColor whiteColor];
     
+    [self addNotification];
+}
+
+- (void) addNotification{
+    // 监听done通知
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(done:) name:PICKER_TAKE_DONE object:nil];
+    });
+}
+
+- (void) done:(NSNotification *)note{
+    NSArray *selectArray =  note.userInfo[@"selectAssets"];
+    
+    if ([self.delegate respondsToSelector:@selector(pickerViewControllerDonePictures:)]) {
+        [self.delegate pickerViewControllerDonePictures:selectArray];
+    }
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)setDelegate:(id<PickerViewControllerDelegate>)delegate{

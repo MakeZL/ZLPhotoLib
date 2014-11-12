@@ -11,6 +11,7 @@
 #define CELL_MARGIN 5
 #define CELL_LINE_MARGIN 5
 
+#define PICKER_TAKE_DONE @"PICKER_TAKE_DONE"
 
 
 #import "PickerAssetsViewController.h"
@@ -95,8 +96,13 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+#pragma mark -开启异步通知
 - (void) done{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [[NSNotificationCenter defaultCenter] postNotificationName:PICKER_TAKE_DONE object:nil userInfo:@{@"selectAssets":self.collectionView.selectPictureArray}];
+    });
     
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 
