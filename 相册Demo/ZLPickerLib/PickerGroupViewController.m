@@ -93,7 +93,6 @@
     PickerAssetsViewController *assetsVc = [[PickerAssetsViewController alloc] init];
     assetsVc.group = group;
     [self.navigationController pushViewController:assetsVc animated:YES];
-//    self.collectionView.dataArray = group.thumbsAssets;
 }
 
 #pragma mark -<Images Datas>
@@ -104,10 +103,9 @@
     
     // 获取所有的图片URLs
     [datas getAllGroupWithPhotos:^(id obj) {
-        NSLog(@"%@",obj);
+//        NSLog(@"%@",obj);
         self.groups = obj;
         [self.tableView reloadData];
-//        self.collectionView.dataArray = obj;
     }];
 }
 

@@ -19,17 +19,6 @@ typedef void(^callBackBlock)(id obj);
  *  快速初始化对象
  */
 + (instancetype) defaultPicker;
-
-/**
- * 获取所有的图片
- */
-- (void) getAllPhotos : (callBackBlock ) callBack;
-
-/**
- * 获取所有的图片的URL
- */
-- (void) getAllPhotosURLs : (callBackBlock ) callBack;
-
 /**
  * 获取所有组对应的图片
  */
