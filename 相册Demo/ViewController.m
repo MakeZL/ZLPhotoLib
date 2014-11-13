@@ -26,6 +26,7 @@
 - (IBAction)selectPhotos {
     // 创建控制器
     PickerViewController *pickerVc = [[PickerViewController alloc] init];
+    pickerVc.status = PickerViewShowStatusSavePhotos;
     pickerVc.delegate = self;
     [self presentViewController:pickerVc animated:YES completion:nil];
     

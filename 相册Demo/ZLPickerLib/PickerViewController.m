@@ -34,9 +34,14 @@
     nav.view.frame = self.view.frame;
     [self addChildViewController:nav];
     [self.view addSubview:nav.view];
-    
     self.groupVc = groupVc;
     
+}
+
+- (void)setStatus:(PickerViewShowStatus)status{
+    _status = status;
+    
+    self.groupVc.status = status;
 }
 
 - (void)viewDidLoad {

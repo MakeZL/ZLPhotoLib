@@ -12,5 +12,6 @@
 @interface PickerGroupViewController : UIViewController
 
 @property (nonatomic , weak) id<PickerViewControllerDelegate> delegate;
+@property (nonatomic , assign) PickerViewShowStatus status;
 
 @end

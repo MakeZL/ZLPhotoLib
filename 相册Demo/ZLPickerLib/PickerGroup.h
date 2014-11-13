@@ -26,6 +26,11 @@
 @property (nonatomic , strong) UIImage *thumbImage;
 
 /**
+ *  类型 : Saved Photos...
+ */
+@property (nonatomic , copy) NSString *type;
+
+/**
  *  所有的图片
  */
 @property (nonatomic , strong) NSArray *assets;

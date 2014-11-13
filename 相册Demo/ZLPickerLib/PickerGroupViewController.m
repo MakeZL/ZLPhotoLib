@@ -80,6 +80,31 @@
     
 }
 
+- (void)setGroups:(NSArray *)groups{
+    _groups = groups;
+    
+    if (self.status) {
+        [self jump2StatusVc];
+    }
+}
+
+#pragma mark 跳转到控制器里面的内容
+- (void) jump2StatusVc{
+    
+    // 如果是相册
+    PickerGroup *gp = nil;
+    for (PickerGroup *group in self.groups) {
+        if ([group.type isEqualToString:@"Saved Photos"]) {
+            gp = group;
+            break;
+        }
+    }
+    
+    PickerAssetsViewController *assetsVc = [[PickerAssetsViewController alloc] init];
+    assetsVc.group = gp;
+    [self.navigationController pushViewController:assetsVc animated:NO];
+}
+
 #pragma mark -<UITableViewDelegate>
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 80;

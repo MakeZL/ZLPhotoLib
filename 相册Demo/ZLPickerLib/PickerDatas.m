@@ -175,6 +175,7 @@ typedef ALAssetsLibraryAccessFailureBlock failureBlock;
                 PickerGroup *groupModel = [[PickerGroup alloc] init];
                 groupModel.groupName = groupName;
                 groupModel.realGroupName = g;
+                groupModel.type = [self getGroupReplaceTypeName:g];
                 self.currentGroupModel = groupModel;
                 
                 
@@ -193,6 +194,13 @@ typedef ALAssetsLibraryAccessFailureBlock failureBlock;
     
 }
 
+- (NSString *) getGroupReplaceTypeName:(NSString *) g{
+    NSRange typeRange = [g rangeOfString:@"Type:"];
+    NSString *type = [g stringByReplacingCharactersInRange:NSMakeRange(0, typeRange.location+typeRange.length) withString:@""];
+    NSRange strRange = [type rangeOfString:@","];
+    type = [type stringByReplacingCharactersInRange: NSMakeRange(strRange.location, type.length - strRange.location) withString:@""];
+    return type;
+}
 
 /**
  *  传入一个组获取组里面的图片

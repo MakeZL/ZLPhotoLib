@@ -8,6 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+typedef enum {
+    PickerViewShowStatusGroup = 0, // default display groups .
+    PickerViewShowStatusSavePhotos
+} PickerViewShowStatus;
+
 @protocol PickerViewControllerDelegate <NSObject>
 
 /**
@@ -20,5 +25,7 @@
 @interface PickerViewController : UIViewController
 
 @property (nonatomic , weak) id<PickerViewControllerDelegate> delegate;
+@property (nonatomic , assign) PickerViewShowStatus status;
+
 
 @end
