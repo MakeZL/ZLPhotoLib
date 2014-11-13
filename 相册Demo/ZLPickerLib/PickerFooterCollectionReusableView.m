@@ -18,7 +18,9 @@
 - (void)setCount:(NSInteger)count{
     _count = count;
     
-    self.footerLabel.text = [NSString stringWithFormat:@"有 %d 张图片", count];
+    if (count > 0) {
+        self.footerLabel.text = [NSString stringWithFormat:@"有 %ld 张图片", count - 1];
+    }
 }
 
 @end
