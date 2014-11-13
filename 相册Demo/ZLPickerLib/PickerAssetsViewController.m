@@ -51,6 +51,7 @@
         }
         
         PickerCollectionView *collectionView = [[PickerCollectionView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - height) collectionViewLayout:layout];
+        collectionView.maxCount = self.maxCount;
         collectionView.contentInset = UIEdgeInsetsMake(5, 0, 0, 0);
         collectionView.collectionViewDelegate = self;
         [self.view addSubview:collectionView];
@@ -123,7 +124,8 @@
 - (void)setAssets:(NSArray *)assets{
     _assets = assets;
     
-    self.collectionView.dataArray = assets;
+    self.collectionView.dataArray = [assets mutableCopy];
+    [self.collectionView reloadData];
 }
 
 - (void)setGroup:(PickerGroup *)group{
@@ -131,7 +133,7 @@
     
     PickerDatas *datas = [PickerDatas defaultPicker];
     
-    __weak typeof(self) weakSelf = self;
+    __unsafe_unretained typeof(self) weakSelf = self;
     [datas getGroupPhotosWithGroup:group finished:^(PickerGroup *group) {
         weakSelf.assets = group.assets;
     }];

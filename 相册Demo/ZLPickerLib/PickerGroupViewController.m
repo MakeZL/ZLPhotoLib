@@ -95,6 +95,7 @@
     
     PickerAssetsViewController *assetsVc = [[PickerAssetsViewController alloc] init];
     assetsVc.group = gp;
+    assetsVc.maxCount = self.maxCount;
     [self.navigationController pushViewController:assetsVc animated:NO];
 }
 
@@ -109,6 +110,7 @@
     PickerGroup *group = self.groups[indexPath.row];
     PickerAssetsViewController *assetsVc = [[PickerAssetsViewController alloc] init];
     assetsVc.group = group;
+    assetsVc.maxCount = self.maxCount;
     [self.navigationController pushViewController:assetsVc animated:YES];
 }
 

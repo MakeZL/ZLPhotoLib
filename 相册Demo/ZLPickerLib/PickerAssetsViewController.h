@@ -17,5 +17,6 @@
 @interface PickerAssetsViewController : UIViewController
 
 @property (nonatomic , strong) PickerGroup *group;
+@property (nonatomic , assign) NSInteger maxCount;
 
 @end

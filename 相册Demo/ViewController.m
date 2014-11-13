@@ -28,8 +28,16 @@
     PickerViewController *pickerVc = [[PickerViewController alloc] init];
     // 默认显示相册里面的内容SavePhotos
     pickerVc.status = PickerViewShowStatusSavePhotos;
-    pickerVc.delegate = self;
+    // 选择图片的最大数
+    pickerVc.maxCount = 4;
+    //pickerVc.delegate = self;
     [self presentViewController:pickerVc animated:YES completion:nil];
+    // 用block来代替代理
+    __weak typeof(self) weakSelf = self;
+    pickerVc.callBack = ^(NSArray *arr){
+        weakSelf.images = arr;
+        [weakSelf.tableView reloadData];
+    };
     
 }
 

@@ -40,8 +40,14 @@
 
 - (void)setStatus:(PickerViewShowStatus)status{
     _status = status;
-    
     self.groupVc.status = status;
+}
+
+- (void)setMaxCount:(NSInteger)maxCount{
+    if (maxCount <= 0) return;
+    _maxCount = maxCount;
+    
+    self.groupVc.maxCount = maxCount;
 }
 
 - (void)viewDidLoad {
@@ -65,6 +71,8 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         if ([self.delegate respondsToSelector:@selector(pickerViewControllerDonePictures:)]) {
             [self.delegate pickerViewControllerDonePictures:selectArray];
+        }else if (self.callBack){
+            self.callBack(selectArray);
         }
         [self dismissViewControllerAnimated:YES completion:nil];
     });

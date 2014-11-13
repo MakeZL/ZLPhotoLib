@@ -29,4 +29,7 @@
 @property (nonatomic , weak) id <PickerCollectionViewDelegate> collectionViewDelegate;
 
 
+// 限制最大数
+@property (nonatomic , assign) NSInteger maxCount;
+
 @end

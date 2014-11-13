@@ -21,6 +21,7 @@ typedef ALAssetsLibraryAccessFailureBlock failureBlock;
 @property (nonatomic , strong) NSMutableArray *groups;
 
 @property (nonatomic , strong) PickerGroup *currentGroupModel;
+@property (nonatomic , strong) PickerGroup *backGroup;
 
 @property (nonatomic , copy) failureBlock failureBlock;
 
@@ -34,6 +35,13 @@ typedef ALAssetsLibraryAccessFailureBlock failureBlock;
         _groups = [NSMutableArray array];
     }
     return _groups;
+}
+
+- (PickerGroup *)backGroup{
+    if (!_backGroup) {
+        _backGroup = [[PickerGroup alloc] init];
+    }
+    return _backGroup;
 }
 
 - (failureBlock)failureBlock{
@@ -213,7 +221,7 @@ typedef ALAssetsLibraryAccessFailureBlock failureBlock;
  *  传入一个组获取组里面的图片
  */
 - (void) getGroupPhotosWithGroup : (PickerGroup *) pickerGroup finished : (callBackBlock ) callBack{
-    __block PickerGroup *backGroup = [[PickerGroup alloc] init];
+//    __block PickerGroup *backGroup = [[PickerGroup alloc] init];
     // 原图
     NSMutableArray *assets = [NSMutableArray array];
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -223,8 +231,8 @@ typedef ALAssetsLibraryAccessFailureBlock failureBlock;
                 [assets addObject:result];
             }else{
                 // 完毕调用回调方法
-                backGroup.assets = assets;
-                callBack(backGroup);
+                self.backGroup.assets = assets;
+                callBack(self.backGroup);
             }
             
         };

@@ -6,6 +6,8 @@
 //  Copyright (c) 2014年 com.zixue101.www. All rights reserved.
 //
 
+#define MAX_COUNT 9 // 选择图片最大数默认是9
+
 #import "PickerCollectionView.h"
 #import "PickerCollectionViewCell.h"
 #import "PickerImageView.h"
@@ -17,11 +19,14 @@
 @property (nonatomic , strong) ALAssetsLibrary *assetsLibrary;
 @property (nonatomic , strong) NSMutableArray *images;
 
+@property (nonatomic , strong) NSMutableArray *fullscrenImages;
+
 /**
  *  选中的索引值，为了防止重用
  */
 @property (nonatomic , strong) NSMutableArray *selectsIndexPath;
 @property (nonatomic , strong) PickerFooterCollectionReusableView *footerView;
+
 
 @end
 
@@ -42,6 +47,13 @@
     return _images;
 }
 
+- (NSMutableArray *)fullscrenImages{
+    if (!_fullscrenImages) {
+        _fullscrenImages = [NSMutableArray array];
+    }
+    return _fullscrenImages;
+}
+
 - (NSMutableArray *)selectsIndexPath{
     if (!_selectsIndexPath) {
         _selectsIndexPath = [NSMutableArray array];
@@ -60,7 +72,8 @@
         }else if([resource isKindOfClass:[NSString class]]){
                 // 如果不存在Asset就去请求加载
             [self getAssetURLWithImage:resource];
-        }else if ([resource isKindOfClass:[ALAsset class]]){
+        }
+        else if ([resource isKindOfClass:[ALAsset class]]){
             [self getAssetWithImage:resource];
         }
     }
@@ -78,9 +91,12 @@
         _selectPictureArray = [NSMutableArray array];
         
         [self registerNib:[UINib nibWithNibName:@"PickerFooterCollectionReusableView" bundle:nil] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterView"];
+        
     }
     return self;
 }
+
+
 
 - (NSInteger) numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
     return 1;
@@ -124,6 +140,12 @@
                                        scale:assetRep.scale
                                  orientation:UIImageOrientationUp];
     [self.images addObject:img];
+    
+    @autoreleasepool {
+        [self.fullscrenImages addObject:[UIImage imageWithCGImage:[assetRep fullScreenImage] scale:assetRep.scale
+                                                      orientation:UIImageOrientationUp]];
+    }
+                                         
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
@@ -136,6 +158,15 @@
         [self.selectsIndexPath removeObject:@(indexPath.row)];
         [self.selectPictureArray removeObject:pickerImageView.image];
     }else{
+        // 1 先判断是否超过选择图片的最大
+        NSInteger maxCount = self.maxCount ? self.maxCount : MAX_COUNT;
+        
+        if (self.selectPictureArray.count >= maxCount) {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提醒" message:[NSString stringWithFormat:@"最多只能选择%ld张图片",maxCount] delegate:self cancelButtonTitle:nil otherButtonTitles:@"好的", nil];
+            [alertView show];
+            return ;
+        }
+        
         [self.selectsIndexPath addObject:@(indexPath.row)];
         [self.selectPictureArray addObject:pickerImageView.image];
     }
@@ -161,4 +192,7 @@
     return reusableView;
 }
 
+- (void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 @end

@@ -13,5 +13,6 @@
 
 @property (nonatomic , weak) id<PickerViewControllerDelegate> delegate;
 @property (nonatomic , assign) PickerViewShowStatus status;
+@property (nonatomic , assign) NSInteger maxCount;
 
 @end
