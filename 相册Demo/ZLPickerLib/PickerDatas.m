@@ -130,6 +130,7 @@ typedef ALAssetsLibraryAccessFailureBlock failureBlock;
  */
 - (void) getAllGroupWithPhotos : (callBackBlock ) callBack{
     NSMutableArray *dataArray = [NSMutableArray array];
+    __block NSInteger assetsCount = 0;
     dispatch_async(dispatch_get_main_queue(), ^{
         ALAssetsGroupEnumerationResultsBlock groupEnumerAtion = ^(ALAsset *result, NSUInteger index, BOOL *stop){
             if (result!=NULL) {
@@ -140,7 +141,13 @@ typedef ALAssetsLibraryAccessFailureBlock failureBlock;
                             self.currentGroupModel.thumbImage = image;
                         }
                     }
+                    assetsCount = index;
             }else{
+                // 如果不存在图片就弄占位图片
+                if (!self.currentGroupModel.thumbImage) {
+                    self.currentGroupModel.thumbImage = [UIImage imageNamed:@"wallpaper_placeholder"];
+                }
+                self.currentGroupModel.assetsCount = assetsCount;
                 // 完毕调用回调方法
                 [self.groups addObject:self.currentGroupModel];
             }

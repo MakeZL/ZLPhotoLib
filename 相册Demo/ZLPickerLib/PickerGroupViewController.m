@@ -16,6 +16,7 @@
 #import "PickerDatas.h"
 #import "PickerGroupViewController.h"
 #import "PickerGroup.h"
+#import "PickerGroupTableViewCell.h"
 #import "PickerAssetsViewController.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 
@@ -64,18 +65,9 @@
 
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    static NSString *ID = @"cell";
+    PickerGroupTableViewCell *cell = [PickerGroupTableViewCell instanceCell];
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ID];
-    
-    if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:ID];
-    }
-    
-    PickerGroup *group = self.groups[indexPath.row];
-    cell.textLabel.text = group.groupName;
-    cell.imageView.contentMode = UIViewContentModeScaleAspectFill;
-    cell.imageView.image = group.thumbImage;
+    cell.group = self.groups[indexPath.row];
     
     return cell;
     
@@ -113,6 +105,7 @@
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     PickerGroup *group = self.groups[indexPath.row];
     PickerAssetsViewController *assetsVc = [[PickerAssetsViewController alloc] init];
     assetsVc.group = group;

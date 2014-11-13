@@ -26,6 +26,11 @@
 @property (nonatomic , strong) UIImage *thumbImage;
 
 /**
+ *  组里面的图片个数
+ */
+@property (nonatomic , assign) NSInteger assetsCount;
+
+/**
  *  类型 : Saved Photos...
  */
 @property (nonatomic , copy) NSString *type;

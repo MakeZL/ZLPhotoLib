@@ -22,6 +22,8 @@
 		48B3E1A21A11BAF80079F464 /* PickerImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B3E19F1A11BAF80079F464 /* PickerImageView.m */; };
 		48B3E1A51A11BC610079F464 /* PickerDatas.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B3E1A41A11BC610079F464 /* PickerDatas.m */; };
 		48B3E1A81A11CD630079F464 /* PickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B3E1A71A11CD630079F464 /* PickerViewController.m */; };
+		48E44F9C1A1467E900F8BBD4 /* PickerGroupTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 48E44F9A1A1467E900F8BBD4 /* PickerGroupTableViewCell.m */; };
+		48E44F9D1A1467E900F8BBD4 /* PickerGroupTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48E44F9B1A1467E900F8BBD4 /* PickerGroupTableViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,6 +66,9 @@
 		48B3E1A41A11BC610079F464 /* PickerDatas.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerDatas.m; sourceTree = "<group>"; };
 		48B3E1A61A11CD630079F464 /* PickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerViewController.h; sourceTree = "<group>"; };
 		48B3E1A71A11CD630079F464 /* PickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerViewController.m; sourceTree = "<group>"; };
+		48E44F991A1467E900F8BBD4 /* PickerGroupTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerGroupTableViewCell.h; sourceTree = "<group>"; };
+		48E44F9A1A1467E900F8BBD4 /* PickerGroupTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerGroupTableViewCell.m; sourceTree = "<group>"; };
+		48E44F9B1A1467E900F8BBD4 /* PickerGroupTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PickerGroupTableViewCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -165,6 +170,9 @@
 				4867EAE31A120B8C00F299A1 /* PickerGroup.m */,
 				4801778C1A1368B80026F494 /* PickerAssetsViewController.h */,
 				4801778D1A1368B80026F494 /* PickerAssetsViewController.m */,
+				48E44F991A1467E900F8BBD4 /* PickerGroupTableViewCell.h */,
+				48E44F9A1A1467E900F8BBD4 /* PickerGroupTableViewCell.m */,
+				48E44F9B1A1467E900F8BBD4 /* PickerGroupTableViewCell.xib */,
 			);
 			path = ZLPickerLib;
 			sourceTree = "<group>";
@@ -252,6 +260,7 @@
 				48B3E17F1A11BABC0079F464 /* Main.storyboard in Resources */,
 				48B3E1841A11BABC0079F464 /* LaunchScreen.xib in Resources */,
 				48B3E1811A11BABC0079F464 /* Images.xcassets in Resources */,
+				48E44F9D1A1467E900F8BBD4 /* PickerGroupTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -272,6 +281,7 @@
 				48B3E17C1A11BABC0079F464 /* ViewController.m in Sources */,
 				48B3E1791A11BABC0079F464 /* AppDelegate.m in Sources */,
 				48B3E1A51A11BC610079F464 /* PickerDatas.m in Sources */,
+				48E44F9C1A1467E900F8BBD4 /* PickerGroupTableViewCell.m in Sources */,
 				48B3E1A21A11BAF80079F464 /* PickerImageView.m in Sources */,
 				4867EAA81A11ED8600F299A1 /* PickerGroupViewController.m in Sources */,
 				48B3E1A11A11BAF80079F464 /* PickerCollectionViewCell.m in Sources */,

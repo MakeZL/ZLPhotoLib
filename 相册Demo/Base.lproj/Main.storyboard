@@ -31,7 +31,10 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="有任何好的建议或者代码改进请联系我的QQ：120886865" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lAr-Lw-xIi">
-                                <rect key="frame" x="36" y="680" width="342" height="36"/>
+                                <rect key="frame" x="36" y="650" width="342" height="66"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="66" id="0ZH-9Y-ZVi"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
