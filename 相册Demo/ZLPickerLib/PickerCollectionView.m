@@ -118,7 +118,11 @@
     CGImageRef imgRef = [asset thumbnail];
     UIImage *img = [UIImage imageWithCGImage:imgRef
                                        scale:assetRep.scale
-                                 orientation:(UIImageOrientation)assetRep.orientation];
+                                 orientation:UIImageOrientationUp];
+//    UIImage *img = [UIImage imageWithCGImage:[asset.defaultRepresentation fullScreenImage]
+//                                             scale:[asset.defaultRepresentation scale] orientation:
+//                          (UIImageOrientation)[asset.defaultRepresentation orientation]];
+    
     [self.images addObject:img];
 }
 

@@ -214,8 +214,6 @@ typedef ALAssetsLibraryAccessFailureBlock failureBlock;
  */
 - (void) getGroupPhotosWithGroup : (PickerGroup *) pickerGroup finished : (callBackBlock ) callBack{
     __block PickerGroup *backGroup = [[PickerGroup alloc] init];
-    // 缩略图
-    NSMutableArray *thumbImgs = [NSMutableArray array];
     // 原图
     NSMutableArray *assets = [NSMutableArray array];
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -225,7 +223,6 @@ typedef ALAssetsLibraryAccessFailureBlock failureBlock;
                 [assets addObject:result];
             }else{
                 // 完毕调用回调方法
-                backGroup.thumbsAssets = thumbImgs;
                 backGroup.assets = assets;
                 callBack(backGroup);
             }
