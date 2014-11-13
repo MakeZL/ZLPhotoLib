@@ -9,6 +9,7 @@
 #import "PickerCollectionView.h"
 #import "PickerCollectionViewCell.h"
 #import "PickerImageView.h"
+#import "PickerFooterCollectionReusableView.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 
 @interface PickerCollectionView () <UICollectionViewDataSource,UICollectionViewDelegate>
@@ -20,6 +21,7 @@
  *  选中的索引值，为了防止重用
  */
 @property (nonatomic , strong) NSMutableArray *selectsIndexPath;
+@property (nonatomic , strong) PickerFooterCollectionReusableView *footerView;
 
 @end
 
@@ -74,6 +76,8 @@
         self.dataSource = self;
         self.delegate = self;
         _selectPictureArray = [NSMutableArray array];
+        
+        [self registerNib:[UINib nibWithNibName:@"PickerFooterCollectionReusableView" bundle:nil] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterView"];
     }
     return self;
 }
@@ -119,10 +123,6 @@
     UIImage *img = [UIImage imageWithCGImage:imgRef
                                        scale:assetRep.scale
                                  orientation:UIImageOrientationUp];
-//    UIImage *img = [UIImage imageWithCGImage:[asset.defaultRepresentation fullScreenImage]
-//                                             scale:[asset.defaultRepresentation scale] orientation:
-//                          (UIImageOrientation)[asset.defaultRepresentation orientation]];
-    
     [self.images addObject:img];
 }
 
@@ -145,6 +145,20 @@
     if ([self.collectionViewDelegate respondsToSelector:@selector(pickerCollectionView:didSelctedPicturesCount:)]) {
         [self.collectionViewDelegate pickerCollectionView:self didSelctedPicturesCount:self.selectPictureArray.count];
     }
+}
+
+-(UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
+{
+    UICollectionReusableView *reusableView = nil;
+    if (kind == UICollectionElementKindSectionFooter) {
+        PickerFooterCollectionReusableView *footerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterView" forIndexPath:indexPath];
+        footerView.count = self.dataArray.count;
+        reusableView = footerView;
+        self.footerView = footerView;
+    }else{
+        
+    }
+    return reusableView;
 }
 
 @end

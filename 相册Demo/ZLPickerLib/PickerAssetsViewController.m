@@ -43,6 +43,7 @@
         layout.itemSize = CGSizeMake(cellW, cellW);
         layout.minimumInteritemSpacing = 0;
         layout.minimumLineSpacing = CELL_LINE_MARGIN;
+        layout.footerReferenceSize = CGSizeMake(320, 50);
         
         CGFloat height = 0;
         if (!iOS7) {
@@ -82,6 +83,7 @@
     self.view.backgroundColor = [UIColor whiteColor];
     
     [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"cell"];
+    
     
     [self setupButtons];
 }
