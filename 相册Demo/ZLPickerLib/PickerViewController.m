@@ -31,7 +31,7 @@
     
     PickerGroupViewController *groupVc = [[PickerGroupViewController alloc] init];
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:groupVc];
-    nav.view.frame = self.view.frame;
+    nav.view.frame = self.view.bounds;
     [self addChildViewController:nav];
     [self.view addSubview:nav.view];
     self.groupVc = groupVc;
@@ -53,8 +53,8 @@
 }
 
 - (void) addNotification{
-    // 监听done通知
-    dispatch_async(dispatch_get_main_queue(), ^{
+    // 监听异步done通知
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(done:) name:PICKER_TAKE_DONE object:nil];
     });
 }
@@ -62,10 +62,12 @@
 - (void) done:(NSNotification *)note{
     NSArray *selectArray =  note.userInfo[@"selectAssets"];
     
-    if ([self.delegate respondsToSelector:@selector(pickerViewControllerDonePictures:)]) {
-        [self.delegate pickerViewControllerDonePictures:selectArray];
-    }
-    [self dismissViewControllerAnimated:YES completion:nil];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if ([self.delegate respondsToSelector:@selector(pickerViewControllerDonePictures:)]) {
+            [self.delegate pickerViewControllerDonePictures:selectArray];
+        }
+        [self dismissViewControllerAnimated:YES completion:nil];
+    });
 }
 
 - (void)dealloc{

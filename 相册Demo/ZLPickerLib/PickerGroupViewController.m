@@ -30,7 +30,7 @@
 
 - (UITableView *)tableView{
     if (!_tableView) {
-        UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height - 64) style:UITableViewStylePlain];
+        UITableView *tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
         tableView.delegate = self;
         tableView.dataSource = self;
         [self.view addSubview:tableView];
@@ -42,18 +42,19 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.navigationController.navigationBar.backgroundColor = [UIColor redColor];
+    // 设置按钮
+    [self setupButtons];
     
-    UIButton *leftBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    leftBtn.backgroundColor = [UIColor grayColor];
-    leftBtn.frame = CGRectMake(0, 0, 40, 40);
-    [leftBtn setTitle:@"back" forState:UIControlStateNormal];
-    [leftBtn addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
-    
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:leftBtn];
-
     // 获取图片
     [self getImgs];
+    
+    self.title = @"选择相册";
+}
+
+- (void) setupButtons{
+    UIBarButtonItem *barItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"close", @"关闭") style:UIBarButtonItemStyleDone target:self action:@selector(back)];
+    
+    self.navigationItem.rightBarButtonItem = barItem;
 }
 
 #pragma mark - <UITableViewDataSource>

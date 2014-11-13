@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 typedef enum {
-    PickerViewShowStatusGroup = 0, // default display groups .
+    PickerViewShowStatusGroup = 0, // default groups .
     PickerViewShowStatusSavePhotos
 } PickerViewShowStatus;
 
@@ -25,6 +25,7 @@ typedef enum {
 @interface PickerViewController : UIViewController
 
 @property (nonatomic , weak) id<PickerViewControllerDelegate> delegate;
+// 决定你是否需要push到内容控制器, 默认显示组
 @property (nonatomic , assign) PickerViewShowStatus status;
 
 

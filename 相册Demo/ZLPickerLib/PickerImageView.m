@@ -34,7 +34,7 @@
     if (!_tickImageView) {
         UIImageView *tickImageView = [[UIImageView alloc] init];
         tickImageView.frame = CGRectMake(self.bounds.size.width - 40, 0, 40, 40);
-        tickImageView.image = [UIImage imageNamed:@"checkmark_icon"];
+        tickImageView.image = [UIImage imageNamed:@"AssetsPickerChecked"];
         tickImageView.hidden = YES;
         [self addSubview:tickImageView];
         self.tickImageView = tickImageView;

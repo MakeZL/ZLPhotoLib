@@ -8,6 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+@class PickerCollectionView;
+
+@protocol PickerCollectionViewDelegate <NSObject>
+
+// 选择相片就会调用
+- (void) pickerCollectionView:(PickerCollectionView *) pickerCollectionView didSelctedPicturesCount:(NSInteger) count;
+
+@end
+
 @interface PickerCollectionView : UICollectionView
 /**
  *  保存所有的数据
@@ -16,5 +25,8 @@
 
 // 保存选中的图片
 @property (nonatomic , strong , readonly) NSMutableArray *selectPictureArray;
+
+@property (nonatomic , weak) id <PickerCollectionViewDelegate> collectionViewDelegate;
+
 
 @end
