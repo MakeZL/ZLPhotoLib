@@ -6,6 +6,10 @@
 //  Copyright (c) 2014年 com.zixue101.www. All rights reserved.
 //
 
+
+#define iOS7 ([[UIDevice currentDevice].systemVersion doubleValue] >= 7.0)
+
+
 #import <UIKit/UIKit.h>
 
 @class PickerGroup;

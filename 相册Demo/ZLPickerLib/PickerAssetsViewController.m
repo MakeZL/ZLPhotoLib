@@ -8,8 +8,8 @@
 
 
 #define CELL_ROW 4
-#define CELL_MARGIN 5
-#define CELL_LINE_MARGIN 5
+#define CELL_MARGIN 2
+#define CELL_LINE_MARGIN CELL_MARGIN
 
 #define PICKER_TAKE_DONE @"PICKER_TAKE_DONE"
 
@@ -44,7 +44,13 @@
         layout.minimumInteritemSpacing = 0;
         layout.minimumLineSpacing = CELL_LINE_MARGIN;
         
-        PickerCollectionView *collectionView = [[PickerCollectionView alloc] initWithFrame:CGRectMake(0, 5, self.view.frame.size.width, self.view.frame.size.height - 5) collectionViewLayout:layout];
+        CGFloat height = 0;
+        if (!iOS7) {
+            height = 44;
+        }
+        
+        PickerCollectionView *collectionView = [[PickerCollectionView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - height) collectionViewLayout:layout];
+        collectionView.contentInset = UIEdgeInsetsMake(5, 0, 0, 0);
         collectionView.collectionViewDelegate = self;
         [self.view addSubview:collectionView];
         self.collectionView = collectionView;
@@ -83,9 +89,9 @@
 - (void)pickerCollectionView:(PickerCollectionView *)pickerCollectionView didSelctedPicturesCount:(NSInteger)count{
     
     self.makeView.hidden = !count;
-    self.makeView.text = [NSString stringWithFormat:@"%d",count];
-    self.navigationItem.rightBarButtonItem.enabled = count;
-    self.rightBtn.enabled = count;
+    self.makeView.text = [NSString stringWithFormat:@"%ld",(long)count];
+    self.navigationItem.rightBarButtonItem.enabled = (count > 0);
+    self.rightBtn.enabled = (count > 0);
     
 }
 
@@ -97,7 +103,7 @@
     
     rightBtn.titleLabel.font = [UIFont systemFontOfSize:17];
     rightBtn.frame = CGRectMake(0, 0, 45, 45);
-    [rightBtn setTitle:@"done" forState:UIControlStateNormal];
+    [rightBtn setTitle:@"完成" forState:UIControlStateNormal];
     [rightBtn addTarget:self action:@selector(done) forControlEvents:UIControlEventTouchUpInside];
     
     [rightBtn addSubview:self.makeView];

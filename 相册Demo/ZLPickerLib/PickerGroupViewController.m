@@ -52,7 +52,7 @@
 }
 
 - (void) setupButtons{
-    UIBarButtonItem *barItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"close", @"关闭") style:UIBarButtonItemStyleDone target:self action:@selector(back)];
+    UIBarButtonItem *barItem = [[UIBarButtonItem alloc] initWithTitle:@"关闭" style:UIBarButtonItemStyleDone target:self action:@selector(back)];
     
     self.navigationItem.rightBarButtonItem = barItem;
 }
