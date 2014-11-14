@@ -13,20 +13,57 @@
 
 @interface ViewController () <UITableViewDataSource,UITableViewDelegate,PickerViewControllerDelegate>
 
-- (IBAction)selectPhotos;
+- (void)selectPhotos;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (nonatomic , strong) NSArray *assets;
+@property (nonatomic , weak) UILabel *zixueLabel;
 
 
 @end
 
 @implementation ViewController
 
-- (void)viewDidLoad{
-    [super viewDidLoad];
+#pragma mark -getter
+- (UITableView *)tableView{
+    if (!_tableView) {
+        CGFloat w = 300;
+        CGFloat x = (self.view.frame.size.width - w ) / 2.0;
+        UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(x, 100, w, w) style:UITableViewStylePlain];
+        tableView.dataSource = self;
+        tableView.delegate = self;
+        [self.view addSubview:tableView];
+        self.tableView = tableView;
+    }
+    return _tableView;
 }
 
-- (IBAction)selectPhotos {
+- (void)viewDidLoad{
+    [super viewDidLoad];
+    
+    self.view.backgroundColor = [UIColor whiteColor];
+    
+    [self setupButtons];
+    [self setupUI];
+}
+
+- (void) setupButtons{
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"选择照片" style:UIBarButtonItemStyleDone target:self action:@selector(selectPhotos)];
+}
+
+- (void) setupUI{
+    
+    UILabel *zixueLabel = [[UILabel alloc] init];
+    zixueLabel.textAlignment = NSTextAlignmentCenter;
+    zixueLabel.numberOfLines = 0;
+    zixueLabel.frame = CGRectMake(0, self.view.frame.size.height - 100, self.view.frame.size.width, 100);
+    zixueLabel.text = @"有任何好的建议或者代码改进请联系我的QQ：120886865\n我的自学网站：www.zixue101.com";
+    [self.view addSubview:zixueLabel];
+    self.zixueLabel = zixueLabel;
+}
+
+
+
+- (void)selectPhotos {
     // 创建控制器
     PickerViewController *pickerVc = [[PickerViewController alloc] init];
     // 默认显示相册里面的内容SavePhotos
