@@ -57,7 +57,6 @@
         
         [collectionView registerNib:[UINib nibWithNibName:@"PickerFooterCollectionReusableView" bundle:nil] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterView"];
         
-        collectionView.maxCount = self.maxCount;
         collectionView.contentInset = UIEdgeInsetsMake(5, 0, 0, 0);
         collectionView.collectionViewDelegate = self;
         [self.view addSubview:collectionView];
@@ -92,15 +91,8 @@
     [self setupButtons];
 }
 
-- (void)pickerCollectionView:(PickerCollectionView *)pickerCollectionView didSelctedPicturesCount:(NSInteger)count{
-    
-    self.makeView.hidden = !count;
-    self.makeView.text = [NSString stringWithFormat:@"%ld",(long)count];
-    self.navigationItem.rightBarButtonItem.enabled = (count > 0);
-    self.rightBtn.enabled = (count > 0);
-    
-}
 
+#pragma mark - setup
 - (void) setupButtons{
     
     UIButton *rightBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -124,6 +116,28 @@
     self.rightBtn = rightBtn;
 }
 
+
+- (void) setupAssets{
+    if (!self.assets) {
+        self.assets = [NSMutableArray array];
+    }
+    
+    PickerDatas *datas = [PickerDatas defaultPicker];
+    [datas getGroupPhotosWithGroup:self.assetsGroup finished:^(NSArray *assets) {
+        
+        self.collectionView.dataArray = assets;
+        [self.collectionView reloadData];
+    }];
+    
+}
+
+#pragma mark - setter
+- (void)setMaxCount:(NSInteger)maxCount{
+    _maxCount = maxCount;
+    
+    self.collectionView.maxCount = self.maxCount;
+}
+
 - (void)setAssetsGroup:(PickerGroup *)assetsGroup{
     _assetsGroup = assetsGroup;
     
@@ -133,19 +147,18 @@
     [self setupAssets];
 }
 
-- (void) setupAssets{
-    if (!self.assets) {
-        self.assets = [NSMutableArray array];
-    }
-    
-    PickerDatas *datas = [PickerDatas defaultPicker];
-    [datas getGroupPhotosWithGroup:self.assetsGroup finished:^(NSArray *assets) {
 
-        self.collectionView.dataArray = assets;
-        [self.collectionView reloadData];
-    }];
+
+
+- (void)pickerCollectionView:(PickerCollectionView *)pickerCollectionView didSelctedPicturesCount:(NSInteger)count{
+    
+    self.makeView.hidden = !count;
+    self.makeView.text = [NSString stringWithFormat:@"%ld",(long)count];
+    self.navigationItem.rightBarButtonItem.enabled = (count > 0);
+    self.rightBtn.enabled = (count > 0);
     
 }
+
 
 #pragma mark -<Navigation Actions>
 #pragma mark -开启异步通知
