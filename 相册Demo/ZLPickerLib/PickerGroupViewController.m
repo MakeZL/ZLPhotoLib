@@ -51,8 +51,8 @@
     [self getImgs];
     
     self.title = @"选择相册";
+    
 }
-
 
 - (void) setupButtons{
     UIBarButtonItem *barItem = [[UIBarButtonItem alloc] initWithTitle:@"关闭" style:UIBarButtonItemStyleDone target:self action:@selector(back)];

@@ -13,7 +13,7 @@
 @protocol PickerCollectionViewDelegate <NSObject>
 
 // 选择相片就会调用
-- (void) pickerCollectionView:(PickerCollectionView *) pickerCollectionView didSelctedPicturesCount:(NSInteger) count;
+- (void) pickerCollectionViewDidSelected:(PickerCollectionView *) pickerCollectionView;
 
 @end
 

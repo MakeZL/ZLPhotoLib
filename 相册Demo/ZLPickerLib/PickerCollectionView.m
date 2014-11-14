@@ -145,8 +145,8 @@
     pickerImageView.maskViewFlag = ([pickerImageView isKindOfClass:[PickerImageView class]]) && !pickerImageView.isMaskViewFlag;
     
     // 告诉代理现在被点击了!
-    if ([self.collectionViewDelegate respondsToSelector:@selector(pickerCollectionView:didSelctedPicturesCount:)]) {
-        [self.collectionViewDelegate pickerCollectionView:self didSelctedPicturesCount:self.selectAsstes.count];
+    if ([self.collectionViewDelegate respondsToSelector:@selector(pickerCollectionViewDidSelected:)]) {
+        [self.collectionViewDelegate pickerCollectionViewDidSelected:self];
     }
 }
 

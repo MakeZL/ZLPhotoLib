@@ -69,7 +69,7 @@
     // 默认显示相册里面的内容SavePhotos
     pickerVc.status = PickerViewShowStatusSavePhotos;
     // 选择图片的最大数
-    pickerVc.maxCount = 4;
+//    pickerVc.maxCount = 4;
 
     pickerVc.delegate = self;
     [self presentViewController:pickerVc animated:YES completion:nil];
