@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <AssetsLibrary/AssetsLibrary.h>
 
 @interface PickerGroup : NSObject
 
@@ -35,13 +36,6 @@
  */
 @property (nonatomic , copy) NSString *type;
 
-/**
- *  所有的图片
- */
-@property (nonatomic , strong) NSArray *assets;
-/**
- *  所有的图片的缩略图
- */
-@property (nonatomic , strong) NSArray *thumbsAssets;
+@property (nonatomic , strong) ALAssetsGroup *group;
 
 @end

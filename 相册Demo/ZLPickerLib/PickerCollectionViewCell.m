@@ -8,27 +8,7 @@
 
 #import "PickerCollectionViewCell.h"
 
-@interface PickerCollectionViewCell ()
-
-@property (nonatomic , weak) UIImageView *cellImgView;
-
-@end
-
 @implementation PickerCollectionViewCell
-
-static UIImageView *_cellImageView;
-
-//- (UIImageView *)cellImgView{
-//    if (!_cellImgView) {
-//        PickerImageView *cellImgView = [[PickerImageView alloc] initWithFrame:self.bounds];
-//        cellImgView.contentMode = UIViewContentModeScaleAspectFill;
-//        cellImgView.clipsToBounds = YES;
-//        [self.contentView addSubview:cellImgView];
-//        self.cellImgView = cellImgView;
-//    }
-//    return _cellImgView;
-//}
-
 
 + (instancetype)cellWithCollectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     
@@ -40,10 +20,4 @@ static UIImageView *_cellImageView;
     
     return cell;
 }
-
-//- (void)setCellImage:(UIImage *)cellImage{
-//    _cellImage = cellImage;
-//    self.cellImgView.image = cellImage;
-//}
-
 @end

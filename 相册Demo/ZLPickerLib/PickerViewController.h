@@ -18,9 +18,9 @@ typedef enum {
 @protocol PickerViewControllerDelegate <NSObject>
 
 /**
- *  返回所有的图片对象
+ *  返回所有的Asstes对象
  */
-- (void) pickerViewControllerDonePictures : (NSArray *) images;
+- (void) pickerViewControllerDoneAsstes : (NSArray *) images;
 
 @end
 

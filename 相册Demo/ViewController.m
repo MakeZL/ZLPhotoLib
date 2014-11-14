@@ -8,12 +8,15 @@
 
 #import "ViewController.h"
 #import "PickerViewController.h"
+#import "ImageViewController.h"
+#import <AssetsLibrary/AssetsLibrary.h>
 
 @interface ViewController () <UITableViewDataSource,UITableViewDelegate,PickerViewControllerDelegate>
 
 - (IBAction)selectPhotos;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (nonatomic , strong) NSArray *images;
+@property (nonatomic , strong) NSArray *assets;
+
 
 @end
 
@@ -30,19 +33,30 @@
     pickerVc.status = PickerViewShowStatusSavePhotos;
     // 选择图片的最大数
     pickerVc.maxCount = 4;
-    //pickerVc.delegate = self;
+
+    pickerVc.delegate = self;
     [self presentViewController:pickerVc animated:YES completion:nil];
-    // 用block来代替代理
-    __weak typeof(self) weakSelf = self;
-    pickerVc.callBack = ^(NSArray *arr){
-        weakSelf.images = arr;
+    /**
+     *
+     传值可以用代理，或者用block来接收，以下是block的传值
+     __weak typeof(self) weakSelf = self;
+     pickerVc.callBack = ^(NSArray *assets){
+        weakSelf.assets = assets;
         [weakSelf.tableView reloadData];
-    };
+     };
+     */
+    
     
 }
 
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return self.images.count;
+    return self.assets.count;
+}
+
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    ImageViewController *vc = [[ImageViewController alloc] init];
+    vc.asset = self.assets[indexPath.row];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -55,14 +69,17 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ID];
     }
     
-    cell.imageView.image = self.images[indexPath.row];
+    ALAsset *asset = self.assets[indexPath.row];
+    if ([asset isKindOfClass:[ALAsset class]]) {
+        cell.imageView.image = [UIImage imageWithCGImage:[asset thumbnail]];
+    }
     return cell;
     
 }
 
 // 代理回调方法
-- (void)pickerViewControllerDonePictures:(NSArray *)images{
-    self.images = images;
+- (void)pickerViewControllerDoneAsstes:(NSArray *)assets{
+    self.assets = assets;
     [self.tableView reloadData];
 }
 

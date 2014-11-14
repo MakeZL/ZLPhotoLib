@@ -27,8 +27,8 @@
     return self;
 }
 
+#pragma mark 初始化导航控制器
 - (void) createNavigationController{
-    
     PickerGroupViewController *groupVc = [[PickerGroupViewController alloc] init];
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:groupVc];
     nav.view.frame = self.view.bounds;
@@ -43,10 +43,10 @@
     self.groupVc.status = status;
 }
 
+
 - (void)setMaxCount:(NSInteger)maxCount{
     if (maxCount <= 0) return;
     _maxCount = maxCount;
-    
     self.groupVc.maxCount = maxCount;
 }
 
@@ -54,7 +54,7 @@
     [super viewDidLoad];
     
     self.view.backgroundColor = [UIColor whiteColor];
-    
+
     [self addNotification];
 }
 
@@ -67,10 +67,9 @@
 
 - (void) done:(NSNotification *)note{
     NSArray *selectArray =  note.userInfo[@"selectAssets"];
-    
     dispatch_async(dispatch_get_main_queue(), ^{
-        if ([self.delegate respondsToSelector:@selector(pickerViewControllerDonePictures:)]) {
-            [self.delegate pickerViewControllerDonePictures:selectArray];
+        if ([self.delegate respondsToSelector:@selector(pickerViewControllerDoneAsstes:)]) {
+            [self.delegate pickerViewControllerDoneAsstes:selectArray];
         }else if (self.callBack){
             self.callBack(selectArray);
         }
@@ -84,7 +83,6 @@
 
 - (void)setDelegate:(id<PickerViewControllerDelegate>)delegate{
     _delegate = delegate;
-    
     self.groupVc.delegate = delegate;
 }
 

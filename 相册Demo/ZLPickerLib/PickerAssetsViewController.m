@@ -18,23 +18,24 @@
 #import "PickerCollectionView.h"
 #import "PickerGroup.h"
 #import "PickerDatas.h"
+#import "PickerCollectionViewCell.h"
+#import <AssetsLibrary/AssetsLibrary.h>
 
 @interface PickerAssetsViewController () <PickerCollectionViewDelegate>
 
 @property (nonatomic , weak) PickerCollectionView *collectionView;
-@property (nonatomic , strong) NSArray *assets;
+@property (nonatomic , strong) NSMutableArray *assets;
 /**
  *  标记View
  */
 @property (nonatomic , weak) UILabel *makeView;
-
 @property (nonatomic , weak) UIButton *rightBtn;
+
 
 @end
 
 @implementation PickerAssetsViewController
 
-#pragma mark -getter
 - (PickerCollectionView *)collectionView{
     if (!_collectionView) {
         
@@ -45,12 +46,17 @@
         layout.minimumLineSpacing = CELL_LINE_MARGIN;
         layout.footerReferenceSize = CGSizeMake(320, 50);
         
-        CGFloat height = 0;
+        CGFloat height = 64;
         if (!iOS7) {
             height = 44;
         }
         
-        PickerCollectionView *collectionView = [[PickerCollectionView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - height) collectionViewLayout:layout];
+        PickerCollectionView *collectionView = [[PickerCollectionView alloc] initWithFrame:CGRectMake(0, height, self.view.frame.size.width, self.view.frame.size.height - height) collectionViewLayout:layout];
+        
+        [collectionView registerClass:[PickerCollectionViewCell class] forCellWithReuseIdentifier:@"cell"];
+        
+        [collectionView registerNib:[UINib nibWithNibName:@"PickerFooterCollectionReusableView" bundle:nil] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterView"];
+        
         collectionView.maxCount = self.maxCount;
         collectionView.contentInset = UIEdgeInsetsMake(5, 0, 0, 0);
         collectionView.collectionViewDelegate = self;
@@ -83,9 +89,6 @@
     
     self.view.backgroundColor = [UIColor whiteColor];
     
-    [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"cell"];
-    
-    
     [self setupButtons];
 }
 
@@ -115,35 +118,40 @@
     UIBarButtonItem *barItem = [[UIBarButtonItem alloc] initWithCustomView:rightBtn];
     self.navigationItem.rightBarButtonItem = barItem;
     
-    rightBtn.enabled = (self.collectionView.selectPictureArray.count > 0);
-    self.navigationItem.rightBarButtonItem.enabled = (self.collectionView.selectPictureArray.count > 0);
+    rightBtn.enabled = (self.collectionView.selectAsstes.count > 0);
+    self.navigationItem.rightBarButtonItem.enabled = (self.collectionView.selectAsstes.count > 0);
     
     self.rightBtn = rightBtn;
 }
 
-- (void)setAssets:(NSArray *)assets{
-    _assets = assets;
+- (void)setAssetsGroup:(PickerGroup *)assetsGroup{
+    _assetsGroup = assetsGroup;
     
-    self.collectionView.dataArray = [assets mutableCopy];
-    [self.collectionView reloadData];
+    self.title = assetsGroup.groupName;
+    
+    // 获取Assets
+    [self setupAssets];
 }
 
-- (void)setGroup:(PickerGroup *)group{
-    _group = group;
+- (void) setupAssets{
+    if (!self.assets) {
+        self.assets = [NSMutableArray array];
+    }
     
     PickerDatas *datas = [PickerDatas defaultPicker];
-    
-    __unsafe_unretained typeof(self) weakSelf = self;
-    [datas getGroupPhotosWithGroup:group finished:^(PickerGroup *group) {
-        weakSelf.assets = group.assets;
+    [datas getGroupPhotosWithGroup:self.assetsGroup finished:^(NSArray *assets) {
+
+        self.collectionView.dataArray = assets;
+        [self.collectionView reloadData];
     }];
+    
 }
 
 #pragma mark -<Navigation Actions>
 #pragma mark -开启异步通知
 - (void) done{
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [[NSNotificationCenter defaultCenter] postNotificationName:PICKER_TAKE_DONE object:nil userInfo:@{@"selectAssets":self.collectionView.selectPictureArray}];
+        [[NSNotificationCenter defaultCenter] postNotificationName:PICKER_TAKE_DONE object:nil userInfo:@{@"selectAssets":self.collectionView.selectAsstes}];
     });
     
     [self dismissViewControllerAnimated:YES completion:nil];

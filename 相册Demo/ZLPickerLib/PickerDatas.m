@@ -24,19 +24,34 @@ typedef ALAssetsLibraryAccessFailureBlock failureBlock;
 @property (nonatomic , strong) PickerGroup *backGroup;
 
 @property (nonatomic , copy) failureBlock failureBlock;
+@property (nonatomic , strong) ALAssetsLibrary *library;
 
 @end
 
 @implementation PickerDatas
 
-#pragma mark -getter
-- (NSMutableArray *)groups{
-    if (!_groups) {
-        _groups = [NSMutableArray array];
-    }
-    return _groups;
++ (ALAssetsLibrary *)defaultAssetsLibrary
+{
+    static dispatch_once_t pred = 0;
+    static ALAssetsLibrary *library = nil;
+    dispatch_once(&pred,^
+                  {
+                      library = [[ALAssetsLibrary alloc] init];
+                  });
+    return library;
 }
 
+- (ALAssetsLibrary *)library
+{
+    if (nil == _library)
+    {
+        _library = [self.class defaultAssetsLibrary];
+    }
+    
+    return _library;
+}
+
+#pragma mark -getter
 - (PickerGroup *)backGroup{
     if (!_backGroup) {
         _backGroup = [[PickerGroup alloc] init];
@@ -62,207 +77,42 @@ typedef ALAssetsLibraryAccessFailureBlock failureBlock;
     return [[self alloc] init];
 }
 
-//
-///**
-// *  获取数据
-// */
-//- (void) getDatas : (callBackBlock) callBack{
-//    NSMutableArray *dataArray = [NSMutableArray array];
-//    dispatch_async(dispatch_get_main_queue(), ^{
-//        
-//        ALAssetsGroupEnumerationResultsBlock groupEnumerAtion = ^(ALAsset *result, NSUInteger index, BOOL *stop){
-//            if (result!=NULL) {
-//                if (self.isResourceURLs) {
-//                    // URL
-//                    NSString *urlStr=[NSString stringWithFormat:@"%@",result.defaultRepresentation.url];
-//                    [dataArray addObject:urlStr];
-//                }else{
-//                    // 图片
-//                    if ([[result valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
-//                        UIImage *image = [UIImage imageWithCGImage:result.defaultRepresentation.fullScreenImage];
-//                        [dataArray addObject:image];
-////                        self.currentGroupModel.groups = dataArray;
-//                    }
-//                }
-//                
-//                
-//            }else{
-//                // 完毕调用回调方法
-//                callBack(dataArray);
-//            }
-//            
-//        };
-//        
-//        
-//        ALAssetsLibraryGroupsEnumerationResultsBlock
-//        libraryGroupsEnumeration = ^(ALAssetsGroup* group, BOOL* stop){
-//            
-//            if (group == nil)
-//            {
-//                
-//            }
-//            
-//            if (group!=nil) {
-//                NSString *g=[NSString stringWithFormat:@"%@",group];//获取相簿的组
-//                NSLog(@"gg:%@",g);//gg:ALAssetsGroup - Name:Camera Roll, Type:Saved Photos, Assets count:71
-//                
-//                NSString *g1=[g substringFromIndex:16 ] ;
-//                NSArray *arr=[[NSArray alloc] init];
-//                arr=[g1 componentsSeparatedByString:@","];
-//                NSString *g2=[[arr objectAtIndex:0] substringFromIndex:5];
-//                if ([g2 isEqualToString:@"Camera Roll"]) {
-//                    g2=@"相机胶卷";
-//                }
-//                NSLog(@"%@",g2);
-////                NSString *groupName=g2;//组的name
-//                
-////                PickerGroup *groupModel = [[PickerGroup alloc] init];
-////                groupModel.groupName = groupName;
-////                self.currentGroupModel = groupModel;
-//                
-//                [group enumerateAssetsUsingBlock:groupEnumerAtion];
-//            }
-//            
-//        };
-//        
-//        ALAssetsLibrary* library = [[ALAssetsLibrary alloc] init];
-//        [library enumerateGroupsWithTypes:ALAssetsGroupAll
-//                               usingBlock:libraryGroupsEnumeration
-//                             failureBlock:failureblock];
-//    });
-//}
-
-
-/**
- * 获取所有组对应的图片
- */
+#pragma mark -获取所有组
 - (void) getAllGroupWithPhotos : (callBackBlock ) callBack{
-    NSMutableArray *dataArray = [NSMutableArray array];
-    __block NSInteger assetsCount = 0;
-    dispatch_async(dispatch_get_main_queue(), ^{
-        ALAssetsGroupEnumerationResultsBlock groupEnumerAtion = ^(ALAsset *result, NSUInteger index, BOOL *stop){
-            if (result!=NULL) {
-                    // 图片
-                    if ([[result valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
-                        UIImage *image = [UIImage imageWithCGImage:result.thumbnail];
-                        if (!self.currentGroupModel.thumbImage) {
-                            self.currentGroupModel.thumbImage = image;
-                        }
-                    }
-                    assetsCount = index;
-            }else{
-                // 如果不存在图片就弄占位图片
-                if (!self.currentGroupModel.thumbImage) {
-                    self.currentGroupModel.thumbImage = [UIImage imageNamed:@"wallpaper_placeholder"];
-                }
-                self.currentGroupModel.assetsCount = assetsCount;
-                // 完毕调用回调方法
-                [self.groups addObject:self.currentGroupModel];
-            }
-            
-        };
-        
-        
-        ALAssetsLibraryGroupsEnumerationResultsBlock
-        libraryGroupsEnumeration = ^(ALAssetsGroup* group, BOOL* stop){
-            
-            if (group == nil)
-            {
-                callBack(dataArray);
-            }
-            
-            if (group!=nil) {
-                NSString *g=[NSString stringWithFormat:@"%@",group];//获取相簿的组
-                NSLog(@"gg:%@",g);//gg:ALAssetsGroup - Name:Camera Roll, Type:Saved Photos, Assets count:71
-                
-                NSString *g1=[g substringFromIndex:16 ] ;
-                NSArray *arr=[[NSArray alloc] init];
-                arr=[g1 componentsSeparatedByString:@","];
-                NSString *g2=[[arr objectAtIndex:0] substringFromIndex:5];
-                if ([g2 isEqualToString:@"Camera Roll"]) {
-                    g2 = @"相机胶卷";
-                }else if ([g2 isEqualToString:@"My Photo Stream"]){
-                    g2 = @"我的相机流";
-                }
-                
-                NSString *groupName=g2;//组的name
-                
-                PickerGroup *groupModel = [[PickerGroup alloc] init];
-                groupModel.groupName = groupName;
-                groupModel.realGroupName = g;
-                groupModel.type = [self getGroupReplaceTypeName:g];
-                self.currentGroupModel = groupModel;
-                
-                
-                [dataArray addObject:groupModel];
-                
-                [group enumerateAssetsUsingBlock:groupEnumerAtion];
-                
-            }
-        };
-        
-        ALAssetsLibrary* library = [[ALAssetsLibrary alloc] init];
-        [library enumerateGroupsWithTypes:ALAssetsGroupAll
-                               usingBlock:libraryGroupsEnumeration
-                             failureBlock:_failureBlock];
-    });
     
+    NSMutableArray *groups = [NSMutableArray array];
+    ALAssetsLibraryGroupsEnumerationResultsBlock resultBlock = ^(ALAssetsGroup *group, BOOL *stop){
+        if (group) {
+            // 包装一个模型来赋值
+            PickerGroup *pickerGroup = [[PickerGroup alloc] init];
+            pickerGroup.group = group;
+            pickerGroup.groupName = [group valueForProperty:@"ALAssetsGroupPropertyName"];
+            pickerGroup.thumbImage = [UIImage imageWithCGImage:[group posterImage]];
+            pickerGroup.assetsCount = [group numberOfAssets];
+            [groups addObject:pickerGroup];
+        }else{
+            callBack(groups);
+        }
+    };
+    
+    NSInteger type = ALAssetsGroupLibrary | ALAssetsGroupAlbum | ALAssetsGroupEvent | ALAssetsGroupFaces | ALAssetsGroupSavedPhotos | ALAssetsGroupPhotoStream;
+    
+    [self.library enumerateGroupsWithTypes:type usingBlock:resultBlock failureBlock:nil];
 }
 
-- (NSString *) getGroupReplaceTypeName:(NSString *) g{
-    NSRange typeRange = [g rangeOfString:@"Type:"];
-    NSString *type = [g stringByReplacingCharactersInRange:NSMakeRange(0, typeRange.location+typeRange.length) withString:@""];
-    NSRange strRange = [type rangeOfString:@","];
-    type = [type stringByReplacingCharactersInRange: NSMakeRange(strRange.location, type.length - strRange.location) withString:@""];
-    return type;
-}
-
-/**
- *  传入一个组获取组里面的图片
- */
+#pragma mark -传入一个组获取组里面的Asset
 - (void) getGroupPhotosWithGroup : (PickerGroup *) pickerGroup finished : (callBackBlock ) callBack{
-//    __block PickerGroup *backGroup = [[PickerGroup alloc] init];
-    // 原图
-    NSMutableArray *assets = [NSMutableArray array];
-    dispatch_async(dispatch_get_main_queue(), ^{
-        ALAssetsGroupEnumerationResultsBlock groupEnumerAtion = ^(ALAsset *result, NSUInteger index, BOOL *stop){
-            if (result!=NULL) {
-                
-                [assets addObject:result];
-            }else{
-                // 完毕调用回调方法
-                self.backGroup.assets = assets;
-                callBack(self.backGroup);
-            }
-            
-        };
-        
-        
-        ALAssetsLibraryGroupsEnumerationResultsBlock
-        libraryGroupsEnumeration = ^(ALAssetsGroup* group, BOOL* stop){
-            
-            if (group!=nil) {
-                
-                NSString *g=[NSString stringWithFormat:@"%@",group];//获取相簿的组
-                
-                // 如果匹配到了就退出
-                if ([g isEqualToString:pickerGroup.realGroupName]) {
-                    
-                    [group enumerateAssetsUsingBlock:groupEnumerAtion];
-                    
-                    *stop = YES;
-                }
-            }
-        };
-        
-        ALAssetsLibrary* library = [[ALAssetsLibrary alloc] init];
-        [library enumerateGroupsWithTypes:ALAssetsGroupAll
-                               usingBlock:libraryGroupsEnumeration
-                             failureBlock:_failureBlock];
-    });
     
-
-
+    NSMutableArray *assets = [NSMutableArray array];
+    ALAssetsGroupEnumerationResultsBlock result = ^(ALAsset *asset , NSUInteger index , BOOL *stop){
+        if (asset) {
+            [assets addObject:asset];
+        }else{
+            callBack(assets);
+        }
+    };
+    [pickerGroup.group enumerateAssetsUsingBlock:result];
+    
 }
 
 @end

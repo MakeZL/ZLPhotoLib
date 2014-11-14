@@ -22,6 +22,7 @@
 
 @interface PickerGroupViewController () <UITableViewDataSource,UITableViewDelegate>
 @property (nonatomic , weak) PickerAssetsViewController *collectionVc;
+
 @property (nonatomic , weak) UITableView *tableView;
 @property (nonatomic , strong) NSArray *groups;
 
@@ -52,6 +53,7 @@
     self.title = @"选择相册";
 }
 
+
 - (void) setupButtons{
     UIBarButtonItem *barItem = [[UIBarButtonItem alloc] initWithTitle:@"关闭" style:UIBarButtonItemStyleDone target:self action:@selector(back)];
     
@@ -73,28 +75,19 @@
     
 }
 
-- (void)setGroups:(NSArray *)groups{
-    _groups = groups;
-    
-    if (self.status) {
-        [self jump2StatusVc];
-    }
-}
-
 #pragma mark 跳转到控制器里面的内容
 - (void) jump2StatusVc{
-    
     // 如果是相册
     PickerGroup *gp = nil;
     for (PickerGroup *group in self.groups) {
-        if ([group.type isEqualToString:@"Saved Photos"]) {
+        if ([group.groupName isEqualToString:@"Camera Roll"]) {
             gp = group;
             break;
         }
     }
     
     PickerAssetsViewController *assetsVc = [[PickerAssetsViewController alloc] init];
-    assetsVc.group = gp;
+    assetsVc.assetsGroup = gp;
     assetsVc.maxCount = self.maxCount;
     [self.navigationController pushViewController:assetsVc animated:NO];
 }
@@ -109,7 +102,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     PickerGroup *group = self.groups[indexPath.row];
     PickerAssetsViewController *assetsVc = [[PickerAssetsViewController alloc] init];
-    assetsVc.group = group;
+    assetsVc.assetsGroup = group;
     assetsVc.maxCount = self.maxCount;
     [self.navigationController pushViewController:assetsVc animated:YES];
 }
@@ -117,13 +110,17 @@
 #pragma mark -<Images Datas>
 
 -(void)getImgs{
-    
     PickerDatas *datas = [PickerDatas defaultPicker];
     
     // 获取所有的图片URLs
-    [datas getAllGroupWithPhotos:^(id obj) {
-        self.groups = obj;
+    [datas getAllGroupWithPhotos:^(NSArray *groups) {
+        self.groups = groups;
+        if (self.status) {
+            [self jump2StatusVc];
+        }
+        
         [self.tableView reloadData];
+        
     }];
 }
 

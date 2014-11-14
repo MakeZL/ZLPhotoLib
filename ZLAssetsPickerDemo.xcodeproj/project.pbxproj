@@ -22,6 +22,7 @@
 		48B3E1A21A11BAF80079F464 /* PickerImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B3E19F1A11BAF80079F464 /* PickerImageView.m */; };
 		48B3E1A51A11BC610079F464 /* PickerDatas.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B3E1A41A11BC610079F464 /* PickerDatas.m */; };
 		48B3E1A81A11CD630079F464 /* PickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B3E1A71A11CD630079F464 /* PickerViewController.m */; };
+		48BA986F1A15968000F84B62 /* ImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48BA986E1A15968000F84B62 /* ImageViewController.m */; };
 		48E44F9C1A1467E900F8BBD4 /* PickerGroupTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 48E44F9A1A1467E900F8BBD4 /* PickerGroupTableViewCell.m */; };
 		48E44F9D1A1467E900F8BBD4 /* PickerGroupTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48E44F9B1A1467E900F8BBD4 /* PickerGroupTableViewCell.xib */; };
 		48E44FA01A147D3D00F8BBD4 /* PickerFooterCollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48E44F9F1A147D3D00F8BBD4 /* PickerFooterCollectionReusableView.m */; };
@@ -68,6 +69,8 @@
 		48B3E1A41A11BC610079F464 /* PickerDatas.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerDatas.m; sourceTree = "<group>"; };
 		48B3E1A61A11CD630079F464 /* PickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerViewController.h; sourceTree = "<group>"; };
 		48B3E1A71A11CD630079F464 /* PickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerViewController.m; sourceTree = "<group>"; };
+		48BA986D1A15968000F84B62 /* ImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageViewController.h; sourceTree = "<group>"; };
+		48BA986E1A15968000F84B62 /* ImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageViewController.m; sourceTree = "<group>"; };
 		48E44F991A1467E900F8BBD4 /* PickerGroupTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerGroupTableViewCell.h; sourceTree = "<group>"; };
 		48E44F9A1A1467E900F8BBD4 /* PickerGroupTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerGroupTableViewCell.m; sourceTree = "<group>"; };
 		48E44F9B1A1467E900F8BBD4 /* PickerGroupTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PickerGroupTableViewCell.xib; sourceTree = "<group>"; };
@@ -124,6 +127,8 @@
 				48B3E1801A11BABC0079F464 /* Images.xcassets */,
 				48B3E1821A11BABC0079F464 /* LaunchScreen.xib */,
 				48B3E1731A11BABC0079F464 /* Supporting Files */,
+				48BA986D1A15968000F84B62 /* ImageViewController.h */,
+				48BA986E1A15968000F84B62 /* ImageViewController.m */,
 			);
 			name = ZLAssetsPickerDemo;
 			path = "相册Demo";
@@ -299,6 +304,7 @@
 				4867EAE41A120B8C00F299A1 /* PickerGroup.m in Sources */,
 				48B3E1A81A11CD630079F464 /* PickerViewController.m in Sources */,
 				4801778E1A1368B80026F494 /* PickerAssetsViewController.m in Sources */,
+				48BA986F1A15968000F84B62 /* ImageViewController.m in Sources */,
 				48B3E1761A11BABC0079F464 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

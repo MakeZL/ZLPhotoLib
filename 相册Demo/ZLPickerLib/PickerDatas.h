@@ -16,7 +16,7 @@ typedef void(^callBackBlock)(id obj);
 @interface PickerDatas : NSObject
 
 /**
- *  快速初始化对象
+ *  获取所有组
  */
 + (instancetype) defaultPicker;
 /**
@@ -25,7 +25,7 @@ typedef void(^callBackBlock)(id obj);
 - (void) getAllGroupWithPhotos : (callBackBlock ) callBack;
 
 /**
- *  传入一个组获取组里面的图片
+ *  传入一个组获取组里面的Asset
  */
 - (void) getGroupPhotosWithGroup : (PickerGroup *) pickerGroup finished : (callBackBlock ) callBack;
 

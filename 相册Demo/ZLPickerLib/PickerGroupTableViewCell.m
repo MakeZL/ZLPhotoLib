@@ -8,6 +8,7 @@
 
 #import "PickerGroupTableViewCell.h"
 #import "PickerGroup.h"
+#import <AssetsLibrary/AssetsLibrary.h>
 
 @interface PickerGroupTableViewCell ()
 

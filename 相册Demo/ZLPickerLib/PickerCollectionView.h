@@ -24,7 +24,7 @@
 @property (nonatomic , strong) NSArray *dataArray;
 
 // 保存选中的图片
-@property (nonatomic , strong , readonly) NSMutableArray *selectPictureArray;
+@property (nonatomic , strong , readonly) NSMutableArray *selectAsstes;
 
 @property (nonatomic , weak) id <PickerCollectionViewDelegate> collectionViewDelegate;
 
