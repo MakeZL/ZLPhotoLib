@@ -43,7 +43,6 @@
         UIImageView *imageView = [[UIImageView alloc] init];
         imageView.contentMode = UIViewContentModeScaleAspectFill;
         imageView.clipsToBounds = YES;
-//        imageView.hidden = YES;
         [self.view addSubview:imageView];
         self.imageView = imageView;
     }
@@ -134,6 +133,7 @@
     }else if ([imageObj isKindOfClass:[UIImage class]]){
         photo.photoImage = imageObj;
     }
+    
 
     return photo;
 }

@@ -9,11 +9,12 @@
 #import "PickerPhotoScrollView.h"
 #import "UIView+Extension.h"
 #import "PickerPhotoImageView.h"
+#import "PickerPhoto.h"
+#import "PickerPhotoGifView.h"
 
 @interface PickerPhotoScrollView () <UIScrollViewDelegate>
 
 @property (nonatomic , weak) PickerPhotoImageView *zoomImageView;
-
 
 @end
 
@@ -56,8 +57,17 @@
 
 - (void)setPhoto:(PickerPhoto *)photo{
     _photo = photo;
-    self.zoomImageView.frame = CGRectMake(10, 0, self.width - 20, self.height);
-    self.zoomImageView.photo = photo;
+    
+    // 如果是gif图片
+    if ([photo.photoURL.absoluteString hasSuffix:@"gif"]) {
+        PickerPhotoGifView *gifView = [[PickerPhotoGifView alloc] init];
+        gifView.frame = self.bounds;
+        [gifView playGifWithURLString:photo.photoURL.absoluteString];
+        [self addSubview:gifView];
+    }else{
+        self.zoomImageView.frame = CGRectMake(10, 0, self.width - 20, self.height);
+        self.zoomImageView.photo = photo;
+    }
 }
 
 

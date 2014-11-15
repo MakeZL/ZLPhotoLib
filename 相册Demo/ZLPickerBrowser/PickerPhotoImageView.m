@@ -22,9 +22,12 @@
 // 进度ProgressView
 @property (nonatomic , weak) PickerProgressView *progressView;
 
+
 @end
 
 @implementation PickerPhotoImageView
+
+
 
 #pragma mark -ProgressView
 - (PickerProgressView *)progressView{
@@ -79,13 +82,13 @@
             if (photo.thumbImage) {
                 self.image = photo.thumbImage;
             }
+            
             [[SDWebImageDownloader sharedDownloader] downloadImageWithURL:photo.photoURL options:SDWebImageDownloaderUseNSURLCache progress:^(NSInteger receivedSize, NSInteger expectedSize) {
                 self.progress = (double)receivedSize / expectedSize;
             } completed:^(UIImage *image, NSData *data, NSError *error, BOOL finished) {
-                
+                self.image = image;
                 [self.progressView removeFromSuperview];
                 self.progressView = nil;
-                self.image = image;
             }];
         }
         
