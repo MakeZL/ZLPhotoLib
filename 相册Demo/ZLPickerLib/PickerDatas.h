@@ -29,4 +29,9 @@ typedef void(^callBackBlock)(id obj);
  */
 - (void) getGroupPhotosWithGroup : (PickerGroup *) pickerGroup finished : (callBackBlock ) callBack;
 
+/**
+ *  传入一个AssetsURL来获取UIImage
+ */
+- (void) getAssetsPhotoWithURLs:(NSURL *) url callBack:(callBackBlock ) callBack;
+
 @end

@@ -1,5 +1,5 @@
 //
-//  ImageViewController.h
+//  PickerPhotoScrollView.h
 //  ZLAssetsPickerDemo
 //
 //  Created by 张磊 on 14-11-14.
@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <AssetsLibrary/AssetsLibrary.h>
 
-@interface ImageViewController : UIViewController
+@class PickerPhoto;
 
-@property (nonatomic , strong) ALAsset *asset;
+@interface PickerPhotoScrollView : UIScrollView
+
+@property (nonatomic , strong) PickerPhoto *photo;
 
 @end

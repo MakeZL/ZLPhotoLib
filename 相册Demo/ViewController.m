@@ -8,16 +8,17 @@
 
 #import "ViewController.h"
 #import "PickerViewController.h"
-#import "ImageViewController.h"
+#import "PickerBrowserViewController.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 
-@interface ViewController () <UITableViewDataSource,UITableViewDelegate,PickerViewControllerDelegate>
+@interface ViewController () <UITableViewDataSource,UITableViewDelegate,PickerViewControllerDelegate,PickerBrowserViewControllerDataSource,PickerBrowserViewControllerDelegate>
 
 - (void)selectPhotos;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (nonatomic , strong) NSArray *assets;
+@property (nonatomic , strong) NSMutableArray *assets;
 @property (nonatomic , weak) UILabel *zixueLabel;
 
+@property (nonatomic , weak) UIImageView *imageView;
 
 @end
 
@@ -35,6 +36,18 @@
         self.tableView = tableView;
     }
     return _tableView;
+}
+
+- (UIImageView *)imageView{
+    if (!_imageView) {
+        UIImageView *imageView = [[UIImageView alloc] init];
+        imageView.contentMode = UIViewContentModeScaleAspectFill;
+        imageView.clipsToBounds = YES;
+//        imageView.hidden = YES;
+        [self.view addSubview:imageView];
+        self.imageView = imageView;
+    }
+    return _imageView;
 }
 
 - (void)viewDidLoad{
@@ -91,9 +104,44 @@
 }
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    ImageViewController *vc = [[ImageViewController alloc] init];
-    vc.asset = self.assets[indexPath.row];
-    [self.navigationController pushViewController:vc animated:YES];
+    PickerBrowserViewController *pickerBrowser = [[PickerBrowserViewController alloc] init];
+    pickerBrowser.delegate = self;
+    // 开启编辑模式，能删除照片
+    pickerBrowser.editing = YES;
+    pickerBrowser.dataSource = self;
+    // 当前选中的值
+    pickerBrowser.currentPage = indexPath.row;
+    [pickerBrowser reloadData];
+    [self presentViewController:pickerBrowser animated:YES completion:nil];
+}
+
+
+#pragma mark <PickerBrowserViewControllerDataSource>
+- (NSInteger) numberOfPhotosInPickerBrowser:(PickerBrowserViewController *)pickerBrowser{
+    return self.assets.count;
+}
+
+- (PickerPhoto *) photoBrowser:(PickerBrowserViewController *)pickerBrowser photoAtIndex:(NSUInteger)index{
+    
+    id imageObj = [self.assets objectAtIndex:index];
+    PickerPhoto *photo = [[PickerPhoto alloc] init];
+    if ([imageObj isKindOfClass:[ALAsset class]]) {
+        ALAsset *asset = (ALAsset *)imageObj;
+        photo.thumbImage = [UIImage imageWithCGImage:[asset thumbnail]];
+        photo.photoImage = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]];
+    }else if ([imageObj isKindOfClass:[NSURL class]]){
+        photo.photoURL = imageObj;
+    }else if ([imageObj isKindOfClass:[UIImage class]]){
+        photo.photoImage = imageObj;
+    }
+
+    return photo;
+}
+
+#pragma mark <PickerBrowserViewControllerDelegate>
+- (void)photoBrowser:(PickerBrowserViewController *)photoBrowser removePhotoAtIndex:(NSUInteger)index{
+    if (index > self.assets.count) return;
+    [self.assets removeObjectAtIndex:index];
 }
 
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -116,7 +164,7 @@
 
 // 代理回调方法
 - (void)pickerViewControllerDoneAsstes:(NSArray *)assets{
-    self.assets = assets;
+    self.assets = [NSMutableArray arrayWithArray:assets];
     [self.tableView reloadData];
 }
 
