@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "PickerViewController.h"
+#import "UIView+Extension.h"
 #import "PickerBrowserViewController.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 
@@ -18,13 +19,23 @@
 @property (nonatomic , strong) NSMutableArray *assets;
 @property (nonatomic , weak) UILabel *zixueLabel;
 
-@property (nonatomic , weak) UIImageView *imageView;
+@property (nonatomic,strong) UIImageView *currentImageView;
 
 @end
 
 @implementation ViewController
 
 #pragma mark -getter
+- (UIImageView *)currentImageView{
+    if (!_currentImageView) {
+        _currentImageView = [[UIImageView alloc] init];
+        _currentImageView.contentMode = UIViewContentModeScaleAspectFit;
+        _currentImageView.clipsToBounds = YES;
+        [self.view.superview addSubview:_currentImageView];
+    }
+    return _currentImageView;
+}
+
 - (UITableView *)tableView{
     if (!_tableView) {
         CGFloat w = 300;
@@ -36,17 +47,6 @@
         self.tableView = tableView;
     }
     return _tableView;
-}
-
-- (UIImageView *)imageView{
-    if (!_imageView) {
-        UIImageView *imageView = [[UIImageView alloc] init];
-        imageView.contentMode = UIViewContentModeScaleAspectFill;
-        imageView.clipsToBounds = YES;
-        [self.view addSubview:imageView];
-        self.imageView = imageView;
-    }
-    return _imageView;
 }
 
 - (void)viewDidLoad{
@@ -103,15 +103,52 @@
 }
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    PickerBrowserViewController *pickerBrowser = [[PickerBrowserViewController alloc] init];
-    pickerBrowser.delegate = self;
-    // 开启编辑模式，能删除照片
-    pickerBrowser.editing = YES;
-    pickerBrowser.dataSource = self;
-    // 当前选中的值
-    pickerBrowser.currentPage = indexPath.row;
-    [pickerBrowser reloadData];
-    [self presentViewController:pickerBrowser animated:YES completion:nil];
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    
+    CGRect tempFrame = cell.frame;
+    tempFrame.origin.y -=  ( tableView.contentOffset.y - self.tableView.y);
+    self.currentImageView.frame = tempFrame;
+    
+    ALAsset *asset = [self.assets objectAtIndex:indexPath.row];
+    self.currentImageView.image = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]];
+    
+    __unsafe_unretained typeof(self) weakSelf = self;
+    self.view.backgroundColor = [UIColor blackColor];
+    self.tableView.backgroundColor = [UIColor blackColor];
+    [UIView animateWithDuration:0.5 animations:^{
+        weakSelf.navigationController.navigationBarHidden = YES;
+        weakSelf.currentImageView.hidden = NO;
+        weakSelf.tableView.hidden = YES;
+        CGFloat x = 10;
+        CGFloat w = self.view.width - x * 2;
+        weakSelf.currentImageView.bounds = CGRectMake(x, 0, w, self.view.height);
+        weakSelf.currentImageView.center = self.view.center;
+        weakSelf.currentImageView.alpha = 1;
+        
+    } completion:^(BOOL finished) {
+
+        PickerBrowserViewController *pickerBrowser = [[PickerBrowserViewController alloc] init];
+        pickerBrowser.delegate = self;
+        // 开启编辑模式，能删除照片
+        pickerBrowser.editing = YES;
+        pickerBrowser.dataSource = self;
+        // 当前选中的值
+        pickerBrowser.currentPage = indexPath.row;
+        [pickerBrowser reloadData];
+        [self presentViewController:pickerBrowser animated:NO completion:^{
+            weakSelf.view.backgroundColor = [UIColor whiteColor];
+            weakSelf.tableView.backgroundColor = [UIColor whiteColor];
+            weakSelf.tableView.hidden = NO;
+            weakSelf.currentImageView.hidden = YES;
+            weakSelf.navigationController.navigationBarHidden = NO;
+        }];
+        
+
+    }];
+
 }
 
 
@@ -152,6 +189,7 @@
     
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ID];
+        cell.backgroundColor = [UIColor clearColor];
     }
     
     ALAsset *asset = self.assets[indexPath.row];

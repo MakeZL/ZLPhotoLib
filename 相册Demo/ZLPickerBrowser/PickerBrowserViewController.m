@@ -77,17 +77,45 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    // 点击View dismiss
-    [self.view addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapView:)]];
+    // 监听手势
+    [self addGesture];
 }
+
+#pragma mark -监听手势
+- (void) addGesture{
+    
+    // 双击放大
+    UITapGestureRecognizer *scaleBigTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(scaleBigTap:)];
+    scaleBigTap.numberOfTapsRequired = 2;
+    scaleBigTap.numberOfTouchesRequired = 1;
+    [self.view addGestureRecognizer:scaleBigTap];
+    // 单击缩小
+    UITapGestureRecognizer *disMissTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(disMissTap:)];
+    disMissTap.numberOfTapsRequired = 1;
+    disMissTap.numberOfTouchesRequired = 1;
+    [self.view addGestureRecognizer:disMissTap];
+    // 只能有一个手势存在
+    [disMissTap requireGestureRecognizerToFail:scaleBigTap];
+}
+
+- (void) scaleBigTap:(UITapGestureRecognizer *)tap{
+    if(self.currentPage > self.scrollView.subviews.count) return;
+    UIScrollView *scrollView = [self.scrollView.subviews objectAtIndex:self.currentPage];
+    if (scrollView.zoomScale == 2.0) {
+        [scrollView setZoomScale:1.0 animated:YES];
+    }else{
+        [scrollView setZoomScale:2.0 animated:YES];
+    }
+}
+
+- (void) disMissTap:(UITapGestureRecognizer *)tap{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{
     
     [self reloadData];
-}
-
-- (void) tapView:(UITapGestureRecognizer *)tap{
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void) reloadData{
