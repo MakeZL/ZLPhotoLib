@@ -109,7 +109,12 @@
 }
 
 - (void) disMissTap:(UITapGestureRecognizer *)tap{
-    [self dismissViewControllerAnimated:YES completion:nil];
+    
+    if (self.disMissBlock) {
+        self.disMissBlock();
+    }else{
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
 

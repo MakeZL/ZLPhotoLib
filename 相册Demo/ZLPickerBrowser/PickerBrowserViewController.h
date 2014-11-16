@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "PickerPhoto.h"
 
+typedef void(^tapDisMissBlock)();
+
 @class PickerBrowserViewController;
 
 @protocol PickerBrowserViewControllerDataSource <NSObject>
@@ -43,6 +45,10 @@
  *  当前提供的分页数
  */
 @property (nonatomic , assign) NSInteger currentPage;
+/**
+ *  单击时执行的block
+ */
+@property (nonatomic , copy) tapDisMissBlock disMissBlock;
 
 - (void) reloadData;
 

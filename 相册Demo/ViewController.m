@@ -20,6 +20,8 @@
 @property (nonatomic , weak) UILabel *zixueLabel;
 
 @property (nonatomic,strong) UIImageView *currentImageView;
+@property (nonatomic , strong) PickerBrowserViewController *pickerBrowser;
+@property (nonatomic , assign) CGRect tempFrame;
 
 @end
 
@@ -29,6 +31,7 @@
 - (UIImageView *)currentImageView{
     if (!_currentImageView) {
         _currentImageView = [[UIImageView alloc] init];
+        _currentImageView.alpha = 0;
         _currentImageView.contentMode = UIViewContentModeScaleAspectFit;
         _currentImageView.clipsToBounds = YES;
         [self.view.superview addSubview:_currentImageView];
@@ -102,6 +105,7 @@
     return self.assets.count;
 }
 
+
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -109,12 +113,14 @@
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     
     CGRect tempFrame = cell.frame;
-    tempFrame.origin.y -=  ( tableView.contentOffset.y - self.tableView.y);
+    tempFrame.origin.y -= ( tableView.contentOffset.y - self.tableView.y);
     self.currentImageView.frame = tempFrame;
+    self.tempFrame = tempFrame;
     
     ALAsset *asset = [self.assets objectAtIndex:indexPath.row];
     self.currentImageView.image = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]];
     
+    // 模仿微信朋友圈的点击图片风格
     __unsafe_unretained typeof(self) weakSelf = self;
     self.view.backgroundColor = [UIColor blackColor];
     self.tableView.backgroundColor = [UIColor blackColor];
@@ -124,13 +130,23 @@
         weakSelf.tableView.hidden = YES;
         CGFloat x = 10;
         CGFloat w = self.view.width - x * 2;
-        weakSelf.currentImageView.bounds = CGRectMake(x, 0, w, self.view.height);
-        weakSelf.currentImageView.center = self.view.center;
+        
         weakSelf.currentImageView.alpha = 1;
+        weakSelf.currentImageView.frame = CGRectMake(x, 0, w, self.view.height);
         
     } completion:^(BOOL finished) {
 
         PickerBrowserViewController *pickerBrowser = [[PickerBrowserViewController alloc] init];
+        pickerBrowser.disMissBlock = ^{
+            [UIView animateWithDuration:0.5 animations:^{
+                weakSelf.currentImageView.alpha = 0;
+                weakSelf.currentImageView.hidden = NO;
+                weakSelf.currentImageView.frame = self.tempFrame;
+                weakSelf.currentImageView.x -= CGRectGetMaxX(cell.imageView.frame);
+            } completion:^(BOOL finished) {
+                [weakSelf.pickerBrowser dismissViewControllerAnimated:NO completion:nil];
+            }];
+        };
         pickerBrowser.delegate = self;
         // 开启编辑模式，能删除照片
         pickerBrowser.editing = YES;
@@ -142,11 +158,12 @@
             weakSelf.view.backgroundColor = [UIColor whiteColor];
             weakSelf.tableView.backgroundColor = [UIColor whiteColor];
             weakSelf.tableView.hidden = NO;
+            weakSelf.currentImageView.alpha = 1;
             weakSelf.currentImageView.hidden = YES;
             weakSelf.navigationController.navigationBarHidden = NO;
         }];
         
-
+        self.pickerBrowser = pickerBrowser;
     }];
 
 }
@@ -202,7 +219,11 @@
 
 // 代理回调方法
 - (void)pickerViewControllerDoneAsstes:(NSArray *)assets{
-    self.assets = [NSMutableArray arrayWithArray:assets];
+    if (!self.assets) {
+        self.assets = [NSMutableArray array];
+    }
+    [self.assets addObjectsFromArray:assets];
+//    self.assets = [NSMutableArray arrayWithArray:assets];
     [self.tableView reloadData];
 }
 
