@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "PickerPhoto.h"
 
-typedef void(^tapDisMissBlock)();
+typedef void(^tapDisMissBlock)(NSInteger);
 
 @class PickerBrowserViewController;
 
