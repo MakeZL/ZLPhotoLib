@@ -112,50 +112,63 @@
     
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     
-    CGRect tempFrame = cell.frame;
-    tempFrame.origin.y -= ( tableView.contentOffset.y - self.tableView.y);
-    self.currentImageView.frame = tempFrame;
-    self.tempFrame = tempFrame;
+    [self setupPhotoBrowser:cell];
+}
+
+#pragma mark 设置当前的缩放View符image
+- (void) setupCurrentImageViewPhotoAtIndex:(NSInteger)index{
+    PickerPhoto *photo = [self photoBrowser:self.pickerBrowser photoAtIndex:index];
+    self.currentImageView.image = photo.photoImage;
+}
+
+- (void) setupPhotoBrowser:(UITableViewCell *) cell{
     
-    ALAsset *asset = [self.assets objectAtIndex:indexPath.row];
-    self.currentImageView.image = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]];
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+    
+    CGRect tempFrame = cell.frame;
+    tempFrame.origin.y -= ( self.tableView.contentOffset.y - self.tableView.y);
+    self.currentImageView.frame = tempFrame;
+    
+    // 给当前的缩放View符image
+    [self setupCurrentImageViewPhotoAtIndex:indexPath.row];
     
     // 模仿微信朋友圈的点击图片风格
     __unsafe_unretained typeof(self) weakSelf = self;
     self.view.backgroundColor = [UIColor blackColor];
     self.tableView.backgroundColor = [UIColor blackColor];
+    weakSelf.navigationController.navigationBarHidden = YES;
+    weakSelf.currentImageView.hidden = NO;
+    
+    CGFloat x = 10;
+    CGFloat w = self.view.width - x * 2;
+    
     [UIView animateWithDuration:0.5 animations:^{
         weakSelf.currentImageView.alpha = 1;
-        weakSelf.navigationController.navigationBarHidden = YES;
-        weakSelf.currentImageView.hidden = NO;
         weakSelf.tableView.hidden = YES;
         
-        CGFloat x = 10;
-        CGFloat w = self.view.width - x * 2;
         weakSelf.currentImageView.frame = CGRectMake(x, 0, w, self.view.height);
         
     } completion:^(BOOL finished) {
-
+        
         PickerBrowserViewController *pickerBrowser = [[PickerBrowserViewController alloc] init];
+        // 销毁时调用
         pickerBrowser.disMissBlock = ^(NSInteger page){
             
             // 给图片赋值当前的Cell的Frame属性
             NSIndexPath *selectIndexPath = [NSIndexPath indexPathForRow:page inSection:0];
-            UITableViewCell *selectCell = [tableView cellForRowAtIndexPath:selectIndexPath];
+            UITableViewCell *selectCell = [weakSelf.tableView cellForRowAtIndexPath:selectIndexPath];
             CGRect tempFrame = selectCell.frame;
-            tempFrame.origin.y -= ( tableView.contentOffset.y - self.tableView.y);
+            tempFrame.origin.y -= ( weakSelf.tableView.contentOffset.y - self.tableView.y);
             
-            ALAsset *asset = [self.assets objectAtIndex:page];
-            self.currentImageView.image = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]];
-            
-            weakSelf.currentImageView.image = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]];
+            // 设置图片
+            [self setupCurrentImageViewPhotoAtIndex:indexPath.row];
             
             [UIView animateWithDuration:0.5 animations:^{
                 weakSelf.currentImageView.hidden = NO;
                 // 如果大于可展示的Cell的个数
-                if (page >= [[tableView visibleCells] count]) {
-                    weakSelf.currentImageView.frame = self.tempFrame;
-                    weakSelf.currentImageView.y += CGRectGetHeight(cell.frame) * (page - [[tableView visibleCells] count]) + CGRectGetHeight(cell.frame);
+                if (page >= [[weakSelf.tableView visibleCells] count]) {
+                    weakSelf.currentImageView.frame = tempFrame;
+                    weakSelf.currentImageView.y += CGRectGetHeight(cell.frame) * (page - [[weakSelf.tableView visibleCells] count]) + CGRectGetHeight(cell.frame);
                 }else{
                     weakSelf.currentImageView.frame = tempFrame;
                 }
@@ -168,7 +181,7 @@
         };
         pickerBrowser.delegate = self;
         // 开启编辑模式，能删除照片
-//        pickerBrowser.editing = YES;
+        //        pickerBrowser.editing = YES;
         pickerBrowser.dataSource = self;
         // 当前选中的值
         pickerBrowser.currentPage = indexPath.row;
@@ -183,7 +196,6 @@
         
         self.pickerBrowser = pickerBrowser;
     }];
-
 }
 
 
