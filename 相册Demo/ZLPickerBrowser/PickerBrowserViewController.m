@@ -79,6 +79,9 @@
     
     // 监听手势
     [self addGesture];
+    
+    // 刷新数据
+    [self reloadData];
 }
 
 #pragma mark -监听手势
@@ -118,11 +121,6 @@
 }
 
 
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{
-    
-    [self reloadData];
-}
-
 - (void) reloadData{
     // 计算控件
     [self setUI];
@@ -158,11 +156,13 @@
     self.pageCtrl.currentPage = self.currentPage;
 }
 
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
-    // 恢复最原始的比例
-    for (UIScrollView *sc in self.scrollView.subviews) {
-        if ([sc zoomScale] != 1.0) {
-            sc.zoomScale = 1.0;
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
+    // 如果已经切换了幻灯片就恢复最原始的比例
+    if (self.currentPage != (NSInteger)(scrollView.contentOffset.x / scrollView.width) ) {
+        for (UIScrollView *sc in self.scrollView.subviews) {
+            if ([sc zoomScale] != 1.0) {
+                [sc setZoomScale:1.0 animated:YES];
+            }
         }
     }
 }

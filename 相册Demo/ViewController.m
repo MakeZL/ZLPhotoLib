@@ -185,7 +185,6 @@
         pickerBrowser.dataSource = self;
         // 当前选中的值
         pickerBrowser.currentPage = indexPath.row;
-        [pickerBrowser reloadData];
         [self presentViewController:pickerBrowser animated:NO completion:^{
             weakSelf.view.backgroundColor = [UIColor whiteColor];
             weakSelf.tableView.backgroundColor = [UIColor whiteColor];

@@ -32,7 +32,6 @@
 		4867EAA81A11ED8600F299A1 /* PickerGroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4867EAA71A11ED8600F299A1 /* PickerGroupViewController.m */; };
 		4867EAE41A120B8C00F299A1 /* PickerGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 4867EAE31A120B8C00F299A1 /* PickerGroup.m */; };
 		4888272B1A1619E100DE4CB5 /* PickerBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4888272A1A1619E100DE4CB5 /* PickerBrowserViewController.m */; };
-		4888F4711A19CC250017C878 /* PickerWChatBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4888F4701A19CC250017C878 /* PickerWChatBrowserViewController.m */; };
 		48B3E1761A11BABC0079F464 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B3E1751A11BABC0079F464 /* main.m */; };
 		48B3E1791A11BABC0079F464 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B3E1781A11BABC0079F464 /* AppDelegate.m */; };
 		48B3E17C1A11BABC0079F464 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B3E17B1A11BABC0079F464 /* ViewController.m */; };
@@ -113,8 +112,6 @@
 		4867EAE31A120B8C00F299A1 /* PickerGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerGroup.m; sourceTree = "<group>"; };
 		488827291A1619E100DE4CB5 /* PickerBrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerBrowserViewController.h; sourceTree = "<group>"; };
 		4888272A1A1619E100DE4CB5 /* PickerBrowserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerBrowserViewController.m; sourceTree = "<group>"; };
-		4888F46F1A19CC250017C878 /* PickerWChatBrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerWChatBrowserViewController.h; sourceTree = "<group>"; };
-		4888F4701A19CC250017C878 /* PickerWChatBrowserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerWChatBrowserViewController.m; sourceTree = "<group>"; };
 		48B3E1701A11BABC0079F464 /* 相册Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "相册Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		48B3E1741A11BABC0079F464 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		48B3E1751A11BABC0079F464 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -230,8 +227,6 @@
 				481C562E1A17454B004FF9B2 /* PickerPhotoImageView.m */,
 				48FD61161A1788850050E401 /* PickerPhotoGifView.h */,
 				48FD61171A1788850050E401 /* PickerPhotoGifView.m */,
-				4888F46F1A19CC250017C878 /* PickerWChatBrowserViewController.h */,
-				4888F4701A19CC250017C878 /* PickerWChatBrowserViewController.m */,
 			);
 			path = ZLPickerBrowser;
 			sourceTree = "<group>";
@@ -448,7 +443,6 @@
 				48B3E1A21A11BAF80079F464 /* PickerImageView.m in Sources */,
 				48FD61181A1788850050E401 /* PickerPhotoGifView.m in Sources */,
 				481C560D1A16DFB1004FF9B2 /* UIImageView+WebCache.m in Sources */,
-				4888F4711A19CC250017C878 /* PickerWChatBrowserViewController.m in Sources */,
 				4867EAA81A11ED8600F299A1 /* PickerGroupViewController.m in Sources */,
 				48B3E1A11A11BAF80079F464 /* PickerCollectionViewCell.m in Sources */,
 				48B3E1A01A11BAF80079F464 /* PickerCollectionView.m in Sources */,
