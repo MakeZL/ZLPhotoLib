@@ -32,6 +32,9 @@
 		4867EAA81A11ED8600F299A1 /* PickerGroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4867EAA71A11ED8600F299A1 /* PickerGroupViewController.m */; };
 		4867EAE41A120B8C00F299A1 /* PickerGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 4867EAE31A120B8C00F299A1 /* PickerGroup.m */; };
 		4888272B1A1619E100DE4CB5 /* PickerBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4888272A1A1619E100DE4CB5 /* PickerBrowserViewController.m */; };
+		4895D85C1A1B17C40072A743 /* BaseAnimationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4895D85B1A1B17C40072A743 /* BaseAnimationView.m */; };
+		4895D85F1A1B1D170072A743 /* UIView+Animation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4895D85E1A1B1D170072A743 /* UIView+Animation.m */; };
+		4895D8621A1B43320072A743 /* BaseAnimationImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4895D8611A1B43320072A743 /* BaseAnimationImageView.m */; };
 		48B3E1761A11BABC0079F464 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B3E1751A11BABC0079F464 /* main.m */; };
 		48B3E1791A11BABC0079F464 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B3E1781A11BABC0079F464 /* AppDelegate.m */; };
 		48B3E17C1A11BABC0079F464 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B3E17B1A11BABC0079F464 /* ViewController.m */; };
@@ -112,6 +115,12 @@
 		4867EAE31A120B8C00F299A1 /* PickerGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerGroup.m; sourceTree = "<group>"; };
 		488827291A1619E100DE4CB5 /* PickerBrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerBrowserViewController.h; sourceTree = "<group>"; };
 		4888272A1A1619E100DE4CB5 /* PickerBrowserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerBrowserViewController.m; sourceTree = "<group>"; };
+		4895D85A1A1B17C40072A743 /* BaseAnimationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseAnimationView.h; sourceTree = "<group>"; };
+		4895D85B1A1B17C40072A743 /* BaseAnimationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseAnimationView.m; sourceTree = "<group>"; };
+		4895D85D1A1B1D170072A743 /* UIView+Animation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Animation.h"; sourceTree = "<group>"; };
+		4895D85E1A1B1D170072A743 /* UIView+Animation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Animation.m"; sourceTree = "<group>"; };
+		4895D8601A1B43320072A743 /* BaseAnimationImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseAnimationImageView.h; sourceTree = "<group>"; };
+		4895D8611A1B43320072A743 /* BaseAnimationImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseAnimationImageView.m; sourceTree = "<group>"; };
 		48B3E1701A11BABC0079F464 /* 相册Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "相册Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		48B3E1741A11BABC0079F464 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		48B3E1751A11BABC0079F464 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -262,6 +271,12 @@
 				48B3E1801A11BABC0079F464 /* Images.xcassets */,
 				48B3E1821A11BABC0079F464 /* LaunchScreen.xib */,
 				48B3E1731A11BABC0079F464 /* Supporting Files */,
+				4895D85A1A1B17C40072A743 /* BaseAnimationView.h */,
+				4895D85B1A1B17C40072A743 /* BaseAnimationView.m */,
+				4895D85D1A1B1D170072A743 /* UIView+Animation.h */,
+				4895D85E1A1B1D170072A743 /* UIView+Animation.m */,
+				4895D8601A1B43320072A743 /* BaseAnimationImageView.h */,
+				4895D8611A1B43320072A743 /* BaseAnimationImageView.m */,
 			);
 			name = ZLAssetsPickerDemo;
 			path = "相册Demo";
@@ -442,6 +457,7 @@
 				481C56061A16DFB1004FF9B2 /* SDWebImageManager.m in Sources */,
 				48B3E1A21A11BAF80079F464 /* PickerImageView.m in Sources */,
 				48FD61181A1788850050E401 /* PickerPhotoGifView.m in Sources */,
+				4895D8621A1B43320072A743 /* BaseAnimationImageView.m in Sources */,
 				481C560D1A16DFB1004FF9B2 /* UIImageView+WebCache.m in Sources */,
 				4867EAA81A11ED8600F299A1 /* PickerGroupViewController.m in Sources */,
 				48B3E1A11A11BAF80079F464 /* PickerCollectionViewCell.m in Sources */,
@@ -449,11 +465,13 @@
 				4867EAE41A120B8C00F299A1 /* PickerGroup.m in Sources */,
 				481C560C1A16DFB1004FF9B2 /* UIImageView+HighlightedWebCache.m in Sources */,
 				481C56041A16DFB1004FF9B2 /* SDWebImageDownloader.m in Sources */,
+				4895D85F1A1B1D170072A743 /* UIView+Animation.m in Sources */,
 				481C56071A16DFB1004FF9B2 /* SDWebImagePrefetcher.m in Sources */,
 				48B3E1A81A11CD630079F464 /* PickerViewController.m in Sources */,
 				481C56011A16DFB1004FF9B2 /* SDImageCache.m in Sources */,
 				481C56111A170199004FF9B2 /* UIView+Extension.m in Sources */,
 				481C56051A16DFB1004FF9B2 /* SDWebImageDownloaderOperation.m in Sources */,
+				4895D85C1A1B17C40072A743 /* BaseAnimationView.m in Sources */,
 				4801778E1A1368B80026F494 /* PickerAssetsViewController.m in Sources */,
 				481C55FF1A16DFB1004FF9B2 /* MKAnnotationView+WebCache.m in Sources */,
 				481C560A1A16DFB1004FF9B2 /* UIImage+MultiFormat.m in Sources */,

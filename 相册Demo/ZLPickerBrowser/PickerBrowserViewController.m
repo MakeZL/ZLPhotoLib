@@ -104,10 +104,18 @@
 - (void) scaleBigTap:(UITapGestureRecognizer *)tap{
     if(self.currentPage > self.scrollView.subviews.count) return;
     UIScrollView *scrollView = [self.scrollView.subviews objectAtIndex:self.currentPage];
-    if (scrollView.zoomScale == 2.0) {
+    if (scrollView.zoomScale == scrollView.maximumZoomScale) {
         [scrollView setZoomScale:1.0 animated:YES];
     }else{
-        [scrollView setZoomScale:2.0 animated:YES];
+        
+        CGPoint touchPoint = [tap locationInView:tap.view];
+        // Zoom in
+        CGFloat newZoomScale;
+        // Go to max zoom
+        newZoomScale = scrollView.maximumZoomScale;
+        CGFloat xsize = self.view.width / newZoomScale;
+        CGFloat ysize = self.view.height / newZoomScale;
+        [scrollView zoomToRect:CGRectMake(touchPoint.x - xsize/2, touchPoint.y - ysize/2, xsize, ysize) animated:YES];
     }
 }
 
