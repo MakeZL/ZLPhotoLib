@@ -7,14 +7,23 @@
 //
 
 #import "BaseAnimationImageView.h"
+#import "PickerPhoto.h"
+#import <AssetsLibrary/AssetsLibrary.h>
 
 @interface BaseAnimationImageView ()
 
-//@property (nonatomic , weak) UIImageView *imageView;
+@property (nonatomic , strong) NSMutableArray *photos;
 
 @end
 
 @implementation BaseAnimationImageView
+
+- (NSMutableArray *)photos{
+    if (!_photos) {
+        _photos = [NSMutableArray array];
+    }
+    return _photos;
+}
 
 static UIImageView *_imageView;
 
@@ -30,14 +39,18 @@ static UIImageView *_imageView;
 }
 
 + (instancetype) animationViewWithOptions:(NSDictionary *) options completion:(void (^)(BaseAnimationView *baseView)) completion{
-    
-    _imageView.image = options[UIViewAnimationImage];
     _imageView.frame = [options[UIViewAnimationStartFrame] CGRectValue];
     return [super animationViewWithOptions:options completion:completion];
 }
 
 - (instancetype)initViewWithOptions:(NSDictionary *)options completion:(void (^)(BaseAnimationView *))completion{
-    [[self imageView] setImage:options[UIViewAnimationImage]];
+    
+    _photos = options[UIViewAnimationImages];
+    NSAssert([_photos isKindOfClass:[NSArray class]], @"只能传图片数组!");
+    
+    NSIndexPath *indexPath = options[UIViewAnimationTypeViewWithIndexPath];
+    PickerPhoto *photo = [self photoWithAtIndex:indexPath.row];
+    [[self imageView] setImage:photo.photoImage];
     _imageView.frame = [options[UIViewAnimationStartFrame] CGRectValue];
     
     NSMutableDictionary *optionImgs = [NSMutableDictionary dictionaryWithDictionary:options];
@@ -45,4 +58,29 @@ static UIImageView *_imageView;
     
     return [super initViewWithOptions:optionImgs completion:completion];
 }
+
+#pragma mark -重写清空，赋值
+- (instancetype)viewformIdentity:(void (^)(BaseAnimationView *))completion{
+    PickerPhoto *photo = [self photoWithAtIndex:self.currentPage];
+    [[self imageView] setImage:photo.photoImage];
+    return [super viewformIdentity:completion];
+}
+
+// 取模型
+- (PickerPhoto *) photoWithAtIndex:(NSInteger) index{
+    id imageObj = [self.photos objectAtIndex:index];
+    PickerPhoto *photo = [[PickerPhoto alloc] init];
+    if ([imageObj isKindOfClass:[ALAsset class]]) {
+        ALAsset *asset = (ALAsset *)imageObj;
+        photo.thumbImage = [UIImage imageWithCGImage:[asset thumbnail]];
+        photo.photoImage = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]];
+    }else if ([imageObj isKindOfClass:[NSURL class]]){
+        photo.photoURL = imageObj;
+    }else if ([imageObj isKindOfClass:[UIImage class]]){
+        photo.photoImage = imageObj;
+    }
+    
+    return photo;
+}
 @end
+

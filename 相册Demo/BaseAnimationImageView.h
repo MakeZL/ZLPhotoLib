@@ -8,7 +8,7 @@
 
 #import "BaseAnimationView.h"
 
-static NSString *const UIViewAnimationImage = @"UIViewAnimationImage";
+static NSString *const UIViewAnimationImages = @"UIViewAnimationImages";
 
 @interface BaseAnimationImageView : BaseAnimationView
 

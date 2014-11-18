@@ -7,13 +7,19 @@
 //
 
 #import "BaseAnimationView.h"
-#import "UIView+Animation.h"
+#import "UIView+Extension.h"
 
 @interface BaseAnimationView ()
-
+// 当前的View
 @property (nonatomic , strong) BaseAnimationView *baseImageView;
+// 蒙版
 @property (nonatomic , strong) UIView *maskView;
+// 使导航栏隐藏
 @property (nonatomic , strong) UINavigationController *navigaiton;
+// 记录所有的参数
+@property (nonatomic , strong) NSDictionary *options;
+// 标志是否点击了销毁
+@property (nonatomic , assign) BOOL isClickDisMiss;
 
 @end
 
@@ -71,7 +77,9 @@ static BaseAnimationView *_baseView;
     if ([typeView isKindOfClass:[UITableView class]]) {
         // tableView就按TableView的方式
         UITableView *tableView = options[UIViewAnimationTypeView];
-        NSIndexPath *indexPath = options[UIViewAnimationTypeViewWithIndexPath];
+        tableView.userInteractionEnabled = NO;
+        NSIndexPath *indexPath = self.isClickDisMiss ? [NSIndexPath indexPathForRow:self.currentPage inSection:0] : options[UIViewAnimationTypeViewWithIndexPath];
+        
         UITableViewCell *cell= [tableView cellForRowAtIndexPath:indexPath];
         tempFrame = cell.imageView.frame;
         tempFrame.origin.y -= ( tableView.contentOffset.y - tableView.frame.origin.y) - indexPath.row * cell.frame.size.height;
@@ -83,10 +91,16 @@ static BaseAnimationView *_baseView;
         
     }
     
+    NSMutableDictionary *ops = nil;
+    if (self.isClickDisMiss) {
+        _endFrame = [NSValue valueWithCGRect:tempFrame];
+        self.isClickDisMiss = NO;
+    }else{
+        
+        ops = [NSMutableDictionary dictionaryWithDictionary:options];
+        ops[UIViewAnimationStartFrame] = [NSValue valueWithCGRect:tempFrame];
+    }
     
-    NSMutableDictionary *ops = [NSMutableDictionary dictionaryWithDictionary:options];
-    ops[UIViewAnimationStartFrame] = [NSValue valueWithCGRect:tempFrame];
-
     return ops;
 }
 
@@ -94,9 +108,9 @@ static BaseAnimationView *_baseView;
 #pragma mark -初始化动画
 - (instancetype) initViewWithOptions:(NSDictionary *) options completion:(void (^)(BaseAnimationView *baseView)) completion{
     
+    self.options = options;
     
     NSDictionary *ops = [self getTypeViewWithOptions:options];
-    
     
     CGRect startFrame = [ops[UIViewAnimationStartFrame] CGRectValue];
     CGRect endFrame = [ops[UIViewAnimationEndFrame] CGRectValue];
@@ -131,6 +145,7 @@ static BaseAnimationView *_baseView;
     
     duration = duration ? duration : 0.5;
     
+    self.isClickDisMiss = NO;
     [UIView animateWithDuration:duration animations:^{
         self.baseImageView.frame = endFrame;
         self.navigaiton.navigationBarHidden = YES;
@@ -148,21 +163,23 @@ static BaseAnimationView *_baseView;
 - (instancetype) viewformIdentity:(void(^)(BaseAnimationView *baseView)) completion{
     
     self.baseImageView.frame = [_startFrame CGRectValue];
+    self.isClickDisMiss = YES;
     
-//    self.baseImageView.frame
-    CGRect endFrame = [_endFrame CGRectValue];
-//    (endFrame.size.height * self.currentPage) % (self.maskView)
-    
-    NSLog(@"%d",self.currentPage);
-    
-    // 1.  (item.size.width * self.currentPage) % (view原来的宽度 - view.orgin.x)
-    
-    NSValue *val = _startFrame;
-    _startFrame = _endFrame;
-    _endFrame = val;
+    [self getTypeViewWithOptions:self.options];
+    // 如果超过了显示的分页数 。 就默认跳到最后一条+50像素
+    if ([self.options[UIViewAnimationTypeView] isKindOfClass:[UITableView class]]) {
+        UITableView *tableView = self.options[UIViewAnimationTypeView];
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+        UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+        if( cell.height * self.currentPage  >= tableView.height ){
+            CGRect tempEndFrame = [_endFrame CGRectValue];
+            tempEndFrame.origin.y = tableView.height + tableView.y;
+            _endFrame = [NSValue valueWithCGRect:tempEndFrame];
+        }
+    }
     
     [UIView animateWithDuration:0.5 animations:^{
-        self.baseImageView.frame = [_startFrame CGRectValue];
+        self.baseImageView.frame = [_endFrame CGRectValue];
     } completion:^(BOOL finished) {
         if (completion) {
             completion(self);
@@ -171,6 +188,9 @@ static BaseAnimationView *_baseView;
         [self.maskView removeFromSuperview];
         
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            // 让tableView能跟用户交互
+            UITableView *tableView = self.options[UIViewAnimationTypeView];
+            tableView.userInteractionEnabled = YES;
             self.baseImageView.hidden = YES;
             self.navigaiton.navigationBarHidden = NO;
         });

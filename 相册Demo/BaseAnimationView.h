@@ -9,11 +9,11 @@
 #import <UIKit/UIKit.h>
 
 /** 动画参数配置 */
-// 开始坐标
+// 开始坐标 default 0,0
 static NSString *const UIViewAnimationStartFrame = @"UIViewAnimationStartFrame";
 // 结束坐标
 static NSString *const UIViewAnimationEndFrame = @"UIViewAnimationEndFrame";
-// 动画时间
+// 动画时间 default 0.5
 static NSString *const UIViewAnimationDuration = @"UIViewAnimationDuration";
 
 /** 系统参数配置 */

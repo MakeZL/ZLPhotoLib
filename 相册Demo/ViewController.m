@@ -29,34 +29,6 @@
 
 @implementation ViewController
 
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
-//    [[BaseImageView animationView] animateWithSourceFrame:CGRectZero descFrame:CGRectMake(100, 100, 100, 100) withDuration:1.0 completion:^(UIView *baseView){
-//        baseView.backgroundColor = [UIColor redColor];
-//        [self.view addSubview:baseView];
-//    }];
-
-    
-//    NSValue *SourceFrame = [NSValue valueWithCGRect:CGRectMake(100, 100, 50, 50)];
-//    NSValue *descFrame = [NSValue valueWithCGRect:CGRectMake(100, 100, 150, 150)];
-//    NSNumber *duration = [NSNumber numberWithFloat:.5];
-//    
-//    NSDictionary *options = @{
-//                              UIViewAnimationStartFrame:SourceFrame,
-//                              UIViewAnimationEndFrame:descFrame,
-//                              UIViewAnimationDuration: duration,
-//                              UIViewAnimationInView : self.view,
-//                              UIViewAnimationBackGroundColor : [UIColor redColor]
-//                              };
-//    
-//    [BaseImageView animationViewWithOptions:options completion:^(UIView *baseView) {
-//        
-//    }];
-    
-//    [[BaseImageView animationView] animateWithInView:self.view SourceFrame:CGRectMake(100, 100, 50, 50) descFrame:CGRectMake(100, 100, 150, 150) withDuration:.5 completion:^(UIView *baseView) {
-//        baseView.backgroundColor = [UIColor redColor];
-//    }];
-}
-
 #pragma mark -getter
 - (UIImageView *)currentImageView{
     if (!_currentImageView) {
@@ -152,19 +124,13 @@
 - (void) setupPhotoBrowser:(UITableViewCell *) cell{
     
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-//    // 对象的frame
-//    CGRect tempFrame = cell.imageView.frame;
-//    tempFrame.origin.y -= ( self.tableView.contentOffset.y - self.tableView.y) - indexPath.row * cell.height;
-//    tempFrame.origin.x += self.tableView.x;
-//    
-//    // 起始位置、结束位置、动画时间、图片参数
-//    NSValue *sourceFrame = [NSValue valueWithCGRect:tempFrame];
+
+    // 起始位置、结束位置、动画时间、图片参数
     // 如果不设起始位置、则会去判断类型、如果没有类型就按0,0点
     NSValue *descFrame = [NSValue valueWithCGRect:CGRectMake(10, 0, self.view.width - 20, self.view.height)];
     
     NSNumber *duration = [NSNumber numberWithFloat:.5];
     
-    PickerPhoto *photo = [self photoBrowser:self.pickerBrowser photoAtIndex:indexPath.row];
     // 参数
     NSDictionary *options = @{
                               UIViewAnimationEndFrame:descFrame,
@@ -172,7 +138,7 @@
                               UIViewAnimationDuration:duration,
                               UIViewAnimationInView:self.view,
                               UIViewAnimationTypeView:self.tableView,
-                              UIViewAnimationImage:photo.photoImage ?:photo.thumbImage,
+                              UIViewAnimationImages:self.assets,
                               UIViewAnimationNavigation:self.navigationController
                               };
     
