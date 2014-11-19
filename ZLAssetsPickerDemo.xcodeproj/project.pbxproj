@@ -143,6 +143,7 @@
 		48B3E1A71A11CD630079F464 /* PickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerViewController.m; sourceTree = "<group>"; };
 		48D8EA101A1C3B7200BFFA63 /* PickerPhotosView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerPhotosView.h; sourceTree = "<group>"; };
 		48D8EA111A1C3B7200BFFA63 /* PickerPhotosView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerPhotosView.m; sourceTree = "<group>"; };
+		48D8EA131A1C49CD00BFFA63 /* PickerCommon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PickerCommon.h; sourceTree = "<group>"; };
 		48E44F991A1467E900F8BBD4 /* PickerGroupTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerGroupTableViewCell.h; sourceTree = "<group>"; };
 		48E44F9A1A1467E900F8BBD4 /* PickerGroupTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerGroupTableViewCell.m; sourceTree = "<group>"; };
 		48E44F9B1A1467E900F8BBD4 /* PickerGroupTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PickerGroupTableViewCell.xib; sourceTree = "<group>"; };
@@ -238,6 +239,7 @@
 				48FD61171A1788850050E401 /* PickerPhotoGifView.m */,
 				48D8EA101A1C3B7200BFFA63 /* PickerPhotosView.h */,
 				48D8EA111A1C3B7200BFFA63 /* PickerPhotosView.m */,
+				48D8EA131A1C49CD00BFFA63 /* PickerCommon.h */,
 			);
 			path = ZLPickerBrowser;
 			sourceTree = "<group>";

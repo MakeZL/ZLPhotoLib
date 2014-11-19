@@ -12,6 +12,7 @@
 #import "SDWebImageDownloader.h"
 #import "PickerProgressView.h"
 #import "UIView+Extension.h"
+#import "PickerCommon.h"
 
 @interface PickerPhotoImageView ()
 
@@ -33,9 +34,9 @@
 - (PickerProgressView *)progressView{
     if (!_progressView) {
         PickerProgressView *progressView = [[PickerProgressView alloc] init];
-        CGFloat progressW = 250;
+        CGFloat progressW = progressViewW;
         CGFloat progressX = (self.width - progressW) / 2.0;
-        CGFloat progressH = 25;
+        CGFloat progressH = progressViewH;
         CGFloat progressY = (self.height - progressH) / 2.0;
         
         progressView.frame = CGRectMake(progressX, progressY, progressW, progressH);

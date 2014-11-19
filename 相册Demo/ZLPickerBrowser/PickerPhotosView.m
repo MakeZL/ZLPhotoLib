@@ -6,8 +6,10 @@
 //  Copyright (c) 2014年 com.zixue101.www. All rights reserved.
 //
 
+
 #import "PickerPhotosView.h"
 #import "UIView+Extension.h"
+#import "PickerCommon.h"
 
 @implementation PickerPhotosView
 
@@ -28,10 +30,10 @@
 - (instancetype)initWithFrame:(CGRect)frame collectionViewLayout:(UICollectionViewFlowLayout *)layout{
     
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
+    flowLayout.minimumLineSpacing = PADDING;
     flowLayout = [[UICollectionViewFlowLayout alloc] init];
-    flowLayout.itemSize = CGSizeMake(frame.size.width - 20, frame.size.height);
+    flowLayout.itemSize = CGSizeMake(frame.size.width - flowLayout.minimumLineSpacing, frame.size.height);
     flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-    flowLayout.minimumLineSpacing = 20;
     
     [self setup];
     

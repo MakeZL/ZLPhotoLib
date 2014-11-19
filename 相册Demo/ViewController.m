@@ -126,8 +126,7 @@
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
 
     // 起始位置、结束位置、动画时间、图片参数
-    // 如果不设起始位置、则会去判断类型、如果没有类型就按0,0点
-    NSValue *descFrame = [NSValue valueWithCGRect:CGRectMake(10, 0, self.view.width - 20, self.view.height)];
+    NSValue *descFrame = [NSValue valueWithCGRect:self.view.bounds];
     
     NSNumber *duration = [NSNumber numberWithFloat:.5];
     
@@ -149,6 +148,7 @@
         PickerBrowserViewController *pickerBrowser = [[PickerBrowserViewController alloc] init];
         pickerBrowser.delegate = self;
         pickerBrowser.dataSource = self;
+        pickerBrowser.editing = YES;
         // 当前选中的值
         pickerBrowser.currentPage = indexPath.row;
         // disMiss后调用
@@ -161,78 +161,6 @@
         weakSelf.pickerBrowser = pickerBrowser;
         [weakSelf presentViewController:pickerBrowser animated:NO completion:nil];
     }];
-
-    
-//    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-//
-//    self.currentImageView.frame = tempFrame;
-//    
-//    // 给当前的缩放View符image
-//    [self setupCurrentImageViewPhotoAtIndex:indexPath.row];
-//    
-//    // 模仿微信朋友圈的点击图片风格
-//    __unsafe_unretained typeof(self) weakSelf = self;
-//    self.view.backgroundColor = [UIColor blackColor];
-//    self.tableView.backgroundColor = [UIColor blackColor];
-//    weakSelf.navigationController.navigationBarHidden = YES;
-//    weakSelf.currentImageView.hidden = NO;
-//    
-//    CGFloat x = 10;
-//    CGFloat w = self.view.width - x * 2;
-//    
-//    [UIView animateWithDuration:0.5 animations:^{
-//        weakSelf.currentImageView.alpha = 1;
-//        weakSelf.tableView.hidden = YES;
-//        
-//        weakSelf.currentImageView.frame = CGRectMake(x, 0, w, self.view.height);
-//
-//    } completion:^(BOOL finished) {
-//        
-//        PickerBrowserViewController *pickerBrowser = [[PickerBrowserViewController alloc] init];
-//        // 销毁时调用
-//        pickerBrowser.disMissBlock = ^(NSInteger page){
-//            
-//            // 给图片赋值当前的Cell的Frame属性
-//            NSIndexPath *selectIndexPath = [NSIndexPath indexPathForRow:page inSection:0];
-//            UITableViewCell *selectCell = [weakSelf.tableView cellForRowAtIndexPath:selectIndexPath];
-//            CGRect tempFrame = selectCell.frame;
-//            tempFrame.origin.y -= ( weakSelf.tableView.contentOffset.y - self.tableView.y);
-//
-//            // 设置图片
-//            [self setupCurrentImageViewPhotoAtIndex:indexPath.row];
-//            
-//            [UIView animateWithDuration:0.5 animations:^{
-//                weakSelf.currentImageView.hidden = NO;
-//                // 如果大于可展示的Cell的个数
-//                if (page >= [[weakSelf.tableView visibleCells] count]) {
-//                    weakSelf.currentImageView.frame = tempFrame;
-//                    weakSelf.currentImageView.y += CGRectGetHeight(cell.frame) * (page - [[weakSelf.tableView visibleCells] count]) + CGRectGetHeight(cell.frame);
-//                }else{
-//                    weakSelf.currentImageView.frame = tempFrame;
-//                }
-//                weakSelf.currentImageView.x -= CGRectGetMaxX(cell.imageView.frame);
-//                weakSelf.currentImageView.alpha = 0;
-//            } completion:^(BOOL finished) {
-//                [weakSelf.pickerBrowser dismissViewControllerAnimated:NO completion:nil];
-//            }];
-//            
-//        };
-//        pickerBrowser.delegate = self;
-//        // 开启编辑模式，能删除照片
-//        //        pickerBrowser.editing = YES;
-//        pickerBrowser.dataSource = self;
-//        // 当前选中的值
-//        pickerBrowser.currentPage = indexPath.row;
-//        [self presentViewController:pickerBrowser animated:NO completion:^{
-//            weakSelf.view.backgroundColor = [UIColor whiteColor];
-//            weakSelf.tableView.backgroundColor = [UIColor whiteColor];
-//            weakSelf.tableView.hidden = NO;
-//            weakSelf.currentImageView.hidden = YES;
-//            weakSelf.navigationController.navigationBarHidden = NO;
-//        }];
-//        
-//        self.pickerBrowser = pickerBrowser;
-//    }];
 }
 
 
@@ -263,6 +191,7 @@
 - (void)photoBrowser:(PickerBrowserViewController *)photoBrowser removePhotoAtIndex:(NSUInteger)index{
     if (index > self.assets.count) return;
     [self.assets removeObjectAtIndex:index];
+    [self.tableView reloadData];
 }
 
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{

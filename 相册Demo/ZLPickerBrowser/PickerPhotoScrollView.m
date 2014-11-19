@@ -11,6 +11,7 @@
 #import "PickerPhotoImageView.h"
 #import "PickerPhoto.h"
 #import "PickerPhotoGifView.h"
+#import "PickerCommon.h"
 
 @interface PickerPhotoScrollView () <UIScrollViewDelegate>
 
@@ -50,9 +51,9 @@
     self.delegate = self;
     self.clipsToBounds = YES;
     // 设置最大伸缩比例
-    self.maximumZoomScale = 2.5;
+    self.maximumZoomScale = maxZoomScale;
     // 设置最小伸缩比例
-    self.minimumZoomScale = 1.0;
+    self.maximumZoomScale = minZoomScale;
     
     // 监听手势
     [self addGesture];
@@ -78,9 +79,8 @@
 
 - (void) scaleBigTap:(UITapGestureRecognizer *)tap{
     
-    //    UIScrollView *scrollView = [self.collectionView.subviews objectAtIndex:self.currentPage];
     if (self.zoomScale == self.maximumZoomScale) {
-        [self setZoomScale:1.0 animated:YES];
+        [self setZoomScale:self.minimumZoomScale animated:YES];
     }else{
         CGPoint touchPoint = [tap locationInView:tap.view];
         CGFloat newZoomScale = self.maximumZoomScale;
@@ -106,7 +106,7 @@
         [gifView playGifWithURLString:photo.photoURL.absoluteString];
         [self addSubview:gifView];
     }else{
-        self.zoomImageView.frame = CGRectMake(0, 0, self.width, self.height);
+        self.zoomImageView.frame = self.bounds;
         self.zoomImageView.photo = photo;
     }
 }

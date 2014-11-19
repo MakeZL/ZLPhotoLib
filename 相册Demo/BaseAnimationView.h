@@ -8,7 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-/** 动画参数配置 */
+/** 
+ *动画参数配置
+ *  如果不设起始位置、则会去判断类型、如果没有类型就按0,0点
+ */
 // 开始坐标 default 0,0
 static NSString *const UIViewAnimationStartFrame = @"UIViewAnimationStartFrame";
 // 结束坐标
