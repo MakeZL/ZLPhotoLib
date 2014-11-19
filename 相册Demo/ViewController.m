@@ -136,7 +136,8 @@
                               UIViewAnimationTypeViewWithIndexPath:indexPath,
                               UIViewAnimationDuration:duration,
                               UIViewAnimationInView:self.view,
-                              UIViewAnimationTypeView:self.tableView,
+//                              UIViewAnimationTypeView:self.tableView,
+                              UIViewAnimationTypeView:cell,
                               UIViewAnimationImages:self.assets,
                               UIViewAnimationNavigation:self.navigationController
                               };
@@ -221,6 +222,30 @@
     [self.assets addObjectsFromArray:assets];
 //    self.assets = [NSMutableArray arrayWithArray:assets];
     [self.tableView reloadData];
+}
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
+    
+    UIView *boxView = [[UIView alloc] init];
+    
+    NSValue *startV = [NSValue valueWithCGRect:CGRectMake(50, 50, 100, 100)];
+    NSValue *endV = [NSValue valueWithCGRect:CGRectMake(100, 100, 200, 200)];
+    NSNumber *duration = [NSNumber numberWithFloat:2.5];
+    
+    NSDictionary *options = @{
+                              UIViewAnimationStartFrame:startV,
+                              UIViewAnimationEndFrame:endV,
+                              UIViewAnimationDuration:duration,
+                              UIViewAnimationInView:self.view,                             UIViewAnimationBackGroundColor:[UIColor yellowColor]
+                              };
+    
+    [BaseAnimationView animationViewWithOptions:options completion:^(BaseAnimationView *baseView) {
+        baseView.backgroundColor = [UIColor redColor];
+        [baseView viewformIdentity:^(BaseAnimationView *baseView) {
+            NSLog(@" 结束了！！");
+        }];
+    }];
+    [self.view addSubview:boxView];
 }
 
 @end

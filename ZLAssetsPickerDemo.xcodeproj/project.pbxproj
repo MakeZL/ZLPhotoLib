@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4801778E1A1368B80026F494 /* PickerAssetsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4801778D1A1368B80026F494 /* PickerAssetsViewController.m */; };
-		481C55DC1A16DE1F004FF9B2 /* PickerPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 481C55DB1A16DE1F004FF9B2 /* PickerPhoto.m */; };
 		481C55FF1A16DFB1004FF9B2 /* MKAnnotationView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 481C55DF1A16DFB1004FF9B2 /* MKAnnotationView+WebCache.m */; };
 		481C56001A16DFB1004FF9B2 /* NSData+ImageContentType.m in Sources */ = {isa = PBXBuildFile; fileRef = 481C55E11A16DFB1004FF9B2 /* NSData+ImageContentType.m */; };
 		481C56011A16DFB1004FF9B2 /* SDImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 481C55E31A16DFB1004FF9B2 /* SDImageCache.m */; };
@@ -25,32 +23,39 @@
 		481C560C1A16DFB1004FF9B2 /* UIImageView+HighlightedWebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 481C55FA1A16DFB1004FF9B2 /* UIImageView+HighlightedWebCache.m */; };
 		481C560D1A16DFB1004FF9B2 /* UIImageView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 481C55FC1A16DFB1004FF9B2 /* UIImageView+WebCache.m */; };
 		481C560E1A16DFB1004FF9B2 /* UIView+WebCacheOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 481C55FE1A16DFB1004FF9B2 /* UIView+WebCacheOperation.m */; };
-		481C56111A170199004FF9B2 /* UIView+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 481C56101A170199004FF9B2 /* UIView+Extension.m */; };
-		481C562C1A174065004FF9B2 /* PickerPhotoScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 481C562B1A174065004FF9B2 /* PickerPhotoScrollView.m */; };
-		481C562F1A17454B004FF9B2 /* PickerPhotoImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 481C562E1A17454B004FF9B2 /* PickerPhotoImageView.m */; };
-		481C56321A175D35004FF9B2 /* PickerProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 481C56311A175D35004FF9B2 /* PickerProgressView.m */; };
-		4867EAA81A11ED8600F299A1 /* PickerGroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4867EAA71A11ED8600F299A1 /* PickerGroupViewController.m */; };
-		4867EAE41A120B8C00F299A1 /* PickerGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 4867EAE31A120B8C00F299A1 /* PickerGroup.m */; };
-		4888272B1A1619E100DE4CB5 /* PickerBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4888272A1A1619E100DE4CB5 /* PickerBrowserViewController.m */; };
-		4895D85C1A1B17C40072A743 /* BaseAnimationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4895D85B1A1B17C40072A743 /* BaseAnimationView.m */; };
-		4895D8621A1B43320072A743 /* BaseAnimationImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4895D8611A1B43320072A743 /* BaseAnimationImageView.m */; };
 		48B3E1761A11BABC0079F464 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B3E1751A11BABC0079F464 /* main.m */; };
 		48B3E1791A11BABC0079F464 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B3E1781A11BABC0079F464 /* AppDelegate.m */; };
 		48B3E17C1A11BABC0079F464 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B3E17B1A11BABC0079F464 /* ViewController.m */; };
 		48B3E1811A11BABC0079F464 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 48B3E1801A11BABC0079F464 /* Images.xcassets */; };
 		48B3E1841A11BABC0079F464 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48B3E1821A11BABC0079F464 /* LaunchScreen.xib */; };
 		48B3E1901A11BABC0079F464 /* __DemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B3E18F1A11BABC0079F464 /* __DemoTests.m */; };
-		48B3E1A01A11BAF80079F464 /* PickerCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B3E19B1A11BAF80079F464 /* PickerCollectionView.m */; };
-		48B3E1A11A11BAF80079F464 /* PickerCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B3E19D1A11BAF80079F464 /* PickerCollectionViewCell.m */; };
-		48B3E1A21A11BAF80079F464 /* PickerImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B3E19F1A11BAF80079F464 /* PickerImageView.m */; };
-		48B3E1A51A11BC610079F464 /* PickerDatas.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B3E1A41A11BC610079F464 /* PickerDatas.m */; };
-		48B3E1A81A11CD630079F464 /* PickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B3E1A71A11CD630079F464 /* PickerViewController.m */; };
-		48D8EA121A1C3B7200BFFA63 /* PickerPhotosView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D8EA111A1C3B7200BFFA63 /* PickerPhotosView.m */; };
-		48E44F9C1A1467E900F8BBD4 /* PickerGroupTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 48E44F9A1A1467E900F8BBD4 /* PickerGroupTableViewCell.m */; };
-		48E44F9D1A1467E900F8BBD4 /* PickerGroupTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48E44F9B1A1467E900F8BBD4 /* PickerGroupTableViewCell.xib */; };
-		48E44FA01A147D3D00F8BBD4 /* PickerFooterCollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48E44F9F1A147D3D00F8BBD4 /* PickerFooterCollectionReusableView.m */; };
-		48E44FA21A14809A00F8BBD4 /* PickerFooterCollectionReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48E44FA11A14809A00F8BBD4 /* PickerFooterCollectionReusableView.xib */; };
-		48FD61181A1788850050E401 /* PickerPhotoGifView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48FD61171A1788850050E401 /* PickerPhotoGifView.m */; };
+		48D8EA651A1C4F8900BFFA63 /* BaseAnimationImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D8EA321A1C4F8800BFFA63 /* BaseAnimationImageView.m */; };
+		48D8EA661A1C4F8900BFFA63 /* BaseAnimationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D8EA341A1C4F8800BFFA63 /* BaseAnimationView.m */; };
+		48D8EA671A1C4F8900BFFA63 /* PickerAssetsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D8EA361A1C4F8800BFFA63 /* PickerAssetsViewController.m */; };
+		48D8EA681A1C4F8900BFFA63 /* PickerCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D8EA381A1C4F8800BFFA63 /* PickerCollectionView.m */; };
+		48D8EA691A1C4F8900BFFA63 /* PickerCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D8EA3A1A1C4F8800BFFA63 /* PickerCollectionViewCell.m */; };
+		48D8EA6A1A1C4F8900BFFA63 /* PickerDatas.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D8EA3C1A1C4F8800BFFA63 /* PickerDatas.m */; };
+		48D8EA6B1A1C4F8900BFFA63 /* PickerFooterCollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D8EA3E1A1C4F8900BFFA63 /* PickerFooterCollectionReusableView.m */; };
+		48D8EA6C1A1C4F8900BFFA63 /* PickerFooterCollectionReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48D8EA3F1A1C4F8900BFFA63 /* PickerFooterCollectionReusableView.xib */; };
+		48D8EA6D1A1C4F8900BFFA63 /* PickerGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D8EA411A1C4F8900BFFA63 /* PickerGroup.m */; };
+		48D8EA6E1A1C4F8900BFFA63 /* PickerGroupTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D8EA431A1C4F8900BFFA63 /* PickerGroupTableViewCell.m */; };
+		48D8EA6F1A1C4F8900BFFA63 /* PickerGroupTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48D8EA441A1C4F8900BFFA63 /* PickerGroupTableViewCell.xib */; };
+		48D8EA701A1C4F8900BFFA63 /* PickerGroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D8EA461A1C4F8900BFFA63 /* PickerGroupViewController.m */; };
+		48D8EA711A1C4F8900BFFA63 /* PickerImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D8EA481A1C4F8900BFFA63 /* PickerImageView.m */; };
+		48D8EA721A1C4F8900BFFA63 /* PickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D8EA4A1A1C4F8900BFFA63 /* PickerViewController.m */; };
+		48D8EA731A1C4F8900BFFA63 /* AssetsPickerChecked.png in Resources */ = {isa = PBXBuildFile; fileRef = 48D8EA4D1A1C4F8900BFFA63 /* AssetsPickerChecked.png */; };
+		48D8EA741A1C4F8900BFFA63 /* AssetsPickerChecked@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48D8EA4E1A1C4F8900BFFA63 /* AssetsPickerChecked@2x.png */; };
+		48D8EA751A1C4F8900BFFA63 /* AssetsPickerChecked@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48D8EA4F1A1C4F8900BFFA63 /* AssetsPickerChecked@3x.png */; };
+		48D8EA761A1C4F8900BFFA63 /* Contents.json in Resources */ = {isa = PBXBuildFile; fileRef = 48D8EA501A1C4F8900BFFA63 /* Contents.json */; };
+		48D8EA771A1C4F8900BFFA63 /* UIView+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D8EA521A1C4F8900BFFA63 /* UIView+Extension.m */; };
+		48D8EA781A1C4F8900BFFA63 /* PickerBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D8EA551A1C4F8900BFFA63 /* PickerBrowserViewController.m */; };
+		48D8EA791A1C4F8900BFFA63 /* PickerPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D8EA581A1C4F8900BFFA63 /* PickerPhoto.m */; };
+		48D8EA7A1A1C4F8900BFFA63 /* PickerPhotoGifView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D8EA5A1A1C4F8900BFFA63 /* PickerPhotoGifView.m */; };
+		48D8EA7B1A1C4F8900BFFA63 /* PickerPhotoImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D8EA5C1A1C4F8900BFFA63 /* PickerPhotoImageView.m */; };
+		48D8EA7C1A1C4F8900BFFA63 /* PickerPhotoScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D8EA5E1A1C4F8900BFFA63 /* PickerPhotoScrollView.m */; };
+		48D8EA7D1A1C4F8900BFFA63 /* PickerPhotosView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D8EA601A1C4F8900BFFA63 /* PickerPhotosView.m */; };
+		48D8EA7E1A1C4F8900BFFA63 /* PickerProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D8EA621A1C4F8900BFFA63 /* PickerProgressView.m */; };
+		48D8EA7F1A1C4F8900BFFA63 /* UIView+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D8EA641A1C4F8900BFFA63 /* UIView+Extension.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,10 +69,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		4801778C1A1368B80026F494 /* PickerAssetsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerAssetsViewController.h; sourceTree = "<group>"; };
-		4801778D1A1368B80026F494 /* PickerAssetsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerAssetsViewController.m; sourceTree = "<group>"; };
-		481C55DA1A16DE1F004FF9B2 /* PickerPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerPhoto.h; sourceTree = "<group>"; };
-		481C55DB1A16DE1F004FF9B2 /* PickerPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerPhoto.m; sourceTree = "<group>"; };
 		481C55DE1A16DFB1004FF9B2 /* MKAnnotationView+WebCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MKAnnotationView+WebCache.h"; sourceTree = "<group>"; };
 		481C55DF1A16DFB1004FF9B2 /* MKAnnotationView+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MKAnnotationView+WebCache.m"; sourceTree = "<group>"; };
 		481C55E01A16DFB1004FF9B2 /* NSData+ImageContentType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+ImageContentType.h"; sourceTree = "<group>"; };
@@ -101,24 +102,6 @@
 		481C55FC1A16DFB1004FF9B2 /* UIImageView+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+WebCache.m"; sourceTree = "<group>"; };
 		481C55FD1A16DFB1004FF9B2 /* UIView+WebCacheOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+WebCacheOperation.h"; sourceTree = "<group>"; };
 		481C55FE1A16DFB1004FF9B2 /* UIView+WebCacheOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+WebCacheOperation.m"; sourceTree = "<group>"; };
-		481C560F1A170199004FF9B2 /* UIView+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIView+Extension.h"; path = "../UIView+Extension.h"; sourceTree = "<group>"; };
-		481C56101A170199004FF9B2 /* UIView+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIView+Extension.m"; path = "../UIView+Extension.m"; sourceTree = "<group>"; };
-		481C562A1A174065004FF9B2 /* PickerPhotoScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerPhotoScrollView.h; sourceTree = "<group>"; };
-		481C562B1A174065004FF9B2 /* PickerPhotoScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerPhotoScrollView.m; sourceTree = "<group>"; };
-		481C562D1A17454B004FF9B2 /* PickerPhotoImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerPhotoImageView.h; sourceTree = "<group>"; };
-		481C562E1A17454B004FF9B2 /* PickerPhotoImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerPhotoImageView.m; sourceTree = "<group>"; };
-		481C56301A175D35004FF9B2 /* PickerProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerProgressView.h; sourceTree = "<group>"; };
-		481C56311A175D35004FF9B2 /* PickerProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerProgressView.m; sourceTree = "<group>"; };
-		4867EAA61A11ED8600F299A1 /* PickerGroupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerGroupViewController.h; sourceTree = "<group>"; };
-		4867EAA71A11ED8600F299A1 /* PickerGroupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerGroupViewController.m; sourceTree = "<group>"; };
-		4867EAE21A120B8C00F299A1 /* PickerGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerGroup.h; sourceTree = "<group>"; };
-		4867EAE31A120B8C00F299A1 /* PickerGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerGroup.m; sourceTree = "<group>"; };
-		488827291A1619E100DE4CB5 /* PickerBrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerBrowserViewController.h; sourceTree = "<group>"; };
-		4888272A1A1619E100DE4CB5 /* PickerBrowserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerBrowserViewController.m; sourceTree = "<group>"; };
-		4895D85A1A1B17C40072A743 /* BaseAnimationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseAnimationView.h; sourceTree = "<group>"; };
-		4895D85B1A1B17C40072A743 /* BaseAnimationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseAnimationView.m; sourceTree = "<group>"; };
-		4895D8601A1B43320072A743 /* BaseAnimationImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseAnimationImageView.h; sourceTree = "<group>"; };
-		4895D8611A1B43320072A743 /* BaseAnimationImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseAnimationImageView.m; sourceTree = "<group>"; };
 		48B3E1701A11BABC0079F464 /* 相册Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "相册Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		48B3E1741A11BABC0079F464 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		48B3E1751A11BABC0079F464 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -131,27 +114,55 @@
 		48B3E1891A11BABC0079F464 /* 相册DemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "相册DemoTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		48B3E18E1A11BABC0079F464 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		48B3E18F1A11BABC0079F464 /* __DemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = __DemoTests.m; sourceTree = "<group>"; };
-		48B3E19A1A11BAF80079F464 /* PickerCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerCollectionView.h; sourceTree = "<group>"; };
-		48B3E19B1A11BAF80079F464 /* PickerCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerCollectionView.m; sourceTree = "<group>"; };
-		48B3E19C1A11BAF80079F464 /* PickerCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerCollectionViewCell.h; sourceTree = "<group>"; };
-		48B3E19D1A11BAF80079F464 /* PickerCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerCollectionViewCell.m; sourceTree = "<group>"; };
-		48B3E19E1A11BAF80079F464 /* PickerImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerImageView.h; sourceTree = "<group>"; };
-		48B3E19F1A11BAF80079F464 /* PickerImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerImageView.m; sourceTree = "<group>"; };
-		48B3E1A31A11BC610079F464 /* PickerDatas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerDatas.h; sourceTree = "<group>"; };
-		48B3E1A41A11BC610079F464 /* PickerDatas.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerDatas.m; sourceTree = "<group>"; };
-		48B3E1A61A11CD630079F464 /* PickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerViewController.h; sourceTree = "<group>"; };
-		48B3E1A71A11CD630079F464 /* PickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerViewController.m; sourceTree = "<group>"; };
-		48D8EA101A1C3B7200BFFA63 /* PickerPhotosView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerPhotosView.h; sourceTree = "<group>"; };
-		48D8EA111A1C3B7200BFFA63 /* PickerPhotosView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerPhotosView.m; sourceTree = "<group>"; };
-		48D8EA131A1C49CD00BFFA63 /* PickerCommon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PickerCommon.h; sourceTree = "<group>"; };
-		48E44F991A1467E900F8BBD4 /* PickerGroupTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerGroupTableViewCell.h; sourceTree = "<group>"; };
-		48E44F9A1A1467E900F8BBD4 /* PickerGroupTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerGroupTableViewCell.m; sourceTree = "<group>"; };
-		48E44F9B1A1467E900F8BBD4 /* PickerGroupTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PickerGroupTableViewCell.xib; sourceTree = "<group>"; };
-		48E44F9E1A147D3D00F8BBD4 /* PickerFooterCollectionReusableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerFooterCollectionReusableView.h; sourceTree = "<group>"; };
-		48E44F9F1A147D3D00F8BBD4 /* PickerFooterCollectionReusableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerFooterCollectionReusableView.m; sourceTree = "<group>"; };
-		48E44FA11A14809A00F8BBD4 /* PickerFooterCollectionReusableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PickerFooterCollectionReusableView.xib; sourceTree = "<group>"; };
-		48FD61161A1788850050E401 /* PickerPhotoGifView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerPhotoGifView.h; sourceTree = "<group>"; };
-		48FD61171A1788850050E401 /* PickerPhotoGifView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerPhotoGifView.m; sourceTree = "<group>"; };
+		48D8EA311A1C4F8800BFFA63 /* BaseAnimationImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseAnimationImageView.h; sourceTree = "<group>"; };
+		48D8EA321A1C4F8800BFFA63 /* BaseAnimationImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseAnimationImageView.m; sourceTree = "<group>"; };
+		48D8EA331A1C4F8800BFFA63 /* BaseAnimationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseAnimationView.h; sourceTree = "<group>"; };
+		48D8EA341A1C4F8800BFFA63 /* BaseAnimationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseAnimationView.m; sourceTree = "<group>"; };
+		48D8EA351A1C4F8800BFFA63 /* PickerAssetsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerAssetsViewController.h; sourceTree = "<group>"; };
+		48D8EA361A1C4F8800BFFA63 /* PickerAssetsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerAssetsViewController.m; sourceTree = "<group>"; };
+		48D8EA371A1C4F8800BFFA63 /* PickerCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerCollectionView.h; sourceTree = "<group>"; };
+		48D8EA381A1C4F8800BFFA63 /* PickerCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerCollectionView.m; sourceTree = "<group>"; };
+		48D8EA391A1C4F8800BFFA63 /* PickerCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerCollectionViewCell.h; sourceTree = "<group>"; };
+		48D8EA3A1A1C4F8800BFFA63 /* PickerCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerCollectionViewCell.m; sourceTree = "<group>"; };
+		48D8EA3B1A1C4F8800BFFA63 /* PickerDatas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerDatas.h; sourceTree = "<group>"; };
+		48D8EA3C1A1C4F8800BFFA63 /* PickerDatas.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerDatas.m; sourceTree = "<group>"; };
+		48D8EA3D1A1C4F8900BFFA63 /* PickerFooterCollectionReusableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerFooterCollectionReusableView.h; sourceTree = "<group>"; };
+		48D8EA3E1A1C4F8900BFFA63 /* PickerFooterCollectionReusableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerFooterCollectionReusableView.m; sourceTree = "<group>"; };
+		48D8EA3F1A1C4F8900BFFA63 /* PickerFooterCollectionReusableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PickerFooterCollectionReusableView.xib; sourceTree = "<group>"; };
+		48D8EA401A1C4F8900BFFA63 /* PickerGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerGroup.h; sourceTree = "<group>"; };
+		48D8EA411A1C4F8900BFFA63 /* PickerGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerGroup.m; sourceTree = "<group>"; };
+		48D8EA421A1C4F8900BFFA63 /* PickerGroupTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerGroupTableViewCell.h; sourceTree = "<group>"; };
+		48D8EA431A1C4F8900BFFA63 /* PickerGroupTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerGroupTableViewCell.m; sourceTree = "<group>"; };
+		48D8EA441A1C4F8900BFFA63 /* PickerGroupTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PickerGroupTableViewCell.xib; sourceTree = "<group>"; };
+		48D8EA451A1C4F8900BFFA63 /* PickerGroupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerGroupViewController.h; sourceTree = "<group>"; };
+		48D8EA461A1C4F8900BFFA63 /* PickerGroupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerGroupViewController.m; sourceTree = "<group>"; };
+		48D8EA471A1C4F8900BFFA63 /* PickerImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerImageView.h; sourceTree = "<group>"; };
+		48D8EA481A1C4F8900BFFA63 /* PickerImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerImageView.m; sourceTree = "<group>"; };
+		48D8EA491A1C4F8900BFFA63 /* PickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerViewController.h; sourceTree = "<group>"; };
+		48D8EA4A1A1C4F8900BFFA63 /* PickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerViewController.m; sourceTree = "<group>"; };
+		48D8EA4D1A1C4F8900BFFA63 /* AssetsPickerChecked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AssetsPickerChecked.png; sourceTree = "<group>"; };
+		48D8EA4E1A1C4F8900BFFA63 /* AssetsPickerChecked@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AssetsPickerChecked@2x.png"; sourceTree = "<group>"; };
+		48D8EA4F1A1C4F8900BFFA63 /* AssetsPickerChecked@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AssetsPickerChecked@3x.png"; sourceTree = "<group>"; };
+		48D8EA501A1C4F8900BFFA63 /* Contents.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Contents.json; sourceTree = "<group>"; };
+		48D8EA511A1C4F8900BFFA63 /* UIView+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Extension.h"; sourceTree = "<group>"; };
+		48D8EA521A1C4F8900BFFA63 /* UIView+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Extension.m"; sourceTree = "<group>"; };
+		48D8EA541A1C4F8900BFFA63 /* PickerBrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerBrowserViewController.h; sourceTree = "<group>"; };
+		48D8EA551A1C4F8900BFFA63 /* PickerBrowserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerBrowserViewController.m; sourceTree = "<group>"; };
+		48D8EA561A1C4F8900BFFA63 /* PickerCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerCommon.h; sourceTree = "<group>"; };
+		48D8EA571A1C4F8900BFFA63 /* PickerPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerPhoto.h; sourceTree = "<group>"; };
+		48D8EA581A1C4F8900BFFA63 /* PickerPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerPhoto.m; sourceTree = "<group>"; };
+		48D8EA591A1C4F8900BFFA63 /* PickerPhotoGifView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerPhotoGifView.h; sourceTree = "<group>"; };
+		48D8EA5A1A1C4F8900BFFA63 /* PickerPhotoGifView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerPhotoGifView.m; sourceTree = "<group>"; };
+		48D8EA5B1A1C4F8900BFFA63 /* PickerPhotoImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerPhotoImageView.h; sourceTree = "<group>"; };
+		48D8EA5C1A1C4F8900BFFA63 /* PickerPhotoImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerPhotoImageView.m; sourceTree = "<group>"; };
+		48D8EA5D1A1C4F8900BFFA63 /* PickerPhotoScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerPhotoScrollView.h; sourceTree = "<group>"; };
+		48D8EA5E1A1C4F8900BFFA63 /* PickerPhotoScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerPhotoScrollView.m; sourceTree = "<group>"; };
+		48D8EA5F1A1C4F8900BFFA63 /* PickerPhotosView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerPhotosView.h; sourceTree = "<group>"; };
+		48D8EA601A1C4F8900BFFA63 /* PickerPhotosView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerPhotosView.m; sourceTree = "<group>"; };
+		48D8EA611A1C4F8900BFFA63 /* PickerProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerProgressView.h; sourceTree = "<group>"; };
+		48D8EA621A1C4F8900BFFA63 /* PickerProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerProgressView.m; sourceTree = "<group>"; };
+		48D8EA631A1C4F8900BFFA63 /* UIView+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Extension.h"; sourceTree = "<group>"; };
+		48D8EA641A1C4F8900BFFA63 /* UIView+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Extension.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -212,38 +223,6 @@
 			path = SDWebImage;
 			sourceTree = "<group>";
 		};
-		481C56351A1764FE004FF9B2 /* Category */ = {
-			isa = PBXGroup;
-			children = (
-				481C560F1A170199004FF9B2 /* UIView+Extension.h */,
-				481C56101A170199004FF9B2 /* UIView+Extension.m */,
-			);
-			name = Category;
-			sourceTree = "<group>";
-		};
-		488827281A1619C600DE4CB5 /* ZLPickerBrowser */ = {
-			isa = PBXGroup;
-			children = (
-				481C56351A1764FE004FF9B2 /* Category */,
-				481C56301A175D35004FF9B2 /* PickerProgressView.h */,
-				481C56311A175D35004FF9B2 /* PickerProgressView.m */,
-				481C562A1A174065004FF9B2 /* PickerPhotoScrollView.h */,
-				481C562B1A174065004FF9B2 /* PickerPhotoScrollView.m */,
-				488827291A1619E100DE4CB5 /* PickerBrowserViewController.h */,
-				4888272A1A1619E100DE4CB5 /* PickerBrowserViewController.m */,
-				481C55DA1A16DE1F004FF9B2 /* PickerPhoto.h */,
-				481C55DB1A16DE1F004FF9B2 /* PickerPhoto.m */,
-				481C562D1A17454B004FF9B2 /* PickerPhotoImageView.h */,
-				481C562E1A17454B004FF9B2 /* PickerPhotoImageView.m */,
-				48FD61161A1788850050E401 /* PickerPhotoGifView.h */,
-				48FD61171A1788850050E401 /* PickerPhotoGifView.m */,
-				48D8EA101A1C3B7200BFFA63 /* PickerPhotosView.h */,
-				48D8EA111A1C3B7200BFFA63 /* PickerPhotosView.m */,
-				48D8EA131A1C49CD00BFFA63 /* PickerCommon.h */,
-			);
-			path = ZLPickerBrowser;
-			sourceTree = "<group>";
-		};
 		48B3E1671A11BABC0079F464 = {
 			isa = PBXGroup;
 			children = (
@@ -265,9 +244,8 @@
 		48B3E1721A11BABC0079F464 /* ZLAssetsPickerDemo */ = {
 			isa = PBXGroup;
 			children = (
+				48D8EA301A1C4F8800BFFA63 /* ZLPickerLib */,
 				481C55DD1A16DFB1004FF9B2 /* SDWebImage */,
-				488827281A1619C600DE4CB5 /* ZLPickerBrowser */,
-				48B3E1991A11BAF80079F464 /* ZLPickerLib */,
 				48B3E1771A11BABC0079F464 /* AppDelegate.h */,
 				48B3E1781A11BABC0079F464 /* AppDelegate.m */,
 				48B3E17A1A11BABC0079F464 /* ViewController.h */,
@@ -275,10 +253,6 @@
 				48B3E1801A11BABC0079F464 /* Images.xcassets */,
 				48B3E1821A11BABC0079F464 /* LaunchScreen.xib */,
 				48B3E1731A11BABC0079F464 /* Supporting Files */,
-				4895D85A1A1B17C40072A743 /* BaseAnimationView.h */,
-				4895D85B1A1B17C40072A743 /* BaseAnimationView.m */,
-				4895D8601A1B43320072A743 /* BaseAnimationImageView.h */,
-				4895D8611A1B43320072A743 /* BaseAnimationImageView.m */,
 			);
 			name = ZLAssetsPickerDemo;
 			path = "相册Demo";
@@ -311,33 +285,84 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		48B3E1991A11BAF80079F464 /* ZLPickerLib */ = {
+		48D8EA301A1C4F8800BFFA63 /* ZLPickerLib */ = {
 			isa = PBXGroup;
 			children = (
-				48B3E19A1A11BAF80079F464 /* PickerCollectionView.h */,
-				48B3E19B1A11BAF80079F464 /* PickerCollectionView.m */,
-				48B3E19C1A11BAF80079F464 /* PickerCollectionViewCell.h */,
-				48B3E19D1A11BAF80079F464 /* PickerCollectionViewCell.m */,
-				48B3E19E1A11BAF80079F464 /* PickerImageView.h */,
-				48B3E19F1A11BAF80079F464 /* PickerImageView.m */,
-				48B3E1A31A11BC610079F464 /* PickerDatas.h */,
-				48B3E1A41A11BC610079F464 /* PickerDatas.m */,
-				48B3E1A61A11CD630079F464 /* PickerViewController.h */,
-				48B3E1A71A11CD630079F464 /* PickerViewController.m */,
-				4867EAA61A11ED8600F299A1 /* PickerGroupViewController.h */,
-				4867EAA71A11ED8600F299A1 /* PickerGroupViewController.m */,
-				4867EAE21A120B8C00F299A1 /* PickerGroup.h */,
-				4867EAE31A120B8C00F299A1 /* PickerGroup.m */,
-				4801778C1A1368B80026F494 /* PickerAssetsViewController.h */,
-				4801778D1A1368B80026F494 /* PickerAssetsViewController.m */,
-				48E44F991A1467E900F8BBD4 /* PickerGroupTableViewCell.h */,
-				48E44F9A1A1467E900F8BBD4 /* PickerGroupTableViewCell.m */,
-				48E44F9B1A1467E900F8BBD4 /* PickerGroupTableViewCell.xib */,
-				48E44F9E1A147D3D00F8BBD4 /* PickerFooterCollectionReusableView.h */,
-				48E44F9F1A147D3D00F8BBD4 /* PickerFooterCollectionReusableView.m */,
-				48E44FA11A14809A00F8BBD4 /* PickerFooterCollectionReusableView.xib */,
+				48D8EA311A1C4F8800BFFA63 /* BaseAnimationImageView.h */,
+				48D8EA321A1C4F8800BFFA63 /* BaseAnimationImageView.m */,
+				48D8EA331A1C4F8800BFFA63 /* BaseAnimationView.h */,
+				48D8EA341A1C4F8800BFFA63 /* BaseAnimationView.m */,
+				48D8EA351A1C4F8800BFFA63 /* PickerAssetsViewController.h */,
+				48D8EA361A1C4F8800BFFA63 /* PickerAssetsViewController.m */,
+				48D8EA371A1C4F8800BFFA63 /* PickerCollectionView.h */,
+				48D8EA381A1C4F8800BFFA63 /* PickerCollectionView.m */,
+				48D8EA391A1C4F8800BFFA63 /* PickerCollectionViewCell.h */,
+				48D8EA3A1A1C4F8800BFFA63 /* PickerCollectionViewCell.m */,
+				48D8EA3B1A1C4F8800BFFA63 /* PickerDatas.h */,
+				48D8EA3C1A1C4F8800BFFA63 /* PickerDatas.m */,
+				48D8EA3D1A1C4F8900BFFA63 /* PickerFooterCollectionReusableView.h */,
+				48D8EA3E1A1C4F8900BFFA63 /* PickerFooterCollectionReusableView.m */,
+				48D8EA3F1A1C4F8900BFFA63 /* PickerFooterCollectionReusableView.xib */,
+				48D8EA401A1C4F8900BFFA63 /* PickerGroup.h */,
+				48D8EA411A1C4F8900BFFA63 /* PickerGroup.m */,
+				48D8EA421A1C4F8900BFFA63 /* PickerGroupTableViewCell.h */,
+				48D8EA431A1C4F8900BFFA63 /* PickerGroupTableViewCell.m */,
+				48D8EA441A1C4F8900BFFA63 /* PickerGroupTableViewCell.xib */,
+				48D8EA451A1C4F8900BFFA63 /* PickerGroupViewController.h */,
+				48D8EA461A1C4F8900BFFA63 /* PickerGroupViewController.m */,
+				48D8EA471A1C4F8900BFFA63 /* PickerImageView.h */,
+				48D8EA481A1C4F8900BFFA63 /* PickerImageView.m */,
+				48D8EA491A1C4F8900BFFA63 /* PickerViewController.h */,
+				48D8EA4A1A1C4F8900BFFA63 /* PickerViewController.m */,
+				48D8EA4B1A1C4F8900BFFA63 /* Resource */,
+				48D8EA511A1C4F8900BFFA63 /* UIView+Extension.h */,
+				48D8EA521A1C4F8900BFFA63 /* UIView+Extension.m */,
+				48D8EA531A1C4F8900BFFA63 /* ZLPickerBrowser */,
 			);
 			path = ZLPickerLib;
+			sourceTree = "<group>";
+		};
+		48D8EA4B1A1C4F8900BFFA63 /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				48D8EA4C1A1C4F8900BFFA63 /* AssetsPickerChecked.imageset */,
+			);
+			path = Resource;
+			sourceTree = "<group>";
+		};
+		48D8EA4C1A1C4F8900BFFA63 /* AssetsPickerChecked.imageset */ = {
+			isa = PBXGroup;
+			children = (
+				48D8EA4D1A1C4F8900BFFA63 /* AssetsPickerChecked.png */,
+				48D8EA4E1A1C4F8900BFFA63 /* AssetsPickerChecked@2x.png */,
+				48D8EA4F1A1C4F8900BFFA63 /* AssetsPickerChecked@3x.png */,
+				48D8EA501A1C4F8900BFFA63 /* Contents.json */,
+			);
+			path = AssetsPickerChecked.imageset;
+			sourceTree = "<group>";
+		};
+		48D8EA531A1C4F8900BFFA63 /* ZLPickerBrowser */ = {
+			isa = PBXGroup;
+			children = (
+				48D8EA541A1C4F8900BFFA63 /* PickerBrowserViewController.h */,
+				48D8EA551A1C4F8900BFFA63 /* PickerBrowserViewController.m */,
+				48D8EA561A1C4F8900BFFA63 /* PickerCommon.h */,
+				48D8EA571A1C4F8900BFFA63 /* PickerPhoto.h */,
+				48D8EA581A1C4F8900BFFA63 /* PickerPhoto.m */,
+				48D8EA591A1C4F8900BFFA63 /* PickerPhotoGifView.h */,
+				48D8EA5A1A1C4F8900BFFA63 /* PickerPhotoGifView.m */,
+				48D8EA5B1A1C4F8900BFFA63 /* PickerPhotoImageView.h */,
+				48D8EA5C1A1C4F8900BFFA63 /* PickerPhotoImageView.m */,
+				48D8EA5D1A1C4F8900BFFA63 /* PickerPhotoScrollView.h */,
+				48D8EA5E1A1C4F8900BFFA63 /* PickerPhotoScrollView.m */,
+				48D8EA5F1A1C4F8900BFFA63 /* PickerPhotosView.h */,
+				48D8EA601A1C4F8900BFFA63 /* PickerPhotosView.m */,
+				48D8EA611A1C4F8900BFFA63 /* PickerProgressView.h */,
+				48D8EA621A1C4F8900BFFA63 /* PickerProgressView.m */,
+				48D8EA631A1C4F8900BFFA63 /* UIView+Extension.h */,
+				48D8EA641A1C4F8900BFFA63 /* UIView+Extension.m */,
+			);
+			path = ZLPickerBrowser;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -420,10 +445,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				48D8EA731A1C4F8900BFFA63 /* AssetsPickerChecked.png in Resources */,
+				48D8EA741A1C4F8900BFFA63 /* AssetsPickerChecked@2x.png in Resources */,
 				48B3E1841A11BABC0079F464 /* LaunchScreen.xib in Resources */,
-				48E44FA21A14809A00F8BBD4 /* PickerFooterCollectionReusableView.xib in Resources */,
+				48D8EA761A1C4F8900BFFA63 /* Contents.json in Resources */,
+				48D8EA6C1A1C4F8900BFFA63 /* PickerFooterCollectionReusableView.xib in Resources */,
+				48D8EA751A1C4F8900BFFA63 /* AssetsPickerChecked@3x.png in Resources */,
 				48B3E1811A11BABC0079F464 /* Images.xcassets in Resources */,
-				48E44F9D1A1467E900F8BBD4 /* PickerGroupTableViewCell.xib in Resources */,
+				48D8EA6F1A1C4F8900BFFA63 /* PickerGroupTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -441,43 +470,44 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				481C56321A175D35004FF9B2 /* PickerProgressView.m in Sources */,
+				48D8EA791A1C4F8900BFFA63 /* PickerPhoto.m in Sources */,
+				48D8EA7D1A1C4F8900BFFA63 /* PickerPhotosView.m in Sources */,
 				481C56091A16DFB1004FF9B2 /* UIImage+GIF.m in Sources */,
-				481C562F1A17454B004FF9B2 /* PickerPhotoImageView.m in Sources */,
-				481C55DC1A16DE1F004FF9B2 /* PickerPhoto.m in Sources */,
-				481C562C1A174065004FF9B2 /* PickerPhotoScrollView.m in Sources */,
-				4888272B1A1619E100DE4CB5 /* PickerBrowserViewController.m in Sources */,
-				48E44FA01A147D3D00F8BBD4 /* PickerFooterCollectionReusableView.m in Sources */,
 				48B3E17C1A11BABC0079F464 /* ViewController.m in Sources */,
+				48D8EA701A1C4F8900BFFA63 /* PickerGroupViewController.m in Sources */,
 				481C560B1A16DFB1004FF9B2 /* UIImage+WebP.m in Sources */,
+				48D8EA6A1A1C4F8900BFFA63 /* PickerDatas.m in Sources */,
 				481C56001A16DFB1004FF9B2 /* NSData+ImageContentType.m in Sources */,
+				48D8EA7A1A1C4F8900BFFA63 /* PickerPhotoGifView.m in Sources */,
 				48B3E1791A11BABC0079F464 /* AppDelegate.m in Sources */,
-				48B3E1A51A11BC610079F464 /* PickerDatas.m in Sources */,
+				48D8EA7E1A1C4F8900BFFA63 /* PickerProgressView.m in Sources */,
 				481C56031A16DFB1004FF9B2 /* SDWebImageDecoder.m in Sources */,
-				48E44F9C1A1467E900F8BBD4 /* PickerGroupTableViewCell.m in Sources */,
 				481C56081A16DFB1004FF9B2 /* UIButton+WebCache.m in Sources */,
+				48D8EA7B1A1C4F8900BFFA63 /* PickerPhotoImageView.m in Sources */,
+				48D8EA6B1A1C4F8900BFFA63 /* PickerFooterCollectionReusableView.m in Sources */,
 				481C56061A16DFB1004FF9B2 /* SDWebImageManager.m in Sources */,
-				48B3E1A21A11BAF80079F464 /* PickerImageView.m in Sources */,
-				48FD61181A1788850050E401 /* PickerPhotoGifView.m in Sources */,
-				4895D8621A1B43320072A743 /* BaseAnimationImageView.m in Sources */,
+				48D8EA651A1C4F8900BFFA63 /* BaseAnimationImageView.m in Sources */,
+				48D8EA781A1C4F8900BFFA63 /* PickerBrowserViewController.m in Sources */,
+				48D8EA671A1C4F8900BFFA63 /* PickerAssetsViewController.m in Sources */,
+				48D8EA661A1C4F8900BFFA63 /* BaseAnimationView.m in Sources */,
+				48D8EA771A1C4F8900BFFA63 /* UIView+Extension.m in Sources */,
 				481C560D1A16DFB1004FF9B2 /* UIImageView+WebCache.m in Sources */,
-				4867EAA81A11ED8600F299A1 /* PickerGroupViewController.m in Sources */,
-				48B3E1A11A11BAF80079F464 /* PickerCollectionViewCell.m in Sources */,
-				48B3E1A01A11BAF80079F464 /* PickerCollectionView.m in Sources */,
-				4867EAE41A120B8C00F299A1 /* PickerGroup.m in Sources */,
 				481C560C1A16DFB1004FF9B2 /* UIImageView+HighlightedWebCache.m in Sources */,
-				48D8EA121A1C3B7200BFFA63 /* PickerPhotosView.m in Sources */,
+				48D8EA6E1A1C4F8900BFFA63 /* PickerGroupTableViewCell.m in Sources */,
 				481C56041A16DFB1004FF9B2 /* SDWebImageDownloader.m in Sources */,
 				481C56071A16DFB1004FF9B2 /* SDWebImagePrefetcher.m in Sources */,
-				48B3E1A81A11CD630079F464 /* PickerViewController.m in Sources */,
 				481C56011A16DFB1004FF9B2 /* SDImageCache.m in Sources */,
-				481C56111A170199004FF9B2 /* UIView+Extension.m in Sources */,
 				481C56051A16DFB1004FF9B2 /* SDWebImageDownloaderOperation.m in Sources */,
-				4895D85C1A1B17C40072A743 /* BaseAnimationView.m in Sources */,
-				4801778E1A1368B80026F494 /* PickerAssetsViewController.m in Sources */,
 				481C55FF1A16DFB1004FF9B2 /* MKAnnotationView+WebCache.m in Sources */,
+				48D8EA7C1A1C4F8900BFFA63 /* PickerPhotoScrollView.m in Sources */,
+				48D8EA7F1A1C4F8900BFFA63 /* UIView+Extension.m in Sources */,
+				48D8EA691A1C4F8900BFFA63 /* PickerCollectionViewCell.m in Sources */,
 				481C560A1A16DFB1004FF9B2 /* UIImage+MultiFormat.m in Sources */,
+				48D8EA721A1C4F8900BFFA63 /* PickerViewController.m in Sources */,
+				48D8EA681A1C4F8900BFFA63 /* PickerCollectionView.m in Sources */,
 				481C560E1A16DFB1004FF9B2 /* UIView+WebCacheOperation.m in Sources */,
+				48D8EA711A1C4F8900BFFA63 /* PickerImageView.m in Sources */,
+				48D8EA6D1A1C4F8900BFFA63 /* PickerGroup.m in Sources */,
 				481C56021A16DFB1004FF9B2 /* SDWebImageCompat.m in Sources */,
 				48B3E1761A11BABC0079F464 /* main.m in Sources */,
 			);
