@@ -13,7 +13,7 @@
 #define PADDING 20
 
 // ScrollView拉伸的比例
-#define maxZoomScale 2.5
+#define maxZoomScale 2.0
 #define minZoomScale 1.0
 
 // PickerPhotosView 重用标识

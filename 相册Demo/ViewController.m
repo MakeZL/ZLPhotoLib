@@ -125,18 +125,11 @@
     
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
 
-    // 起始位置、结束位置、动画时间、图片参数
-    NSValue *descFrame = [NSValue valueWithCGRect:self.view.bounds];
-    
-    NSNumber *duration = [NSNumber numberWithFloat:.5];
-    
-    // 参数
+    // 起始位置、结束位置、动画时间、图片参数等
     NSDictionary *options = @{
-                              UIViewAnimationEndFrame:descFrame,
                               UIViewAnimationTypeViewWithIndexPath:indexPath,
-                              UIViewAnimationDuration:duration,
                               UIViewAnimationInView:self.view,
-//                              UIViewAnimationTypeView:self.tableView,
+                              UIViewAnimationMakeViewBackGroundColor:[UIColor blackColor],
                               UIViewAnimationTypeView:cell,
                               UIViewAnimationImages:self.assets,
                               UIViewAnimationNavigation:self.navigationController
@@ -174,6 +167,9 @@
     
     id imageObj = [self.assets objectAtIndex:index];
     PickerPhoto *photo = [[PickerPhoto alloc] init];
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
+    photo.thumbImage = cell.imageView.image;
+    
     if ([imageObj isKindOfClass:[ALAsset class]]) {
         ALAsset *asset = (ALAsset *)imageObj;
         photo.thumbImage = [UIImage imageWithCGImage:[asset thumbnail]];
@@ -183,7 +179,6 @@
     }else if ([imageObj isKindOfClass:[UIImage class]]){
         photo.photoImage = imageObj;
     }
-    
 
     return photo;
 }
@@ -224,28 +219,28 @@
     [self.tableView reloadData];
 }
 
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
-    
-    UIView *boxView = [[UIView alloc] init];
-    
-    NSValue *startV = [NSValue valueWithCGRect:CGRectMake(50, 50, 100, 100)];
-    NSValue *endV = [NSValue valueWithCGRect:CGRectMake(100, 100, 200, 200)];
-    NSNumber *duration = [NSNumber numberWithFloat:2.5];
-    
-    NSDictionary *options = @{
-                              UIViewAnimationStartFrame:startV,
-                              UIViewAnimationEndFrame:endV,
-                              UIViewAnimationDuration:duration,
-                              UIViewAnimationInView:self.view,                             UIViewAnimationBackGroundColor:[UIColor yellowColor]
-                              };
-    
-    [BaseAnimationView animationViewWithOptions:options completion:^(BaseAnimationView *baseView) {
-        baseView.backgroundColor = [UIColor redColor];
-        [baseView viewformIdentity:^(BaseAnimationView *baseView) {
-            NSLog(@" 结束了！！");
-        }];
-    }];
-    [self.view addSubview:boxView];
-}
+//- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
+//    
+//    UIView *boxView = [[UIView alloc] init];
+//    
+//    NSValue *startV = [NSValue valueWithCGRect:CGRectMake(50, 50, 100, 100)];
+//    NSValue *endV = [NSValue valueWithCGRect:CGRectMake(100, 100, 200, 200)];
+//    NSNumber *duration = [NSNumber numberWithFloat:2.5];
+//    
+//    NSDictionary *options = @{
+//                              UIViewAnimationStartFrame:startV,
+//                              UIViewAnimationEndFrame:endV,
+//                              UIViewAnimationDuration:duration,
+//                              UIViewAnimationInView:self.view,                            UIViewAnimationBackGroundColor:[UIColor yellowColor]
+//                              };
+//    
+//    [BaseAnimationView animationViewWithOptions:options completion:^(BaseAnimationView *baseView) {
+//        baseView.backgroundColor = [UIColor redColor];
+//        [baseView viewformIdentity:^(BaseAnimationView *baseView) {
+//            NSLog(@" 结束了！！");
+//        }];
+//    }];
+//    [self.view addSubview:boxView];
+//}
 
 @end

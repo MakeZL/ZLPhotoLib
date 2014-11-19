@@ -14,22 +14,28 @@
 #import "PickerCommon.h"
 
 @interface PickerPhotoScrollView () <UIScrollViewDelegate>
-
-@property (nonatomic , weak) PickerPhotoImageView *zoomImageView;
+{
+    CGSize _imageSize;
+    
+    CGPoint _pointToCenterAfterResize;
+    CGFloat _scaleToRestoreAfterResize;
+    PickerPhotoImageView *_zoomImageView;
+}
+//@property (nonatomic , weak) PickerPhotoImageView *zoomImageView;
 
 @end
 
 @implementation PickerPhotoScrollView
 
 #pragma mark -getter
-- (PickerPhotoImageView *)zoomImageView{
-    if (!_zoomImageView) {
-        PickerPhotoImageView *zoomImageView = [[PickerPhotoImageView alloc] init];
-        [self addSubview:zoomImageView];
-        self.zoomImageView = zoomImageView;
-    }
-    return _zoomImageView;
-}
+//- (PickerPhotoImageView *)zoomImageView{
+//    if (!_zoomImageView) {
+//        PickerPhotoImageView *zoomImageView = [[PickerPhotoImageView alloc] init];
+//        [self addSubview:zoomImageView];
+//        self.zoomImageView = zoomImageView;
+//    }
+//    return _zoomImageView;
+//}
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -43,17 +49,19 @@
 
 - (void)setProperty
 {
+    self.contentSize = CGSizeMake(self.width, self.height);
     self.backgroundColor = [UIColor blackColor];
     self.showsVerticalScrollIndicator = NO;
     self.showsHorizontalScrollIndicator = NO;
     self.bouncesZoom = YES;
+    self.contentSize = CGSizeMake(400, 400);
     self.decelerationRate = UIScrollViewDecelerationRateFast;
     self.delegate = self;
-    self.clipsToBounds = YES;
+
     // 设置最大伸缩比例
     self.maximumZoomScale = maxZoomScale;
     // 设置最小伸缩比例
-    self.maximumZoomScale = minZoomScale;
+    self.minimumZoomScale = minZoomScale;
     
     // 监听手势
     [self addGesture];
@@ -80,13 +88,24 @@
 - (void) scaleBigTap:(UITapGestureRecognizer *)tap{
     
     if (self.zoomScale == self.maximumZoomScale) {
-        [self setZoomScale:self.minimumZoomScale animated:YES];
+        [UIView animateWithDuration:.25 animations:^{
+            // 还原需要算下中间的y值
+            _zoomImageView.y = (self.height - _zoomImageView.height / self.maximumZoomScale) * 0.5;
+            [self setZoomScale:self.minimumZoomScale animated:NO];
+        }];
     }else{
         CGPoint touchPoint = [tap locationInView:tap.view];
         CGFloat newZoomScale = self.maximumZoomScale;
         CGFloat xsize = self.width / newZoomScale;
         CGFloat ysize = self.height / newZoomScale;
-        [self zoomToRect:CGRectMake(touchPoint.x - xsize/2, touchPoint.y - ysize/2, xsize, ysize) animated:YES];
+        
+        [UIView animateWithDuration:.25 animations:^{
+            // 如果图片的宽度大于高度，就算下y值
+            if (_zoomImageView.image.size.width > _zoomImageView.image.size.height) {
+                _zoomImageView.y = (self.height - _zoomImageView.height * self.maximumZoomScale) * 0.5;
+            }
+            [self zoomToRect:CGRectMake(touchPoint.x - xsize/2, touchPoint.y - ysize/2, xsize, ysize) animated:NO];
+        }];
     }
 }
 
@@ -106,16 +125,18 @@
         [gifView playGifWithURLString:photo.photoURL.absoluteString];
         [self addSubview:gifView];
     }else{
-        self.zoomImageView.frame = self.bounds;
-        self.zoomImageView.photo = photo;
+        if (!_zoomImageView) {
+            _zoomImageView = [[PickerPhotoImageView alloc] init];
+            [self addSubview:_zoomImageView];
+        }
+        _zoomImageView.photo = photo;
     }
+    
 }
-
-
 #pragma mark - UIScrollViewDelegate
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
 {
-    return self.zoomImageView;
+    return _zoomImageView;
 }
 
 @end

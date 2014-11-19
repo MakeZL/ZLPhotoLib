@@ -80,7 +80,7 @@
     // 如果是相册
     PickerGroup *gp = nil;
     for (PickerGroup *group in self.groups) {
-        if ([group.groupName isEqualToString:@"Camera Roll"]) {
+        if ([group.groupName isEqualToString:@"Camera Roll"] || [group.groupName isEqualToString:@"相机胶卷"]) {
             gp = group;
             break;
         }

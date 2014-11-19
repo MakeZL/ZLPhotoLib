@@ -76,6 +76,13 @@ static BaseAnimationView *_singleBaseView;
         ops[UIViewAnimationStartFrame] = [NSValue valueWithCGRect:startFrame];
     }
     
+    UIView *view = ops[UIViewAnimationInView];
+    CGRect endFrame = [ops[UIViewAnimationEndFrame] CGRectValue];
+    if (endFrame.size.width <= 0 || endFrame.size.height <= 0) {
+        endFrame = view.bounds;
+        ops[UIViewAnimationEndFrame] = [NSValue valueWithCGRect:endFrame];
+    }
+    
     return ops;
 }
 
@@ -84,27 +91,27 @@ static BaseAnimationView *_singleBaseView;
 - (instancetype) initViewWithOptions:(NSDictionary *) options completion:(void (^)(BaseAnimationView *baseView)) completion{
     
     // 计算开始坐标
-    NSDictionary *ops = [self getTypeViewWithOptions:options];
-    self.options = ops;
-    
+    self.options = [self getTypeViewWithOptions:options];
+
     // 获取参数
-    CGRect startFrame = [ops[UIViewAnimationStartFrame] CGRectValue];
-    CGRect endFrame = [ops[UIViewAnimationEndFrame] CGRectValue];
-    CGFloat duration = [ops[UIViewAnimationDuration] floatValue];
-    UIView *view = ops[UIViewAnimationInView];
-    UIColor *bgColor = ops[UIViewAnimationBackGroundColor];
-    UIView *selfView = ops[UIViewAnimationSelfView];
-    self.navigaiton = ops[UIViewAnimationNavigation];
-    self.navigaitionView = ops[UIViewAnimationNavigationView];
+    CGRect startFrame = [self.options[UIViewAnimationStartFrame] CGRectValue];
+    CGFloat duration = [self.options[UIViewAnimationDuration] floatValue];
+    UIColor *bgColor = self.options[UIViewAnimationBackGroundColor];
+    UIView *selfView = self.options[UIViewAnimationSelfView];
+    UIView *view = self.options[UIViewAnimationInView];
+
+    // 起始位置、结束位置、动画时间、图片参数
+    self.navigaiton = self.options[UIViewAnimationNavigation];
+    self.navigaitionView = self.options[UIViewAnimationNavigationView];
     
     view.userInteractionEnabled = NO;
     
     if (!self.maskView) {
         self.maskView = [[UIView alloc] init];
-        self.maskView.backgroundColor = ops[UIViewAnimationMakeViewBackGroundColor];
         [view addSubview:self.maskView];
     }
     
+    self.maskView.backgroundColor = self.options[UIViewAnimationMakeViewBackGroundColor];
     self.maskView.frame = view.frame;
     
     
@@ -119,8 +126,8 @@ static BaseAnimationView *_singleBaseView;
     _baseView.hidden = NO;
     _baseView.frame = startFrame;
     
-    _startFrame = ops[UIViewAnimationEndFrame];
-    _endFrame = ops[UIViewAnimationStartFrame];
+    _startFrame = self.options[UIViewAnimationEndFrame];
+    _endFrame = self.options[UIViewAnimationStartFrame];
     
     if (![view.superview.subviews.lastObject isKindOfClass:[BaseAnimationView class]]) {
         _baseView.backgroundColor = bgColor;
@@ -131,7 +138,7 @@ static BaseAnimationView *_singleBaseView;
     
     self.isClickDisMiss = NO;
     [UIView animateWithDuration:duration animations:^{
-        _baseView.frame = endFrame;
+        _baseView.frame = [self.options[UIViewAnimationEndFrame] CGRectValue];
         self.navigaiton.navigationBarHidden = YES;
         self.navigaitionView.hidden = YES;
     } completion:^(BOOL finished) {

@@ -17,9 +17,8 @@
 
 @interface PickerBrowserViewController () <UIScrollViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,PickerPhotoScrollViewDelegate>
 
-@property (nonatomic , strong) UIPageControl *pageCtrl;
+@property (nonatomic , weak) UIPageControl *pageCtrl;
 @property (nonatomic , weak) UIButton *deleleBtn;
-
 @property (nonatomic , weak) PickerPhotosView *collectionView;
 
 @end
@@ -50,9 +49,10 @@
         UIButton *deleleBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         CGFloat deleleBtnW = 50;
         CGFloat deleleBtnX = self.view.width - deleleBtnW;
-        CGFloat deleleBtnY = 0;
+        CGFloat deleleBtnY = 20;
         CGFloat deleleBtnH = deleleBtnW;
         deleleBtn.frame = CGRectMake(deleleBtnX, deleleBtnY, deleleBtnW, deleleBtnH);
+        deleleBtn.titleLabel.font = [UIFont systemFontOfSize:15];
         [deleleBtn setTitle:@"删除" forState:UIControlStateNormal];
         [deleleBtn addTarget:self action:@selector(delete) forControlEvents:UIControlEventTouchUpInside];
         deleleBtn.hidden = YES;
@@ -66,6 +66,7 @@
 - (UIPageControl *)pageCtrl{
     if (!_pageCtrl) {
         UIPageControl *pageCtrl = [[UIPageControl alloc] init];
+        pageCtrl.userInteractionEnabled = NO;
         pageCtrl.frame = CGRectMake(0, self.view.height - pageCtrlH, self.view.width, pageCtrlH);
         pageCtrl.currentPageIndicatorTintColor = [UIColor whiteColor];
         pageCtrl.pageIndicatorTintColor = [UIColor lightGrayColor];
@@ -107,11 +108,6 @@
         
         scrollView.frame = cell.bounds;
     }
-    //    if (indexPath.item == [self.dataSource numberOfPhotosInPickerBrowser:self] - 1) {
-    //        scrollView.frame = CGRectMake(-PADDING, 0, cell.width, cell.height);
-    //    }else{
-    //        scrollView.frame = CGRectMake(0, 0, cell.width, cell.height);
-    //    }
     scrollView.photo = photo;
     
     return cell;

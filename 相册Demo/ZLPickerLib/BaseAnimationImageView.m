@@ -59,7 +59,7 @@ static UIImageView *_imageView;
     if (photo.photoImage) {
         [[self imageView] setImage:photo.photoImage];
     }else if (photo.thumbImage){
-        [[self imageView] setImage:photo.photoImage];
+        [[self imageView] setImage:photo.thumbImage];
     }else if (cView.imageView.image){
         [[self imageView] setImage:cView.imageView.image];
     }else if (photo.photoURL){
@@ -79,7 +79,7 @@ static UIImageView *_imageView;
     if (photo.photoImage) {
         [[self imageView] setImage:photo.photoImage];
     }else if (photo.thumbImage){
-        [[self imageView] setImage:photo.photoImage];
+        [[self imageView] setImage:photo.thumbImage];
     }else if (cView.imageView.image){
         [[self imageView] setImage:cView.imageView.image];
     }else if (photo.photoURL){
