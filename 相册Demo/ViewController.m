@@ -161,6 +161,7 @@
         weakSelf.pickerBrowser = pickerBrowser;
         [weakSelf presentViewController:pickerBrowser animated:NO completion:nil];
     }];
+
     
 //    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
 //

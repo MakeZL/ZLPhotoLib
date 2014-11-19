@@ -8,10 +8,19 @@
 
 #import <UIKit/UIKit.h>
 
-@class PickerPhoto;
+@class PickerPhoto,PickerPhotoScrollView;
+
+@protocol PickerPhotoScrollViewDelegate <NSObject>
+
+@optional
+// 单击调用
+- (void) pickerPhotoScrollViewDidSingleClick:(PickerPhotoScrollView *)photoScrollView;
+
+@end
 
 @interface PickerPhotoScrollView : UIScrollView
 
 @property (nonatomic , strong) PickerPhoto *photo;
 
+@property (nonatomic , weak) id <PickerPhotoScrollViewDelegate> photoScrollViewDelegate;
 @end

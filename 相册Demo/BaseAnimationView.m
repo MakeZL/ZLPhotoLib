@@ -185,6 +185,7 @@ static BaseAnimationView *_baseView;
             completion(self);
         }
         
+        self.navigaiton.navigationBarHidden = NO;
         [self.maskView removeFromSuperview];
         
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -192,7 +193,6 @@ static BaseAnimationView *_baseView;
             UITableView *tableView = self.options[UIViewAnimationTypeView];
             tableView.userInteractionEnabled = YES;
             self.baseImageView.hidden = YES;
-            self.navigaiton.navigationBarHidden = NO;
         });
     }];
     

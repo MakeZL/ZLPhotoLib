@@ -45,6 +45,7 @@
 		48B3E1A21A11BAF80079F464 /* PickerImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B3E19F1A11BAF80079F464 /* PickerImageView.m */; };
 		48B3E1A51A11BC610079F464 /* PickerDatas.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B3E1A41A11BC610079F464 /* PickerDatas.m */; };
 		48B3E1A81A11CD630079F464 /* PickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B3E1A71A11CD630079F464 /* PickerViewController.m */; };
+		48D8EA121A1C3B7200BFFA63 /* PickerPhotosView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D8EA111A1C3B7200BFFA63 /* PickerPhotosView.m */; };
 		48E44F9C1A1467E900F8BBD4 /* PickerGroupTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 48E44F9A1A1467E900F8BBD4 /* PickerGroupTableViewCell.m */; };
 		48E44F9D1A1467E900F8BBD4 /* PickerGroupTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48E44F9B1A1467E900F8BBD4 /* PickerGroupTableViewCell.xib */; };
 		48E44FA01A147D3D00F8BBD4 /* PickerFooterCollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48E44F9F1A147D3D00F8BBD4 /* PickerFooterCollectionReusableView.m */; };
@@ -140,6 +141,8 @@
 		48B3E1A41A11BC610079F464 /* PickerDatas.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerDatas.m; sourceTree = "<group>"; };
 		48B3E1A61A11CD630079F464 /* PickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerViewController.h; sourceTree = "<group>"; };
 		48B3E1A71A11CD630079F464 /* PickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerViewController.m; sourceTree = "<group>"; };
+		48D8EA101A1C3B7200BFFA63 /* PickerPhotosView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerPhotosView.h; sourceTree = "<group>"; };
+		48D8EA111A1C3B7200BFFA63 /* PickerPhotosView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerPhotosView.m; sourceTree = "<group>"; };
 		48E44F991A1467E900F8BBD4 /* PickerGroupTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerGroupTableViewCell.h; sourceTree = "<group>"; };
 		48E44F9A1A1467E900F8BBD4 /* PickerGroupTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerGroupTableViewCell.m; sourceTree = "<group>"; };
 		48E44F9B1A1467E900F8BBD4 /* PickerGroupTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PickerGroupTableViewCell.xib; sourceTree = "<group>"; };
@@ -233,6 +236,8 @@
 				481C562E1A17454B004FF9B2 /* PickerPhotoImageView.m */,
 				48FD61161A1788850050E401 /* PickerPhotoGifView.h */,
 				48FD61171A1788850050E401 /* PickerPhotoGifView.m */,
+				48D8EA101A1C3B7200BFFA63 /* PickerPhotosView.h */,
+				48D8EA111A1C3B7200BFFA63 /* PickerPhotosView.m */,
 			);
 			path = ZLPickerBrowser;
 			sourceTree = "<group>";
@@ -459,6 +464,7 @@
 				48B3E1A01A11BAF80079F464 /* PickerCollectionView.m in Sources */,
 				4867EAE41A120B8C00F299A1 /* PickerGroup.m in Sources */,
 				481C560C1A16DFB1004FF9B2 /* UIImageView+HighlightedWebCache.m in Sources */,
+				48D8EA121A1C3B7200BFFA63 /* PickerPhotosView.m in Sources */,
 				481C56041A16DFB1004FF9B2 /* SDWebImageDownloader.m in Sources */,
 				481C56071A16DFB1004FF9B2 /* SDWebImagePrefetcher.m in Sources */,
 				48B3E1A81A11CD630079F464 /* PickerViewController.m in Sources */,
