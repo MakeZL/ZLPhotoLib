@@ -102,6 +102,7 @@
         self.image = photo.photoImage;
     }
     
+    self.backgroundColor = [UIColor redColor];
     [self setupFrame];
 }
 

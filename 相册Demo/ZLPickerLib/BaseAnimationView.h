@@ -42,18 +42,19 @@ static NSString *const UIViewAnimationDuration = @"UIViewAnimationDuration";
 static NSString *const UIViewAnimationInView = @"UIViewAnimationInView";
 // 当前View（非外面传入）
 static NSString *const UIViewAnimationSelfView = @"UIViewAnimationSelfView";
+// 来自那个View
+static NSString *const UIViewAnimationFromView = @"UIViewAnimationFromView";
 // 导航栏
 static NSString *const UIViewAnimationNavigation = @"UIViewAnimationNavigation";
 // 自定义导航View
 static NSString *const UIViewAnimationNavigationView = @"UIViewAnimationNavigationView";
 // 背景颜色
 static NSString *const UIViewAnimationBackGroundColor = @"UIViewAnimationBackGroundColor";
-// 蒙版层颜色
-static NSString *const UIViewAnimationMakeViewBackGroundColor = @"UIViewAnimationMakeViewBackGroundColor";
+
 
 /** 类型参数配置 */
 // 类型的View(TableView、CollectionView、scrollView)
-static NSString *const UIViewAnimationTypeView = @"UIViewAnimationTypeView";
+static NSString *const UIViewAnimationToView = @"UIViewAnimationToView";
 // indexPath
 static NSString *const UIViewAnimationTypeViewWithIndexPath = @"UIViewAnimationTypeViewWithIndexPath";
 // 类型的宽度与高度
@@ -88,6 +89,17 @@ typedef void(^completion)();
  *  @param completion 结束回调
  */
 - (instancetype) viewformIdentity:(void(^)(BaseAnimationView *baseView)) completion;
+
+
+/**
+ *  还原动画
+ *
+ *  @param completion 执行动画调用
+ *  @param identity 结束回调
+ */
+- (instancetype) viewAnimateWithAnimations:(void(^)())animations identity:(void(^)(BaseAnimationView *baseView)) completion;
+
+
 
 @property (nonatomic , assign) NSInteger currentPage;
 

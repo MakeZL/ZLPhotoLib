@@ -37,6 +37,9 @@ typedef void(^tapDisMissBlock)(NSInteger);
 
 @property (nonatomic , weak) id<PickerBrowserViewControllerDelegate> delegate;
 
+@property (nonatomic , strong) UIView *toView;
+@property (nonatomic , weak) UIView *fromView;
+
 /**
  *  是否可以编辑（删除照片）
  */
@@ -45,10 +48,7 @@ typedef void(^tapDisMissBlock)(NSInteger);
  *  当前提供的分页数
  */
 @property (nonatomic , assign) NSInteger currentPage;
-/**
- *  单击时执行的block
- */
-@property (nonatomic , copy) tapDisMissBlock disMissBlock;
+
 
 - (void) reloadData;
 

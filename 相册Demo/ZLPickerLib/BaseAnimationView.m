@@ -19,8 +19,6 @@
 @property (nonatomic , strong) UIView *navigaitionView;
 // 记录所有的参数
 @property (nonatomic , strong) NSDictionary *options;
-// 标志是否点击了销毁
-@property (nonatomic , assign) BOOL isClickDisMiss;
 
 
 @end
@@ -28,25 +26,6 @@
 static BaseAnimationView *_singleBaseView;
 
 @implementation BaseAnimationView
-
-- (instancetype)initWithFrame:(CGRect)frame{
-    if (self = [super initWithFrame:frame]) {
-        [self setupProperty];
-    }
-    return self;
-}
-
-- (id)initWithCoder:(NSCoder *)aDecoder{
-    if (self = [super initWithCoder:aDecoder]) {
-        [self setupProperty];
-    }
-    return self;
-}
-
-- (void) setupProperty{
-    self.contentMode = UIViewContentModeScaleAspectFit;
-    self.clipsToBounds = YES;
-}
 
 + (instancetype) animationViewWithOptions:(NSDictionary *) options completion:(void (^)(BaseAnimationView *baseView)) completion{
     return [[self animationView] initViewWithOptions:options completion:completion];
@@ -65,22 +44,28 @@ static BaseAnimationView *_singleBaseView;
     NSMutableDictionary *ops = [NSMutableDictionary dictionaryWithDictionary:options];
     CGRect startFrame = [options[UIViewAnimationStartFrame] CGRectValue];
     if (!startFrame.size.width || !startFrame.size.height) {
-        UIView *cView = options[UIViewAnimationTypeView];
+        UIView *cView = options[UIViewAnimationToView];
         if ([cView isKindOfClass:[UITableViewCell class]]) {
             UITableViewCell *cell = (UITableViewCell *)cView;
-            startFrame = [cell convertRect:cell.imageView.frame toView:options[UIViewAnimationInView]];
+            startFrame = [cell convertRect:cell.imageView.frame toView:options[UIViewAnimationFromView]];
         }else{
-            startFrame = [cView convertRect:cView.bounds toView:options[UIViewAnimationInView]];
+            startFrame = [cView convertRect:cView.bounds toView:options[UIViewAnimationFromView]];
         }
         
         ops[UIViewAnimationStartFrame] = [NSValue valueWithCGRect:startFrame];
     }
     
+    // 计算EndFrame是否为空
     UIView *view = ops[UIViewAnimationInView];
     CGRect endFrame = [ops[UIViewAnimationEndFrame] CGRectValue];
     if (endFrame.size.width <= 0 || endFrame.size.height <= 0) {
         endFrame = view.bounds;
         ops[UIViewAnimationEndFrame] = [NSValue valueWithCGRect:endFrame];
+    }
+    
+    // 计算Duration是否为空
+    if (![ops[UIViewAnimationDuration] floatValue]) {
+        ops[UIViewAnimationDuration] = [NSNumber numberWithFloat:0.5];
     }
     
     return ops;
@@ -105,15 +90,7 @@ static BaseAnimationView *_singleBaseView;
     self.navigaitionView = self.options[UIViewAnimationNavigationView];
     
     view.userInteractionEnabled = NO;
-    
-    if (!self.maskView) {
-        self.maskView = [[UIView alloc] init];
-        [view addSubview:self.maskView];
-    }
-    
-    self.maskView.backgroundColor = self.options[UIViewAnimationMakeViewBackGroundColor];
-    self.maskView.frame = view.frame;
-    
+    view.hidden = NO;
     
     if (!selfView) {
         if (!_baseView) {
@@ -129,54 +106,73 @@ static BaseAnimationView *_singleBaseView;
     _startFrame = self.options[UIViewAnimationEndFrame];
     _endFrame = self.options[UIViewAnimationStartFrame];
     
-    if (![view.superview.subviews.lastObject isKindOfClass:[BaseAnimationView class]]) {
-        _baseView.backgroundColor = bgColor;
-        [view.superview addSubview:_baseView];
+    if (![view.subviews.lastObject isKindOfClass:[BaseAnimationView class]]) {
+        if (bgColor) {
+            _baseView.backgroundColor = bgColor;
+        }
+        [view addSubview:_baseView];
     }
     
-    duration = duration ? duration : 0.5;
-    
-    self.isClickDisMiss = NO;
     [UIView animateWithDuration:duration animations:^{
         _baseView.frame = [self.options[UIViewAnimationEndFrame] CGRectValue];
         self.navigaiton.navigationBarHidden = YES;
         self.navigaitionView.hidden = YES;
     } completion:^(BOOL finished) {
+        [_baseView removeFromSuperview];
         if (completion) {
             completion(self);
         }
+        
         view.userInteractionEnabled = YES;
     }];
     
     return _baseView;
 }
 
-#pragma mark -清除动画
-- (instancetype) viewformIdentity:(void(^)(BaseAnimationView *baseView)) completion{
+#pragma mark -结束动画，支持动画block
+- (instancetype) viewAnimateWithAnimations:(void(^)())animations identity:(void(^)(BaseAnimationView *baseView)) completion{
+    // 让最外面的View不能跟用户进行交互
+    [self.options[UIViewAnimationFromView] setUserInteractionEnabled:NO];
+    _baseView.hidden = NO;
+    // 把_baseView添加到Window上
+    UIWindow *myWindow = [[[UIApplication sharedApplication] windows] lastObject];
+    UIView *view = myWindow.subviews.lastObject;
+    myWindow.userInteractionEnabled = NO;
+    if (!([view isKindOfClass:[BaseAnimationView class]]) &&
+        (![view isKindOfClass:[UIImageView class]]))
+    {
+        [myWindow addSubview:_baseView];
+    }
     
-    _baseView.frame = [_startFrame CGRectValue];
-    self.isClickDisMiss = YES;
-    
-    [UIView animateWithDuration:0.5 animations:^{
-        _baseView.frame = [_endFrame CGRectValue];
+    _baseView.frame = [self.options[UIViewAnimationEndFrame] CGRectValue];
+
+    [UIView animateWithDuration:.5 animations:^{
+        if (animations) {
+            animations();
+        }else{
+            _baseView.frame = [self.options[UIViewAnimationStartFrame] CGRectValue];
+        }
     } completion:^(BOOL finished) {
         if (completion) {
             completion(self);
         }
         
+        _baseView.hidden = YES;
         self.navigaiton.navigationBarHidden = NO;
         self.navigaitionView.hidden = NO;
-        [self.maskView removeFromSuperview];
         
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            // 让tableView能跟用户交互
-            UITableView *tableView = self.options[UIViewAnimationTypeView];
-            tableView.userInteractionEnabled = YES;
-            _baseView.hidden = YES;
+            // 让最外面的View能跟用户进行交互
+            [self.options[UIViewAnimationFromView] setUserInteractionEnabled:YES];
         });
     }];
     
     return  _baseView;
+}
+
+#pragma mark -结束动画
+- (instancetype) viewformIdentity:(void(^)(BaseAnimationView *baseView)) completion{
+   return [self viewAnimateWithAnimations:nil identity:completion];
 }
 
 @end

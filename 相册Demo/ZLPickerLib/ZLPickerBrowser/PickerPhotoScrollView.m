@@ -15,27 +15,12 @@
 
 @interface PickerPhotoScrollView () <UIScrollViewDelegate>
 {
-    CGSize _imageSize;
-    
-    CGPoint _pointToCenterAfterResize;
-    CGFloat _scaleToRestoreAfterResize;
     PickerPhotoImageView *_zoomImageView;
 }
-//@property (nonatomic , weak) PickerPhotoImageView *zoomImageView;
 
 @end
 
 @implementation PickerPhotoScrollView
-
-#pragma mark -getter
-//- (PickerPhotoImageView *)zoomImageView{
-//    if (!_zoomImageView) {
-//        PickerPhotoImageView *zoomImageView = [[PickerPhotoImageView alloc] init];
-//        [self addSubview:zoomImageView];
-//        self.zoomImageView = zoomImageView;
-//    }
-//    return _zoomImageView;
-//}
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -57,7 +42,7 @@
     self.contentSize = CGSizeMake(400, 400);
     self.decelerationRate = UIScrollViewDecelerationRateFast;
     self.delegate = self;
-
+    
     // 设置最大伸缩比例
     self.maximumZoomScale = maxZoomScale;
     // 设置最小伸缩比例
@@ -138,5 +123,15 @@
 {
     return _zoomImageView;
 }
+
+- (void)scrollViewDidZoom:(UIScrollView *)scrollView{
+
+        // 如果图片的宽度大于高度，就算下y值
+        if (_zoomImageView.image.size.width > _zoomImageView.image.size.height) {
+            _zoomImageView.y = (self.height - _zoomImageView.height) * 0.5;
+        }
+
+}
+
 
 @end

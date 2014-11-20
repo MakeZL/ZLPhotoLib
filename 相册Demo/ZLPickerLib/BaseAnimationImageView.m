@@ -16,6 +16,7 @@
 
 @property (nonatomic , strong) NSMutableArray *photos;
 @property (nonatomic , strong) NSDictionary *options;
+@property (nonatomic , strong) UIImageView *imageView;
 
 @end
 
@@ -28,7 +29,7 @@
     return _photos;
 }
 
-static UIImageView *_imageView;
+//static UIImageView *_imageView;
 
 - (UIImageView *)imageView{
     if (!_imageView) {
@@ -54,18 +55,19 @@ static UIImageView *_imageView;
     NSMutableDictionary *ops = [NSMutableDictionary dictionaryWithDictionary:options];
     // 根据索引值来赋值
     NSIndexPath *indexPath = options[UIViewAnimationTypeViewWithIndexPath];
-    PickerPhoto *photo = [self photoWithAtIndex:indexPath.row];
-    UIButton *cView = self.options[UIViewAnimationTypeView];
+    PickerPhoto *photo = self.photos[indexPath.row];//[self photoWithAtIndex:indexPath.row];
+    
+    UIButton *cView = self.options[UIViewAnimationToView];
+    UIImage *image = nil;
     if (photo.photoImage) {
-        [[self imageView] setImage:photo.photoImage];
+        image = photo.photoImage;
     }else if (photo.thumbImage){
-        [[self imageView] setImage:photo.thumbImage];
+        image = photo.thumbImage;
     }else if (cView.imageView.image){
-        [[self imageView] setImage:cView.imageView.image];
-    }else if (photo.photoURL){
-        [[self imageView] sd_setImageWithURL:photo.photoURL placeholderImage:nil];
+        image = cView.imageView.image;
     }
     
+    self.imageView.image = image;
     ops[UIViewAnimationSelfView] = self.imageView;
     
     return [super initViewWithOptions:ops completion:completion];
@@ -74,16 +76,16 @@ static UIImageView *_imageView;
 #pragma mark -重写清空，赋值
 - (instancetype)viewformIdentity:(void (^)(BaseAnimationView *))completion{
     
-    UIButton *cView = self.options[UIViewAnimationTypeView];
-    PickerPhoto *photo = [self photoWithAtIndex:self.currentPage];
+    UIButton *cView = self.options[UIViewAnimationToView];
+    PickerPhoto *photo = self.photos[self.currentPage];//[self photoWithAtIndex:self.currentPage];
     if (photo.photoImage) {
-        [[self imageView] setImage:photo.photoImage];
+        [_imageView setImage:photo.photoImage];
     }else if (photo.thumbImage){
-        [[self imageView] setImage:photo.thumbImage];
+        [_imageView setImage:photo.thumbImage];
     }else if (cView.imageView.image){
-        [[self imageView] setImage:cView.imageView.image];
+        [_imageView setImage:cView.imageView.image];
     }else if (photo.photoURL){
-        [[self imageView] sd_setImageWithURL:photo.photoURL placeholderImage:nil];
+        [_imageView sd_setImageWithURL:photo.photoURL placeholderImage:nil];
     }
     
     CGRect imageFrame = CGRectZero;
@@ -106,20 +108,20 @@ static UIImageView *_imageView;
 }
 
 // 取模型
-- (PickerPhoto *) photoWithAtIndex:(NSInteger) index{
-    id imageObj = [self.photos objectAtIndex:index];
-    PickerPhoto *photo = [[PickerPhoto alloc] init];
-    if ([imageObj isKindOfClass:[ALAsset class]]) {
-        ALAsset *asset = (ALAsset *)imageObj;
-        photo.thumbImage = [UIImage imageWithCGImage:[asset thumbnail]];
-        photo.photoImage = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]];
-    }else if ([imageObj isKindOfClass:[NSURL class]]){
-        photo.photoURL = imageObj;
-    }else if ([imageObj isKindOfClass:[UIImage class]]){
-        photo.photoImage = imageObj;
-    }
-    
-    return photo;
-}
+//- (PickerPhoto *) photoWithAtIndex:(NSInteger) index{
+//    id imageObj = [self.photos objectAtIndex:index];
+//    PickerPhoto *photo = [[PickerPhoto alloc] init];
+//    if ([imageObj isKindOfClass:[ALAsset class]]) {
+//        ALAsset *asset = (ALAsset *)imageObj;
+//        photo.thumbImage = [UIImage imageWithCGImage:[asset thumbnail]];
+//        photo.photoImage = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]];
+//    }else if ([imageObj isKindOfClass:[NSURL class]]){
+//        photo.photoURL = imageObj;
+//    }else if ([imageObj isKindOfClass:[UIImage class]]){
+//        photo.photoImage = imageObj;
+//    }
+//    
+//    return photo;
+//}
 @end
 

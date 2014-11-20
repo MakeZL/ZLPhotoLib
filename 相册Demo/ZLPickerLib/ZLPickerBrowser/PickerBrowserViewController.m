@@ -14,12 +14,17 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "PickerPhotoScrollView.h"
 #import "PickerCommon.h"
+#import "BaseAnimationImageView.h"
 
 @interface PickerBrowserViewController () <UIScrollViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,PickerPhotoScrollViewDelegate>
 
 @property (nonatomic , weak) UIPageControl *pageCtrl;
 @property (nonatomic , weak) UIButton *deleleBtn;
 @property (nonatomic , weak) PickerPhotosView *collectionView;
+/**
+ *  单击时执行的block
+ */
+@property (nonatomic , copy) tapDisMissBlock disMissBlock;
 
 @end
 
@@ -30,10 +35,10 @@
     if (!_collectionView) {
         
         PickerPhotosView *collectionView = [[PickerPhotosView alloc] initWithFrame:CGRectMake(0, 0, self.view.width + PADDING,self.view.height) collectionViewLayout:nil];
+        collectionView.backgroundColor = [UIColor clearColor];
         collectionView.maximumZoomScale = maxZoomScale;
         collectionView.minimumZoomScale = minZoomScale;
         collectionView.bouncesZoom = YES;
-        collectionView.dataSource = self;
         collectionView.delegate = self;
         [collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:_cellIdentifier];
 
@@ -76,12 +81,51 @@
     return _pageCtrl;
 }
 
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    
+    // 初始化collectionView
+    [self collectionView];
+    
+    // 开始动画
+    [self startLogddingAnimation];
+    
+}
+
+// 开始动画
+- (void)startLogddingAnimation{
+
+    NSDictionary *options = @{
+                              UIViewAnimationFromView:self.fromView,
+                              UIViewAnimationInView:self.view,
+                              UIViewAnimationToView:self.toView,
+                              UIViewAnimationImages:[self getPhotos],
+                              UIViewAnimationTypeViewWithIndexPath:[NSIndexPath indexPathForRow:self.currentPage inSection:0]
+                              };
+    
+    __weak typeof(self) weakSelf = self;
+    [BaseAnimationImageView animationViewWithOptions:options completion:^(BaseAnimationView *baseView) {
+        // disMiss后调用
+        weakSelf.disMissBlock = ^(NSInteger page){
+            weakSelf.currentPage = page;
+            [weakSelf dismissViewControllerAnimated:NO completion:nil];
+            
+            [baseView viewAnimateWithAnimations:nil identity:^(BaseAnimationView *baseView) {
+                
+            }];
+        };
+        
+        [weakSelf reloadData];
+    }];
+
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    // 刷新数据
-    [self reloadData];
+    self.view.backgroundColor = [UIColor blackColor];
+    
+
 }
 
 #pragma mark -<UICollectionViewDataSource>
@@ -116,10 +160,11 @@
 
 #pragma mark -刷新表格
 - (void) reloadData{
-    // 计算控件
+    
+    self.collectionView.dataSource = self;
     [self.collectionView reloadData];
     
-    if (self.currentPage) {
+    if (self.currentPage >= 0) {
         CGFloat attachVal = 0;
         if (self.currentPage == [self.dataSource numberOfPhotosInPickerBrowser:self]-1) {
             attachVal = PADDING;
@@ -127,11 +172,53 @@
         
         self.collectionView.x = -attachVal;
         self.collectionView.contentOffset = CGPointMake(self.currentPage * self.collectionView.width, 0);
+
+        // 执行动画咯
+        
+        // 起始位置、结束位置、动画时间、图片参数等
+//        NSMutableDictionary *options = [NSMutableDictionary dictionary];
+//        options[UIViewAnimationTypeViewWithIndexPath] = [NSIndexPath indexPathForRow:self.currentPage inSection:0];
+//        options[UIViewAnimationInView] = self.view;
+//        options[UIViewAnimationTypeView] = self.toView;
+//        options[UIViewAnimationImages] = [self getPhotos];
+//        options[UIViewAnimationDuration] = [NSNumber numberWithFloat:10.0];
+        
+//        NSDictionary *options = @{
+//                                  UIViewAnimationTypeViewWithIndexPath:[NSIndexPath indexPathForRow:self.currentPage inSection:0],
+//                                  UIViewAnimationInView:self.view,
+//                                  UIViewAnimationTypeView:self.toView,
+//                                  UIViewAnimationImages:[self getPhotos],
+//                                  UIViewAnimationNavigation:self.navigationController
+//                                  };
+        
+////        __unsafe_unretained typeof(self) weakSelf = self;
+//        [BaseAnimationImageView animationViewWithOptions:options completion:^(BaseAnimationView *baseView) {
+//            NSLog(@" --- %@",baseView);
+//            [baseView viewformIdentity:^(BaseAnimationView *baseView) {
+//                
+//            }];
+//            // 计算控件
+//
+//        }];
+
     }
     self.pageCtrl.numberOfPages = [self.dataSource numberOfPhotosInPickerBrowser:self];
     self.pageCtrl.currentPage = self.currentPage;
     self.deleleBtn.hidden = !self.isEditing;
     
+}
+
+/**
+ *  获取所有的图片
+ */
+- (NSArray *) getPhotos{
+    NSMutableArray *photos = [NSMutableArray array];
+    NSInteger count = [self.dataSource numberOfPhotosInPickerBrowser:self];
+    for (NSInteger i = 0; i < count; i++) {
+        [photos addObject:[self.dataSource photoBrowser:self photoAtIndex:i]];
+    }
+    
+    return photos;
 }
 
 #pragma mark -<UIScrollViewDelegate>

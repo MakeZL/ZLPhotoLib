@@ -13,4 +13,6 @@
 
 @property (nonatomic , strong) PickerPhoto *photo;
 
+- (void) setupFrame;
+
 @end

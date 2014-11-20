@@ -124,6 +124,26 @@
 - (void) setupPhotoBrowser:(UITableViewCell *) cell{
     
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+    
+    __unsafe_unretained typeof(self) weakSelf = self;
+    // 图片游览器
+    PickerBrowserViewController *pickerBrowser = [[PickerBrowserViewController alloc] init];
+    pickerBrowser.toView = cell;
+    pickerBrowser.fromView = self.view;
+    pickerBrowser.delegate = self;
+    pickerBrowser.dataSource = self;
+    pickerBrowser.editing = YES;
+    // 当前选中的值
+    pickerBrowser.currentPage = indexPath.row;
+    weakSelf.pickerBrowser = pickerBrowser;
+    [weakSelf presentViewController:pickerBrowser animated:NO completion:nil];
+    
+    //    [BaseAnimationImageView animationViewWithOptions:options completion:^(BaseAnimationView *baseView) {
+//        
+//    }];
+    
+    /*
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
 
     // 起始位置、结束位置、动画时间、图片参数等
     NSDictionary *options = @{
@@ -155,6 +175,7 @@
         weakSelf.pickerBrowser = pickerBrowser;
         [weakSelf presentViewController:pickerBrowser animated:NO completion:nil];
     }];
+     */
 }
 
 
