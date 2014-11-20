@@ -10,7 +10,7 @@
 #import "PickerPhoto.h"
 #import "PickerDatas.h"
 #import "UIImageView+WebCache.h"
-#import "PickerProgressView.h"
+#import "DACircularProgressView.h"
 #import "UIView+Extension.h"
 #import "PickerCommon.h"
 
@@ -21,7 +21,7 @@
 @property (weak, nonatomic) CAShapeLayer *backgroundLayer;
 
 // 进度ProgressView
-@property (nonatomic , weak) PickerProgressView *progressView;
+@property (nonatomic , weak) DACircularProgressView *progressView;
 
 
 @end
@@ -31,18 +31,17 @@
 
 
 #pragma mark -ProgressView
-- (PickerProgressView *)progressView{
+- (DACircularProgressView *)progressView{
     if (!_progressView) {
-        PickerProgressView *progressView = [[PickerProgressView alloc] init];
-        CGFloat progressW = ZLPickerProgressViewW;
-        CGFloat progressX = (self.width - progressW) / 2.0;
-        CGFloat progressH = ZLPickerProgressViewH;
-        CGFloat progressY = (self.height - progressH) / 2.0;
+        DACircularProgressView *progressView = [[DACircularProgressView alloc] init];
         
-        progressView.frame = CGRectMake(progressX, progressY, progressW, progressH);
-        progressView.progressTintColor = [UIColor grayColor];
-        progressView.borderTintColor = [UIColor lightGrayColor];
-        [self addSubview:progressView];
+        progressView.frame = CGRectMake(0, 0, ZLPickerProgressViewW, ZLPickerProgressViewH);
+        progressView.center = CGPointMake([UIScreen mainScreen].bounds.size.width * 0.5, [UIScreen mainScreen].bounds.size.height * 0.5);
+        progressView.roundedCorners = YES;
+        progressView.progressTintColor = [UIColor whiteColor];
+        progressView.trackTintColor = [UIColor lightGrayColor];
+        
+        [[[[UIApplication sharedApplication] windows] lastObject] addSubview:progressView];
         self.progressView = progressView;
     }
     return _progressView;
@@ -91,6 +90,11 @@
                 self.image = image;
                 [self.progressView removeFromSuperview];
                 self.progressView = nil;
+                
+                // 下载完回调
+                if (self.downLoadWebImageCallBlock) {
+                    self.downLoadWebImageCallBlock();
+                }
             }];
             
         }

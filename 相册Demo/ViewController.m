@@ -51,7 +51,7 @@
     }
     return _tableView;
 }
-//
+
 - (void)viewDidLoad{
     [super viewDidLoad];
     
@@ -137,45 +137,6 @@
     pickerBrowser.currentPage = indexPath.row;
     weakSelf.pickerBrowser = pickerBrowser;
     [weakSelf presentViewController:pickerBrowser animated:NO completion:nil];
-    
-    //    [BaseAnimationImageView animationViewWithOptions:options completion:^(BaseAnimationView *baseView) {
-//        
-//    }];
-    
-    /*
-    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-
-    // 起始位置、结束位置、动画时间、图片参数等
-    NSDictionary *options = @{
-                              UIViewAnimationTypeViewWithIndexPath:indexPath,
-                              UIViewAnimationInView:self.view,
-                              UIViewAnimationMakeViewBackGroundColor:[UIColor blackColor],
-                              UIViewAnimationTypeView:cell,
-                              UIViewAnimationImages:self.assets,
-                              UIViewAnimationNavigation:self.navigationController
-                              };
-    
-    __unsafe_unretained typeof(self) weakSelf = self;
-    // 动画结束调用
-    [BaseAnimationImageView animationViewWithOptions:options completion:^(BaseAnimationView *baseView) {
-        // 图片游览器
-        PickerBrowserViewController *pickerBrowser = [[PickerBrowserViewController alloc] init];
-        pickerBrowser.delegate = self;
-        pickerBrowser.dataSource = self;
-        pickerBrowser.editing = YES;
-        // 当前选中的值
-        pickerBrowser.currentPage = indexPath.row;
-        // disMiss后调用
-        pickerBrowser.disMissBlock = ^(NSInteger page){
-            baseView.currentPage = page;
-            [baseView viewformIdentity:^(BaseAnimationView *baseView) {
-                [weakSelf.pickerBrowser dismissViewControllerAnimated:NO completion:nil];
-            }];
-        };
-        weakSelf.pickerBrowser = pickerBrowser;
-        [weakSelf presentViewController:pickerBrowser animated:NO completion:nil];
-    }];
-     */
 }
 
 

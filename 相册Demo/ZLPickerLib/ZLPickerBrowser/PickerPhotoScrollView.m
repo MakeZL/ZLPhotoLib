@@ -114,17 +114,23 @@
             _zoomImageView = [[PickerPhotoImageView alloc] init];
             [self addSubview:_zoomImageView];
         }
+        __weak typeof(self) weakSelf = self;
+        // 下载完图片更新frame
+        _zoomImageView.downLoadWebImageCallBlock = ^{
+            [weakSelf setMaxMinZoomScalesForCurrentBounds];
+        };
         _zoomImageView.photo = photo;
+
     }
-    
-    _zoomImageView.frame = (CGRect) {CGPointZero , _zoomImageView.image.size};
-    self.contentSize = _zoomImageView.image.size;
     
     [self setMaxMinZoomScalesForCurrentBounds];
     
 }
 
 - (void)setMaxMinZoomScalesForCurrentBounds {
+
+    _zoomImageView.frame = (CGRect) {CGPointZero , _zoomImageView.image.size};
+    self.contentSize = _zoomImageView.image.size;
     
     // 重置
     self.maximumZoomScale = 1;

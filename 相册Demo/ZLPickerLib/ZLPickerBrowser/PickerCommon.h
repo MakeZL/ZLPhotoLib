@@ -17,8 +17,8 @@ static CGFloat const ZLPickerScrollViewMaxZoomScale = 3.0;
 static CGFloat const ZLPickerScrollViewMinZoomScale = 1.0;
 
 // 进度条的宽度/高度
-static NSInteger const ZLPickerProgressViewW = 250;
-static NSInteger const ZLPickerProgressViewH = 25;
+static NSInteger const ZLPickerProgressViewW = 50;
+static NSInteger const ZLPickerProgressViewH = 50;
 
 // 分页控制器的高度
 static NSInteger const ZLPickerPageCtrlH = 25;
