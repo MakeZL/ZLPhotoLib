@@ -7,14 +7,14 @@
 //
 
 #import "ViewController.h"
-#import "PickerViewController.h"
+#import "ZLPickerViewController.h"
 #import "UIView+Extension.h"
-#import "PickerBrowserViewController.h"
+#import "ZLPickerBrowserViewController.h"
 //#import "BaseAnimationView.h"
-#import "BaseAnimationImageView.h"
+#import "ZLBaseAnimationImageView.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 
-@interface ViewController () <UITableViewDataSource,UITableViewDelegate,PickerViewControllerDelegate,PickerBrowserViewControllerDataSource,PickerBrowserViewControllerDelegate>
+@interface ViewController () <UITableViewDataSource,UITableViewDelegate,PickerViewControllerDelegate,ZLPickerBrowserViewControllerDataSource,ZLPickerBrowserViewControllerDelegate>
 
 - (void)selectPhotos;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -22,7 +22,7 @@
 @property (nonatomic , weak) UILabel *zixueLabel;
 
 @property (nonatomic,strong) UIImageView *currentImageView;
-@property (nonatomic , strong) PickerBrowserViewController *pickerBrowser;
+@property (nonatomic , strong) ZLPickerBrowserViewController *pickerBrowser;
 @property (nonatomic , assign) CGRect tempFrame;
 
 @end
@@ -80,7 +80,7 @@
 
 - (void)selectPhotos {
     // 创建控制器
-    PickerViewController *pickerVc = [[PickerViewController alloc] init];
+    ZLPickerViewController *pickerVc = [[ZLPickerViewController alloc] init];
     // 默认显示相册里面的内容SavePhotos
     pickerVc.status = PickerViewShowStatusSavePhotos;
     // 选择图片的最大数
@@ -117,7 +117,7 @@
 
 #pragma mark 设置当前的缩放View符image
 - (void) setupCurrentImageViewPhotoAtIndex:(NSInteger)index{
-    PickerPhoto *photo = [self photoBrowser:self.pickerBrowser photoAtIndex:index];
+    ZLPickerBrowserPhoto *photo = [self photoBrowser:self.pickerBrowser photoAtIndex:index];
     self.currentImageView.image = photo.photoImage;
 }
 
@@ -127,7 +127,7 @@
     
     __unsafe_unretained typeof(self) weakSelf = self;
     // 图片游览器
-    PickerBrowserViewController *pickerBrowser = [[PickerBrowserViewController alloc] init];
+    ZLPickerBrowserViewController *pickerBrowser = [[ZLPickerBrowserViewController alloc] init];
     pickerBrowser.toView = cell;
     pickerBrowser.fromView = self.view;
     pickerBrowser.delegate = self;
@@ -140,15 +140,15 @@
 }
 
 
-#pragma mark <PickerBrowserViewControllerDataSource>
-- (NSInteger) numberOfPhotosInPickerBrowser:(PickerBrowserViewController *)pickerBrowser{
+#pragma mark <ZLPickerBrowserViewControllerDataSource>
+- (NSInteger) numberOfPhotosInPickerBrowser:(ZLPickerBrowserViewController *)pickerBrowser{
     return self.assets.count;
 }
 
-- (PickerPhoto *) photoBrowser:(PickerBrowserViewController *)pickerBrowser photoAtIndex:(NSUInteger)index{
+- (ZLPickerBrowserPhoto *) photoBrowser:(ZLPickerBrowserViewController *)pickerBrowser photoAtIndex:(NSUInteger)index{
     
     id imageObj = [self.assets objectAtIndex:index];
-    PickerPhoto *photo = [[PickerPhoto alloc] init];
+    ZLPickerBrowserPhoto *photo = [[ZLPickerBrowserPhoto alloc] init];
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
     photo.thumbImage = cell.imageView.image;
     
@@ -165,8 +165,8 @@
     return photo;
 }
 
-#pragma mark <PickerBrowserViewControllerDelegate>
-- (void)photoBrowser:(PickerBrowserViewController *)photoBrowser removePhotoAtIndex:(NSUInteger)index{
+#pragma mark <ZLPickerBrowserViewControllerDelegate>
+- (void)photoBrowser:(ZLPickerBrowserViewController *)photoBrowser removePhotoAtIndex:(NSUInteger)index{
     if (index > self.assets.count) return;
     [self.assets removeObjectAtIndex:index];
     [self.tableView reloadData];
