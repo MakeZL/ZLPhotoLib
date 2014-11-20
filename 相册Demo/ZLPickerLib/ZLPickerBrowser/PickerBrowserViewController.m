@@ -16,6 +16,8 @@
 #import "PickerCommon.h"
 #import "BaseAnimationImageView.h"
 
+static NSString *_cellIdentifier = @"collectionViewCell";
+
 @interface PickerBrowserViewController () <UIScrollViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,PickerPhotoScrollViewDelegate>
 
 @property (nonatomic , weak) UIPageControl *pageCtrl;
@@ -34,10 +36,10 @@
 - (PickerPhotosView *)collectionView{
     if (!_collectionView) {
         
-        PickerPhotosView *collectionView = [[PickerPhotosView alloc] initWithFrame:CGRectMake(0, 0, self.view.width + PADDING,self.view.height) collectionViewLayout:nil];
+        PickerPhotosView *collectionView = [[PickerPhotosView alloc] initWithFrame:CGRectMake(0, 0, self.view.width + ZLPickerColletionViewPadding,self.view.height) collectionViewLayout:nil];
         collectionView.backgroundColor = [UIColor clearColor];
-        collectionView.maximumZoomScale = maxZoomScale;
-        collectionView.minimumZoomScale = minZoomScale;
+        collectionView.maximumZoomScale = ZLPickerScrollViewMaxZoomScale;
+        collectionView.minimumZoomScale = ZLPickerScrollViewMinZoomScale;
         collectionView.bouncesZoom = YES;
         collectionView.delegate = self;
         [collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:_cellIdentifier];
@@ -72,7 +74,7 @@
     if (!_pageCtrl) {
         UIPageControl *pageCtrl = [[UIPageControl alloc] init];
         pageCtrl.userInteractionEnabled = NO;
-        pageCtrl.frame = CGRectMake(0, self.view.height - pageCtrlH, self.view.width, pageCtrlH);
+        pageCtrl.frame = CGRectMake(0, self.view.height - ZLPickerPageCtrlH, self.view.width, ZLPickerPageCtrlH);
         pageCtrl.currentPageIndicatorTintColor = [UIColor whiteColor];
         pageCtrl.pageIndicatorTintColor = [UIColor lightGrayColor];
         [self.view addSubview:pageCtrl];
@@ -107,10 +109,10 @@
     [BaseAnimationImageView animationViewWithOptions:options completion:^(BaseAnimationView *baseView) {
         // disMiss后调用
         weakSelf.disMissBlock = ^(NSInteger page){
-            weakSelf.currentPage = page;
+            baseView.currentPage = page;
             [weakSelf dismissViewControllerAnimated:NO completion:nil];
             
-            [baseView viewAnimateWithAnimations:nil identity:^(BaseAnimationView *baseView) {
+            [baseView viewformIdentity:^(BaseAnimationView *baseView) {
                 
             }];
         };
@@ -167,7 +169,7 @@
     if (self.currentPage >= 0) {
         CGFloat attachVal = 0;
         if (self.currentPage == [self.dataSource numberOfPhotosInPickerBrowser:self]-1) {
-            attachVal = PADDING;
+            attachVal = ZLPickerColletionViewPadding;
         }
         
         self.collectionView.x = -attachVal;
@@ -234,7 +236,7 @@
         scrollView.contentOffset.x + scrollView.width <= scrollView.contentSize.width &&
         scrollView.contentOffset.x >= 0
         ) {
-        self.collectionView.x = -PADDING;
+        self.collectionView.x = -ZLPickerColletionViewPadding;
     }else{
         self.collectionView.x = 0;
     }
@@ -254,8 +256,8 @@
             scrollView.contentOffset.x + scrollView.width <= scrollView.contentSize.width
             ) {
             PickerPhotoScrollView *scView = [cell.contentView.subviews lastObject];
-            if (scView.zoomScale != 1.0) {
-                [scView setZoomScale:1.0 animated:YES];
+            if (scView.zoomScale != scView.minimumZoomScale) {
+                [scView setZoomScale:scView.minimumZoomScale animated:YES];
             }
         }
     }

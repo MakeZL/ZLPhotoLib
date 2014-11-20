@@ -27,6 +27,9 @@
 #import "PickerCollectionViewCell.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 
+static NSString *const _cellIdentifier = @"cell";
+static NSString *const _footerIdentifier = @"FooterView";
+
 @interface PickerAssetsViewController () <PickerCollectionViewDelegate>
 
 @property (nonatomic , weak) PickerCollectionView *collectionView;
@@ -45,6 +48,7 @@
 
 @implementation PickerAssetsViewController
 
+#pragma mark - getter
 - (NSMutableArray *)buttons{
     if (!_buttons) {
         _buttons = [NSMutableArray array];
@@ -52,6 +56,7 @@
     return _buttons;
 }
 
+#pragma mark collectionView
 - (PickerCollectionView *)collectionView{
     if (!_collectionView) {
         
@@ -62,16 +67,11 @@
         layout.minimumLineSpacing = CELL_LINE_MARGIN;
         layout.footerReferenceSize = CGSizeMake(320, 50);
         
-        CGFloat height = 0;
-        if (!iOS7) {
-            height = 44;
-        }
+        PickerCollectionView *collectionView = [[PickerCollectionView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height) collectionViewLayout:layout];
         
-        PickerCollectionView *collectionView = [[PickerCollectionView alloc] initWithFrame:CGRectMake(0, height, self.view.frame.size.width, self.view.frame.size.height - height) collectionViewLayout:layout];
+        [collectionView registerClass:[PickerCollectionViewCell class] forCellWithReuseIdentifier:_cellIdentifier];
         
-        [collectionView registerClass:[PickerCollectionViewCell class] forCellWithReuseIdentifier:@"cell"];
-        
-        [collectionView registerNib:[UINib nibWithNibName:@"PickerFooterCollectionReusableView" bundle:nil] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterView"];
+        [collectionView registerNib:[UINib nibWithNibName:@"PickerFooterCollectionReusableView" bundle:nil] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:_footerIdentifier];
         
         collectionView.contentInset = UIEdgeInsetsMake(5, 0, self.toolBar.frame.size.height, 0);
         collectionView.collectionViewDelegate = self;
@@ -82,6 +82,7 @@
     return _collectionView;
 }
 
+#pragma mark -红点标记View
 - (UILabel *)makeView{
     if (!_makeView) {
         UILabel *makeView = [[UILabel alloc] init];
@@ -103,7 +104,8 @@
     [super viewDidLoad];
     
     self.view.backgroundColor = [UIColor whiteColor];
-    
+
+    // 初始化按钮
     [self setupButtons];
     
     // 初始化底部ToorBar
@@ -111,30 +113,13 @@
 }
 
 
-#pragma mark - setup
+#pragma mark - setter
+#pragma mark 初始化按钮
 - (void) setupButtons{
-    
-//    UIButton *rightBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-//    [rightBtn setTitleColor:[UIColor colorWithRed:0/255.0 green:91/255.0 blue:255/255.0 alpha:1.0] forState:UIControlStateNormal];
-//    [rightBtn setTitleColor:[UIColor grayColor] forState:UIControlStateDisabled];
-//    
-//    rightBtn.titleLabel.font = [UIFont systemFontOfSize:17];
-//    rightBtn.frame = CGRectMake(0, 0, 45, 45);
-//    [rightBtn setTitle:@"完成" forState:UIControlStateNormal];
-//    [rightBtn addTarget:self action:@selector(done) forControlEvents:UIControlEventTouchUpInside];
-//    
-//    [rightBtn addSubview:self.makeView];
-    
-    
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"取消" style:UIBarButtonItemStyleDone target:self action:@selector(back)];
-    
-//    rightBtn.enabled = (self.collectionView.selectAsstes.count > 0);
-//    self.navigationItem.rightBarButtonItem.enabled = (self.collectionView.selectAsstes.count > 0);
-    
-//    self.rightBtn = rightBtn;
 }
 
-
+#pragma mark 初始化所有的组
 - (void) setupAssets{
     if (!self.assets) {
         self.assets = [NSMutableArray array];
@@ -152,6 +137,7 @@
 #pragma mark -初始化底部ToorBar
 - (void) setupToorBar{
     UIToolbar *toorBar = [[UIToolbar alloc] init];
+    toorBar.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleHeight;
     CGFloat toorBarH = 44;
     toorBar.frame = CGRectMake(0, self.view.frame.size.height - toorBarH, self.view.frame.size.width, toorBarH);
     [self.view addSubview:toorBar];

@@ -8,11 +8,13 @@
 
 #import "PickerCollectionViewCell.h"
 
+static NSString *const _cellIdentifier = @"cell";
+
 @implementation PickerCollectionViewCell
 
 + (instancetype)cellWithCollectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     
-    PickerCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:indexPath];
+    PickerCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:_cellIdentifier forIndexPath:indexPath];
     
     if ([[cell.contentView.subviews lastObject] isKindOfClass:[UIImageView class]]) {
         [[cell.contentView.subviews lastObject] removeFromSuperview];

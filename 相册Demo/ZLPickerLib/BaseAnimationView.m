@@ -150,7 +150,7 @@ static BaseAnimationView *_singleBaseView;
         if (animations) {
             animations();
         }else{
-            _baseView.frame = [self.options[UIViewAnimationStartFrame] CGRectValue];
+            _baseView.frame = [_endFrame CGRectValue];//[self.options[UIViewAnimationStartFrame] CGRectValue];
         }
     } completion:^(BOOL finished) {
         if (completion) {

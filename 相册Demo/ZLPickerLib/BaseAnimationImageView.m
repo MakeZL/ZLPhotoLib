@@ -89,39 +89,23 @@
     }
     
     CGRect imageFrame = CGRectZero;
-    
+    // 通过分页数来确定类型，计算最终的Frame值
     if ([cView isKindOfClass:[UITableViewCell class]]) {
         // 如果是tableViewCell的情况下
         UITableViewCell *cell = (UITableViewCell *)cView;
         CGRect cellF = CGRectMake(cell.imageView.x, cell.imageView.height * self.currentPage, cell.imageView.width, cell.imageView.height);
         
-        imageFrame = [cell.superview convertRect:cellF toView: self.options[UIViewAnimationInView]];
+        imageFrame = [cell.superview convertRect:cellF toView: self.options[UIViewAnimationFromView]];
     }else{
         // 如果是ScrollView的情况下
         CGFloat margin = CGRectGetMaxX(cView.frame) - (cView.tag + 1) * cView.width;
         CGFloat imageX = cView.frame.size.width * self.currentPage;
-        imageFrame = [cView.superview convertRect:CGRectMake(imageX + margin, cView.bounds.origin.y, cView.frame.size.width, cView.bounds.size.height) toView: self.options[UIViewAnimationInView]];
+        imageFrame = [cView.superview convertRect:CGRectMake(imageX + margin, cView.bounds.origin.y, cView.frame.size.width, cView.bounds.size.height) toView: self.options[UIViewAnimationFromView]];
     }
     
     _endFrame = [NSValue valueWithCGRect:imageFrame];
     return [super viewformIdentity:completion];
 }
 
-// 取模型
-//- (PickerPhoto *) photoWithAtIndex:(NSInteger) index{
-//    id imageObj = [self.photos objectAtIndex:index];
-//    PickerPhoto *photo = [[PickerPhoto alloc] init];
-//    if ([imageObj isKindOfClass:[ALAsset class]]) {
-//        ALAsset *asset = (ALAsset *)imageObj;
-//        photo.thumbImage = [UIImage imageWithCGImage:[asset thumbnail]];
-//        photo.photoImage = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]];
-//    }else if ([imageObj isKindOfClass:[NSURL class]]){
-//        photo.photoURL = imageObj;
-//    }else if ([imageObj isKindOfClass:[UIImage class]]){
-//        photo.photoImage = imageObj;
-//    }
-//    
-//    return photo;
-//}
 @end
 

@@ -43,7 +43,7 @@
     if (!_tableView) {
         CGFloat w = 300;
         CGFloat x = (self.view.frame.size.width - w ) / 2.0;
-        UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(x, 100, w, w) style:UITableViewStylePlain];
+        UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(x, 0, w, w) style:UITableViewStylePlain];
         tableView.dataSource = self;
         tableView.delegate = self;
         [self.view addSubview:tableView];

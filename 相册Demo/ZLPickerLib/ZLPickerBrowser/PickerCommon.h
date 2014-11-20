@@ -10,20 +10,16 @@
 #define ZLAssetsPickerDemo_PickerCommon_h
 
 // ScrollView 滑动的间距
-#define PADDING 20
+static CGFloat const ZLPickerColletionViewPadding = 20;
 
 // ScrollView拉伸的比例
-#define maxZoomScale 3.0
-#define minZoomScale 1.0
-
-// PickerPhotosView 重用标识
-static NSString *_cellIdentifier = @"collectionViewCell";
+static CGFloat const ZLPickerScrollViewMaxZoomScale = 3.0;
+static CGFloat const ZLPickerScrollViewMinZoomScale = 1.0;
 
 // 进度条的宽度/高度
-#define progressViewW 250
-#define progressViewH 25
+static NSInteger const ZLPickerProgressViewW = 250;
+static NSInteger const ZLPickerProgressViewH = 25;
 
 // 分页控制器的高度
-#define pageCtrlH 44
-
+static NSInteger const ZLPickerPageCtrlH = 25;
 #endif

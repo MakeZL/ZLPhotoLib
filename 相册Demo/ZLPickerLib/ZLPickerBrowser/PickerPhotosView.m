@@ -30,7 +30,7 @@
 - (instancetype)initWithFrame:(CGRect)frame collectionViewLayout:(UICollectionViewFlowLayout *)layout{
     
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
-    flowLayout.minimumLineSpacing = PADDING;
+    flowLayout.minimumLineSpacing = ZLPickerColletionViewPadding;
     flowLayout.itemSize = CGSizeMake(frame.size.width - flowLayout.minimumLineSpacing, frame.size.height);
     flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
     

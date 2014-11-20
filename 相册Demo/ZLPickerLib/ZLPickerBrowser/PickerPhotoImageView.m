@@ -34,9 +34,9 @@
 - (PickerProgressView *)progressView{
     if (!_progressView) {
         PickerProgressView *progressView = [[PickerProgressView alloc] init];
-        CGFloat progressW = progressViewW;
+        CGFloat progressW = ZLPickerProgressViewW;
         CGFloat progressX = (self.width - progressW) / 2.0;
-        CGFloat progressH = progressViewH;
+        CGFloat progressH = ZLPickerProgressViewH;
         CGFloat progressY = (self.height - progressH) / 2.0;
         
         progressView.frame = CGRectMake(progressX, progressY, progressW, progressH);
@@ -91,8 +91,6 @@
                 self.image = image;
                 [self.progressView removeFromSuperview];
                 self.progressView = nil;
-                // 计算Frame
-                [self setupFrame];
             }];
             
         }
@@ -100,35 +98,6 @@
         
     }  else if (photo.photoImage){
         self.image = photo.photoImage;
-    }
-    
-    self.backgroundColor = [UIColor redColor];
-    [self setupFrame];
-}
-
-- (void) setupFrame{
-    
-    if (!self.image) return ;
-    
-    // 屏幕的尺寸
-    CGSize screenBoundsSize = [[UIScreen mainScreen] bounds].size;
-    
-    CGFloat imageH = self.image.size.height;
-    CGFloat imageW = self.image.size.width;
-    
-    // 取出最小的比例值
-    CGFloat scaleY = imageH / imageW;
-    CGFloat scaleX = imageW / imageH;
-    CGFloat minScale = MIN(scaleX, scaleY);
-    // 如果图片的宽度大于高度，就算y值.
-    CGFloat height = screenBoundsSize.width * minScale;
-    if (imageW > imageH){
-        CGFloat y = (screenBoundsSize.height- height) / 2.0;
-        self.frame = CGRectMake(0, y,screenBoundsSize.width, height);
-        
-    }else{
-        CGFloat bigScale = screenBoundsSize.height / height;
-        self.frame = CGRectMake(0, 0, screenBoundsSize.width, height * bigScale);
     }
     
 }
