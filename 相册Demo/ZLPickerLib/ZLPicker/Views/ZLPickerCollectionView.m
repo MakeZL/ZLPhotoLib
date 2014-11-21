@@ -29,15 +29,6 @@
 @implementation ZLPickerCollectionView
 
 #pragma mark -getter
-//- (ALAssetsLibrary *)assetsLibrary{
-//    if (!_assetsLibrary) {
-//        self.assetsLibrary = [[ALAssetsLibrary alloc] init];
-//    }
-//    return _assetsLibrary;
-//}
-
-
-
 - (NSMutableArray *)selectsIndexPath{
     if (!_selectsIndexPath) {
         _selectsIndexPath = [NSMutableArray array];
@@ -48,7 +39,6 @@
 #pragma mark -setter
 - (void)setDataArray:(NSArray *)dataArray{
     _dataArray = dataArray;
-
     [self reloadData];
 }
 
@@ -63,8 +53,7 @@
     return self;
 }
 
-
-
+#pragma mark -<UICollectionViewDataSource>
 - (NSInteger) numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
     return 1;
 }
@@ -92,32 +81,7 @@
     return cell;
 }
 
-#pragma mark 根据URL来获取图片
-//- (void) getAssetURLWithImage:(NSString *) assetUrl{
-//    [self.assetsLibrary assetForURL:[NSURL URLWithString:assetUrl] resultBlock:^(ALAsset *asset)
-//     {
-//         //在这里使用asset来获取图片
-//         [self getAssetWithImage:asset];
-//     } failureBlock:nil];
-//}
-
-#pragma mark 根据ALAsset来获取
-//- (void) getAssetWithImage:(ALAsset *) asset{
-//    //在这里使用asset来获取图片
-//    ALAssetRepresentation *assetRep = [asset defaultRepresentation];
-//    CGImageRef imgRef = [asset thumbnail];
-//    UIImage *img = [UIImage imageWithCGImage:imgRef
-//                                       scale:assetRep.scale
-//                                 orientation:UIImageOrientationUp];
-//    [self.images addObject:img];
-//    
-//    @autoreleasepool {
-//        [self.fullscrenImages addObject:[UIImage imageWithCGImage:[assetRep fullScreenImage] scale:assetRep.scale
-//                                                      orientation:UIImageOrientationUp]];
-//    }
-//                                         
-//}
-
+#pragma mark - <UICollectionViewDelegate>
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     
     ZLPickerCollectionViewCell *cell = (ZLPickerCollectionViewCell *) [collectionView cellForItemAtIndexPath:indexPath];
@@ -150,9 +114,10 @@
     }
 }
 
+#pragma mark 底部View
 -(UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
 {
-    UICollectionReusableView *reusableView = nil;
+    ZLPickerFooterCollectionReusableView *reusableView = nil;
     if (kind == UICollectionElementKindSectionFooter) {
         ZLPickerFooterCollectionReusableView *footerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterView" forIndexPath:indexPath];
         footerView.count = self.dataArray.count;

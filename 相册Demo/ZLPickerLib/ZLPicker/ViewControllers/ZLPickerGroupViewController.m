@@ -32,11 +32,20 @@
 
 - (UITableView *)tableView{
     if (!_tableView) {
-        UITableView *tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
+        UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
+        tableView.translatesAutoresizingMaskIntoConstraints = NO;
         tableView.delegate = self;
         tableView.dataSource = self;
         [self.view addSubview:tableView];
         self.tableView = tableView;
+        
+        NSDictionary *views = NSDictionaryOfVariableBindings(tableView);
+        
+        NSString *heightVfl = @"V:|-0-[tableView]-0-|";
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:heightVfl options:0 metrics:nil views:views]];
+        NSString *widthVfl = @"H:|-0-[tableView]-0-|";
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:widthVfl options:0 metrics:nil views:views]];
+        
     }
     return _tableView;
 }

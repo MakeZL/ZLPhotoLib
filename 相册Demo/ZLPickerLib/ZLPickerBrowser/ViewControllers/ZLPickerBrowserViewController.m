@@ -168,7 +168,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     
     if (self.currentPage >= 0) {
         CGFloat attachVal = 0;
-        if (self.currentPage == [self.dataSource numberOfPhotosInPickerBrowser:self]-1) {
+        if (self.currentPage == [self.dataSource numberOfPhotosInPickerBrowser:self]-1 && self.currentPage > 0) {
             attachVal = ZLPickerColletionViewPadding;
         }
         

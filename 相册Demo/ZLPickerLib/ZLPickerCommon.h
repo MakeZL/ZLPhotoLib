@@ -9,6 +9,8 @@
 #ifndef ZLAssetsPickerDemo_PickerCommon_h
 #define ZLAssetsPickerDemo_PickerCommon_h
 
+#define iOS7gt ([[UIDevice currentDevice].systemVersion doubleValue] >= 7.0)
+
 // ScrollView 滑动的间距
 static CGFloat const ZLPickerColletionViewPadding = 20;
 

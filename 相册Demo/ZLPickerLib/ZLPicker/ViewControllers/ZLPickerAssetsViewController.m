@@ -19,12 +19,14 @@
 // 间距
 #define TOOLBAR_IMG_MARGIN 2
 
+#define TOOLBAR_HEIGHT 44
 
 #import "ZLPickerAssetsViewController.h"
 #import "ZLPickerCollectionView.h"
 #import "ZLPickerGroup.h"
 #import "ZLPickerDatas.h"
 #import "ZLPickerCollectionViewCell.h"
+#import "ZLPickerFooterCollectionReusableView.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 
 static NSString *const _cellIdentifier = @"cell";
@@ -65,18 +67,26 @@ static NSString *const _footerIdentifier = @"FooterView";
         layout.itemSize = CGSizeMake(cellW, cellW);
         layout.minimumInteritemSpacing = 0;
         layout.minimumLineSpacing = CELL_LINE_MARGIN;
-        layout.footerReferenceSize = CGSizeMake(320, 50);
+        layout.footerReferenceSize = CGSizeMake(self.view.frame.size.width, TOOLBAR_HEIGHT * 2);
         
-        ZLPickerCollectionView *collectionView = [[ZLPickerCollectionView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height) collectionViewLayout:layout];
-        
+        ZLPickerCollectionView *collectionView = [[ZLPickerCollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
+        collectionView.translatesAutoresizingMaskIntoConstraints = NO;
         [collectionView registerClass:[ZLPickerCollectionViewCell class] forCellWithReuseIdentifier:_cellIdentifier];
+        // 底部的View
+        [collectionView registerClass:[ZLPickerFooterCollectionReusableView class]  forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:_footerIdentifier];
         
-        [collectionView registerNib:[UINib nibWithNibName:@"PickerFooterCollectionReusableView" bundle:nil] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:_footerIdentifier];
-        
-        collectionView.contentInset = UIEdgeInsetsMake(5, 0, self.toolBar.frame.size.height, 0);
+        collectionView.contentInset = UIEdgeInsetsMake(5, 0,TOOLBAR_HEIGHT, 0);
         collectionView.collectionViewDelegate = self;
         [self.view insertSubview:collectionView belowSubview:self.toolBar];
         self.collectionView = collectionView;
+        
+        NSDictionary *views = NSDictionaryOfVariableBindings(collectionView);
+        
+        NSString *widthVfl = @"H:|-0-[collectionView]-0-|";
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:widthVfl options:0 metrics:nil views:views]];
+        
+        NSString *heightVfl = @"V:|-0-[collectionView]-0-|";
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:heightVfl options:0 metrics:nil views:views]];
         
     }
     return _collectionView;
@@ -96,6 +106,7 @@ static NSString *const _footerIdentifier = @"FooterView";
         makeView.backgroundColor = [UIColor redColor];
         [self.view addSubview:makeView];
         self.makeView = makeView;
+        
     }
     return _makeView;
 }
@@ -137,11 +148,16 @@ static NSString *const _footerIdentifier = @"FooterView";
 #pragma mark -初始化底部ToorBar
 - (void) setupToorBar{
     UIToolbar *toorBar = [[UIToolbar alloc] init];
-    toorBar.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleHeight;
-    CGFloat toorBarH = 44;
-    toorBar.frame = CGRectMake(0, self.view.frame.size.height - toorBarH, self.view.frame.size.width, toorBarH);
+    toorBar.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:toorBar];
     self.toolBar = toorBar;
+    
+    NSDictionary *views = NSDictionaryOfVariableBindings(toorBar);
+    NSString *widthVfl =  @"H:|-0-[toorBar]-0-|";
+    NSString *heightVfl = @"V:[toorBar(44)]-0-|";
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:widthVfl options:0 metrics:0 views:views]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:heightVfl options:0 metrics:0 views:views]];
+    
     
     UIButton *rightBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [rightBtn setTitleColor:[UIColor colorWithRed:0/255.0 green:91/255.0 blue:255/255.0 alpha:1.0] forState:UIControlStateNormal];

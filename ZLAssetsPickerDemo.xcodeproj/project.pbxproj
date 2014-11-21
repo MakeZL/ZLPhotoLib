@@ -39,7 +39,6 @@
 		48AE840F1A1E0525002EEE6E /* ZLPickerCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AE83EA1A1E0525002EEE6E /* ZLPickerCollectionView.m */; };
 		48AE84101A1E0525002EEE6E /* ZLPickerCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AE83EC1A1E0525002EEE6E /* ZLPickerCollectionViewCell.m */; };
 		48AE84111A1E0525002EEE6E /* ZLPickerFooterCollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AE83EE1A1E0525002EEE6E /* ZLPickerFooterCollectionReusableView.m */; };
-		48AE84121A1E0525002EEE6E /* ZLPickerFooterCollectionReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AE83EF1A1E0525002EEE6E /* ZLPickerFooterCollectionReusableView.xib */; };
 		48AE84131A1E0525002EEE6E /* ZLPickerGroupTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AE83F11A1E0525002EEE6E /* ZLPickerGroupTableViewCell.m */; };
 		48AE84141A1E0525002EEE6E /* ZLPickerGroupTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AE83F21A1E0525002EEE6E /* ZLPickerGroupTableViewCell.xib */; };
 		48AE84151A1E0525002EEE6E /* ZLPickerImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AE83F41A1E0525002EEE6E /* ZLPickerImageView.m */; };
@@ -130,7 +129,6 @@
 		48AE83EC1A1E0525002EEE6E /* ZLPickerCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLPickerCollectionViewCell.m; sourceTree = "<group>"; };
 		48AE83ED1A1E0525002EEE6E /* ZLPickerFooterCollectionReusableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLPickerFooterCollectionReusableView.h; sourceTree = "<group>"; };
 		48AE83EE1A1E0525002EEE6E /* ZLPickerFooterCollectionReusableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLPickerFooterCollectionReusableView.m; sourceTree = "<group>"; };
-		48AE83EF1A1E0525002EEE6E /* ZLPickerFooterCollectionReusableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ZLPickerFooterCollectionReusableView.xib; sourceTree = "<group>"; };
 		48AE83F01A1E0525002EEE6E /* ZLPickerGroupTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLPickerGroupTableViewCell.h; sourceTree = "<group>"; };
 		48AE83F11A1E0525002EEE6E /* ZLPickerGroupTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLPickerGroupTableViewCell.m; sourceTree = "<group>"; };
 		48AE83F21A1E0525002EEE6E /* ZLPickerGroupTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ZLPickerGroupTableViewCell.xib; sourceTree = "<group>"; };
@@ -322,7 +320,6 @@
 				48AE83EC1A1E0525002EEE6E /* ZLPickerCollectionViewCell.m */,
 				48AE83ED1A1E0525002EEE6E /* ZLPickerFooterCollectionReusableView.h */,
 				48AE83EE1A1E0525002EEE6E /* ZLPickerFooterCollectionReusableView.m */,
-				48AE83EF1A1E0525002EEE6E /* ZLPickerFooterCollectionReusableView.xib */,
 				48AE83F01A1E0525002EEE6E /* ZLPickerGroupTableViewCell.h */,
 				48AE83F11A1E0525002EEE6E /* ZLPickerGroupTableViewCell.m */,
 				48AE83F21A1E0525002EEE6E /* ZLPickerGroupTableViewCell.xib */,
@@ -535,7 +532,6 @@
 				48AE84061A1E0525002EEE6E /* AssetsPickerChecked@3x.png in Resources */,
 				48AE84051A1E0525002EEE6E /* AssetsPickerChecked@2x.png in Resources */,
 				48AE84071A1E0525002EEE6E /* Contents.json in Resources */,
-				48AE84121A1E0525002EEE6E /* ZLPickerFooterCollectionReusableView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

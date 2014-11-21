@@ -10,7 +10,7 @@
 #import "ZLPickerViewController.h"
 #import "UIView+Extension.h"
 #import "ZLPickerBrowserViewController.h"
-//#import "BaseAnimationView.h"
+#import "ZLPickerCommon.h"
 #import "ZLBaseAnimationImageView.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 
@@ -24,6 +24,7 @@
 @property (nonatomic,strong) UIImageView *currentImageView;
 @property (nonatomic , strong) ZLPickerBrowserViewController *pickerBrowser;
 @property (nonatomic , assign) CGRect tempFrame;
+@property (nonatomic , strong) NSMutableDictionary *params;
 
 @end
 
@@ -41,13 +42,20 @@
 
 - (UITableView *)tableView{
     if (!_tableView) {
-        CGFloat w = 300;
-        CGFloat x = (self.view.frame.size.width - w ) / 2.0;
-        UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(x, 0, w, w) style:UITableViewStylePlain];
+        UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
+        tableView.backgroundColor = [UIColor whiteColor];
         tableView.dataSource = self;
         tableView.delegate = self;
         [self.view addSubview:tableView];
         self.tableView = tableView;
+        
+        tableView.translatesAutoresizingMaskIntoConstraints = NO;
+        
+        NSString *vfl = @"V:|-topPadding-[tableView]-padding-|";
+        NSDictionary *views = NSDictionaryOfVariableBindings(tableView);
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:vfl options:0 metrics:self.params views:views]];
+        NSString *vfl2 = @"H:|-padding-[tableView]-padding-|";
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:vfl2 options:0 metrics:self.params views:views]];
     }
     return _tableView;
 }
@@ -56,26 +64,22 @@
     [super viewDidLoad];
     
     self.view.backgroundColor = [UIColor whiteColor];
+    // 设置AutoLayout参数
+    [self setAutoLayoutParams];
     
     [self setupButtons];
-    [self setupUI];
 }
-//
+
+#pragma mark -setter
+#pragma mark 设置AutoLayout参数
+- (void) setAutoLayoutParams{
+    self.params = [NSMutableDictionary dictionary];
+    self.params[@"padding"] = @"20";
+    self.params[@"topPadding"] = iOS7gt ? @"20" : @"0";
+}
 - (void) setupButtons{
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"选择照片" style:UIBarButtonItemStyleDone target:self action:@selector(selectPhotos)];
 }
-
-- (void) setupUI{
-    
-    UILabel *zixueLabel = [[UILabel alloc] init];
-    zixueLabel.textAlignment = NSTextAlignmentCenter;
-    zixueLabel.numberOfLines = 0;
-    zixueLabel.frame = CGRectMake(0, self.view.frame.size.height - 100, self.view.frame.size.width, 100);
-    zixueLabel.text = @"有任何好的建议或者代码改进请联系我的QQ：120886865\n我的自学网站：www.zixue101.com";
-    [self.view addSubview:zixueLabel];
-    self.zixueLabel = zixueLabel;
-}
-
 
 
 - (void)selectPhotos {
@@ -84,7 +88,7 @@
     // 默认显示相册里面的内容SavePhotos
     pickerVc.status = PickerViewShowStatusSavePhotos;
     // 选择图片的最大数
-//    pickerVc.maxCount = 4;
+    // pickerVc.maxCount = 4;
 
     pickerVc.delegate = self;
     [self presentViewController:pickerVc animated:YES completion:nil];

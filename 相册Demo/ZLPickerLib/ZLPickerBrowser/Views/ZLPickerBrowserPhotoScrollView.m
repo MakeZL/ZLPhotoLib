@@ -84,13 +84,19 @@
         CGFloat xsize = self.width / newZoomScale;
         CGFloat ysize = self.height / newZoomScale;
         
-        [UIView animateWithDuration:.25 animations:^{
-            // 如果图片的宽度大于高度，就算下y值
-            if (_zoomImageView.image.size.width > _zoomImageView.image.size.height) {
-                _zoomImageView.y = (self.height - _zoomImageView.height * self.maximumZoomScale) * 0.5;
-            }
-            [self zoomToRect:CGRectMake(touchPoint.x - xsize/2, touchPoint.y - ysize/2, xsize, ysize) animated:NO];
-        }];
+        
+        CGFloat scaleH = _zoomImageView.image.size.height / _zoomImageView.image.size.width;
+        CGFloat scaleW = _zoomImageView.image.size.width / _zoomImageView.image.size.height;
+        
+        CGFloat minScale = MIN(scaleH, scaleW);
+        
+        CGFloat y =  self.width * minScale;
+        if (touchPoint.y > self.height * 0.5) {
+            y -= self.height * minScale;
+        }
+        
+        
+        [self zoomToRect:CGRectMake(touchPoint.x * newZoomScale, touchPoint.y - y, xsize, ysize) animated:YES];
     }
 }
 

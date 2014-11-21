@@ -7,12 +7,11 @@
 //
 
 
-#define iOS7 ([[UIDevice currentDevice].systemVersion doubleValue] >= 7.0)
-
 // 回调
 typedef void(^callBackBlock)(id obj);
 
 #import <UIKit/UIKit.h>
+#import "ZLPickerCommon.h"
 
 @class ZLPickerGroup;
 
