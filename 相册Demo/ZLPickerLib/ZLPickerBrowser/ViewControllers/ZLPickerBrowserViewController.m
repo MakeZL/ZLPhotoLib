@@ -9,7 +9,6 @@
 #import "ZLPickerBrowserViewController.h"
 #import "ZLPickerBrowserPhoto.h"
 #import "ZLPickerDatas.h"
-#import "ZLPickerBrowserPhotosCollectionView.h"
 #import "UIView+Extension.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "ZLPickerBrowserPhotoScrollView.h"
@@ -22,7 +21,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 
 @property (nonatomic , weak) UIPageControl *pageCtrl;
 @property (nonatomic , weak) UIButton *deleleBtn;
-@property (nonatomic , weak) ZLPickerBrowserPhotosCollectionView *collectionView;
+@property (nonatomic , weak) UICollectionView *collectionView;
 /**
  *  单击时执行的block
  */
@@ -33,17 +32,23 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 
 @implementation ZLPickerBrowserViewController
 
-- (ZLPickerBrowserPhotosCollectionView *)collectionView{
+- (UICollectionView *)collectionView{
     if (!_collectionView) {
         
-        ZLPickerBrowserPhotosCollectionView *collectionView = [[ZLPickerBrowserPhotosCollectionView alloc] initWithFrame:CGRectMake(0, 0, self.view.width + ZLPickerColletionViewPadding,self.view.height) collectionViewLayout:nil];
+        UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
+        flowLayout.minimumLineSpacing = ZLPickerColletionViewPadding;
+        flowLayout.itemSize = self.view.size;
+        flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+        
+        UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, self.view.width + ZLPickerColletionViewPadding,self.view.height) collectionViewLayout:flowLayout];
+        collectionView.showsHorizontalScrollIndicator = NO;
+        collectionView.showsVerticalScrollIndicator = NO;
+        collectionView.pagingEnabled = YES;
         collectionView.backgroundColor = [UIColor clearColor];
-        collectionView.maximumZoomScale = ZLPickerScrollViewMaxZoomScale;
-        collectionView.minimumZoomScale = ZLPickerScrollViewMinZoomScale;
-        collectionView.bouncesZoom = YES;
+        collectionView.bounces = YES;
         collectionView.delegate = self;
         [collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:_cellIdentifier];
-
+        
         [self.view addSubview:collectionView];
         self.collectionView = collectionView;
     }
@@ -95,7 +100,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 
 // 开始动画
 - (void)startLogddingAnimation{
-
+    
     NSDictionary *options = @{
                               UIViewAnimationFromView:self.fromView,
                               UIViewAnimationInView:self.view,
@@ -117,15 +122,13 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         
         [weakSelf reloadData];
     }];
-
+    
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     self.view.backgroundColor = [UIColor blackColor];
-    
-
 }
 
 #pragma mark -<UICollectionViewDataSource>
@@ -147,11 +150,12 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     if (![scrollView isKindOfClass:[ZLPickerBrowserPhotoScrollView class]]) {
         scrollView = [[ZLPickerBrowserPhotoScrollView alloc] init];
         // 为了监听单击photoView事件
+        scrollView.frame = cell.bounds;
         scrollView.photoScrollViewDelegate = self;
         [cell.contentView addSubview:scrollView];
         
-        scrollView.frame = cell.bounds;
     }
+    
     scrollView.photo = photo;
     
     return cell;
@@ -172,35 +176,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         
         self.collectionView.x = -attachVal;
         self.collectionView.contentOffset = CGPointMake(self.currentPage * self.collectionView.width, 0);
-
-        // 执行动画咯
         
-        // 起始位置、结束位置、动画时间、图片参数等
-//        NSMutableDictionary *options = [NSMutableDictionary dictionary];
-//        options[UIViewAnimationTypeViewWithIndexPath] = [NSIndexPath indexPathForRow:self.currentPage inSection:0];
-//        options[UIViewAnimationInView] = self.view;
-//        options[UIViewAnimationTypeView] = self.toView;
-//        options[UIViewAnimationImages] = [self getPhotos];
-//        options[UIViewAnimationDuration] = [NSNumber numberWithFloat:10.0];
-        
-//        NSDictionary *options = @{
-//                                  UIViewAnimationTypeViewWithIndexPath:[NSIndexPath indexPathForRow:self.currentPage inSection:0],
-//                                  UIViewAnimationInView:self.view,
-//                                  UIViewAnimationTypeView:self.toView,
-//                                  UIViewAnimationImages:[self getPhotos],
-//                                  UIViewAnimationNavigation:self.navigationController
-//                                  };
-        
-////        __unsafe_unretained typeof(self) weakSelf = self;
-//        [BaseAnimationImageView animationViewWithOptions:options completion:^(BaseAnimationView *baseView) {
-//            NSLog(@" --- %@",baseView);
-//            [baseView viewformIdentity:^(BaseAnimationView *baseView) {
-//                
-//            }];
-//            // 计算控件
-//
-//        }];
-
     }
     self.pageCtrl.numberOfPages = [self.dataSource numberOfPhotosInPickerBrowser:self];
     self.pageCtrl.currentPage = self.currentPage;
@@ -226,40 +202,35 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     self.currentPage = (NSInteger)((scrollView.contentOffset.x / scrollView.width) + 0.5);
     
     self.pageCtrl.currentPage = self.currentPage;
-
-}
-
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
-    if (self.currentPage == [self.dataSource numberOfPhotosInPickerBrowser:self] - 1 &&
-        scrollView.contentOffset.x + scrollView.width <= scrollView.contentSize.width &&
-        scrollView.contentOffset.x >= 0
-        ) {
-        self.collectionView.x = -ZLPickerColletionViewPadding;
+ 
+    CGRect tempF = self.collectionView.frame;
+    if (self.currentPage < [self.dataSource numberOfPhotosInPickerBrowser:self] - 1) {
+        tempF.origin.x = 0
+        ;
     }else{
-        self.collectionView.x = 0;
+        tempF.origin.x = -ZLPickerColletionViewPadding;
     }
+    self.collectionView.frame = tempF;
 }
 
-
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
-    // 如果已经切换了幻灯片就恢复最原始的比例
-    NSInteger count = [self.dataSource numberOfPhotosInPickerBrowser:self];
-    
-    
-    for (int i = 0; i < count; i++) {
-        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:i inSection:0];
-        UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath:indexPath];
-        if (scrollView.contentOffset.x / scrollView.width != self.currentPage &&
-            scrollView.contentOffset.x >= 0 &&
-            scrollView.contentOffset.x + scrollView.width <= scrollView.contentSize.width
-            ) {
-            ZLPickerBrowserPhotoScrollView *scView = [cell.contentView.subviews lastObject];
-            if (scView.zoomScale != scView.minimumZoomScale) {
-                [scView setZoomScale:scView.minimumZoomScale animated:YES];
-            }
-        }
-    }
-}
+//- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
+//    // 如果已经切换了幻灯片就恢复最原始的比例
+//    NSInteger count = [self.dataSource numberOfPhotosInPickerBrowser:self];
+//    
+//    for (int i = 0; i < count; i++) {
+//        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:i inSection:0];
+//        UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath:indexPath];
+//        if (scrollView.contentOffset.x / scrollView.width != self.currentPage &&
+//            scrollView.contentOffset.x >= 0 &&
+//            scrollView.contentOffset.x + scrollView.width <= scrollView.contentSize.width
+//            ) {
+//            ZLPickerBrowserPhotoScrollView *scView = [cell.contentView.subviews lastObject];
+//            if (scView.zoomScale != scView.minimumZoomScale) {
+//                [scView setZoomScale:scView.minimumZoomScale animated:YES];
+//            }
+//        }
+//    }
+//}
 
 
 
@@ -267,11 +238,11 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 - (void) delete{
     
     UIAlertView *removeAlert = [[UIAlertView alloc]
-                                    initWithTitle:@"确定要删除此图片？"
-                                    message:nil
-                                    delegate:self
-                                    cancelButtonTitle:@"取消"
-                                    otherButtonTitles:@"确定", nil];
+                                initWithTitle:@"确定要删除此图片？"
+                                message:nil
+                                delegate:self
+                                cancelButtonTitle:@"取消"
+                                otherButtonTitles:@"确定", nil];
     [removeAlert show];
 }
 

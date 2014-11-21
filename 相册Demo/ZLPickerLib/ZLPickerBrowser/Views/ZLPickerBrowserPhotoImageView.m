@@ -54,6 +54,13 @@
     return self;
 }
 
+- (id)initWithCoder:(NSCoder *)aDecoder{
+    if (self = [super initWithCoder:aDecoder]) {
+        [self setupProperty];
+    }
+    return self;
+}
+
 #pragma mark -初始化
 - (void) setupProperty{
     self.contentMode = UIViewContentModeScaleAspectFit;
