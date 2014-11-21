@@ -83,15 +83,14 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     return _pageCtrl;
 }
 
-- (void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:animated];
+- (void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
     
     // 初始化collectionView
     [self collectionView];
     
     // 开始动画
     [self startLogddingAnimation];
-    
 }
 
 // 开始动画
@@ -111,7 +110,6 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         weakSelf.disMissBlock = ^(NSInteger page){
             baseView.currentPage = page;
             [weakSelf dismissViewControllerAnimated:NO completion:nil];
-            
             [baseView viewformIdentity:^(ZLBaseAnimationView *baseView) {
                 
             }];

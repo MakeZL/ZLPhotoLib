@@ -132,7 +132,7 @@ static ZLBaseAnimationView *_singleBaseView;
 #pragma mark -结束动画，支持动画block
 - (instancetype) viewAnimateWithAnimations:(void(^)())animations identity:(void(^)(ZLBaseAnimationView *baseView)) completion{
     // 让最外面的View不能跟用户进行交互
-    [self.options[UIViewAnimationFromView] setUserInteractionEnabled:NO];
+//    [self.options[UIViewAnimationFromView] setUserInteractionEnabled:NO];
     _baseView.hidden = NO;
     // 把_baseView添加到Window上
     UIWindow *myWindow = [[[UIApplication sharedApplication] windows] lastObject];
@@ -163,6 +163,7 @@ static ZLBaseAnimationView *_singleBaseView;
         
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             // 让最外面的View能跟用户进行交互
+            myWindow.userInteractionEnabled = YES;
             [self.options[UIViewAnimationFromView] setUserInteractionEnabled:YES];
         });
     }];
