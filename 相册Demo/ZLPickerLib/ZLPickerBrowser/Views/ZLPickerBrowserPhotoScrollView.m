@@ -71,32 +71,23 @@
 - (void) scaleBigTap:(UITapGestureRecognizer *)tap{
     // Zoom
     // Zoom
-    CGFloat offsetX = (self.bounds.size.width > self.contentSize.width)?(self.bounds.size.width - self.contentSize.width)/2 : 0.0;
-    CGFloat offsetY = (self.bounds.size.height > self.contentSize.height)?(self.bounds.size.height - self.contentSize.height)/2 : 0.0;
     
-    CGPoint touchPoint = [tap locationInView:tap.view];
-    
-    CGFloat metroScale = self.minimumZoomScale;
-    
-    if ((self.zoomScale >= metroScale) && (self.zoomScale < metroScale*2)) {
+    if (self.zoomScale == self.maximumZoomScale) {
+        [self setZoomScale:self.minimumZoomScale animated:YES];
+    }else{
+        CGPoint touchPoint = [tap locationInView:tap.view];
         
-        CGFloat val = 0;
-        if (touchPoint.y <= self.height * 0.5) {
-            val = -touchPoint.y;
-        }else{
-            val = touchPoint.y;
-        }
+        CGFloat scale = self.zoomImageView.image.size.width / self.width;
+        CGFloat scaleH = self.zoomImageView.image.size.height / self.height;
         
         
-        ///x轴的逻辑是正确的
-        CGRect scale2Rect = CGRectMake(((touchPoint.x-offsetX)/metroScale), ABS(((touchPoint.y-offsetY)/metroScale)) + val * self.minimumZoomScale,metroScale*2, metroScale*2);
+        CGFloat x = touchPoint.x * scale; //(self.zoomImageView.image.size.width - touchPoint.x * scale);
         
-        [self zoomToRect:scale2Rect animated:YES];
+        CGFloat y = touchPoint.y * scaleH ;//(self.zoomImageView.image.size.height - touchPoint.y) / 2;
         
-    } else{
-        [self setZoomScale:metroScale animated:NO];
+        [self zoomToRect:CGRectMake(x, y, 0 , 0) animated:YES];
     }
-}
+    }
 
 - (void) disMissTap:(UITapGestureRecognizer *)tap{
     if ([self.photoScrollViewDelegate respondsToSelector:@selector(pickerPhotoScrollViewDidSingleClick:)]) {
