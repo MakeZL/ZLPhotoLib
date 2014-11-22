@@ -86,7 +86,7 @@
     // 创建控制器
     ZLPickerViewController *pickerVc = [[ZLPickerViewController alloc] init];
     // 默认显示相册里面的内容SavePhotos
-    pickerVc.status = PickerViewShowStatusCameraRoll;
+    pickerVc.status = PickerViewShowStatusSavePhotos;
     // 选择图片的最大数
     // pickerVc.maxCount = 4;
 

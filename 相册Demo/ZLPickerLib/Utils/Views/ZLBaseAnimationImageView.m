@@ -10,6 +10,7 @@
 #import "ZLPickerBrowserPhoto.h"
 #import "UIView+Extension.h"
 #import "UIImageView+WebCache.h"
+#import "ZLPickerCommon.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 
 @interface ZLBaseAnimationImageView ()
@@ -69,6 +70,7 @@
     
     self.imageView.image = image;
     ops[UIViewAnimationSelfView] = self.imageView;
+
     
     return [super initViewWithOptions:ops completion:completion];
 }
@@ -101,6 +103,11 @@
         CGFloat margin = CGRectGetMaxX(cView.frame) - (cView.tag + 1) * cView.width;
         CGFloat imageX = cView.frame.size.width * self.currentPage;
         imageFrame = [cView.superview convertRect:CGRectMake(imageX + margin, cView.bounds.origin.y, cView.frame.size.width, cView.bounds.size.height) toView: self.options[UIViewAnimationFromView]];
+    }
+
+    // iOS7以下
+    if (!iOS7gt) {
+        imageFrame.origin.y += 64;
     }
     
     _endFrame = [NSValue valueWithCGRect:imageFrame];

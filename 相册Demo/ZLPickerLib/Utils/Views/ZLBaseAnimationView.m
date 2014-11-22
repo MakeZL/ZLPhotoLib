@@ -7,6 +7,7 @@
 //
 
 #import "ZLBaseAnimationView.h"
+#import "ZLPickerCommon.h"
 #import "UIView+Extension.h"
 
 @interface ZLBaseAnimationView ()
@@ -66,6 +67,11 @@ static ZLBaseAnimationView *_singleBaseView;
     // 计算Duration是否为空
     if (![ops[UIViewAnimationDuration] floatValue]) {
         ops[UIViewAnimationDuration] = [NSNumber numberWithFloat:0.5];
+    }
+    
+    // iOS7以下
+    if (!iOS7gt) {
+        startFrame.origin.y += 64;
     }
     
     return ops;
@@ -132,7 +138,7 @@ static ZLBaseAnimationView *_singleBaseView;
 #pragma mark -结束动画，支持动画block
 - (instancetype) viewAnimateWithAnimations:(void(^)())animations identity:(void(^)(ZLBaseAnimationView *baseView)) completion{
     // 让最外面的View不能跟用户进行交互
-//    [self.options[UIViewAnimationFromView] setUserInteractionEnabled:NO];
+    [self.options[UIViewAnimationFromView] setUserInteractionEnabled:NO];
     _baseView.hidden = NO;
     // 把_baseView添加到Window上
     UIWindow *myWindow = [[[UIApplication sharedApplication] windows] lastObject];
