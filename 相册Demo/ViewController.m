@@ -86,7 +86,7 @@
     // 创建控制器
     ZLPickerViewController *pickerVc = [[ZLPickerViewController alloc] init];
     // 默认显示相册里面的内容SavePhotos
-    pickerVc.status = PickerViewShowStatusSavePhotos;
+//    pickerVc.status = PickerViewShowStatusCameraRoll;
     // 选择图片的最大数
     // pickerVc.maxCount = 4;
 
@@ -128,8 +128,6 @@
 - (void) setupPhotoBrowser:(UITableViewCell *) cell{
     
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-    
-    __unsafe_unretained typeof(self) weakSelf = self;
     // 图片游览器
     ZLPickerBrowserViewController *pickerBrowser = [[ZLPickerBrowserViewController alloc] init];
     pickerBrowser.toView = cell;
@@ -139,8 +137,8 @@
     pickerBrowser.editing = YES;
     // 当前选中的值
     pickerBrowser.currentPage = indexPath.row;
-    weakSelf.pickerBrowser = pickerBrowser;
-    [weakSelf presentViewController:pickerBrowser animated:NO completion:nil];
+    self.pickerBrowser = pickerBrowser;
+    [self presentViewController:pickerBrowser animated:NO completion:nil];
 }
 
 

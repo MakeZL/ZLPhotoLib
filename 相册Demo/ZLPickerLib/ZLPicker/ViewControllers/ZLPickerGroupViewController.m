@@ -35,7 +35,6 @@
         UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
         tableView.translatesAutoresizingMaskIntoConstraints = NO;
         tableView.delegate = self;
-        tableView.dataSource = self;
         [self.view addSubview:tableView];
         self.tableView = tableView;
         
@@ -52,6 +51,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    [self tableView];
     
     // 设置按钮
     [self setupButtons];
@@ -129,6 +130,7 @@
 -(void)getImgs{
     ZLPickerDatas *datas = [ZLPickerDatas defaultPicker];
     
+    __weak typeof(self) weakSelf = self;
     // 获取所有的图片URLs
     [datas getAllGroupWithPhotos:^(NSArray *groups) {
         self.groups = groups;
@@ -136,7 +138,8 @@
             [self jump2StatusVc];
         }
         
-        [self.tableView reloadData];
+        weakSelf.tableView.dataSource = self;
+        [weakSelf.tableView reloadData];
         
     }];
 }

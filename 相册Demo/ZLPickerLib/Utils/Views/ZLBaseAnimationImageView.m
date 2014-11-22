@@ -70,7 +70,7 @@
     
     self.imageView.image = image;
     ops[UIViewAnimationSelfView] = self.imageView;
-
+    
     
     return [super initViewWithOptions:ops completion:completion];
 }
@@ -102,9 +102,9 @@
         // 如果是ScrollView的情况下
         CGFloat margin = CGRectGetMaxX(cView.frame) - (cView.tag + 1) * cView.width;
         CGFloat imageX = cView.frame.size.width * self.currentPage;
-        imageFrame = [cView.superview convertRect:CGRectMake(imageX + margin, cView.bounds.origin.y, cView.frame.size.width, cView.bounds.size.height) toView: self.options[UIViewAnimationFromView]];
+        imageFrame = [cView.superview convertRect:CGRectMake(imageX + margin, cView.height, cView.frame.size.width, cView.bounds.size.height) toView: self.options[UIViewAnimationFromView]];
     }
-
+    
     // iOS7以下
     if (!iOS7gt) {
         imageFrame.origin.y += 64;

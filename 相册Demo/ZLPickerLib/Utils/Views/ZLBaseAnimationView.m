@@ -42,10 +42,11 @@ static ZLBaseAnimationView *_singleBaseView;
 
 - (NSDictionary *) getTypeViewWithOptions:(NSDictionary *)options{
     
+    UIView *cView = options[UIViewAnimationToView];
+    
     NSMutableDictionary *ops = [NSMutableDictionary dictionaryWithDictionary:options];
     CGRect startFrame = [options[UIViewAnimationStartFrame] CGRectValue];
     if (!startFrame.size.width || !startFrame.size.height) {
-        UIView *cView = options[UIViewAnimationToView];
         if ([cView isKindOfClass:[UITableViewCell class]]) {
             UITableViewCell *cell = (UITableViewCell *)cView;
             startFrame = [cell convertRect:cell.imageView.frame toView:options[UIViewAnimationFromView]];
@@ -83,14 +84,14 @@ static ZLBaseAnimationView *_singleBaseView;
     
     // 计算开始坐标
     self.options = [self getTypeViewWithOptions:options];
-
+    
     // 获取参数
     CGRect startFrame = [self.options[UIViewAnimationStartFrame] CGRectValue];
     CGFloat duration = [self.options[UIViewAnimationDuration] floatValue];
     UIColor *bgColor = self.options[UIViewAnimationBackGroundColor];
     UIView *selfView = self.options[UIViewAnimationSelfView];
     UIView *view = self.options[UIViewAnimationInView];
-
+    
     // 起始位置、结束位置、动画时间、图片参数
     self.navigaiton = self.options[UIViewAnimationNavigation];
     self.navigaitionView = self.options[UIViewAnimationNavigationView];
@@ -151,7 +152,7 @@ static ZLBaseAnimationView *_singleBaseView;
     }
     
     _baseView.frame = [self.options[UIViewAnimationEndFrame] CGRectValue];
-
+    
     [UIView animateWithDuration:.5 animations:^{
         if (animations) {
             animations();
@@ -179,7 +180,7 @@ static ZLBaseAnimationView *_singleBaseView;
 
 #pragma mark -结束动画
 - (instancetype) viewformIdentity:(void(^)(ZLBaseAnimationView *baseView)) completion{
-   return [self viewAnimateWithAnimations:nil identity:completion];
+    return [self viewAnimateWithAnimations:nil identity:completion];
 }
 
 @end

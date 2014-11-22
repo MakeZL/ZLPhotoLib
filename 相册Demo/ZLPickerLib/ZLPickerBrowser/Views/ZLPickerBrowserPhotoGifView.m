@@ -16,9 +16,9 @@
     self = [super initWithFrame:frame];
     if (self)
     {
-        NSDictionary *gifLoopCount = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:0] forKey:(NSString *)kCGImagePropertyGIFLoopCount];
+        NSDictionary *gifLoopCount = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:0] forKey:(__bridge NSString *)kCGImagePropertyGIFLoopCount];
         
-        gifProperties = [NSDictionary dictionaryWithObject:gifLoopCount forKey:(NSString *)kCGImagePropertyGIFDictionary];
+        gifProperties = [NSDictionary dictionaryWithObject:gifLoopCount forKey:(__bridge NSString *)kCGImagePropertyGIFDictionary];
         
         gif = CGImageSourceCreateWithURL((__bridge CFURLRef)[NSURL URLWithString:filePath], (__bridge CFDictionaryRef)gifProperties);
         
@@ -34,9 +34,9 @@
  *  播放gif图
  */
 - (void)playGifWithURLString:(NSString *)urlString{
-    NSDictionary *gifLoopCount = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:0] forKey:(NSString *)kCGImagePropertyGIFLoopCount];
+    NSDictionary *gifLoopCount = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:0] forKey:(__bridge NSString *)kCGImagePropertyGIFLoopCount];
     
-    gifProperties = [NSDictionary dictionaryWithObject:gifLoopCount forKey:(NSString *)kCGImagePropertyGIFDictionary];
+    gifProperties = [NSDictionary dictionaryWithObject:gifLoopCount forKey:(__bridge NSString *)kCGImagePropertyGIFDictionary];
     
     [[SDWebImageDownloader sharedDownloader] downloadImageWithURL:[NSURL URLWithString:urlString] options:SDWebImageDownloaderUseNSURLCache progress:^(NSInteger receivedSize, NSInteger expectedSize) {
         
