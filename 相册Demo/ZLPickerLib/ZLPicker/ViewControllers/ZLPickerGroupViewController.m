@@ -89,11 +89,19 @@
     // 如果是相册
     ZLPickerGroup *gp = nil;
     for (ZLPickerGroup *group in self.groups) {
-        if ([group.groupName isEqualToString:@"Camera Roll"] || [group.groupName isEqualToString:@"相机胶卷"]) {
+        if (self.status == PickerViewShowStatusCameraRoll && ([group.groupName isEqualToString:@"Camera Roll"] || [group.groupName isEqualToString:@"相机胶卷"])) {
+            gp = group;
+            break;
+        }else if (self.status == PickerViewShowStatusSavePhotos && ([group.groupName isEqualToString:@"Saved Photos"] || [group.groupName isEqualToString:@"我的照片流"])){
+            gp = group;
+            break;
+        }else if (self.status == PickerViewShowStatusPhotoStream &&  ([group.groupName isEqualToString:@"Stream"] || [group.groupName isEqualToString:@"我的照片流"])){
             gp = group;
             break;
         }
     }
+    
+    if (!gp) return ;
     
     ZLPickerAssetsViewController *assetsVc = [[ZLPickerAssetsViewController alloc] init];
     assetsVc.assetsGroup = gp;

@@ -12,7 +12,9 @@ typedef void(^callBackBlock)(id obj);
 
 typedef enum {
     PickerViewShowStatusGroup = 0, // default groups .
-    PickerViewShowStatusSavePhotos
+    PickerViewShowStatusCameraRoll ,
+    PickerViewShowStatusSavePhotos ,
+    PickerViewShowStatusPhotoStream ,
 } PickerViewShowStatus;
 
 @protocol PickerViewControllerDelegate <NSObject>

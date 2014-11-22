@@ -75,7 +75,7 @@
 - (void) setAutoLayoutParams{
     self.params = [NSMutableDictionary dictionary];
     self.params[@"padding"] = @"20";
-    self.params[@"topPadding"] = iOS7gt ? @"20" : @"0";
+    self.params[@"topPadding"] = @"0";
 }
 - (void) setupButtons{
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"选择照片" style:UIBarButtonItemStyleDone target:self action:@selector(selectPhotos)];
@@ -86,7 +86,7 @@
     // 创建控制器
     ZLPickerViewController *pickerVc = [[ZLPickerViewController alloc] init];
     // 默认显示相册里面的内容SavePhotos
-    pickerVc.status = PickerViewShowStatusSavePhotos;
+    pickerVc.status = PickerViewShowStatusCameraRoll;
     // 选择图片的最大数
     // pickerVc.maxCount = 4;
 

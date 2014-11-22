@@ -20,7 +20,7 @@
         
         gifProperties = [NSDictionary dictionaryWithObject:gifLoopCount forKey:(NSString *)kCGImagePropertyGIFDictionary];
         
-        gif = CGImageSourceCreateWithURL((CFURLRef)[NSURL URLWithString:filePath], (CFDictionaryRef)gifProperties);
+        gif = CGImageSourceCreateWithURL((__bridge CFURLRef)[NSURL URLWithString:filePath], (__bridge CFDictionaryRef)gifProperties);
         
         count =CGImageSourceGetCount(gif);
         
@@ -42,7 +42,7 @@
         
     } completed:^(UIImage *image, NSData *data, NSError *error, BOOL finished) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            gif = CGImageSourceCreateWithData((CFDataRef)data,(CFDictionaryRef)gifProperties);
+            gif = CGImageSourceCreateWithData((__bridge CFDataRef)data,(__bridge CFDictionaryRef)gifProperties);
             count =CGImageSourceGetCount(gif);
             timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(play) userInfo:nil repeats:YES];
             [timer fire];
@@ -59,7 +59,7 @@
 {
     index ++;
     index = index%count;
-    CGImageRef ref = CGImageSourceCreateImageAtIndex(gif, index, (CFDictionaryRef)gifProperties);
+    CGImageRef ref = CGImageSourceCreateImageAtIndex(gif, index, (__bridge CFDictionaryRef)gifProperties);
     self.layer.contents = (__bridge id)ref;
     CFRelease(ref);
 }

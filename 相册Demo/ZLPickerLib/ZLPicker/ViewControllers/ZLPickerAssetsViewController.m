@@ -187,6 +187,8 @@ static NSString *const _footerIdentifier = @"FooterView";
 }
 
 - (void)setAssetsGroup:(ZLPickerGroup *)assetsGroup{
+    if (!assetsGroup.groupName.length) return ;
+    
     _assetsGroup = assetsGroup;
     
     self.title = assetsGroup.groupName;
