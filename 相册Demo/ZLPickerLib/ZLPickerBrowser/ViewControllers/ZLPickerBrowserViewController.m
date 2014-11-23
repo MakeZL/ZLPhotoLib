@@ -19,11 +19,11 @@
 static NSString *_cellIdentifier = @"collectionViewCell";
 
 @interface ZLPickerBrowserViewController () <UIScrollViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,PickerPhotoScrollViewDelegate>
-
+// 自定义控件
 @property (nonatomic , weak) UIPageControl *pageCtrl;
 @property (nonatomic , weak) UIButton *deleleBtn;
 @property (nonatomic , weak) UICollectionView *collectionView;
-// 单击时执行的block
+// 单击时执行销毁的block
 @property (nonatomic , copy) ZLPickerBrowserViewControllerTapDisMissBlock disMissBlock;
 
 @end
@@ -99,6 +99,12 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 
 // 开始动画
 - (void)startLogddingAnimation{
+    
+    if (!(self.fromView) || !(self.toView) ) {
+        [self reloadData];
+        return;
+    }
+    
     NSDictionary *options = @{
                               UIViewAnimationFromView:self.fromView,
                               UIViewAnimationInView:self.view,
@@ -201,7 +207,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     self.currentPage = (NSInteger)((scrollView.contentOffset.x / scrollView.width) + 0.5);
     
     self.pageCtrl.currentPage = self.currentPage;
- 
+    
     CGRect tempF = self.collectionView.frame;
     if (self.currentPage < [self.dataSource numberOfPhotosInPickerBrowser:self] - 1) {
         tempF.origin.x = 0
