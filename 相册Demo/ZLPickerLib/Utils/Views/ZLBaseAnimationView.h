@@ -13,13 +13,9 @@
      UIViewAnimationStartFrame 开始位置，默认 {0,0,0,0}
      UIViewAnimationEndFrame 结束位置
      UIViewAnimationDuration 默认 0.5
-     UIViewAnimationBackGroundColor 默认default
  
      UIViewAnimationInView 参照View
      UIViewAnimationSelfView 动画里面的View，用于继承它的View
- 
-     UIViewAnimationNavigation 隐藏导航栏
-     UIViewAnimationNavigationView
  
      UIViewAnimationBackGroundColor 当前View的背景色
      UIViewAnimationMakeViewBackGroundColor 蒙版的背景色，默认白色
@@ -27,12 +23,10 @@
      UIViewAnimationTypeView 动画的View(什么View需要动画就传那个)
      UIViewAnimationTypeViewWithIndexPath 记录值
  
-     还没开始记录
-     UIViewAnimationTypeViewWithWidth | UIViewAnimationTypeViewWithHeight
  */
 // 开始坐标 default 0,0
 static NSString *const UIViewAnimationStartFrame = @"UIViewAnimationStartFrame";
-// 结束坐标
+// 结束坐标 默认屏幕高宽度
 static NSString *const UIViewAnimationEndFrame = @"UIViewAnimationEndFrame";
 // 动画时间 default 0.5
 static NSString *const UIViewAnimationDuration = @"UIViewAnimationDuration";
@@ -40,29 +34,18 @@ static NSString *const UIViewAnimationDuration = @"UIViewAnimationDuration";
 /** 系统参数配置 */
 // 父View
 static NSString *const UIViewAnimationInView = @"UIViewAnimationInView";
-// 当前View（非外面传入）
+// 当前View（非外面传入, 用于继承）
 static NSString *const UIViewAnimationSelfView = @"UIViewAnimationSelfView";
-// 来自那个View
+// 点击的View
+static NSString *const UIViewAnimationToView = @"UIViewAnimationToView";
+// 来自那个根视图点击的View
 static NSString *const UIViewAnimationFromView = @"UIViewAnimationFromView";
-// 导航栏
-static NSString *const UIViewAnimationNavigation = @"UIViewAnimationNavigation";
-// 自定义导航View
-static NSString *const UIViewAnimationNavigationView = @"UIViewAnimationNavigationView";
-// 背景颜色
-static NSString *const UIViewAnimationBackGroundColor = @"UIViewAnimationBackGroundColor";
-
 
 /** 类型参数配置 */
-// 类型的View(TableView、CollectionView、scrollView)
-static NSString *const UIViewAnimationToView = @"UIViewAnimationToView";
 // indexPath
 static NSString *const UIViewAnimationTypeViewWithIndexPath = @"UIViewAnimationTypeViewWithIndexPath";
-// 类型的宽度与高度
-static NSString *const UIViewAnimationTypeViewWithWidth = @"UIViewAnimationTypeViewWithWidth";
-static NSString *const UIViewAnimationTypeViewWithHeight = @"UIViewAnimationTypeViewWithHeight";
-
-
-
+// 计算坐标的方向
+static NSString *const UIViewAnimationScrollDirection = @"UIViewAnimationTypeViewWithScrollDirection";
 
 typedef void(^completion)();
 

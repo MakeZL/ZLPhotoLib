@@ -180,10 +180,9 @@ static NSString *const _footerIdentifier = @"FooterView";
 }
 
 #pragma mark - setter
-- (void)setMaxCount:(NSInteger)maxCount{
-    _maxCount = maxCount;
-    
-    self.collectionView.maxCount = self.maxCount;
+-(void)setMinCount:(NSInteger)minCount{
+    _minCount = minCount;
+    self.collectionView.minCount = minCount;
 }
 
 - (void)setAssetsGroup:(ZLPickerGroup *)assetsGroup{

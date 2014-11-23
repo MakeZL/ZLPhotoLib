@@ -9,6 +9,15 @@
 #ifndef ZLAssetsPickerDemo_PickerCommon_h
 #define ZLAssetsPickerDemo_PickerCommon_h
 
+// 决定x/y值的方向
+typedef NS_ENUM(NSInteger, ZLPickerBrowserScrollDirection) {
+    ZLPickerBrowserScrollDirectionVertical = 0,// 水平
+    ZLPickerBrowserScrollDirectionHorizontal, // 垂直
+};
+
+// 点击销毁的block
+typedef void(^ZLPickerBrowserViewControllerTapDisMissBlock)(NSInteger);
+
 #define iOS7gt ([[UIDevice currentDevice].systemVersion doubleValue] >= 7.0)
 
 // ScrollView 滑动的间距

@@ -94,11 +94,11 @@
         [self.selectsIndexPath removeObject:@(indexPath.row)];
         [self.selectAsstes removeObject:asset];
     }else{
-        // 1 先判断是否超过选择图片的最大
-        NSInteger maxCount = self.maxCount ? self.maxCount : MAX_COUNT;
+        // 1 判断图片数超过最大数或者小于1
+        NSInteger minCount = (self.minCount > MAX_COUNT || self.minCount < 1) ? MAX_COUNT :  self.minCount;
         
-        if (self.selectsIndexPath.count >= maxCount) {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提醒" message:[NSString stringWithFormat:@"最多只能选择%ld张图片",maxCount] delegate:self cancelButtonTitle:nil otherButtonTitles:@"好的", nil];
+        if (self.selectsIndexPath.count >= minCount) {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提醒" message:[NSString stringWithFormat:@"最多只能选择%ld张图片",minCount] delegate:self cancelButtonTitle:nil otherButtonTitles:@"好的", nil];
             [alertView show];
             return ;
         }

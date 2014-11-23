@@ -30,6 +30,6 @@
 
 
 // 限制最大数
-@property (nonatomic , assign) NSInteger maxCount;
+@property (nonatomic , assign) NSInteger minCount;
 
 @end

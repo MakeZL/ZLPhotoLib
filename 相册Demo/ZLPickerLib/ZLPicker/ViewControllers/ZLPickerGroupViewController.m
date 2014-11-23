@@ -106,7 +106,7 @@
     
     ZLPickerAssetsViewController *assetsVc = [[ZLPickerAssetsViewController alloc] init];
     assetsVc.assetsGroup = gp;
-    assetsVc.maxCount = self.maxCount;
+    assetsVc.minCount = self.minCount;
     [self.navigationController pushViewController:assetsVc animated:NO];
 }
 
@@ -121,7 +121,7 @@
     ZLPickerGroup *group = self.groups[indexPath.row];
     ZLPickerAssetsViewController *assetsVc = [[ZLPickerAssetsViewController alloc] init];
     assetsVc.assetsGroup = group;
-    assetsVc.maxCount = self.maxCount;
+    assetsVc.minCount = self.minCount;
     [self.navigationController pushViewController:assetsVc animated:YES];
 }
 

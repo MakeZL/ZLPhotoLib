@@ -89,28 +89,28 @@
     }else if (photo.photoURL){
         [_imageView sd_setImageWithURL:photo.photoURL placeholderImage:nil];
     }
-    
-    CGRect imageFrame = CGRectZero;
-    // 通过分页数来确定类型，计算最终的Frame值
-    if ([cView isKindOfClass:[UITableViewCell class]]) {
-        // 如果是tableViewCell的情况下
-        UITableViewCell *cell = (UITableViewCell *)cView;
-        CGRect cellF = CGRectMake(cell.imageView.x, cell.imageView.height * self.currentPage, cell.imageView.width, cell.imageView.height);
-        
-        imageFrame = [cell.superview convertRect:cellF toView: self.options[UIViewAnimationFromView]];
-    }else{
-        // 如果是ScrollView的情况下
-        CGFloat margin = CGRectGetMaxX(cView.frame) - (cView.tag + 1) * cView.width;
-        CGFloat imageX = cView.frame.size.width * self.currentPage;
-        imageFrame = [cView.superview convertRect:CGRectMake(imageX + margin, cView.height, cView.frame.size.width, cView.bounds.size.height) toView: self.options[UIViewAnimationFromView]];
-    }
-    
-    // iOS7以下
-    if (!iOS7gt) {
-        imageFrame.origin.y += 64;
-    }
-    
-    _endFrame = [NSValue valueWithCGRect:imageFrame];
+//    
+//    CGRect imageFrame = CGRectZero;
+//    // 通过分页数来确定类型，计算最终的Frame值
+//    if ([cView isKindOfClass:[UITableViewCell class]]) {
+//        // 如果是tableViewCell的情况下
+//        UITableViewCell *cell = (UITableViewCell *)cView;
+//        CGRect cellF = CGRectMake(cell.imageView.x, cell.imageView.height * self.currentPage, cell.imageView.width, cell.imageView.height);
+//        
+//        imageFrame = [cell.superview convertRect:cellF toView: self.options[UIViewAnimationFromView]];
+//    }else{
+//        // 如果是ScrollView的情况下
+//        CGFloat margin = CGRectGetMaxX(cView.frame) - (cView.tag + 1) * cView.width;
+//        CGFloat imageX = cView.frame.size.width * self.currentPage;
+//        imageFrame = [cView.superview convertRect:CGRectMake(imageX + margin, cView.height, cView.frame.size.width, cView.bounds.size.height) toView: self.options[UIViewAnimationFromView]];
+//    }
+//    
+//    // iOS7以下
+//    if (!iOS7gt) {
+//        imageFrame.origin.y += 64;
+//    }
+//    
+//    _endFrame = [NSValue valueWithCGRect:imageFrame];
     return [super viewformIdentity:completion];
 }
 

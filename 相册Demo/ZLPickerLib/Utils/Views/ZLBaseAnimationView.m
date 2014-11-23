@@ -9,18 +9,15 @@
 #import "ZLBaseAnimationView.h"
 #import "ZLPickerCommon.h"
 #import "UIView+Extension.h"
+#import "ZLPickerCommon.h"
 
 @interface ZLBaseAnimationView ()
 // 当前的View
 @property (nonatomic , strong) ZLBaseAnimationView *baseView;
 // 蒙版
 @property (nonatomic , strong) UIView *maskView;
-// 使导航栏隐藏
-@property (nonatomic , strong) UINavigationController *navigaiton;
-@property (nonatomic , strong) UIView *navigaitionView;
 // 记录所有的参数
 @property (nonatomic , strong) NSDictionary *options;
-
 
 @end
 
@@ -85,16 +82,12 @@ static ZLBaseAnimationView *_singleBaseView;
     // 计算开始坐标
     self.options = [self getTypeViewWithOptions:options];
     
-    // 获取参数
+    // 起始位置、结束位置、动画时间、图片参数
     CGRect startFrame = [self.options[UIViewAnimationStartFrame] CGRectValue];
     CGFloat duration = [self.options[UIViewAnimationDuration] floatValue];
-    UIColor *bgColor = self.options[UIViewAnimationBackGroundColor];
     UIView *selfView = self.options[UIViewAnimationSelfView];
     UIView *view = self.options[UIViewAnimationInView];
     
-    // 起始位置、结束位置、动画时间、图片参数
-    self.navigaiton = self.options[UIViewAnimationNavigation];
-    self.navigaitionView = self.options[UIViewAnimationNavigationView];
     
     view.userInteractionEnabled = NO;
     view.hidden = NO;
@@ -114,16 +107,11 @@ static ZLBaseAnimationView *_singleBaseView;
     _endFrame = self.options[UIViewAnimationStartFrame];
     
     if (![view.subviews.lastObject isKindOfClass:[ZLBaseAnimationView class]]) {
-        if (bgColor) {
-            _baseView.backgroundColor = bgColor;
-        }
         [view addSubview:_baseView];
     }
     
     [UIView animateWithDuration:duration animations:^{
         _baseView.frame = [self.options[UIViewAnimationEndFrame] CGRectValue];
-        self.navigaiton.navigationBarHidden = YES;
-        self.navigaitionView.hidden = YES;
     } completion:^(BOOL finished) {
         [_baseView removeFromSuperview];
         if (completion) {
@@ -136,8 +124,51 @@ static ZLBaseAnimationView *_singleBaseView;
     return _baseView;
 }
 
+- (UIView *) getViewWithCell:(UIView *)view{
+    if ([view.superview isKindOfClass:[UITableViewCell class]] || [view.superview isKindOfClass:[UICollectionViewCell class]] || view == nil) {
+        return view.superview;
+    }
+    
+    return [self getViewWithCell:view.superview];
+}
+
 #pragma mark -结束动画，支持动画block
 - (instancetype) viewAnimateWithAnimations:(void(^)())animations identity:(void(^)(ZLBaseAnimationView *baseView)) completion{
+    
+    NSNumber *direction = self.options[UIViewAnimationScrollDirection];
+    UIButton *cView = self.options[UIViewAnimationToView];
+    CGRect imageFrame = CGRectZero;
+    
+    switch ([direction integerValue]) {
+        case ZLPickerBrowserScrollDirectionHorizontal:{
+            // 水平方向
+            CGFloat margin = CGRectGetMaxX(cView.frame) - (cView.tag + 1) * cView.width;
+            CGFloat imageX = cView.frame.size.width * self.currentPage;
+            imageFrame = [cView.superview convertRect:CGRectMake(imageX + margin, cView.height, cView.frame.size.width, cView.bounds.size.height) toView: self.options[UIViewAnimationFromView]];
+        }
+            break;
+        case ZLPickerBrowserScrollDirectionVertical:{
+            // 垂直方向
+            UIView *cell = [self getViewWithCell:cView];
+            if (cell == nil) {
+                cell = cView;
+            }
+            CGRect cellF = CGRectMake(cView.x, cView.y + cView.height  * self.currentPage, cView.width, cView.height);
+            imageFrame = [cell.superview convertRect:cellF toView: self.options[UIViewAnimationFromView]];
+        }
+   
+            break;
+        default:
+            break;
+    }
+    
+    // iOS7以下需要增加64的高度
+    if (!iOS7gt) {
+        imageFrame.origin.y += 64;
+    }
+    _endFrame = [NSValue valueWithCGRect:imageFrame];
+    
+    
     // 让最外面的View不能跟用户进行交互
     [self.options[UIViewAnimationFromView] setUserInteractionEnabled:NO];
     _baseView.hidden = NO;
@@ -165,8 +196,6 @@ static ZLBaseAnimationView *_singleBaseView;
         }
         
         _baseView.hidden = YES;
-        self.navigaiton.navigationBarHidden = NO;
-        self.navigaitionView.hidden = NO;
         
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             // 让最外面的View能跟用户进行交互

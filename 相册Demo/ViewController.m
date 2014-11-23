@@ -130,7 +130,7 @@
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     // 图片游览器
     ZLPickerBrowserViewController *pickerBrowser = [[ZLPickerBrowserViewController alloc] init];
-    pickerBrowser.toView = cell;
+    pickerBrowser.toView = cell.imageView;
     pickerBrowser.fromView = self.view;
     pickerBrowser.delegate = self;
     pickerBrowser.dataSource = self;

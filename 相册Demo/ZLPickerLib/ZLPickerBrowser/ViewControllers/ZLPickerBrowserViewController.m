@@ -14,6 +14,7 @@
 #import "ZLPickerBrowserPhotoScrollView.h"
 #import "ZLPickerCommon.h"
 #import "ZLBaseAnimationImageView.h"
+#import "ZLPickerCommon.h"
 
 static NSString *_cellIdentifier = @"collectionViewCell";
 
@@ -22,10 +23,8 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 @property (nonatomic , weak) UIPageControl *pageCtrl;
 @property (nonatomic , weak) UIButton *deleleBtn;
 @property (nonatomic , weak) UICollectionView *collectionView;
-/**
- *  单击时执行的block
- */
-@property (nonatomic , copy) tapDisMissBlock disMissBlock;
+// 单击时执行的block
+@property (nonatomic , copy) ZLPickerBrowserViewControllerTapDisMissBlock disMissBlock;
 
 @end
 
@@ -100,11 +99,11 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 
 // 开始动画
 - (void)startLogddingAnimation{
-    
     NSDictionary *options = @{
                               UIViewAnimationFromView:self.fromView,
                               UIViewAnimationInView:self.view,
                               UIViewAnimationToView:self.toView,
+                              UIViewAnimationScrollDirection:@(self.scrollDirection),
                               UIViewAnimationImages:[self getPhotos],
                               UIViewAnimationTypeViewWithIndexPath:[NSIndexPath indexPathForRow:self.currentPage inSection:0]
                               };
@@ -213,30 +212,9 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     self.collectionView.frame = tempF;
 }
 
-//- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
-//    // 如果已经切换了幻灯片就恢复最原始的比例
-//    NSInteger count = [self.dataSource numberOfPhotosInPickerBrowser:self];
-//    
-//    for (int i = 0; i < count; i++) {
-//        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:i inSection:0];
-//        UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath:indexPath];
-//        if (scrollView.contentOffset.x / scrollView.width != self.currentPage &&
-//            scrollView.contentOffset.x >= 0 &&
-//            scrollView.contentOffset.x + scrollView.width <= scrollView.contentSize.width
-//            ) {
-//            ZLPickerBrowserPhotoScrollView *scView = [cell.contentView.subviews lastObject];
-//            if (scView.zoomScale != scView.minimumZoomScale) {
-//                [scView setZoomScale:scView.minimumZoomScale animated:YES];
-//            }
-//        }
-//    }
-//}
-
-
 
 #pragma mark -删除照片
 - (void) delete{
-    
     UIAlertView *removeAlert = [[UIAlertView alloc]
                                 initWithTitle:@"确定要删除此图片？"
                                 message:nil

@@ -18,7 +18,7 @@ typedef void(^callBackBlock)(id obj);
 @interface ZLPickerAssetsViewController : UIViewController
 
 @property (nonatomic , strong) ZLPickerGroup *assetsGroup;
-@property (nonatomic , assign) NSInteger maxCount;
+@property (nonatomic , assign) NSInteger minCount;
 
 
 @end
