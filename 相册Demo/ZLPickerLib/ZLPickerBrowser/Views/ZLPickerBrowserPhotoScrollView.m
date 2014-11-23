@@ -87,20 +87,23 @@
         
         [self zoomToRect:CGRectMake(x, y, 0 , 0) animated:YES];
     }
-    }
+}
 
+#pragma mark - disMissTap
 - (void) disMissTap:(UITapGestureRecognizer *)tap{
     if ([self.photoScrollViewDelegate respondsToSelector:@selector(pickerPhotoScrollViewDidSingleClick:)]) {
         [self.photoScrollViewDelegate pickerPhotoScrollViewDidSingleClick:self];
     }
 }
 
+#pragma mark - setPhoto
 - (void)setPhoto:(ZLPickerBrowserPhoto *)photo{
     _photo = photo;
     
-    
+    // 避免cell重复创建控件，删除再添加
     [[self.subviews lastObject] removeFromSuperview];
     
+    // 判断是否为gif图片，不是的话就正常来展示图片
     if ([photo.photoURL.absoluteString hasSuffix:@"gif"]) {
         ZLPickerBrowserPhotoGifView *gifView = [[ZLPickerBrowserPhotoGifView alloc] init];
         gifView.frame = self.bounds;
@@ -110,6 +113,7 @@
         ZLPickerBrowserPhotoImageView *zoomImageView = [[ZLPickerBrowserPhotoImageView alloc] init];
         zoomImageView.photo = photo;
         zoomImageView.downLoadWebImageCallBlock = ^{
+            // 下载完毕后重新计算下Frame
             [self setMaxMinZoomScalesForCurrentBounds];
         };
         self.zoomImageView = zoomImageView;
@@ -149,52 +153,35 @@
     return _zoomImageView;
 }
 
-
+#pragma mark - setMaxMinZoomScalesForCurrentBounds
 - (void)setMaxMinZoomScalesForCurrentBounds {
     
-    // Bail
     if (_zoomImageView.image == nil) return;
     
     // Sizes
     CGSize boundsSize = self.bounds.size;
     CGSize imageSize = _zoomImageView.frame.size;
     
-    // Calculate Min
-    CGFloat xScale = boundsSize.width / imageSize.width;    // the scale needed to perfectly fit the image width-wise
-    CGFloat yScale = boundsSize.height / imageSize.height;  // the scale needed to perfectly fit the image height-wise
-    CGFloat minScale = MIN(xScale, yScale);                 // use minimum of these to allow the image to become fully visible
+    // 获取最小比例
+    CGFloat xScale = boundsSize.width / imageSize.width;
+    CGFloat yScale = boundsSize.height / imageSize.height;
+    CGFloat minScale = MIN(xScale, yScale);
     
-    // Calculate Max
-    CGFloat maxScale = 2.0;
+    
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        // Let them go a bit bigger on a bigger screen!
-        maxScale = 3.0;
+        self.maximumZoomScale = self.maximumZoomScale + 1.0;
     }
-    
-    // Image is smaller than screen so no zooming!
-    if (xScale >= 1 && yScale >= 1) {
+    // 最大的比例不能超过1.0
+    if (xScale > 1 && yScale > 1) {
         minScale = 1.0;
     }
     
-    // Initial zoom
-    CGFloat zoomScale = minScale;
-    
-    self.maximumZoomScale = maxScale;
+    // 初始化拉伸比例
     self.minimumZoomScale = minScale;
-    self.zoomScale = zoomScale;
+    self.zoomScale = minScale;
     
-    // Reset position
+    // 重置
     _zoomImageView.frame = CGRectMake(0, 0, _zoomImageView.frame.size.width, _zoomImageView.frame.size.height);
-    // Initial zoom
-    
-    // If we're zooming to fill then centralise
-    if (self.zoomScale != minScale) {
-        // Centralise
-        self.contentOffset = CGPointMake((imageSize.width * self.zoomScale - boundsSize.width) / 2.0,
-                                         (imageSize.height * self.zoomScale - boundsSize.height) / 2.0);
-        // Disable scrolling initially until the first pinch to fix issues with swiping on an initally zoomed in photo
-        self.scrollEnabled = NO;
-    }
     
     // Layout
     [self setNeedsLayout];
@@ -204,26 +191,25 @@
 
 - (void)layoutSubviews {
     
-    // Super
     [super layoutSubviews];
     
+    // 避免不能滚动
     if (!( (NSInteger)_zoomImageView.width > self.width)) {
         self.contentSize = CGSizeMake(self.width, 0);
     }
     
-//     Center the image as it becomes smaller than the size of the screen
-    
+    // Size
     CGSize boundsSize = self.bounds.size;
     CGRect frameToCenter = _zoomImageView.frame;
     
-    // Horizontally
+    // 计算水平方向居中
     if (frameToCenter.size.width < boundsSize.width) {
         frameToCenter.origin.x = floorf((boundsSize.width - frameToCenter.size.width) / 2.0);
     } else {
         frameToCenter.origin.x = 0;
     }
     
-    // Vertically
+    // 计算垂直方向居中
     if (frameToCenter.size.height < boundsSize.height) {
         frameToCenter.origin.y = floorf((boundsSize.height - frameToCenter.size.height) / 2.0);
     } else {
