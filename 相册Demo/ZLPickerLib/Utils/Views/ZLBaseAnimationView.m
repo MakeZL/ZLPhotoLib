@@ -306,7 +306,9 @@ static ZLBaseAnimationView *_singleBaseView;
         [myWindow addSubview:_baseView];
     }
     
-//    _baseView.frame = [self.options[UIViewAnimationEndFrame] CGRectValue];
+    if (animationStatus == ZLPickerBrowserAnimationStatusFade) {
+        _baseView.frame = [self setMaxMinZoomScalesForCurrentBounds];//[self.options[UIViewAnimationEndFrame] CGRectValue];
+    }
     
     [UIView animateWithDuration:.5 animations:^{
         if (animations) {

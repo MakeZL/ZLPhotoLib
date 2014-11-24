@@ -37,13 +37,12 @@
         
         progressView.frame = CGRectMake(0, 0, ZLPickerProgressViewW, ZLPickerProgressViewH);
         progressView.center = CGPointMake([UIScreen mainScreen].bounds.size.width * 0.5, [UIScreen mainScreen].bounds.size.height * 0.5);
-        [progressView setProgress:1.0 animated:YES];
         progressView.roundedCorners = YES;
         progressView.progressTintColor = [UIColor whiteColor];
         progressView.trackTintColor = [UIColor lightGrayColor];
         
         [self.scrollView addSubview:progressView];
-//        [[[[UIApplication sharedApplication] windows] lastObject] addSubview:progressView];
+        //        [[[[UIApplication sharedApplication] windows] lastObject] addSubview:progressView];
         self.progressView = progressView;
     }
     return _progressView;
@@ -67,7 +66,7 @@
 - (void) setupProperty{
     self.contentMode = UIViewContentModeScaleAspectFit;
     self.clipsToBounds = YES;
-    self.progress = 1.0;
+    [self.progressView setProgress:1.0 animated:YES];
 }
 
 - (void)setPhoto:(ZLPickerBrowserPhoto *)photo{
