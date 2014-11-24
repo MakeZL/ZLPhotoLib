@@ -47,9 +47,8 @@
 
 // 点击的View
 @property (nonatomic , strong) UIView *toView;
-// 点击的View的根试图View(传self.view，坐位点击View的参照View)
+// 控制器的self.view作为参考
 @property (nonatomic , weak) UIView *fromView;
-
 // 九宫格的间距
 @property (nonatomic , assign) CGFloat sudokuMarginX;
 @property (nonatomic , assign) CGFloat sudokuMarginY;
@@ -62,6 +61,8 @@
 @property (nonatomic , assign,getter=isEditing) BOOL editing;
 // 当前提供的分页数
 @property (nonatomic , assign) NSInteger currentPage;
+// 动画执行方式
+@property (nonatomic , assign) ZLPickerBrowserAnimationStatus animationStatus;
 
 /**
  *  刷新表格

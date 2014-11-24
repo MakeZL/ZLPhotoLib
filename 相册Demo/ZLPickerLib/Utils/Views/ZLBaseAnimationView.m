@@ -10,6 +10,7 @@
 #import "ZLPickerCommon.h"
 #import "UIView+Extension.h"
 #import "ZLPickerCommon.h"
+#import "ZLBaseAnimationImageView.h"
 
 @interface ZLBaseAnimationView ()
 // 当前的View
@@ -82,13 +83,14 @@ static ZLBaseAnimationView *_singleBaseView;
     // 计算开始坐标
     self.options = [self getTypeViewWithOptions:options];
     
+    // 动画执行的模式
+    ZLPickerBrowserAnimationStatus animationStatus = [self.options[UIViewAnimationAnimationStatus] integerValue];
+    
     // 起始位置、结束位置、动画时间、图片参数
     CGRect startFrame = [self.options[UIViewAnimationStartFrame] CGRectValue];
     CGFloat duration = [self.options[UIViewAnimationDuration] floatValue];
     UIView *selfView = self.options[UIViewAnimationSelfView];
     UIView *view = self.options[UIViewAnimationInView];
-    
-    
     view.userInteractionEnabled = NO;
     view.hidden = NO;
     
@@ -100,9 +102,9 @@ static ZLBaseAnimationView *_singleBaseView;
         _baseView = (ZLBaseAnimationView *)selfView;
     }
     
-    _baseView.hidden = NO;
     _baseView.frame = startFrame;
-    
+    _baseView.hidden = NO;
+
     _startFrame = self.options[UIViewAnimationEndFrame];
     _endFrame = self.options[UIViewAnimationStartFrame];
     
@@ -110,8 +112,21 @@ static ZLBaseAnimationView *_singleBaseView;
         [view addSubview:_baseView];
     }
     
-    [UIView animateWithDuration:duration animations:^{
+    // 淡入淡出模式
+    if (animationStatus == ZLPickerBrowserAnimationStatusFade) {
+        _baseView.alpha = 0;
         _baseView.frame = [self.options[UIViewAnimationEndFrame] CGRectValue];
+        [self setMaxMinZoomScalesForCurrentBounds];
+    }
+    
+    [UIView animateWithDuration:duration animations:^{
+        // 淡入淡出
+        if (animationStatus == ZLPickerBrowserAnimationStatusFade) {
+            _baseView.alpha = 1.0;
+        }else{
+            // 默认缩放
+            _baseView.frame = [self.options[UIViewAnimationEndFrame] CGRectValue];
+        }
     } completion:^(BOOL finished) {
         [_baseView removeFromSuperview];
         if (completion) {
@@ -124,6 +139,56 @@ static ZLBaseAnimationView *_singleBaseView;
     return _baseView;
 }
 
+// 计算Frame根据屏幕的尺寸拉伸或缩小
+- (void)setMaxMinZoomScalesForCurrentBounds {
+    
+    UIImageView *imageView = (UIImageView *)_baseView;
+    if (imageView.image == nil) return;
+    
+    // Sizes
+    CGSize boundsSize = [UIScreen mainScreen].bounds.size;
+    CGSize imageSize = imageView.image.size;
+    
+    // 获取最小比例
+    CGFloat xScale = boundsSize.width / imageSize.width;
+    CGFloat yScale = boundsSize.height / imageSize.height;
+    CGFloat minScale = MIN(xScale, yScale);
+    
+    // 最大的比例不能超过1.0
+    if (xScale > 1 && yScale > 1) {
+        minScale = 1.0;
+    }
+    
+    // 重置
+    imageView.frame = CGRectMake(0, 0, imageView.image.size.width * minScale, imageView.image.size.height * minScale);
+    
+    if (![_baseView isKindOfClass:[UIImageView class]]) return;
+    
+    // Size
+    CGRect frameToCenter = _baseView.frame;
+    
+    // 计算水平方向居中
+    if (frameToCenter.size.width < boundsSize.width) {
+        frameToCenter.origin.x = floorf((boundsSize.width - frameToCenter.size.width) / 2.0);
+    } else {
+        frameToCenter.origin.x = 0;
+    }
+    
+    // 计算垂直方向居中
+    if (frameToCenter.size.height < boundsSize.height) {
+        frameToCenter.origin.y = floorf((boundsSize.height - frameToCenter.size.height) / 2.0);
+    } else {
+        frameToCenter.origin.y = 0;
+    }
+    
+    // Center
+    if (!CGRectEqualToRect(_baseView.frame, frameToCenter))
+        _baseView.frame = frameToCenter;
+        _startFrame = [NSValue valueWithCGRect:_baseView.frame];
+    
+}
+
+
 - (UIView *) getViewWithCell:(UIView *)view{
     if ([view.superview isKindOfClass:[UITableViewCell class]] || [view.superview isKindOfClass:[UICollectionViewCell class]] || view == nil) {
         return view.superview;
@@ -135,7 +200,9 @@ static ZLBaseAnimationView *_singleBaseView;
 #pragma mark -结束动画，支持动画block
 - (instancetype) viewAnimateWithAnimations:(void(^)())animations identity:(void(^)(ZLBaseAnimationView *baseView)) completion{
     
-    //    UIView *fromView = self.options[UIViewAnimationFromView];
+    // 动画执行的模式
+    ZLPickerBrowserAnimationStatus animationStatus = [self.options[UIViewAnimationAnimationStatus] integerValue];
+    
     NSNumber *direction = self.options[UIViewAnimationScrollDirection];
     UIButton *cView = self.options[UIViewAnimationToView];
     CGRect imageFrame = CGRectZero;
@@ -198,6 +265,12 @@ static ZLBaseAnimationView *_singleBaseView;
     _endFrame = [NSValue valueWithCGRect:imageFrame];
     
     
+    // 淡入淡出模式
+    if (animationStatus == ZLPickerBrowserAnimationStatusFade) {
+        _baseView.frame = [_endFrame CGRectValue];
+        _baseView.alpha = 1.0;
+    }
+    
     // 让最外面的View不能跟用户进行交互
     [self.options[UIViewAnimationFromView] setUserInteractionEnabled:NO];
     _baseView.hidden = NO;
@@ -211,13 +284,18 @@ static ZLBaseAnimationView *_singleBaseView;
         [myWindow addSubview:_baseView];
     }
     
-    _baseView.frame = [self.options[UIViewAnimationEndFrame] CGRectValue];
+    _baseView.frame = [_startFrame CGRectValue];//[self.options[UIViewAnimationEndFrame] CGRectValue];
     
     [UIView animateWithDuration:.5 animations:^{
         if (animations) {
             animations();
         }else{
-            _baseView.frame = [_endFrame CGRectValue];//[self.options[UIViewAnimationStartFrame] CGRectValue];
+            // 淡入淡出模式
+            if (animationStatus == ZLPickerBrowserAnimationStatusFade) {
+                _baseView.alpha = 0;
+            }else{
+                _baseView.frame = [_endFrame CGRectValue];
+            }
         }
     } completion:^(BOOL finished) {
         if (completion) {

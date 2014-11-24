@@ -16,6 +16,12 @@ typedef NS_ENUM(NSInteger, ZLPickerBrowserScrollDirection) {
     ZLPickerBrowserScrollDirectionSudoku // 九宫格的计算方式
 };
 
+// 执行动画模式
+typedef NS_ENUM(NSInteger, ZLPickerBrowserAnimationStatus) {
+    ZLPickerBrowserAnimationStatusZoom = 0,// 缩放
+    ZLPickerBrowserAnimationStatusFade // 淡入淡出
+};
+
 // 点击销毁的block
 typedef void(^ZLPickerBrowserViewControllerTapDisMissBlock)(NSInteger);
 

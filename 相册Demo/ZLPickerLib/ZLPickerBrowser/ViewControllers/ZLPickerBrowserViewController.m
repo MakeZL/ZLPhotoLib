@@ -109,6 +109,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     options[UIViewAnimationFromView] = self.fromView;
     // 点击的那个View
     options[UIViewAnimationToView] = self.toView;
+    // 将动画添加到当前View上
     options[UIViewAnimationInView] = self.view;
     // 排列方式
     options[UIViewAnimationScrollDirection] = @(self.scrollDirection);
@@ -116,6 +117,9 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     options[UIViewAnimationImages] = [self getPhotos];
     // 当前展示第几张图片
     options[UIViewAnimationTypeViewWithIndexPath] = [NSIndexPath indexPathForRow:self.currentPage inSection:0];
+    // 动画执行的方式
+    options[UIViewAnimationAnimationStatus] = @(self.animationStatus);
+    
     // 如果是九宫格的话
     if ([options[UIViewAnimationScrollDirection] integerValue] == ZLPickerBrowserScrollDirectionSudoku) {
         // 九宫格

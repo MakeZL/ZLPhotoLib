@@ -11,6 +11,5 @@
 static NSString *const UIViewAnimationImages = @"UIViewAnimationImages";
 
 @interface ZLBaseAnimationImageView : ZLBaseAnimationView
-
-
+@property (nonatomic , strong) UIImageView *imageView;
 @end

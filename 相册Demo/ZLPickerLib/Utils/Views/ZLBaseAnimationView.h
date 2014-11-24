@@ -30,6 +30,8 @@ static NSString *const UIViewAnimationStartFrame = @"UIViewAnimationStartFrame";
 static NSString *const UIViewAnimationEndFrame = @"UIViewAnimationEndFrame";
 // 动画时间 default 0.5
 static NSString *const UIViewAnimationDuration = @"UIViewAnimationDuration";
+// 动画执行的模式
+static NSString *const UIViewAnimationAnimationStatus = @"UIViewAnimationAnimationStatus";
 
 /** 系统参数配置 */
 // 父View
