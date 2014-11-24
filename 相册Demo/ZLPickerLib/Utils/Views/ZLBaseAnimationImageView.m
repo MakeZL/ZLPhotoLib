@@ -59,12 +59,18 @@
     
     UIButton *cView = self.options[UIViewAnimationToView];
     UIImage *image = nil;
+    
     if (photo.photoImage) {
         image = photo.photoImage;
     }else if (photo.thumbImage){
         image = photo.thumbImage;
-    }else if (cView.imageView.image){
+    }
+    
+    if ([cView isKindOfClass:[UIButton class]]) {
         image = cView.imageView.image;
+    }else if ([cView isKindOfClass:[UIImageView class]]){
+        UIImageView *ig = (UIImageView *)cView;
+        image = ig.image;
     }
     
     self.imageView.image = image;
@@ -78,12 +84,26 @@
     
     UIButton *cView = self.options[UIViewAnimationToView];
     ZLPickerBrowserPhoto *photo = self.photos[self.currentPage];//[self photoWithAtIndex:self.currentPage];
+    
+    UIImage *image = nil;
+    
+    if (photo.photoImage) {
+        image = photo.photoImage;
+    }else if (photo.thumbImage){
+        image = photo.thumbImage;
+    }
+    
+    if ([cView isKindOfClass:[UIButton class]]) {
+        image = cView.imageView.image;
+    }else if ([cView isKindOfClass:[UIImageView class]]){
+        UIImageView *ig = (UIImageView *)cView;
+        image = ig.image;
+    }
+    
     if (photo.photoImage) {
         [_imageView setImage:photo.photoImage];
     }else if (photo.thumbImage){
         [_imageView setImage:photo.thumbImage];
-    }else if (cView.imageView.image){
-        [_imageView setImage:cView.imageView.image];
     }else if (photo.photoURL){
         [_imageView sd_setImageWithURL:photo.photoURL placeholderImage:nil];
     }

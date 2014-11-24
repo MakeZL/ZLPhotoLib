@@ -17,5 +17,6 @@ typedef void(^downLoadWebImageCallBlock)();
 // 下载完回调
 @property (nonatomic , copy) downLoadWebImageCallBlock downLoadWebImageCallBlock;
 
+@property (nonatomic , strong) UIScrollView *scrollView;
 
 @end

@@ -111,6 +111,8 @@
         [self addSubview:gifView];
     }else{
         ZLPickerBrowserPhotoImageView *zoomImageView = [[ZLPickerBrowserPhotoImageView alloc] init];
+        zoomImageView.scrollView = self;
+        zoomImageView.frame = self.bounds;
         zoomImageView.photo = photo;
         zoomImageView.downLoadWebImageCallBlock = ^{
             // 下载完毕后重新计算下Frame
@@ -119,8 +121,6 @@
         self.zoomImageView = zoomImageView;
         [self addSubview:zoomImageView];
     }
-    
-    _zoomImageView.frame = (CGRect) {CGPointZero , _zoomImageView.image.size};
     
     [self setMaxMinZoomScalesForCurrentBounds];
     
@@ -155,6 +155,8 @@
 
 #pragma mark - setMaxMinZoomScalesForCurrentBounds
 - (void)setMaxMinZoomScalesForCurrentBounds {
+    
+    _zoomImageView.frame = (CGRect) {CGPointZero , _zoomImageView.image.size};
     
     if (_zoomImageView.image == nil) return;
     

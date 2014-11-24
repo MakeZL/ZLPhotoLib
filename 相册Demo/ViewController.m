@@ -12,6 +12,7 @@
 #import "ZLPickerBrowserViewController.h"
 #import "ZLPickerCommon.h"
 #import "ZLBaseAnimationImageView.h"
+#import "UIImageView+WebCache.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 
 @interface ViewController () <UITableViewDataSource,UITableViewDelegate,PickerViewControllerDelegate,ZLPickerBrowserViewControllerDataSource,ZLPickerBrowserViewControllerDelegate>
@@ -26,11 +27,32 @@
 @property (nonatomic , assign) CGRect tempFrame;
 @property (nonatomic , strong) NSMutableDictionary *params;
 
+/**
+ *  测试图片数组
+ */
+@property (nonatomic , strong) NSArray *images;
+
 @end
 
 @implementation ViewController
 
 #pragma mark -getter
+- (NSArray *)images{
+    if (!_images) {
+        _images = @[
+                    @"http://e.hiphotos.baidu.com/zhidao/pic/item/574e9258d109b3de40f319c6cebf6c81810a4cd4.jpg",
+//                    @"http://pic1.win4000.com/wallpaper/b/50a06956560a6.jpg",
+//                    @"http://image.tianjimedia.com/uploadImages/2012/013/0C4PQ1XX78O3.jpg",
+//                    @"http://img6.3lian.com/c23/desk2/18/15/1938.jpg",
+                    @"http://pic.5442.com/2012/0809/25/17.jpg",
+                    @"http://pic.4j4j.cn/upload/pic/20130621/6a380a493b.jpg",
+//                    @"http://img.wallba.com/data/Image/2013hjw/3yue/2hao/mnbz/1/20133491039498.jpg"
+                    
+                    ];
+    }
+    return _images;
+}
+
 - (UIImageView *)currentImageView{
     if (!_currentImageView) {
         _currentImageView = [[UIImageView alloc] init];
@@ -68,6 +90,8 @@
     [self setAutoLayoutParams];
     
     [self setupButtons];
+    
+    [self.tableView reloadData];
 }
 
 #pragma mark -setter
@@ -106,7 +130,7 @@
 }
 
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return self.assets.count;
+    return self.images.count;
 }
 
 
@@ -126,12 +150,12 @@
 }
 
 - (void) setupPhotoBrowser:(UITableViewCell *) cell{
-    
+
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     // 图片游览器
     ZLPickerBrowserViewController *pickerBrowser = [[ZLPickerBrowserViewController alloc] init];
     // 默认拉伸 ： 淡入淡出 ZLPickerBrowserAnimationStatusFade
-    pickerBrowser.animationStatus = ZLPickerBrowserAnimationStatusFade;
+//    pickerBrowser.animationStatus = ZLPickerBrowserAnimationStatusFade;
     pickerBrowser.toView = cell.imageView;
     pickerBrowser.fromView = self.view;
     pickerBrowser.delegate = self;
@@ -146,25 +170,26 @@
 
 #pragma mark <ZLPickerBrowserViewControllerDataSource>
 - (NSInteger) numberOfPhotosInPickerBrowser:(ZLPickerBrowserViewController *)pickerBrowser{
-    return self.assets.count;
+    return self.images.count;
 }
 
 - (ZLPickerBrowserPhoto *) photoBrowser:(ZLPickerBrowserViewController *)pickerBrowser photoAtIndex:(NSUInteger)index{
     
-    id imageObj = [self.assets objectAtIndex:index];
+//    id imageObj = [self.assets objectAtIndex:index];
     ZLPickerBrowserPhoto *photo = [[ZLPickerBrowserPhoto alloc] init];
-    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
-    photo.thumbImage = cell.imageView.image;
-    
-    if ([imageObj isKindOfClass:[ALAsset class]]) {
-        ALAsset *asset = (ALAsset *)imageObj;
-        photo.thumbImage = [UIImage imageWithCGImage:[asset thumbnail]];
-        photo.photoImage = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]];
-    }else if ([imageObj isKindOfClass:[NSURL class]]){
-        photo.photoURL = imageObj;
-    }else if ([imageObj isKindOfClass:[UIImage class]]){
-        photo.photoImage = imageObj;
-    }
+    photo.photoURL = [NSURL URLWithString:self.images[index]];
+//    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
+//    photo.thumbImage = cell.imageView.image;
+//    
+//    if ([imageObj isKindOfClass:[ALAsset class]]) {
+//        ALAsset *asset = (ALAsset *)imageObj;
+//        photo.thumbImage = [UIImage imageWithCGImage:[asset thumbnail]];
+//        photo.photoImage = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]];
+//    }else if ([imageObj isKindOfClass:[NSURL class]]){
+//        photo.photoURL = imageObj;
+//    }else if ([imageObj isKindOfClass:[UIImage class]]){
+//        photo.photoImage = imageObj;
+//    }
 
     return photo;
 }
@@ -187,10 +212,12 @@
         cell.backgroundColor = [UIColor clearColor];
     }
     
-    ALAsset *asset = self.assets[indexPath.row];
-    if ([asset isKindOfClass:[ALAsset class]]) {
-        cell.imageView.image = [UIImage imageWithCGImage:[asset thumbnail]];
-    }
+    [cell.imageView sd_setImageWithURL:[NSURL URLWithString:self.images[indexPath.row]] placeholderImage:[UIImage imageNamed:@"wallpaper_placeholder"]];
+//    ALAsset *asset = self.assets[indexPath.row];
+//    if ([asset isKindOfClass:[ALAsset class]]) {
+//        cell.imageView.image = [UIImage imageWithCGImage:[asset thumbnail]];
+//    }
+     
     return cell;
     
 }
