@@ -30,6 +30,7 @@ static ZLBaseAnimationView *_singleBaseView;
     return [[self animationView] initViewWithOptions:options completion:completion];
 }
 
+#pragma mark - 实例化对象
 + (instancetype) animationView{
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -38,8 +39,8 @@ static ZLBaseAnimationView *_singleBaseView;
     return _singleBaseView;
 }
 
+#pragma mark - 重新判断值是否完整，如果不完整就补充
 - (NSDictionary *) getTypeViewWithOptions:(NSDictionary *)options{
-    
     UIView *cView = options[UIViewAnimationToView];
     
     NSMutableDictionary *ops = [NSMutableDictionary dictionaryWithDictionary:options];
@@ -77,7 +78,13 @@ static ZLBaseAnimationView *_singleBaseView;
 }
 
 
-#pragma mark -初始化动画
+#pragma mark - 初始化动画
+/**
+ *  初始化动画
+ *
+ *  @param options    参数字典
+ *  @param completion 结束的动画的block
+ */
 - (instancetype) initViewWithOptions:(NSDictionary *) options completion:(void (^)(ZLBaseAnimationView *baseView)) completion{
     
     // 计算开始坐标
@@ -94,6 +101,7 @@ static ZLBaseAnimationView *_singleBaseView;
     view.userInteractionEnabled = NO;
     view.hidden = NO;
     
+    // 如果不存在baseView就创建
     if (!selfView) {
         if (!_baseView) {
             _baseView =  [[[self class] alloc] init];
@@ -102,12 +110,15 @@ static ZLBaseAnimationView *_singleBaseView;
         _baseView = (ZLBaseAnimationView *)selfView;
     }
     
+    // 重置
     _baseView.frame = startFrame;
     _baseView.hidden = NO;
 
+    // 记录开始与结束的Frame
     _startFrame = self.options[UIViewAnimationEndFrame];
     _endFrame = self.options[UIViewAnimationStartFrame];
     
+    // 避免重复添加View
     if (![view.subviews.lastObject isKindOfClass:[ZLBaseAnimationView class]]) {
         [view addSubview:_baseView];
     }
@@ -116,23 +127,23 @@ static ZLBaseAnimationView *_singleBaseView;
     if (animationStatus == ZLPickerBrowserAnimationStatusFade) {
         _baseView.alpha = 0;
         _baseView.frame = [self.options[UIViewAnimationEndFrame] CGRectValue];
-        [self setMaxMinZoomScalesForCurrentBounds];
     }
     
+    // 开始动画
     [UIView animateWithDuration:duration animations:^{
         // 淡入淡出
         if (animationStatus == ZLPickerBrowserAnimationStatusFade) {
             _baseView.alpha = 1.0;
         }else{
             // 默认缩放
-            _baseView.frame = [self.options[UIViewAnimationEndFrame] CGRectValue];
+            _baseView.frame = [self setMaxMinZoomScalesForCurrentBounds];
         }
     } completion:^(BOOL finished) {
         [_baseView removeFromSuperview];
         if (completion) {
             completion(self);
         }
-        
+        // 恢复交互
         view.userInteractionEnabled = YES;
     }];
     
@@ -140,10 +151,10 @@ static ZLBaseAnimationView *_singleBaseView;
 }
 
 // 计算Frame根据屏幕的尺寸拉伸或缩小
-- (void)setMaxMinZoomScalesForCurrentBounds {
+- (CGRect )setMaxMinZoomScalesForCurrentBounds {
     
     UIImageView *imageView = (UIImageView *)_baseView;
-    if (imageView.image == nil) return;
+    if (imageView.image == nil) return CGRectZero;
     
     // Sizes
     CGSize boundsSize = [UIScreen mainScreen].bounds.size;
@@ -162,7 +173,7 @@ static ZLBaseAnimationView *_singleBaseView;
     // 重置
     imageView.frame = CGRectMake(0, 0, imageView.image.size.width * minScale, imageView.image.size.height * minScale);
     
-    if (![_baseView isKindOfClass:[UIImageView class]]) return;
+    if (![_baseView isKindOfClass:[UIImageView class]]) return CGRectZero;
     
     // Size
     CGRect frameToCenter = _baseView.frame;
@@ -183,25 +194,20 @@ static ZLBaseAnimationView *_singleBaseView;
     
     // Center
     if (!CGRectEqualToRect(_baseView.frame, frameToCenter))
-        _baseView.frame = frameToCenter;
-        _startFrame = [NSValue valueWithCGRect:_baseView.frame];
-    
+        return frameToCenter;
+    return CGRectZero;
 }
 
-
+#pragma mark - 遍历自己是不是TableViewCell 或者 UICollectionCell
 - (UIView *) getViewWithCell:(UIView *)view{
     if ([view.superview isKindOfClass:[UITableViewCell class]] || [view.superview isKindOfClass:[UICollectionViewCell class]] || view == nil) {
         return view.superview;
     }
-    
     return [self getViewWithCell:view.superview];
 }
 
-#pragma mark -结束动画，支持动画block
-- (instancetype) viewAnimateWithAnimations:(void(^)())animations identity:(void(^)(ZLBaseAnimationView *baseView)) completion{
-    
-    // 动画执行的模式
-    ZLPickerBrowserAnimationStatus animationStatus = [self.options[UIViewAnimationAnimationStatus] integerValue];
+#pragma mark - 根据动画的方向来计算Frame
+- (CGRect ) animationDirectionWithRect{
     
     NSNumber *direction = self.options[UIViewAnimationScrollDirection];
     UIButton *cView = self.options[UIViewAnimationToView];
@@ -262,8 +268,16 @@ static ZLBaseAnimationView *_singleBaseView;
     if (!iOS7gt) {
         imageFrame.origin.y += 64;
     }
-    _endFrame = [NSValue valueWithCGRect:imageFrame];
     
+    return imageFrame;
+}
+
+#pragma mark - 结束动画，支持动画block
+- (instancetype) viewAnimateWithAnimations:(void(^)())animations identity:(void(^)(ZLBaseAnimationView *baseView)) completion{
+    
+    // 动画执行的模式
+    ZLPickerBrowserAnimationStatus animationStatus = [self.options[UIViewAnimationAnimationStatus] integerValue];
+    _endFrame = [NSValue valueWithCGRect:[self animationDirectionWithRect]];
     
     // 淡入淡出模式
     if (animationStatus == ZLPickerBrowserAnimationStatusFade) {
@@ -284,7 +298,7 @@ static ZLBaseAnimationView *_singleBaseView;
         [myWindow addSubview:_baseView];
     }
     
-    _baseView.frame = [_startFrame CGRectValue];//[self.options[UIViewAnimationEndFrame] CGRectValue];
+    _baseView.frame = [self setMaxMinZoomScalesForCurrentBounds];//[self.options[UIViewAnimationEndFrame] CGRectValue];
     
     [UIView animateWithDuration:.5 animations:^{
         if (animations) {
@@ -303,7 +317,6 @@ static ZLBaseAnimationView *_singleBaseView;
         }
         
         _baseView.hidden = YES;
-        
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             // 让最外面的View能跟用户进行交互
             myWindow.userInteractionEnabled = YES;
@@ -314,7 +327,7 @@ static ZLBaseAnimationView *_singleBaseView;
     return  _baseView;
 }
 
-#pragma mark -结束动画
+#pragma mark - 结束动画
 - (instancetype) viewformIdentity:(void(^)(ZLBaseAnimationView *baseView)) completion{
     return [self viewAnimateWithAnimations:nil identity:completion];
 }
