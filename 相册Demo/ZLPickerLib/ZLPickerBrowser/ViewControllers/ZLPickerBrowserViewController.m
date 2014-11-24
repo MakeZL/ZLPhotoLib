@@ -99,20 +99,45 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 
 // 开始动画
 - (void)startLogddingAnimation{
-    
     if (!(self.fromView) || !(self.toView) ) {
         [self reloadData];
         return;
     }
     
-    NSDictionary *options = @{
-                              UIViewAnimationFromView:self.fromView,
-                              UIViewAnimationInView:self.view,
-                              UIViewAnimationToView:self.toView,
-                              UIViewAnimationScrollDirection:@(self.scrollDirection),
-                              UIViewAnimationImages:[self getPhotos],
-                              UIViewAnimationTypeViewWithIndexPath:[NSIndexPath indexPathForRow:self.currentPage inSection:0]
-                              };
+    NSMutableDictionary *options = [NSMutableDictionary dictionary];
+    // 来自那个父View
+    options[UIViewAnimationFromView] = self.fromView;
+    // 点击的那个View
+    options[UIViewAnimationToView] = self.toView;
+    options[UIViewAnimationInView] = self.view;
+    // 排列方式
+    options[UIViewAnimationScrollDirection] = @(self.scrollDirection);
+    // 图片数组
+    options[UIViewAnimationImages] = [self getPhotos];
+    // 当前展示第几张图片
+    options[UIViewAnimationTypeViewWithIndexPath] = [NSIndexPath indexPathForRow:self.currentPage inSection:0];
+    // 如果是九宫格的话
+    if ([options[UIViewAnimationScrollDirection] integerValue] == ZLPickerBrowserScrollDirectionSudoku) {
+        // 九宫格
+        options[UIViewAnimationSudokuMarginX] = [NSNumber numberWithFloat:self.sudokuMarginX];
+        options[UIViewAnimationSudokuMarginY] = [NSNumber numberWithFloat:self.sudokuMarginY];
+        options[UIViewAnimationSudokuDisplayCellNumber] = [NSNumber numberWithInteger:self.sudokuDisplayCellNumber];
+    }
+    
+    
+    
+    //    NSDictionary *options = @{
+    //                              UIViewAnimationFromView:self.fromView,
+    //                              UIViewAnimationInView:self.view,
+    //                              UIViewAnimationToView:self.toView,
+    //                              UIViewAnimationScrollDirection:@(self.scrollDirection),
+    //                              UIViewAnimationSudokuMarginX:[NSNumber numberWithFloat:self.sudokuMarginX],
+    //                              UIViewAnimationSudokuMarginY:[NSNumber numberWithFloat:self.sudokuMarginY],
+    //                              UIViewAnimationSudokuDisplayCellNumber:[NSNumber numberWithInteger:self.sudokuDisplayCellNumber],
+    //                              UIViewAnimationToView:self.toView,
+    //                              UIViewAnimationImages:[self getPhotos],
+    //                              UIViewAnimationTypeViewWithIndexPath:[NSIndexPath indexPathForRow:self.currentPage inSection:0]
+    //                              };
     
     __weak typeof(self) weakSelf = self;
     [ZLBaseAnimationImageView animationViewWithOptions:options completion:^(ZLBaseAnimationView *baseView) {

@@ -8,20 +8,20 @@
 
 #import <UIKit/UIKit.h>
 
-/**  
+/**
  *   动画参数配置
-     UIViewAnimationStartFrame 开始位置，默认 {0,0,0,0}
-     UIViewAnimationEndFrame 结束位置
-     UIViewAnimationDuration 默认 0.5
+ UIViewAnimationStartFrame 开始位置，默认 {0,0,0,0}
+ UIViewAnimationEndFrame 结束位置
+ UIViewAnimationDuration 默认 0.5
  
-     UIViewAnimationInView 参照View
-     UIViewAnimationSelfView 动画里面的View，用于继承它的View
+ UIViewAnimationInView 参照View
+ UIViewAnimationSelfView 动画里面的View，用于继承它的View
  
-     UIViewAnimationBackGroundColor 当前View的背景色
-     UIViewAnimationMakeViewBackGroundColor 蒙版的背景色，默认白色
+ UIViewAnimationBackGroundColor 当前View的背景色
+ UIViewAnimationMakeViewBackGroundColor 蒙版的背景色，默认白色
  
-     UIViewAnimationTypeView 动画的View(什么View需要动画就传那个)
-     UIViewAnimationTypeViewWithIndexPath 记录值
+ UIViewAnimationTypeView 动画的View(什么View需要动画就传那个)
+ UIViewAnimationTypeViewWithIndexPath 记录值
  
  */
 // 开始坐标 default 0,0
@@ -46,6 +46,11 @@ static NSString *const UIViewAnimationFromView = @"UIViewAnimationFromView";
 static NSString *const UIViewAnimationTypeViewWithIndexPath = @"UIViewAnimationTypeViewWithIndexPath";
 // 计算坐标的方向
 static NSString *const UIViewAnimationScrollDirection = @"UIViewAnimationTypeViewWithScrollDirection";
+
+// 九宫格排练
+static NSString *const UIViewAnimationSudokuMarginX = @"UIViewAnimationSudokuMarginX";
+static NSString *const UIViewAnimationSudokuMarginY = @"UIViewAnimationSudokuMarginY";
+static NSString *const UIViewAnimationSudokuDisplayCellNumber = @"UIViewAnimationSudokuDisplayCellNumber";
 
 typedef void(^completion)();
 

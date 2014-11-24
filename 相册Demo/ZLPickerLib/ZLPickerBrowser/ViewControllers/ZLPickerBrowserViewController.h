@@ -50,6 +50,12 @@
 // 点击的View的根试图View(传self.view，坐位点击View的参照View)
 @property (nonatomic , weak) UIView *fromView;
 
+// 九宫格的间距
+@property (nonatomic , assign) CGFloat sudokuMarginX;
+@property (nonatomic , assign) CGFloat sudokuMarginY;
+// 九宫格一行展示几个cell
+@property (nonatomic , assign) NSInteger sudokuDisplayCellNumber;
+
 // 决定你点击的View动画是从水平还是垂直，用于计算
 @property (nonatomic , assign) ZLPickerBrowserScrollDirection scrollDirection;
 // 是否可以编辑（删除照片）

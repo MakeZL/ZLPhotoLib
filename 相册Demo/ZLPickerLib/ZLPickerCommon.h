@@ -13,6 +13,7 @@
 typedef NS_ENUM(NSInteger, ZLPickerBrowserScrollDirection) {
     ZLPickerBrowserScrollDirectionVertical = 0,// 水平
     ZLPickerBrowserScrollDirectionHorizontal, // 垂直
+    ZLPickerBrowserScrollDirectionSudoku // 九宫格的计算方式
 };
 
 // 点击销毁的block

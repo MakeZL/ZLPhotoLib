@@ -135,6 +135,7 @@ static ZLBaseAnimationView *_singleBaseView;
 #pragma mark -结束动画，支持动画block
 - (instancetype) viewAnimateWithAnimations:(void(^)())animations identity:(void(^)(ZLBaseAnimationView *baseView)) completion{
     
+    //    UIView *fromView = self.options[UIViewAnimationFromView];
     NSNumber *direction = self.options[UIViewAnimationScrollDirection];
     UIButton *cView = self.options[UIViewAnimationToView];
     CGRect imageFrame = CGRectZero;
@@ -144,19 +145,47 @@ static ZLBaseAnimationView *_singleBaseView;
             // 水平方向
             CGFloat margin = CGRectGetMaxX(cView.frame) - (cView.tag + 1) * cView.width;
             CGFloat imageX = cView.frame.size.width * self.currentPage;
-            imageFrame = [cView.superview convertRect:CGRectMake(imageX + margin, cView.height, cView.frame.size.width, cView.bounds.size.height) toView: self.options[UIViewAnimationFromView]];
+            imageFrame = [cView.superview convertRect:CGRectMake(imageX + margin,  cView.y, cView.frame.size.width, cView.bounds.size.height) toView: self.options[UIViewAnimationFromView]];
         }
             break;
         case ZLPickerBrowserScrollDirectionVertical:{
             // 垂直方向
             UIView *cell = [self getViewWithCell:cView];
             if (cell == nil) {
-                cell = cView;
+                NSInteger padding = ((NSInteger)cView.y % (NSInteger)cView.height);
+                
+                // NOTE: 保证计算y的间距是正常的。
+                // !!  : self.currentPage如果为0还计算会崩溃
+                if (!self.currentPage) {
+                    padding = 0;
+                }else{
+                    padding = padding / (self.currentPage - 1);
+                }
+                
+                imageFrame = [cView.superview convertRect:CGRectMake(cView.x,  self.currentPage * (cView.height + padding), cView.width, cView.height) toView: self.options[UIViewAnimationFromView]];
+            }else{
+                CGRect cellF = CGRectMake(cView.x, cView.y + cView.height  * self.currentPage, cView.width, cView.height);
+                imageFrame = [cell.superview convertRect:cellF toView: self.options[UIViewAnimationFromView]];
             }
-            CGRect cellF = CGRectMake(cView.x, cView.y + cView.height  * self.currentPage, cView.width, cView.height);
-            imageFrame = [cell.superview convertRect:cellF toView: self.options[UIViewAnimationFromView]];
         }
-   
+            break;
+            
+        case ZLPickerBrowserScrollDirectionSudoku:{
+            // 九宫格
+            CGFloat marginX = [self.options[UIViewAnimationSudokuMarginX] floatValue];
+            CGFloat marginY = [self.options[UIViewAnimationSudokuMarginY] floatValue];
+            
+            NSInteger btnH = cView.height;
+            
+            // 有间距的情况下
+            NSInteger page = [self.options[UIViewAnimationSudokuDisplayCellNumber] integerValue];
+            NSInteger row = self.currentPage / page;
+            NSInteger col = self.currentPage % page;
+            
+            CGFloat margin = (cView.width + marginX) * col;
+            imageFrame = [cView.superview convertRect:CGRectMake(margin, row * btnH + (row * marginY), cView.frame.size.width, cView.bounds.size.height) toView: self.options[UIViewAnimationFromView]];
+        }
+            
             break;
         default:
             break;
