@@ -113,7 +113,7 @@ static ZLBaseAnimationView *_singleBaseView;
     // 重置
     _baseView.frame = startFrame;
     _baseView.hidden = NO;
-
+    
     // 记录开始与结束的Frame
     _startFrame = self.options[UIViewAnimationEndFrame];
     _endFrame = self.options[UIViewAnimationStartFrame];
@@ -126,7 +126,8 @@ static ZLBaseAnimationView *_singleBaseView;
     // 淡入淡出模式
     if (animationStatus == ZLPickerBrowserAnimationStatusFade) {
         _baseView.alpha = 0;
-        _baseView.frame = [self.options[UIViewAnimationEndFrame] CGRectValue];
+        _baseView.frame = [self setMaxMinZoomScalesForCurrentBounds];
+        //[self.options[UIViewAnimationEndFrame] CGRectValue];
     }
     
     // 开始动画
