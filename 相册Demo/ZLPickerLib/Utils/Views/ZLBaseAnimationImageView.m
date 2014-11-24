@@ -98,16 +98,12 @@
     }else if ([cView isKindOfClass:[UIImageView class]]){
         UIImageView *ig = (UIImageView *)cView;
         image = ig.image;
-    }
-    
-    if (photo.photoImage) {
-        [_imageView setImage:photo.photoImage];
-    }else if (photo.thumbImage){
-        [_imageView setImage:photo.thumbImage];
     }else if (photo.photoURL){
-        [_imageView sd_setImageWithURL:photo.photoURL placeholderImage:nil];
+        [self.imageView sd_setImageWithURL:photo.photoURL placeholderImage:nil];
     }
     
+    self.imageView.image = image;
+
     return [super viewformIdentity:completion];
 }
 

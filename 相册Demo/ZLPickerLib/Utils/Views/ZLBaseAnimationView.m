@@ -217,6 +217,7 @@ static ZLBaseAnimationView *_singleBaseView;
     if (cView.height <= 0) {
         return [self.options[UIViewAnimationStartFrame] CGRectValue];
     }
+    
     CGRect imageFrame = CGRectZero;
     
     switch ([direction integerValue]) {
@@ -305,7 +306,7 @@ static ZLBaseAnimationView *_singleBaseView;
         [myWindow addSubview:_baseView];
     }
     
-    _baseView.frame = [self.options[UIViewAnimationEndFrame] CGRectValue];
+//    _baseView.frame = [self.options[UIViewAnimationEndFrame] CGRectValue];
     
     [UIView animateWithDuration:.5 animations:^{
         if (animations) {
@@ -315,6 +316,7 @@ static ZLBaseAnimationView *_singleBaseView;
             if (animationStatus == ZLPickerBrowserAnimationStatusFade) {
                 _baseView.alpha = 0;
             }else{
+                
                 _baseView.frame = [_endFrame CGRectValue];
             }
         }
