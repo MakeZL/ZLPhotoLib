@@ -36,12 +36,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 #pragma mark - getter
 - (NSMutableArray *)photos{
     if (!_photos) {
-        //        NSMutableArray *photos = [NSMutableArray array];
         _photos = [NSMutableArray array];
-        //        NSInteger count = [self.dataSource numberOfPhotosInPickerBrowser:self];
-        //        for (NSInteger i = 0; i < count; i++) {
-        //            [photos addObject:[self.dataSource photoBrowser:self photoAtIndex:i]];
-        //        }
         [_photos addObjectsFromArray:[self getPhotos]];
     }
     return _photos;
@@ -74,17 +69,22 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 - (UIButton *)deleleBtn{
     if (!_deleleBtn) {
         UIButton *deleleBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        CGFloat deleleBtnW = 50;
-        CGFloat deleleBtnX = self.view.width - deleleBtnW;
-        CGFloat deleleBtnY = 20;
-        CGFloat deleleBtnH = deleleBtnW;
-        deleleBtn.frame = CGRectMake(deleleBtnX, deleleBtnY, deleleBtnW, deleleBtnH);
+        deleleBtn.translatesAutoresizingMaskIntoConstraints = NO;
         deleleBtn.titleLabel.font = [UIFont systemFontOfSize:15];
         [deleleBtn setTitle:@"删除" forState:UIControlStateNormal];
         [deleleBtn addTarget:self action:@selector(delete) forControlEvents:UIControlEventTouchUpInside];
         deleleBtn.hidden = YES;
         [self.view addSubview:deleleBtn];
         self.deleleBtn = deleleBtn;
+        
+        NSString *widthVfl = @"H:[deleleBtn(deleteBtnWH)]-20-|";
+        NSString *heightVfl = @"V:|-20-[deleleBtn(deleteBtnWH)]";
+        NSDictionary *metrics = @{@"deleteBtnWH":@(50)};
+        NSDictionary *views = NSDictionaryOfVariableBindings(deleleBtn);
+        
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:widthVfl options:0 metrics:metrics views:views]];
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:heightVfl options:0 metrics:metrics views:views]];
+        
     }
     return _deleleBtn;
 }
@@ -92,13 +92,23 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 #pragma mark -分页控件
 - (UIPageControl *)pageCtrl{
     if (!_pageCtrl) {
+        
         UIPageControl *pageCtrl = [[UIPageControl alloc] init];
         pageCtrl.userInteractionEnabled = NO;
-        pageCtrl.frame = CGRectMake(0, self.view.height - ZLPickerPageCtrlH, self.view.width, ZLPickerPageCtrlH);
+        pageCtrl.translatesAutoresizingMaskIntoConstraints = NO;
         pageCtrl.currentPageIndicatorTintColor = [UIColor whiteColor];
         pageCtrl.pageIndicatorTintColor = [UIColor lightGrayColor];
         [self.view addSubview:pageCtrl];
         self.pageCtrl = pageCtrl;
+        
+        NSString *widthVfl = @"H:|-0-[pageCtrl]-0-|";
+        NSString *heightVfl = @"V:[pageCtrl(ZLPickerPageCtrlH)]-20-|";
+        NSDictionary *views = NSDictionaryOfVariableBindings(pageCtrl);
+        NSDictionary *metrics = @{@"ZLPickerPageCtrlH":@(ZLPickerPageCtrlH)};
+        
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:widthVfl options:0 metrics:metrics views:views]];
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:heightVfl options:0 metrics:metrics views:views]];
+        
     }
     return _pageCtrl;
 }
@@ -143,22 +153,6 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         options[UIViewAnimationSudokuMarginY] = [NSNumber numberWithFloat:self.sudokuMarginY];
         options[UIViewAnimationSudokuDisplayCellNumber] = [NSNumber numberWithInteger:self.sudokuDisplayCellNumber];
     }
-    
-    
-    
-    //    NSDictionary *options = @{
-    //                              UIViewAnimationFromView:self.fromView,
-    //                              UIViewAnimationInView:self.view,
-    //                              UIViewAnimationToView:self.toView,
-    //                              UIViewAnimationScrollDirection:@(self.scrollDirection),
-    //                              UIViewAnimationSudokuMarginX:[NSNumber numberWithFloat:self.sudokuMarginX],
-    //                              UIViewAnimationSudokuMarginY:[NSNumber numberWithFloat:self.sudokuMarginY],
-    //                              UIViewAnimationSudokuDisplayCellNumber:[NSNumber numberWithInteger:self.sudokuDisplayCellNumber],
-    //                              UIViewAnimationToView:self.toView,
-    //                              UIViewAnimationImages:[self getPhotos],
-    //                              UIViewAnimationTypeViewWithIndexPath:[NSIndexPath indexPathForRow:self.currentPage inSection:0]
-    //                              };
-    
     __weak typeof(self) weakSelf = self;
     [ZLBaseAnimationImageView animationViewWithOptions:options completion:^(ZLBaseAnimationView *baseView) {
         // disMiss后调用

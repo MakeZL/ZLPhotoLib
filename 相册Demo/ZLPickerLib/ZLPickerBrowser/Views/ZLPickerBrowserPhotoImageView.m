@@ -68,13 +68,6 @@
     self.clipsToBounds = YES;
 }
 
-- (void)setScrollView:(UIScrollView *)scrollView{
-    _scrollView = scrollView;
-    if (self.progressView.progress < 0.01) {
-        [self.progressView setProgress:0.01 animated:NO];
-    }
-}
-
 - (void)setPhoto:(ZLPickerBrowserPhoto *)photo{
     _photo = photo;
     [self loadingPhoto];
@@ -92,6 +85,11 @@
                 photo.thumbImage = obj;
             }];
         }else{
+            
+            if (self.progressView.progress < 0.01) {
+                [self.progressView setProgress:0.01 animated:NO];
+            }
+            
             // 网络URL
             // 加蒙版层
             if (photo.thumbImage) {
