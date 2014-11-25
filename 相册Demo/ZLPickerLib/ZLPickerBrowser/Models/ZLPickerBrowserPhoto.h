@@ -10,6 +10,9 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 @interface ZLPickerBrowserPhoto : NSObject
 
+// 自动适配是不是以下几种数据
+@property (nonatomic , strong) id photoObj;
+
 // 保存相册模型
 @property (nonatomic , strong) ALAsset *asset;
 /**

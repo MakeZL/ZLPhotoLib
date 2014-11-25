@@ -10,6 +10,23 @@
 
 @implementation ZLPickerBrowserPhoto
 
+- (void)setPhotoObj:(id)photoObj{
+    _photoObj = photoObj;
+    
+    if ([photoObj isKindOfClass:[ALAsset class]]) {
+        ALAsset *asset = (ALAsset *)photoObj;
+        self.asset = asset;
+    }else if ([photoObj isKindOfClass:[NSURL class]]){
+        self.photoURL = photoObj;
+    }else if ([photoObj isKindOfClass:[UIImage class]]){
+        self.photoImage = photoObj;
+    }else if ([photoObj isKindOfClass:[NSString class]]){
+        self.photoURL = [NSURL URLWithString:photoObj];
+    }else{
+        NSAssert(true == true, @"您传入的类型有问题");
+    }
+}
+
 - (void)setAsset:(ALAsset *)asset{
     _asset = asset;
     

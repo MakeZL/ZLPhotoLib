@@ -65,11 +65,13 @@
         image = photo.thumbImage;
     }
     
-    if ([cView isKindOfClass:[UIButton class]]) {
-        image = cView.imageView.image;
-    }else if ([cView isKindOfClass:[UIImageView class]]){
-        UIImageView *ig = (UIImageView *)cView;
-        image = ig.image;
+    if (!image) {
+        if ([cView isKindOfClass:[UIButton class]]) {
+            image = cView.imageView.image;
+        }else if ([cView isKindOfClass:[UIImageView class]]){
+            UIImageView *ig = (UIImageView *)cView;
+            image = ig.image;
+        }
     }
     
     self.imageView.image = image;

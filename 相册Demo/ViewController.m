@@ -36,6 +36,7 @@
     if (!_assets) {
         // 测试数据
         NSArray *testAssets = @[
+                                @"http://cocoimg.365rili.com/schedule_pics/default/bd625d59-5e98-4719-8220-f1e56902f3c1.jpg!thumb320",
                                 @"http://e.hiphotos.baidu.com/zhidao/pic/item/574e9258d109b3de40f319c6cebf6c81810a4cd4.jpg",
                                 @"http://pic1.win4000.com/wallpaper/b/50a06956560a6.jpg",
                                 @"http://image.tianjimedia.com/uploadImages/2012/013/0C4PQ1XX78O3.jpg"
@@ -106,7 +107,7 @@
     pickerVc.status = PickerViewShowStatusCameraRoll;
     // 选择图片的最大数
     // pickerVc.maxCount = 4;
-
+    
     pickerVc.delegate = self;
     [self presentViewController:pickerVc animated:YES completion:nil];
     /**
@@ -114,8 +115,8 @@
      传值可以用代理，或者用block来接收，以下是block的传值
      __weak typeof(self) weakSelf = self;
      pickerVc.callBack = ^(NSArray *assets){
-        weakSelf.assets = assets;
-        [weakSelf.tableView reloadData];
+     weakSelf.assets = assets;
+     [weakSelf.tableView reloadData];
      };
      */
     
@@ -143,12 +144,12 @@
 }
 
 - (void) setupPhotoBrowser:(UITableViewCell *) cell{
-
+    
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     // 图片游览器
     ZLPickerBrowserViewController *pickerBrowser = [[ZLPickerBrowserViewController alloc] init];
     // 默认拉伸 ： 淡入淡出 ZLPickerBrowserAnimationStatusFade
-//    pickerBrowser.animationStatus = ZLPickerBrowserAnimationStatusFade;
+    //    pickerBrowser.animationStatus = ZLPickerBrowserAnimationStatusFade;
     pickerBrowser.toView = cell.imageView;
     pickerBrowser.fromView = self.view;
     pickerBrowser.delegate = self;
@@ -172,18 +173,8 @@
     ZLPickerBrowserPhoto *photo = [[ZLPickerBrowserPhoto alloc] init];
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
     photo.thumbImage = cell.imageView.image;
+    photo.photoObj = imageObj;
     
-    if ([imageObj isKindOfClass:[ALAsset class]]) {
-        ALAsset *asset = (ALAsset *)imageObj;
-        photo.asset = asset;
-    }else if ([imageObj isKindOfClass:[NSURL class]]){
-        photo.photoURL = imageObj;
-    }else if ([imageObj isKindOfClass:[UIImage class]]){
-        photo.photoImage = imageObj;
-    }else if ([imageObj isKindOfClass:[NSString class]]){
-        photo.photoURL = [NSURL URLWithString:imageObj];
-    }
-
     return photo;
 }
 
@@ -226,20 +217,20 @@
 // 你也可以自定义动画
 // 参考BaseAnimationView
 //- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
-//    
+//
 //    UIView *boxView = [[UIView alloc] init];
-//    
+//
 //    NSValue *startV = [NSValue valueWithCGRect:CGRectMake(50, 50, 100, 100)];
 //    NSValue *endV = [NSValue valueWithCGRect:CGRectMake(100, 100, 200, 200)];
 //    NSNumber *duration = [NSNumber numberWithFloat:2.5];
-//    
+//
 //    NSDictionary *options = @{
 //                              UIViewAnimationStartFrame:startV,
 //                              UIViewAnimationEndFrame:endV,
 //                              UIViewAnimationDuration:duration,
 //                              UIViewAnimationInView:self.view,                            UIViewAnimationBackGroundColor:[UIColor yellowColor]
 //                              };
-//    
+//
 //    [BaseAnimationView animationViewWithOptions:options completion:^(BaseAnimationView *baseView) {
 //        baseView.backgroundColor = [UIColor redColor];
 //        [baseView viewformIdentity:^(BaseAnimationView *baseView) {

@@ -166,9 +166,9 @@ static ZLBaseAnimationView *_singleBaseView;
     CGFloat yScale = boundsSize.height / imageSize.height;
     CGFloat minScale = MIN(xScale, yScale);
     
-    // 最大的比例不能超过1.0
+    // 最大的比例不能超过1.0，最小比例按屏幕来拉伸
     if (xScale > 1 && yScale > 1) {
-        minScale = 1.0;
+        minScale = MIN(xScale, yScale);
     }
     
     // 重置
