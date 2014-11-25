@@ -134,7 +134,24 @@
     
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     
-    [self setupPhotoBrowser:cell];
+    if (indexPath.row == 0) {
+        [self setupPhotoBrowser:cell];
+    }else{
+        // 图片游览器
+        ZLPickerBrowserViewController *pickerBrowser = [[ZLPickerBrowserViewController alloc] init];
+        // 默认拉伸 ： 淡入淡出 ZLPickerBrowserAnimationStatusFade
+        pickerBrowser.animationStatus = ZLPickerBrowserAnimationStatusFade;
+        pickerBrowser.toView = cell.imageView;
+        pickerBrowser.fromView = self.view;
+        pickerBrowser.delegate = self;
+        pickerBrowser.dataSource = self;
+        pickerBrowser.editing = YES;
+        // 当前选中的值
+        pickerBrowser.currentPage = indexPath.row;
+        self.pickerBrowser = pickerBrowser;
+        [self presentViewController:pickerBrowser animated:NO completion:nil];
+    }
+    
 }
 
 #pragma mark 设置当前的缩放View符image
@@ -149,7 +166,7 @@
     // 图片游览器
     ZLPickerBrowserViewController *pickerBrowser = [[ZLPickerBrowserViewController alloc] init];
     // 默认拉伸 ： 淡入淡出 ZLPickerBrowserAnimationStatusFade
-    //    pickerBrowser.animationStatus = ZLPickerBrowserAnimationStatusFade;
+    pickerBrowser.animationStatus = ZLPickerBrowserAnimationStatusZoom;
     pickerBrowser.toView = cell.imageView;
     pickerBrowser.fromView = self.view;
     pickerBrowser.delegate = self;

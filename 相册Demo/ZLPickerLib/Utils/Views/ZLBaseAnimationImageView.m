@@ -83,17 +83,17 @@
 #pragma mark -重写清空，赋值
 - (instancetype)viewformIdentity:(void (^)(ZLBaseAnimationView *))completion{
     
-//    UIButton *cView = self.options[UIViewAnimationToView];
+    UIButton *cView = self.options[UIViewAnimationToView];
     ZLPickerBrowserPhoto *photo = self.photos[self.currentPage];//[self photoWithAtIndex:self.currentPage];
     
     UIImage *image = nil;
     
-    //    if ([cView isKindOfClass:[UIButton class]]) {
-    //        image = cView.imageView.image;
-    //    }else if ([cView isKindOfClass:[UIImageView class]]){
-    //        UIImageView *ig = (UIImageView *)cView;
-    //        image = ig.image;
-    //    }
+//        if ([cView isKindOfClass:[UIButton class]]) {
+//            image = cView.imageView.image;
+//        }else if ([cView isKindOfClass:[UIImageView class]]){
+//            UIImageView *ig = (UIImageView *)cView;
+//            image = ig.image;
+//        }
     
     if (photo.photoImage) {
         [_imageView setImage:photo.photoImage];
@@ -104,7 +104,13 @@
     } else if (photo.photoURL){
         [_imageView setImage:[UIImage imageNamed:@"wallpaper_placeholder"]];
         //        [_imageView sd_setImageWithURL:photo.photoURL placeholderImage:[UIImage imageNamed:@"wallpaper_placeholder"]];
+    } else if ([cView isKindOfClass:[UIButton class]]) {
+        image = cView.imageView.image;
+    }else if ([cView isKindOfClass:[UIImageView class]]){
+        UIImageView *ig = (UIImageView *)cView;
+        image = ig.image;
     }
+
     
     return [super viewformIdentity:completion];
 }
