@@ -297,12 +297,12 @@ static ZLBaseAnimationView *_singleBaseView;
     [self.options[UIViewAnimationFromView] setUserInteractionEnabled:NO];
     _baseView.hidden = NO;
     // 把_baseView添加到Window上
-    UIWindow *myWindow = [[[UIApplication sharedApplication] windows] lastObject];
+    UIWindow *myWindow = [[UIApplication sharedApplication].delegate window]; //[[[UIApplication sharedApplication] windows] firstObject];
     UIView *view = myWindow.subviews.lastObject;
-    myWindow.userInteractionEnabled = NO;
     if (!([view isKindOfClass:[ZLBaseAnimationView class]]) &&
         (![view isKindOfClass:[UIImageView class]]))
     {
+        myWindow.userInteractionEnabled = NO;
         [myWindow addSubview:_baseView];
     }
     
@@ -329,6 +329,7 @@ static ZLBaseAnimationView *_singleBaseView;
         
         _baseView.hidden = YES;
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [_baseView removeFromSuperview];
             // 让最外面的View能跟用户进行交互
             myWindow.userInteractionEnabled = YES;
             [self.options[UIViewAnimationFromView] setUserInteractionEnabled:YES];

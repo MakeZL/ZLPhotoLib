@@ -25,11 +25,26 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 @property (nonatomic , weak) UICollectionView *collectionView;
 // 单击时执行销毁的block
 @property (nonatomic , copy) ZLPickerBrowserViewControllerTapDisMissBlock disMissBlock;
+// 装着所有的图片模型
+@property (nonatomic , strong) NSArray *photos;
 
 @end
 
 
 @implementation ZLPickerBrowserViewController
+
+#pragma mark - getter
+- (NSArray *)photos{
+    if (!_photos) {
+        NSMutableArray *photos = [NSMutableArray array];
+        NSInteger count = [self.dataSource numberOfPhotosInPickerBrowser:self];
+        for (NSInteger i = 0; i < count; i++) {
+            [photos addObject:[self.dataSource photoBrowser:self photoAtIndex:i]];
+        }
+        _photos = photos;
+    }
+    return _photos;
+}
 
 - (UICollectionView *)collectionView{
     if (!_collectionView) {
@@ -114,7 +129,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     // 排列方式
     options[UIViewAnimationScrollDirection] = @(self.scrollDirection);
     // 图片数组
-    options[UIViewAnimationImages] = [self getPhotos];
+    options[UIViewAnimationImages] = self.photos;//[self getPhotos];
     // 当前展示第几张图片
     options[UIViewAnimationTypeViewWithIndexPath] = [NSIndexPath indexPathForRow:self.currentPage inSection:0];
     // 动画执行的方式
@@ -178,7 +193,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:_cellIdentifier forIndexPath:indexPath];
     
-    ZLPickerBrowserPhoto *photo = [self.dataSource photoBrowser:self photoAtIndex:indexPath.item];
+    ZLPickerBrowserPhoto *photo = self.photos[indexPath.item]; //[self.dataSource photoBrowser:self photoAtIndex:indexPath.item];
     
     ZLPickerBrowserPhotoScrollView *scrollView = [cell.contentView.subviews lastObject];
     if (![scrollView isKindOfClass:[ZLPickerBrowserPhotoScrollView class]]) {
@@ -221,15 +236,15 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 /**
  *  获取所有的图片
  */
-- (NSArray *) getPhotos{
-    NSMutableArray *photos = [NSMutableArray array];
-    NSInteger count = [self.dataSource numberOfPhotosInPickerBrowser:self];
-    for (NSInteger i = 0; i < count; i++) {
-        [photos addObject:[self.dataSource photoBrowser:self photoAtIndex:i]];
-    }
-    
-    return photos;
-}
+//- (NSArray *) getPhotos{
+//    NSMutableArray *photos = [NSMutableArray array];
+//    NSInteger count = [self.dataSource numberOfPhotosInPickerBrowser:self];
+//    for (NSInteger i = 0; i < count; i++) {
+//        [photos addObject:[self.dataSource photoBrowser:self photoAtIndex:i]];
+//    }
+//    
+//    return photos;
+//}
 
 #pragma mark -<UIScrollViewDelegate>
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{

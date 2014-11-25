@@ -66,7 +66,13 @@
 - (void) setupProperty{
     self.contentMode = UIViewContentModeScaleAspectFit;
     self.clipsToBounds = YES;
-    [self.progressView setProgress:1.0 animated:YES];
+}
+
+- (void)setScrollView:(UIScrollView *)scrollView{
+    _scrollView = scrollView;
+    if (self.progressView.progress < 0.01) {
+        [self.progressView setProgress:0.01 animated:NO];
+    }
 }
 
 - (void)setPhoto:(ZLPickerBrowserPhoto *)photo{
@@ -83,6 +89,7 @@
         if (photoRange.location != NSNotFound){
             [[ZLPickerDatas defaultPicker] getAssetsPhotoWithURLs:photo.photoURL callBack:^(UIImage *obj) {
                 self.image = obj;
+                photo.thumbImage = obj;
             }];
         }else{
             // 网络URL
@@ -97,6 +104,8 @@
             } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
                 self.alpha = 1.0;
                 self.image = image;
+                photo.thumbImage = image;
+                
                 [self.progressView removeFromSuperview];
                 self.progressView = nil;
                 

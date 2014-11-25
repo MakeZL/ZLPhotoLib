@@ -27,30 +27,22 @@
 @property (nonatomic , assign) CGRect tempFrame;
 @property (nonatomic , strong) NSMutableDictionary *params;
 
-/**
- *  测试图片数组
- */
-@property (nonatomic , strong) NSArray *images;
-
 @end
 
 @implementation ViewController
 
 #pragma mark -getter
-- (NSArray *)images{
-    if (!_images) {
-        _images = @[
-                    @"http://e.hiphotos.baidu.com/zhidao/pic/item/574e9258d109b3de40f319c6cebf6c81810a4cd4.jpg",
-//                    @"http://pic1.win4000.com/wallpaper/b/50a06956560a6.jpg",
-//                    @"http://image.tianjimedia.com/uploadImages/2012/013/0C4PQ1XX78O3.jpg",
-//                    @"http://img6.3lian.com/c23/desk2/18/15/1938.jpg",
-                    @"http://pic.5442.com/2012/0809/25/17.jpg",
-                    @"http://pic.4j4j.cn/upload/pic/20130621/6a380a493b.jpg",
-//                    @"http://img.wallba.com/data/Image/2013hjw/3yue/2hao/mnbz/1/20133491039498.jpg"
-                    
-                    ];
+- (NSMutableArray *)assets{
+    if (!_assets) {
+        // 测试数据
+        NSArray *testAssets = @[
+                                @"http://e.hiphotos.baidu.com/zhidao/pic/item/574e9258d109b3de40f319c6cebf6c81810a4cd4.jpg",
+                                @"http://pic1.win4000.com/wallpaper/b/50a06956560a6.jpg",
+                                @"http://image.tianjimedia.com/uploadImages/2012/013/0C4PQ1XX78O3.jpg"
+                                ];
+        self.assets = [NSMutableArray arrayWithArray:testAssets];
     }
-    return _images;
+    return _assets;
 }
 
 - (UIImageView *)currentImageView{
@@ -92,6 +84,7 @@
     [self setupButtons];
     
     [self.tableView reloadData];
+    
 }
 
 #pragma mark -setter
@@ -130,7 +123,7 @@
 }
 
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return self.images.count;
+    return self.assets.count;
 }
 
 
@@ -155,7 +148,7 @@
     // 图片游览器
     ZLPickerBrowserViewController *pickerBrowser = [[ZLPickerBrowserViewController alloc] init];
     // 默认拉伸 ： 淡入淡出 ZLPickerBrowserAnimationStatusFade
-    pickerBrowser.animationStatus = ZLPickerBrowserAnimationStatusFade;
+//    pickerBrowser.animationStatus = ZLPickerBrowserAnimationStatusFade;
     pickerBrowser.toView = cell.imageView;
     pickerBrowser.fromView = self.view;
     pickerBrowser.delegate = self;
@@ -170,26 +163,27 @@
 
 #pragma mark <ZLPickerBrowserViewControllerDataSource>
 - (NSInteger) numberOfPhotosInPickerBrowser:(ZLPickerBrowserViewController *)pickerBrowser{
-    return self.images.count;
+    return self.assets.count;
 }
 
 - (ZLPickerBrowserPhoto *) photoBrowser:(ZLPickerBrowserViewController *)pickerBrowser photoAtIndex:(NSUInteger)index{
     
-//    id imageObj = [self.assets objectAtIndex:index];
+    id imageObj = [self.assets objectAtIndex:index];
     ZLPickerBrowserPhoto *photo = [[ZLPickerBrowserPhoto alloc] init];
-    photo.photoURL = [NSURL URLWithString:self.images[index]];
-//    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
-//    photo.thumbImage = cell.imageView.image;
-//    
-//    if ([imageObj isKindOfClass:[ALAsset class]]) {
-//        ALAsset *asset = (ALAsset *)imageObj;
-//        photo.thumbImage = [UIImage imageWithCGImage:[asset thumbnail]];
-//        photo.photoImage = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]];
-//    }else if ([imageObj isKindOfClass:[NSURL class]]){
-//        photo.photoURL = imageObj;
-//    }else if ([imageObj isKindOfClass:[UIImage class]]){
-//        photo.photoImage = imageObj;
-//    }
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
+    photo.thumbImage = cell.imageView.image;
+    
+    if ([imageObj isKindOfClass:[ALAsset class]]) {
+        ALAsset *asset = (ALAsset *)imageObj;
+        photo.thumbImage = [UIImage imageWithCGImage:[asset thumbnail]];
+        photo.photoImage = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]];
+    }else if ([imageObj isKindOfClass:[NSURL class]]){
+        photo.photoURL = imageObj;
+    }else if ([imageObj isKindOfClass:[UIImage class]]){
+        photo.photoImage = imageObj;
+    }else if ([imageObj isKindOfClass:[NSString class]]){
+        photo.photoURL = [NSURL URLWithString:imageObj];
+    }
 
     return photo;
 }
@@ -212,28 +206,26 @@
         cell.backgroundColor = [UIColor clearColor];
     }
     
-    [cell.imageView sd_setImageWithURL:[NSURL URLWithString:self.images[indexPath.row]] placeholderImage:[UIImage imageNamed:@"wallpaper_placeholder"]];
-//    ALAsset *asset = self.assets[indexPath.row];
-//    if ([asset isKindOfClass:[ALAsset class]]) {
-//        cell.imageView.image = [UIImage imageWithCGImage:[asset thumbnail]];
-//    }
-     
+    ALAsset *asset = self.assets[indexPath.row];
+    if ([asset isKindOfClass:[ALAsset class]]) {
+        cell.imageView.image = [UIImage imageWithCGImage:[asset thumbnail]];
+    }else if ([asset isKindOfClass:[NSString class]]){
+        [cell.imageView sd_setImageWithURL:[NSURL URLWithString:(NSString *)asset] placeholderImage:[UIImage imageNamed:@"wallpaper_placeholder"]];
+    }
+    
     return cell;
     
 }
 
 // 代理回调方法
 - (void)pickerViewControllerDoneAsstes:(NSArray *)assets{
-    if (!self.assets) {
-        self.assets = [NSMutableArray array];
-    }
     [self.assets addObjectsFromArray:assets];
-//    self.assets = [NSMutableArray arrayWithArray:assets];
     [self.tableView reloadData];
 }
 
-
-
+#pragma mark - 自定义动画
+// 你也可以自定义动画
+// 参考BaseAnimationView
 //- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
 //    
 //    UIView *boxView = [[UIView alloc] init];
