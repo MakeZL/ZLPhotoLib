@@ -7,9 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import <AssetsLibrary/AssetsLibrary.h>
 @interface ZLPickerBrowserPhoto : NSObject
 
+// 保存相册模型
+@property (nonatomic , strong) ALAsset *asset;
 /**
  *  URL地址
  */

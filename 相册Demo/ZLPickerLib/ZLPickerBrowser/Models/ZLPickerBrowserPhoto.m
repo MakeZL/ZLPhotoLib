@@ -10,4 +10,12 @@
 
 @implementation ZLPickerBrowserPhoto
 
+- (void)setAsset:(ALAsset *)asset{
+    _asset = asset;
+    
+    // 自己去设置了封面图及详情图
+    self.thumbImage = [UIImage imageWithCGImage:[asset thumbnail]];
+    self.photoImage = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]];
+}
+
 @end

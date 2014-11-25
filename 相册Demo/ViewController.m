@@ -175,8 +175,7 @@
     
     if ([imageObj isKindOfClass:[ALAsset class]]) {
         ALAsset *asset = (ALAsset *)imageObj;
-        photo.thumbImage = [UIImage imageWithCGImage:[asset thumbnail]];
-        photo.photoImage = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]];
+        photo.asset = asset;
     }else if ([imageObj isKindOfClass:[NSURL class]]){
         photo.photoURL = imageObj;
     }else if ([imageObj isKindOfClass:[UIImage class]]){
