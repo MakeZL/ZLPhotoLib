@@ -122,4 +122,18 @@ typedef ALAssetsLibraryAccessFailureBlock failureBlock;
     } failureBlock:nil];
 }
 
+#pragma mark - 通过传入一个图片对象（ALAsset、URL）获取一张缩略图
+- (UIImage *) getImageWithImageObj:(id)imageObj{
+    __block UIImage *image = nil;
+    if ([imageObj isKindOfClass:[UIImage class]]) {
+        image = imageObj;
+    }else if ([imageObj isKindOfClass:[ALAsset class]]){
+        ALAsset *asset = (ALAsset *)imageObj;
+        image = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]];
+    }else if ([imageObj isKindOfClass:[NSURL class]]){
+        image = imageObj;
+    }
+    return image;
+}
+
 @end

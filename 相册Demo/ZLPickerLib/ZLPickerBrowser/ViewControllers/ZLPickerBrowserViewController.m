@@ -26,7 +26,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 // 单击时执行销毁的block
 @property (nonatomic , copy) ZLPickerBrowserViewControllerTapDisMissBlock disMissBlock;
 // 装着所有的图片模型
-@property (nonatomic , strong) NSArray *photos;
+@property (nonatomic , strong) NSMutableArray *photos;
 
 @end
 
@@ -34,14 +34,15 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 @implementation ZLPickerBrowserViewController
 
 #pragma mark - getter
-- (NSArray *)photos{
+- (NSMutableArray *)photos{
     if (!_photos) {
-        NSMutableArray *photos = [NSMutableArray array];
-        NSInteger count = [self.dataSource numberOfPhotosInPickerBrowser:self];
-        for (NSInteger i = 0; i < count; i++) {
-            [photos addObject:[self.dataSource photoBrowser:self photoAtIndex:i]];
-        }
-        _photos = photos;
+        //        NSMutableArray *photos = [NSMutableArray array];
+        _photos = [NSMutableArray array];
+        //        NSInteger count = [self.dataSource numberOfPhotosInPickerBrowser:self];
+        //        for (NSInteger i = 0; i < count; i++) {
+        //            [photos addObject:[self.dataSource photoBrowser:self photoAtIndex:i]];
+        //        }
+        [_photos addObjectsFromArray:[self getPhotos]];
     }
     return _photos;
 }
@@ -210,7 +211,6 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     return cell;
     
 }
-
 #pragma mark -刷新表格
 - (void) reloadData{
     
@@ -236,15 +236,15 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 /**
  *  获取所有的图片
  */
-//- (NSArray *) getPhotos{
-//    NSMutableArray *photos = [NSMutableArray array];
-//    NSInteger count = [self.dataSource numberOfPhotosInPickerBrowser:self];
-//    for (NSInteger i = 0; i < count; i++) {
-//        [photos addObject:[self.dataSource photoBrowser:self photoAtIndex:i]];
-//    }
-//    
-//    return photos;
-//}
+- (NSArray *) getPhotos{
+    NSMutableArray *photos = [NSMutableArray array];
+    NSInteger count = [self.dataSource numberOfPhotosInPickerBrowser:self];
+    for (NSInteger i = 0; i < count; i++) {
+        [photos addObject:[self.dataSource photoBrowser:self photoAtIndex:i]];
+    }
+    
+    return photos;
+}
 
 #pragma mark -<UIScrollViewDelegate>
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
@@ -253,12 +253,12 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     self.pageCtrl.currentPage = self.currentPage;
     
     CGRect tempF = self.collectionView.frame;
-    if (self.currentPage < [self.dataSource numberOfPhotosInPickerBrowser:self] - 1) {
-        tempF.origin.x = 0
-        ;
+    if ((self.currentPage < [self.dataSource numberOfPhotosInPickerBrowser:self] - 1) || self.photos.count == 1) {
+        tempF.origin.x = 0;
     }else{
         tempF.origin.x = -ZLPickerColletionViewPadding;
     }
+    
     self.collectionView.frame = tempF;
 }
 
@@ -280,6 +280,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         if ([self.delegate respondsToSelector:@selector(photoBrowser:removePhotoAtIndex:)]) {
             [self.delegate photoBrowser:self removePhotoAtIndex:self.currentPage];
         }
+        [self.photos removeObjectAtIndex:self.currentPage];
         [self reloadData];
     }
 }

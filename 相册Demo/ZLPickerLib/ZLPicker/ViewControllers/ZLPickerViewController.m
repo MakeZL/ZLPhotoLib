@@ -11,6 +11,7 @@
 
 #import "ZLPickerViewController.h"
 #import "ZLPickerGroupViewController.h"
+#import "ZLPickerDatas.h"
 
 @interface ZLPickerViewController ()
 
@@ -53,7 +54,7 @@
     [super viewDidLoad];
     
     self.view.backgroundColor = [UIColor whiteColor];
-
+    
     [self addNotification];
 }
 
@@ -80,9 +81,13 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)setDelegate:(id<PickerViewControllerDelegate>)delegate{
+- (void)setDelegate:(id<ZLPickerViewControllerDelegate>)delegate{
     _delegate = delegate;
     self.groupVc.delegate = delegate;
 }
-
+#pragma mark - 通过传入一个图片对象（ALAsset、URL）获取一张缩略图
+- (UIImage *) getImageWithImageObj:(id)imageObj{
+    
+    return [[ZLPickerDatas defaultPicker] getImageWithImageObj:imageObj];
+}
 @end

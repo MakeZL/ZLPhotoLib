@@ -11,7 +11,7 @@
 
 @interface ZLPickerGroupViewController : UIViewController
 
-@property (nonatomic , weak) id<PickerViewControllerDelegate> delegate;
+@property (nonatomic , weak) id<ZLPickerViewControllerDelegate> delegate;
 @property (nonatomic , assign) PickerViewShowStatus status;
 @property (nonatomic , assign) NSInteger minCount;
 

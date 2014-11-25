@@ -18,17 +18,17 @@ typedef NS_ENUM(NSInteger , PickerViewShowStatus) {
     PickerViewShowStatusPhotoStream ,
 };
 
-@protocol PickerViewControllerDelegate <NSObject>
+@protocol ZLPickerViewControllerDelegate <NSObject>
 /**
  *  返回所有的Asstes对象
  */
-- (void) pickerViewControllerDoneAsstes : (NSArray *) images;
+- (void) pickerViewControllerDoneAsstes : (NSArray *) assets;
 
 @end
 
 @interface ZLPickerViewController : UIViewController
 
-@property (nonatomic , weak) id<PickerViewControllerDelegate> delegate;
+@property (nonatomic , weak) id<ZLPickerViewControllerDelegate> delegate;
 // 决定你是否需要push到内容控制器, 默认显示组
 @property (nonatomic , assign) PickerViewShowStatus status;
 
@@ -36,5 +36,13 @@ typedef NS_ENUM(NSInteger , PickerViewShowStatus) {
 @property (nonatomic , copy) callBackBlock callBack;
 // 每次选择图片的最小数, 默认与最大数是9
 @property (nonatomic , assign) NSInteger minCount;
+
+
+/**
+ *  传入一个图片对象（ALAsset、URL）
+ *
+ *  @return 返回缩略图图片
+ */
+- (UIImage *) getImageWithImageObj:(id)imageObj;
 
 @end

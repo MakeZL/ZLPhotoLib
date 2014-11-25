@@ -15,7 +15,7 @@
 #import "UIImageView+WebCache.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 
-@interface ViewController () <UITableViewDataSource,UITableViewDelegate,PickerViewControllerDelegate,ZLPickerBrowserViewControllerDataSource,ZLPickerBrowserViewControllerDelegate>
+@interface ViewController () <UITableViewDataSource,UITableViewDelegate,ZLPickerViewControllerDelegate,ZLPickerBrowserViewControllerDataSource,ZLPickerBrowserViewControllerDelegate>
 
 - (void)selectPhotos;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -38,8 +38,8 @@
         NSArray *testAssets = @[
                                 @"http://cocoimg.365rili.com/schedule_pics/default/bd625d59-5e98-4719-8220-f1e56902f3c1.jpg!thumb320",
                                 @"http://e.hiphotos.baidu.com/zhidao/pic/item/574e9258d109b3de40f319c6cebf6c81810a4cd4.jpg",
-                                @"http://pic1.win4000.com/wallpaper/b/50a06956560a6.jpg",
-                                @"http://image.tianjimedia.com/uploadImages/2012/013/0C4PQ1XX78O3.jpg"
+//                                @"http://pic1.win4000.com/wallpaper/b/50a06956560a6.jpg",
+//                                @"http://image.tianjimedia.com/uploadImages/2012/013/0C4PQ1XX78O3.jpg"
                                 ];
         self.assets = [NSMutableArray arrayWithArray:testAssets];
     }
