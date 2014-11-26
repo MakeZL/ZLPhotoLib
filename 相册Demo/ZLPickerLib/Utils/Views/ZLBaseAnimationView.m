@@ -19,6 +19,8 @@
 @property (nonatomic , strong) UIView *maskView;
 // 记录所有的参数
 @property (nonatomic , strong) NSDictionary *options;
+// 记录ToView的父View
+@property (nonatomic , strong) UIView *parsentView;
 
 @end
 
@@ -74,6 +76,8 @@ static ZLBaseAnimationView *_singleBaseView;
         startFrame.origin.y += 64;
     }
     
+    self.parsentView = [ops[UIViewAnimationToView] superview];
+    
     return ops;
 }
 
@@ -86,6 +90,8 @@ static ZLBaseAnimationView *_singleBaseView;
  *  @param completion 结束的动画的block
  */
 - (instancetype) initViewWithOptions:(NSDictionary *) options completion:(void (^)(ZLBaseAnimationView *baseView)) completion{
+    
+    [[UIApplication sharedApplication] setStatusBarHidden:YES];
     
     // 计算开始坐标
     self.options = [self getTypeViewWithOptions:options];
@@ -100,6 +106,8 @@ static ZLBaseAnimationView *_singleBaseView;
     UIView *view = self.options[UIViewAnimationInView];
     view.userInteractionEnabled = NO;
     view.hidden = NO;
+    
+    [self.options[UIViewAnimationToView] setHidden:YES];
     
     // 如果不存在baseView就创建
     if (!selfView) {
@@ -211,9 +219,9 @@ static ZLBaseAnimationView *_singleBaseView;
 #pragma mark - 根据动画的方向来计算Frame
 - (CGRect ) animationDirectionWithRect{
     
-    
     NSNumber *direction = self.options[UIViewAnimationScrollDirection];
     UIButton *cView = self.options[UIViewAnimationToView];
+    UIView *parsentView = cView.superview ? cView.superview : self.parsentView;
     
     if (cView.height <= 0) {
         return [self.options[UIViewAnimationStartFrame] CGRectValue];
@@ -237,17 +245,23 @@ static ZLBaseAnimationView *_singleBaseView;
             // 求出点击的View的最大x值与点击View的父View进行一个比较
             // 如果得出来的值小于0，就拿点击的View进行计算
             // 如果得出来的值大于等于0，就拿点击View的父View进行计算
-            CGFloat viewX = CGRectGetMaxX(cView.frame) - (cView.tag + 1) * cView.superview.width + marginX;
-            
-            if (viewX < 0) {
-                viewX = CGRectGetMaxX(cView.frame) - (cView.tag + 1) * cView.width + margin + (cView.width) * self.currentPage;
-                width = cView.width;
+            if (cView.superview) {
+                CGFloat viewX = CGRectGetMaxX(cView.frame) - (cView.tag + 1) * cView.superview.width + marginX;
+                
+                if (viewX < 0) {
+                    viewX = CGRectGetMaxX(cView.frame) - (cView.tag + 1) * cView.width + margin + (cView.width) * self.currentPage;
+                    width = cView.width;
+                }else{
+                    width = cView.superview.width;
+                    viewX += (cView.superview.width) * self.currentPage;
+                }
+                
+                imageFrame = [cView.superview convertRect:CGRectMake(viewX,  cView.y, width, cView.height) toView: self.options[UIViewAnimationFromView]];
             }else{
-                width = cView.superview.width;
-                viewX += (cView.superview.width) * self.currentPage;
+                CGFloat margin = CGRectGetMaxX(cView.frame) - (cView.tag + 1) * cView.width;
+                CGFloat imageX = cView.frame.size.width * self.currentPage;
+                imageFrame = [parsentView convertRect:CGRectMake(imageX + margin,  cView.y, cView.frame.size.width, cView.bounds.size.height) toView: self.options[UIViewAnimationFromView]];
             }
-            
-            imageFrame = [cView.superview convertRect:CGRectMake(viewX,  cView.y, width, cView.height) toView: self.options[UIViewAnimationFromView]];
         }
             break;
         case ZLPickerBrowserScrollDirectionVertical:{
@@ -255,7 +269,7 @@ static ZLBaseAnimationView *_singleBaseView;
             UIView *cell = [self getViewWithCell:cView];
             // 如果不是tableViewCell/UICollectionCell这类情况
             if (cell == nil) {
-                imageFrame = [cView.superview convertRect:CGRectMake(cView.x,  self.currentPage * (cView.height + marginY), cView.width, cView.height) toView: self.options[UIViewAnimationFromView]];
+                imageFrame = [parsentView convertRect:CGRectMake(cView.x,  self.currentPage * (cView.height + marginY), cView.width, cView.height) toView: self.options[UIViewAnimationFromView]];
             }else{
                 CGRect cellF = CGRectMake(cView.x, cView.y + (cView.height + marginY)  * self.currentPage, cView.width, cView.height);
                 imageFrame = [cell.superview convertRect:cellF toView: self.options[UIViewAnimationFromView]];
@@ -286,11 +300,22 @@ static ZLBaseAnimationView *_singleBaseView;
         imageFrame.origin.y += 64;
     }
     
+    
     return imageFrame;
 }
 
 #pragma mark - 结束动画，支持动画block
 - (instancetype) viewAnimateWithAnimations:(void(^)())animations identity:(void(^)(ZLBaseAnimationView *baseView)) completion{
+    
+    // 设置导航栏显示
+    [[UIApplication sharedApplication] setStatusBarHidden:NO];
+    
+    UIView *cView = self.options[UIViewAnimationToView];
+    
+    if (self.currentPage != [[self.options[UIViewAnimationTypeViewWithIndexPath] valueForKeyPath:@"row"] integerValue]) {
+        cView.hidden = NO;
+        [cView.superview.subviews[self.currentPage] setHidden:YES];
+    }
     
     // 动画执行的模式
     ZLPickerBrowserAnimationStatus animationStatus = [self.options[UIViewAnimationAnimationStatus] integerValue];
@@ -299,24 +324,20 @@ static ZLBaseAnimationView *_singleBaseView;
     // 淡入淡出模式
     if (animationStatus == ZLPickerBrowserAnimationStatusFade) {
         _baseView.frame = [_endFrame CGRectValue];
-        _baseView.alpha = 1.0;
     }
     
     // 让最外面的View不能跟用户进行交互
     [self.options[UIViewAnimationFromView] setUserInteractionEnabled:NO];
     _baseView.hidden = NO;
+    _baseView.alpha = 1.0;
     // 把_baseView添加到Window上
-    UIWindow *myWindow = [[[UIApplication sharedApplication] windows] lastObject];
+    UIWindow *myWindow = [[[UIApplication sharedApplication] windows] firstObject];
     UIView *view = myWindow.subviews.lastObject;
     if (!([view isKindOfClass:[ZLBaseAnimationView class]]) &&
         (![view isKindOfClass:[UIImageView class]]))
     {
         [myWindow addSubview:_baseView];
     }
-    
-    //    if (animationStatus == ZLPickerBrowserAnimationStatusFade) {
-    //        _baseView.frame = [self setMaxMinZoomScalesForCurrentBounds];//[self.options[UIViewAnimationEndFrame] CGRectValue];
-    //    }
     
     _baseView.frame = [self setMaxMinZoomScalesForCurrentBounds];
     [UIView animateWithDuration:.5 animations:^{
@@ -325,6 +346,7 @@ static ZLBaseAnimationView *_singleBaseView;
         }else{
             // 淡入淡出模式
             if (animationStatus == ZLPickerBrowserAnimationStatusFade) {
+                [self.options[UIViewAnimationToView] setHidden:NO];
                 _baseView.alpha = 0;
             }else{
                 
@@ -336,7 +358,10 @@ static ZLBaseAnimationView *_singleBaseView;
             completion(self);
         }
         
+        [cView.superview.subviews[self.currentPage] setHidden:NO];
+        [self.options[UIViewAnimationToView] setHidden:NO];
         _baseView.hidden = YES;
+        
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [_baseView removeFromSuperview];
             // 让最外面的View能跟用户进行交互
