@@ -68,7 +68,7 @@ static ZLBaseAnimationView *_singleBaseView;
     
     // 计算Duration是否为空
     if (![ops[UIViewAnimationDuration] floatValue]) {
-        ops[UIViewAnimationDuration] = [NSNumber numberWithFloat:0.5];
+        ops[UIViewAnimationDuration] = [NSNumber numberWithFloat:.25];
     }
     
     // iOS7以下
@@ -147,6 +147,7 @@ static ZLBaseAnimationView *_singleBaseView;
         }else{
             // 默认缩放
             _baseView.frame = [self setMaxMinZoomScalesForCurrentBounds];
+            
         }
     } completion:^(BOOL finished) {
         [_baseView removeFromSuperview];
@@ -203,9 +204,9 @@ static ZLBaseAnimationView *_singleBaseView;
     }
     
     // Center
-    if (!CGRectEqualToRect(_baseView.frame, frameToCenter))
-        return frameToCenter;
-    return CGRectZero;
+    //    if (!CGRectEqualToRect(_baseView.frame, frameToCenter))
+    return frameToCenter;
+    //    return CGRectZero;
 }
 
 #pragma mark - 遍历自己是不是TableViewCell 或者 UICollectionCell
@@ -340,7 +341,7 @@ static ZLBaseAnimationView *_singleBaseView;
     }
     
     _baseView.frame = [self setMaxMinZoomScalesForCurrentBounds];
-    [UIView animateWithDuration:.5 animations:^{
+    [UIView animateWithDuration:.25 animations:^{
         if (animations) {
             animations();
         }else{
@@ -349,7 +350,6 @@ static ZLBaseAnimationView *_singleBaseView;
                 [self.options[UIViewAnimationToView] setHidden:NO];
                 _baseView.alpha = 0;
             }else{
-                
                 _baseView.frame = [_endFrame CGRectValue];
             }
         }
@@ -358,12 +358,14 @@ static ZLBaseAnimationView *_singleBaseView;
             completion(self);
         }
         
-        [cView.superview.subviews[self.currentPage] setHidden:NO];
+        [_baseView removeFromSuperview];
+        if (cView.superview.subviews.count > self.currentPage) {
+            [cView.superview.subviews[self.currentPage] setHidden:NO];
+        }
+        
         [self.options[UIViewAnimationToView] setHidden:NO];
-        _baseView.hidden = YES;
         
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [_baseView removeFromSuperview];
             // 让最外面的View能跟用户进行交互
             [self.options[UIViewAnimationFromView] setUserInteractionEnabled:YES];
         });

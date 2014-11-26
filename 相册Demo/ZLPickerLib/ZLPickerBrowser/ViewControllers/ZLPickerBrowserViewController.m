@@ -77,9 +77,9 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         [self.view addSubview:deleleBtn];
         self.deleleBtn = deleleBtn;
         
-        NSString *widthVfl = @"H:[deleleBtn(deleteBtnWH)]-20-|";
-        NSString *heightVfl = @"V:|-20-[deleleBtn(deleteBtnWH)]";
-        NSDictionary *metrics = @{@"deleteBtnWH":@(50)};
+        NSString *widthVfl = @"H:[deleleBtn(deleteBtnWH)]-margin-|";
+        NSString *heightVfl = @"V:|-margin-[deleleBtn(deleteBtnWH)]";
+        NSDictionary *metrics = @{@"deleteBtnWH":@(30),@"margin":@(10)};
         NSDictionary *views = NSDictionaryOfVariableBindings(deleleBtn);
         
         [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:widthVfl options:0 metrics:metrics views:views]];

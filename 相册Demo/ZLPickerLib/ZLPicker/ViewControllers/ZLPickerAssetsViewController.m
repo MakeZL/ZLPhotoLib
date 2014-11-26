@@ -70,6 +70,8 @@ static NSString *const _footerIdentifier = @"FooterView";
         layout.footerReferenceSize = CGSizeMake(self.view.frame.size.width, TOOLBAR_HEIGHT * 2);
         
         ZLPickerCollectionView *collectionView = [[ZLPickerCollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
+        // 时间置顶
+        collectionView.status = ZLPickerCollectionViewShowOrderStatusTimeDesc;
         collectionView.translatesAutoresizingMaskIntoConstraints = NO;
         [collectionView registerClass:[ZLPickerCollectionViewCell class] forCellWithReuseIdentifier:_cellIdentifier];
         // 底部的View
@@ -136,11 +138,11 @@ static NSString *const _footerIdentifier = @"FooterView";
         self.assets = [NSMutableArray array];
     }
     
+    __weak typeof(self) weakSelf = self;
     ZLPickerDatas *datas = [ZLPickerDatas defaultPicker];
     [datas getGroupPhotosWithGroup:self.assetsGroup finished:^(NSArray *assets) {
         
-        self.collectionView.dataArray = assets;
-        [self.collectionView reloadData];
+        weakSelf.collectionView.dataArray = assets;
     }];
     
 }

@@ -8,8 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
-@class ZLPickerCollectionView;
+// 展示状态
+typedef NS_ENUM(NSUInteger, ZLPickerCollectionViewShowOrderStatus){
+    ZLPickerCollectionViewShowOrderStatusTimeDesc = 0, // 升序
+    ZLPickerCollectionViewShowOrderStatusTimeAsc // 降序
+};
 
+@class ZLPickerCollectionView;
 @protocol PickerCollectionViewDelegate <NSObject>
 
 // 选择相片就会调用
@@ -18,17 +23,15 @@
 @end
 
 @interface ZLPickerCollectionView : UICollectionView
-/**
- *  保存所有的数据
- */
-@property (nonatomic , strong) NSArray *dataArray;
 
+
+@property (nonatomic , assign) ZLPickerCollectionViewShowOrderStatus status;
+// 保存所有的数据
+@property (nonatomic , strong) NSArray *dataArray;
 // 保存选中的图片
 @property (nonatomic , strong , readonly) NSMutableArray *selectAsstes;
-
+// delegate
 @property (nonatomic , weak) id <PickerCollectionViewDelegate> collectionViewDelegate;
-
-
 // 限制最大数
 @property (nonatomic , assign) NSInteger minCount;
 

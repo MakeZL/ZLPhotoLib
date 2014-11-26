@@ -16,13 +16,12 @@
 
 @interface ZLPickerCollectionView () <UICollectionViewDataSource,UICollectionViewDelegate>
 
-//@property (nonatomic , strong) ALAssetsLibrary *assetsLibrary;
-/**
- *  选中的索引值，为了防止重用
- */
+// 选中的索引值，为了防止重用
 @property (nonatomic , strong) NSMutableArray *selectsIndexPath;
 @property (nonatomic , strong) ZLPickerFooterCollectionReusableView *footerView;
 
+// 判断是否是第一次加载
+@property (nonatomic , assign , getter=isFirstLoadding) BOOL firstLoadding;
 
 @end
 
@@ -39,6 +38,7 @@
 #pragma mark -setter
 - (void)setDataArray:(NSArray *)dataArray{
     _dataArray = dataArray;
+    
     [self reloadData];
 }
 
@@ -95,10 +95,10 @@
         [self.selectAsstes removeObject:asset];
     }else{
         // 1 判断图片数超过最大数或者小于1
-        NSInteger minCount = (self.minCount > MAX_COUNT || self.minCount < 1) ? MAX_COUNT :  self.minCount;
+        NSUInteger minCount = (self.minCount > MAX_COUNT || self.minCount < 1) ? MAX_COUNT :  self.minCount;
         
         if (self.selectsIndexPath.count >= minCount) {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提醒" message:[NSString stringWithFormat:@"最多只能选择%ld张图片",minCount] delegate:self cancelButtonTitle:nil otherButtonTitles:@"好的", nil];
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提醒" message:[NSString stringWithFormat:@"最多只能选择%d张图片",minCount] delegate:self cancelButtonTitle:nil otherButtonTitles:@"好的", nil];
             [alertView show];
             return ;
         }
@@ -127,6 +127,22 @@
         
     }
     return reusableView;
+}
+
+- (void)layoutSubviews{
+    
+    [super layoutSubviews];
+    
+    // 时间置顶的话
+    if (self.status == ZLPickerCollectionViewShowOrderStatusTimeDesc) {
+        if (!self.firstLoadding) {
+            // 滚动到最底部（最新的）
+            [self scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:self.dataArray.count - 1 inSection:0] atScrollPosition:UICollectionViewScrollPositionBottom animated:NO];
+            // 展示图片数
+            self.contentOffset = CGPointMake(self.contentOffset.x, self.contentOffset.y + 100);
+            self.firstLoadding = YES;
+        }
+    }
 }
 
 - (void)dealloc{

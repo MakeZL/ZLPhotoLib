@@ -62,6 +62,11 @@
     
     // 设置图片
     [self setingPhotoImageAtIndex:self.currentPage];
+    // 让游览效果更好
+    if ([self.options[UIViewAnimationAnimationStatus] integerValue] == ZLPickerBrowserAnimationStatusZoom) {
+        self.imageView.contentMode = UIViewContentModeScaleAspectFill;
+    }
+    
     return [super viewformIdentity:completion];
 }
 
