@@ -54,8 +54,26 @@
     NSMutableDictionary *ops = [NSMutableDictionary dictionaryWithDictionary:options];
     // 根据索引值来赋值
     NSIndexPath *indexPath = options[UIViewAnimationTypeViewWithIndexPath];
-    ZLPickerBrowserPhoto *photo = self.photos[indexPath.row];//[self photoWithAtIndex:indexPath.row];
+    // 设置图片
+    [self setingPhotoImageAtIndex:indexPath.row];
     
+    ops[UIViewAnimationSelfView] = self.imageView;
+    
+    return [super initViewWithOptions:ops completion:completion];
+}
+
+#pragma mark -重写清空，赋值
+- (instancetype)viewformIdentity:(void (^)(ZLBaseAnimationView *))completion{
+    
+    // 设置图片
+    [self setingPhotoImageAtIndex:self.currentPage];
+    return [super viewformIdentity:completion];
+}
+
+#pragma make - 设置图片
+- (void) setingPhotoImageAtIndex:(NSInteger)index{
+    
+    ZLPickerBrowserPhoto *photo = self.photos[index];//[self photoWithAtIndex:self.currentPage];
     UIButton *cView = self.options[UIViewAnimationToView];
     UIImage *image = nil;
     
@@ -75,47 +93,7 @@
     }
     
     self.imageView.image = image;
-    ops[UIViewAnimationSelfView] = self.imageView;
-    
-    return [super initViewWithOptions:ops completion:completion];
 }
-
-#pragma mark -重写清空，赋值
-- (instancetype)viewformIdentity:(void (^)(ZLBaseAnimationView *))completion{
-    
-    UIButton *cView = self.options[UIViewAnimationToView];
-    ZLPickerBrowserPhoto *photo = self.photos[self.currentPage];//[self photoWithAtIndex:self.currentPage];
-    
-    UIImage *image = nil;
-    
-//        if ([cView isKindOfClass:[UIButton class]]) {
-//            image = cView.imageView.image;
-//        }else if ([cView isKindOfClass:[UIImageView class]]){
-//            UIImageView *ig = (UIImageView *)cView;
-//            image = ig.image;
-//        }
-    
-    if (photo.photoImage) {
-        [_imageView setImage:photo.photoImage];
-    }else if (photo.thumbImage){
-        [_imageView setImage:photo.thumbImage];
-    } else if (image){
-        [_imageView setImage:image] ;
-    } else if (photo.photoURL){
-        [_imageView setImage:[UIImage imageNamed:@"wallpaper_placeholder"]];
-        //        [_imageView sd_setImageWithURL:photo.photoURL placeholderImage:[UIImage imageNamed:@"wallpaper_placeholder"]];
-    } else if ([cView isKindOfClass:[UIButton class]]) {
-        image = cView.imageView.image;
-    }else if ([cView isKindOfClass:[UIImageView class]]){
-        UIImageView *ig = (UIImageView *)cView;
-        image = ig.image;
-    }
-
-    
-    return [super viewformIdentity:completion];
-}
-
-
 
 @end
 
