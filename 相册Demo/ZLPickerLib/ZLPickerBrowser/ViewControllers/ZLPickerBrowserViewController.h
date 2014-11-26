@@ -36,6 +36,18 @@
  *  @param index        要删除的索引值
  */
 - (void)photoBrowser:(ZLPickerBrowserViewController *)photoBrowser removePhotoAtIndex:(NSUInteger)index;
+/**
+ *  滑动结束的页数
+ *
+ *  @param page         滑动的页数
+ */
+- (void)photoBrowser:(ZLPickerBrowserViewController *)photoBrowser didCurrentPage:(NSUInteger)page;
+/**
+ *  滑动开始的页数
+ *
+ *  @param page         滑动的页数
+ */
+- (void)photoBrowser:(ZLPickerBrowserViewController *)photoBrowser willCurrentPage:(NSUInteger)page;
 
 @end
 

@@ -167,6 +167,7 @@
     ZLPickerBrowserViewController *pickerBrowser = [[ZLPickerBrowserViewController alloc] init];
     // 默认拉伸 ： 淡入淡出 ZLPickerBrowserAnimationStatusFade
     pickerBrowser.animationStatus = ZLPickerBrowserAnimationStatusZoom;
+    pickerBrowser.sudokuMarginX = 5;
     pickerBrowser.toView = cell.imageView;
     pickerBrowser.fromView = self.view;
     pickerBrowser.delegate = self;

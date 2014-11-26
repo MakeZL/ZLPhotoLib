@@ -219,34 +219,45 @@ static ZLBaseAnimationView *_singleBaseView;
         return [self.options[UIViewAnimationStartFrame] CGRectValue];
     }
     
+    CGFloat marginX = [self.options[UIViewAnimationSudokuMarginX] floatValue];
+    CGFloat marginY = [self.options[UIViewAnimationSudokuMarginY] floatValue];
+    
     CGRect imageFrame = CGRectZero;
     
     switch ([direction integerValue]) {
         case ZLPickerBrowserScrollDirectionHorizontal:{
             // 水平方向
-            CGFloat margin = CGRectGetMaxX(cView.frame) - (cView.tag + 1) * cView.width;
-            CGFloat imageX = cView.frame.size.width * self.currentPage;
-            imageFrame = [cView.superview convertRect:CGRectMake(imageX + margin,  cView.y, cView.frame.size.width, cView.bounds.size.height) toView: self.options[UIViewAnimationFromView]];
+            // 如果点击都是同一个图片就不增加x值
+            // 记录宽度
+            CGFloat width = 0;
+            // 如果是第一个view就不需要添加间距
+            CGFloat margin = cView.tag == self.currentPage ? 0 : marginX ;
+            
+            // 先算父View的x值
+            // 求出点击的View的最大x值与点击View的父View进行一个比较
+            // 如果得出来的值小于0，就拿点击的View进行计算
+            // 如果得出来的值大于等于0，就拿点击View的父View进行计算
+            CGFloat viewX = CGRectGetMaxX(cView.frame) - (cView.tag + 1) * cView.superview.width + marginX;
+            
+            if (viewX < 0) {
+                viewX = CGRectGetMaxX(cView.frame) - (cView.tag + 1) * cView.width + margin + (cView.width) * self.currentPage;
+                width = cView.width;
+            }else{
+                width = cView.superview.width;
+                viewX += (cView.superview.width) * self.currentPage;
+            }
+            
+            imageFrame = [cView.superview convertRect:CGRectMake(viewX,  cView.y, width, cView.height) toView: self.options[UIViewAnimationFromView]];
         }
             break;
         case ZLPickerBrowserScrollDirectionVertical:{
             // 垂直方向
             UIView *cell = [self getViewWithCell:cView];
+            // 如果不是tableViewCell/UICollectionCell这类情况
             if (cell == nil) {
-                
-                NSInteger padding = ((NSInteger)cView.y % (NSInteger)cView.height);
-                
-                // NOTE: 保证计算y的间距是正常的。
-                // !!  : self.currentPage如果为0还计算会崩溃
-                if (!self.currentPage) {
-                    padding = 0;
-                }else{
-                    padding = padding / (self.currentPage - 1);
-                }
-                
-                imageFrame = [cView.superview convertRect:CGRectMake(cView.x,  self.currentPage * (cView.height + padding), cView.width, cView.height) toView: self.options[UIViewAnimationFromView]];
+                imageFrame = [cView.superview convertRect:CGRectMake(cView.x,  self.currentPage * (cView.height + marginY), cView.width, cView.height) toView: self.options[UIViewAnimationFromView]];
             }else{
-                CGRect cellF = CGRectMake(cView.x, cView.y + cView.height  * self.currentPage, cView.width, cView.height);
+                CGRect cellF = CGRectMake(cView.x, cView.y + (cView.height + marginY)  * self.currentPage, cView.width, cView.height);
                 imageFrame = [cell.superview convertRect:cellF toView: self.options[UIViewAnimationFromView]];
             }
         }
@@ -254,9 +265,6 @@ static ZLBaseAnimationView *_singleBaseView;
             
         case ZLPickerBrowserScrollDirectionSudoku:{
             // 九宫格
-            CGFloat marginX = [self.options[UIViewAnimationSudokuMarginX] floatValue];
-            CGFloat marginY = [self.options[UIViewAnimationSudokuMarginY] floatValue];
-            
             NSInteger btnH = cView.height;
             
             // 有间距的情况下
@@ -306,10 +314,10 @@ static ZLBaseAnimationView *_singleBaseView;
         [myWindow addSubview:_baseView];
     }
     
-//    if (animationStatus == ZLPickerBrowserAnimationStatusFade) {
-//        _baseView.frame = [self setMaxMinZoomScalesForCurrentBounds];//[self.options[UIViewAnimationEndFrame] CGRectValue];
-//    }
-
+    //    if (animationStatus == ZLPickerBrowserAnimationStatusFade) {
+    //        _baseView.frame = [self setMaxMinZoomScalesForCurrentBounds];//[self.options[UIViewAnimationEndFrame] CGRectValue];
+    //    }
+    
     _baseView.frame = [self setMaxMinZoomScalesForCurrentBounds];
     [UIView animateWithDuration:.5 animations:^{
         if (animations) {

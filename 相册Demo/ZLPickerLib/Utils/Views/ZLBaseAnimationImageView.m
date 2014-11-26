@@ -29,7 +29,6 @@
     return _photos;
 }
 
-//static UIImageView *_imageView;
 - (UIImageView *)imageView{
     if (!_imageView) {
         UIImageView *imageView = [[UIImageView alloc] init];
@@ -39,10 +38,6 @@
         _imageView = imageView;
     }
     return _imageView;
-}
-
-+ (instancetype) animationViewWithOptions:(NSDictionary *) options completion:(void (^)(ZLBaseAnimationView *baseView)) completion{
-    return [super animationViewWithOptions:options completion:completion];
 }
 
 - (instancetype)initViewWithOptions:(NSDictionary *)options completion:(void (^)(ZLBaseAnimationView *))completion{

@@ -146,11 +146,12 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     // 动画执行的方式
     options[UIViewAnimationAnimationStatus] = @(self.animationStatus);
     
+    // 间距
+    options[UIViewAnimationSudokuMarginX] = [NSNumber numberWithFloat:self.sudokuMarginX];
+    options[UIViewAnimationSudokuMarginY] = [NSNumber numberWithFloat:self.sudokuMarginY];
+    
     // 如果是九宫格的话
     if ([options[UIViewAnimationScrollDirection] integerValue] == ZLPickerBrowserScrollDirectionSudoku) {
-        // 九宫格
-        options[UIViewAnimationSudokuMarginX] = [NSNumber numberWithFloat:self.sudokuMarginX];
-        options[UIViewAnimationSudokuMarginY] = [NSNumber numberWithFloat:self.sudokuMarginY];
         options[UIViewAnimationSudokuDisplayCellNumber] = [NSNumber numberWithInteger:self.sudokuDisplayCellNumber];
     }
     __weak typeof(self) weakSelf = self;
@@ -254,6 +255,18 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     }
     
     self.collectionView.frame = tempF;
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
+    if ([self.delegate respondsToSelector:@selector(photoBrowser:didCurrentPage:)]) {
+        [self.delegate photoBrowser:self didCurrentPage:self.currentPage];
+    }
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
+    if ([self.delegate respondsToSelector:@selector(photoBrowser:willCurrentPage:)]) {
+        [self.delegate photoBrowser:self willCurrentPage:self.currentPage];
+    }
 }
 
 
