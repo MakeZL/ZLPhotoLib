@@ -28,12 +28,22 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 // 装着所有的图片模型
 @property (nonatomic , strong) NSMutableArray *photos;
 
+// 记录下载图片的进度条，防止重用
+@property (nonatomic , strong) NSMutableDictionary *photoProgerss;
+
 @end
 
 
 @implementation ZLPickerBrowserViewController
 
 #pragma mark - getter
+- (NSMutableDictionary *)photoProgerss{
+    if (!_photoProgerss) {
+        _photoProgerss = [NSMutableDictionary dictionary];
+    }
+    return _photoProgerss;
+}
+
 - (NSMutableArray *)photos{
     if (!_photos) {
         _photos = [NSMutableArray array];
@@ -201,14 +211,13 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         scrollView.frame = cell.bounds;
         scrollView.photoScrollViewDelegate = self;
         [cell.contentView addSubview:scrollView];
-        
     }
-    
     scrollView.photo = photo;
     
     return cell;
     
 }
+
 #pragma mark -刷新表格
 - (void) reloadData{
     

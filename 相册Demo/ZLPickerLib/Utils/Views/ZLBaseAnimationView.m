@@ -21,8 +21,6 @@
 @property (nonatomic , strong) NSDictionary *options;
 // 记录ToView的父View
 @property (nonatomic , strong) UIView *parsentView;
-// 上一个分页数
-@property (nonatomic , assign) NSInteger lastCurrentPage;
 
 @end
 
@@ -380,7 +378,6 @@ static ZLBaseAnimationView *_singleBaseView;
         [myWindow addSubview:_baseView];
     }
     
-    self.lastCurrentPage = self.currentPage;
     _baseView.frame = [self setMaxMinZoomScalesForCurrentBounds];
     [UIView animateWithDuration:.25 animations:^{
         if (animations) {

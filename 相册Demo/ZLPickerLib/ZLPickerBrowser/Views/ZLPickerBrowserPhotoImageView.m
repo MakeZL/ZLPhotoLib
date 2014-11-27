@@ -38,8 +38,15 @@
         progressView.frame = CGRectMake(0, 0, ZLPickerProgressViewW, ZLPickerProgressViewH);
         progressView.center = CGPointMake([UIScreen mainScreen].bounds.size.width * 0.5, [UIScreen mainScreen].bounds.size.height * 0.5);
         progressView.roundedCorners = YES;
-        progressView.progressTintColor = [UIColor whiteColor];
-        progressView.trackTintColor = [UIColor lightGrayColor];
+        if (iOS7gt) {
+            progressView.thicknessRatio = 0.1;
+            progressView.roundedCorners = NO;
+        } else {
+            progressView.thicknessRatio = 0.2;
+            progressView.roundedCorners = YES;
+        }
+//        progressView.progressTintColor = [UIColor whiteColor];
+//        progressView.trackTintColor = [UIColor lightGrayColor];
         
         [self.scrollView addSubview:progressView];
         //        [[[[UIApplication sharedApplication] windows] lastObject] addSubview:progressView];
@@ -86,10 +93,6 @@
             }];
         }else{
             
-            if (self.progressView.progress < 0.01) {
-                [self.progressView setProgress:0.01 animated:NO];
-            }
-            
             // 网络URL
             // 加蒙版层
             if (photo.thumbImage) {
@@ -100,12 +103,10 @@
             [self sd_setImageWithURL:photo.photoURL placeholderImage:photo.thumbImage options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize) {
                 self.progress = (double)receivedSize / expectedSize;
             } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                
                 self.alpha = 1.0;
                 self.image = image;
                 photo.thumbImage = image;
-                
-                [self.progressView removeFromSuperview];
-                self.progressView = nil;
                 
                 // 下载完回调
                 if (self.downLoadWebImageCallBlock) {
@@ -126,8 +127,17 @@
 - (void)setProgress:(CGFloat)progress{
     _progress = progress;
     
-    if (progress / 100.0 != 1.0) {
+    if (progress == 0) return ;
+    
+    if ([self.delegate respondsToSelector:@selector(pickerBrowserPhotoImageViewDownloadProgress:)]) {
+        [self.delegate pickerBrowserPhotoImageViewDownloadProgress:progress];
+    }
+    
+    if (progress / 1.0 != 1.0) {
         [self.progressView setProgress:progress animated:YES];
+    }else{
+        [self.progressView removeFromSuperview];
+        self.progressView = nil;
     }
 }
 @end

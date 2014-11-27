@@ -23,4 +23,5 @@
 @property (nonatomic , strong) ZLPickerBrowserPhoto *photo;
 // delegate
 @property (nonatomic , weak) id <PickerPhotoScrollViewDelegate> photoScrollViewDelegate;
+
 @end

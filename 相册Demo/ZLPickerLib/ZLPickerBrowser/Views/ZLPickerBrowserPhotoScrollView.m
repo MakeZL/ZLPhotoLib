@@ -13,9 +13,10 @@
 #import "ZLPickerBrowserPhotoGifView.h"
 #import "ZLPickerCommon.h"
 
-@interface ZLPickerBrowserPhotoScrollView () <UIScrollViewDelegate>
+@interface ZLPickerBrowserPhotoScrollView () <UIScrollViewDelegate,ZLPickerBrowserPhotoImageViewDelegate>
 
-@property (nonatomic , weak) UIImageView *zoomImageView;
+@property (nonatomic , weak) ZLPickerBrowserPhotoImageView *zoomImageView;
+@property (nonatomic , assign) CGFloat progress;
 
 @end
 
@@ -71,6 +72,7 @@
 - (void) scaleBigTap:(UITapGestureRecognizer *)tap{
     // Zoom
     // Zoom
+    // 重置
     
     if (self.zoomScale == self.maximumZoomScale) {
         [self setZoomScale:self.minimumZoomScale animated:YES];
@@ -111,41 +113,29 @@
         [self addSubview:gifView];
     }else{
         ZLPickerBrowserPhotoImageView *zoomImageView = [[ZLPickerBrowserPhotoImageView alloc] init];
+        zoomImageView.delegate = self;
         zoomImageView.scrollView = self;
         zoomImageView.frame = self.bounds;
         zoomImageView.photo = photo;
+        [zoomImageView setProgress:self.progress];
         zoomImageView.downLoadWebImageCallBlock = ^{
             // 下载完毕后重新计算下Frame
             [self setMaxMinZoomScalesForCurrentBounds];
         };
         self.zoomImageView = zoomImageView;
         [self addSubview:zoomImageView];
-    }
-    
-    [self setMaxMinZoomScalesForCurrentBounds];
-    
-}
-
-- (CGFloat)initialZoomScaleWithMinScale {
-    CGFloat zoomScale = self.minimumZoomScale;
-    if (_zoomImageView) {
-        // Zoom image to fill if the aspect ratios are fairly similar
-        CGSize boundsSize = self.bounds.size;
-        CGSize imageSize = _zoomImageView.image.size;
-        CGFloat boundsAR = boundsSize.width / boundsSize.height;
-        CGFloat imageAR = imageSize.width / imageSize.height;
-        CGFloat xScale = boundsSize.width / imageSize.width;    // the scale needed to perfectly fit the image width-wise
-        CGFloat yScale = boundsSize.height / imageSize.height;  // the scale needed to perfectly fit the image height-wise
-        // Zooms standard portrait images on a 3.5in screen but not on a 4in screen.
-        if (ABS(boundsAR - imageAR) < 0.17) {
-            zoomScale = MAX(xScale, yScale);
-            // Ensure we don't zoom in or out too far, just in case
-            zoomScale = MIN(MAX(self.minimumZoomScale, zoomScale), self.maximumZoomScale);
+        
+        if (!photo.photoURL.absoluteString.length) {
+            [self setMaxMinZoomScalesForCurrentBounds];
         }
     }
-    return zoomScale;
+    
+    
 }
 
+- (void)pickerBrowserPhotoImageViewDownloadProgress:(CGFloat)progress{
+    self.progress = progress;
+}
 
 #pragma mark - UIScrollViewDelegate
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
@@ -156,9 +146,9 @@
 #pragma mark - setMaxMinZoomScalesForCurrentBounds
 - (void)setMaxMinZoomScalesForCurrentBounds {
     
-    _zoomImageView.frame = (CGRect) {CGPointZero , _zoomImageView.image.size};
-    
     if (_zoomImageView.image == nil) return;
+    
+    _zoomImageView.frame = (CGRect) {CGPointZero , _zoomImageView.image.size};
     
     // Sizes
     CGSize boundsSize = self.bounds.size;
@@ -183,7 +173,8 @@
     self.zoomScale = minScale;
     
     // 重置
-    _zoomImageView.frame = CGRectMake(0, 0, _zoomImageView.frame.size.width, _zoomImageView.frame.size.height);
+//    _zoomImageView.frame = CGRectMake(0, 0, self.zoomImageView.width, self.zoomImageView.height);
+    
     
     // Layout
     [self setNeedsLayout];
