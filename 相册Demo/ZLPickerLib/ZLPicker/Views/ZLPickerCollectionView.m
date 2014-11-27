@@ -135,7 +135,7 @@
     
     // 时间置顶的话
     if (self.status == ZLPickerCollectionViewShowOrderStatusTimeDesc) {
-        if (!self.firstLoadding) {
+        if (!self.firstLoadding && self.contentSize.height > [[UIScreen mainScreen] bounds].size.height) {
             // 滚动到最底部（最新的）
             [self scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:self.dataArray.count - 1 inSection:0] atScrollPosition:UICollectionViewScrollPositionBottom animated:NO];
             // 展示图片数
