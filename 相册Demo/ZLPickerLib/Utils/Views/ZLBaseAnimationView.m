@@ -21,6 +21,8 @@
 @property (nonatomic , strong) NSDictionary *options;
 // 记录ToView的父View
 @property (nonatomic , strong) UIView *parsentView;
+// 上一个分页数
+@property (nonatomic , assign) NSInteger lastCurrentPage;
 
 @end
 
@@ -77,6 +79,7 @@ static ZLBaseAnimationView *_singleBaseView;
     }
     
     self.parsentView = [ops[UIViewAnimationToView] superview];
+    
     
     return ops;
 }
@@ -242,27 +245,39 @@ static ZLBaseAnimationView *_singleBaseView;
             // 如果是第一个view就不需要添加间距
             CGFloat margin = cView.tag == self.currentPage ? 0 : marginX ;
             
+            UIView *cell = [self getViewWithCell:cView];
             // 先算父View的x值
             // 求出点击的View的最大x值与点击View的父View进行一个比较
             // 如果得出来的值小于0，就拿点击的View进行计算
             // 如果得出来的值大于等于0，就拿点击View的父View进行计算
-            if (cView.superview) {
-                CGFloat viewX = CGRectGetMaxX(cView.frame) - (cView.tag + 1) * cView.superview.width + marginX;
+            if (cell) {
+                // 分页数没改变的情况下, x值就是0
+                CGFloat cellX = 0;
                 
-                if (viewX < 0) {
-                    viewX = CGRectGetMaxX(cView.frame) - (cView.tag + 1) * cView.width + margin + (cView.width) * self.currentPage;
-                    width = cView.width;
-                }else{
-                    width = cView.superview.width;
-                    viewX += (cView.superview.width) * self.currentPage;
-                }
-                
-                imageFrame = [cView.superview convertRect:CGRectMake(viewX,  cView.y, width, cView.height) toView: self.options[UIViewAnimationFromView]];
+                cellX = (self.currentPage - cView.tag) * (cView.width + marginX);
+                //                if (self.currentPage > cView.tag) {
+                //                }
+                imageFrame = [parsentView convertRect:CGRectMake(cellX, cView.y, cView.width, cView.height) toView: self.options[UIViewAnimationFromView]];
             }else{
-                CGFloat margin = CGRectGetMaxX(cView.frame) - (cView.tag + 1) * cView.width;
-                CGFloat imageX = cView.frame.size.width * self.currentPage;
-                imageFrame = [parsentView convertRect:CGRectMake(imageX + margin,  cView.y, cView.frame.size.width, cView.bounds.size.height) toView: self.options[UIViewAnimationFromView]];
+                if (cView.superview) {
+                    CGFloat viewX = CGRectGetMaxX(cView.frame) - (cView.tag + 1) * cView.superview.width + marginX;
+                    
+                    if (viewX < 0) {
+                        viewX = CGRectGetMaxX(cView.frame) - (cView.tag + 1) * cView.width + margin + (cView.width ) * self.currentPage;
+                        width = cView.width;
+                    }else{
+                        width = cView.superview.width;
+                        viewX += (cView.superview.width) * self.currentPage;
+                    }
+                    
+                    imageFrame = [cView.superview convertRect:CGRectMake(viewX,  cView.y, width, cView.height) toView: self.options[UIViewAnimationFromView]];
+                }else{
+                    CGFloat margin = CGRectGetMaxX(cView.frame) - (cView.tag + 1) * cView.width;
+                    CGFloat imageX = cView.frame.size.width * self.currentPage;
+                    imageFrame = [parsentView convertRect:CGRectMake(imageX + margin,  cView.y, cView.frame.size.width, cView.bounds.size.height) toView: self.options[UIViewAnimationFromView]];
+                }
             }
+            
         }
             break;
         case ZLPickerBrowserScrollDirectionVertical:{
@@ -305,6 +320,14 @@ static ZLBaseAnimationView *_singleBaseView;
     return imageFrame;
 }
 
+- (UIView *) getParsentView:(UIView *) view{
+    if ([[view subviews] count] >= _photoCount) {
+        return view;
+    }
+    
+    return [self getParsentView:view.superview];
+}
+
 #pragma mark - 结束动画，支持动画block
 - (instancetype) viewAnimateWithAnimations:(void(^)())animations identity:(void(^)(ZLBaseAnimationView *baseView)) completion{
     
@@ -312,10 +335,27 @@ static ZLBaseAnimationView *_singleBaseView;
     [[UIApplication sharedApplication] setStatusBarHidden:NO];
     
     UIView *cView = self.options[UIViewAnimationToView];
+    UIView *parsentView = cView.superview ? cView.superview : self.parsentView;
     
-    if (self.currentPage != [[self.options[UIViewAnimationTypeViewWithIndexPath] valueForKeyPath:@"row"] integerValue]) {
+    
+    UIView *cell = [self getViewWithCell:cView];
+    
+    if (cell) {
         cView.hidden = NO;
-        [cView.superview.subviews[self.currentPage] setHidden:YES];
+        if ([cell isKindOfClass:[UICollectionViewCell class]]) {
+            for (UICollectionViewCell *childView in cell.superview.subviews) {
+                if (![childView isKindOfClass:[UICollectionViewCell class]]) break;
+                UIView *iv = [childView.contentView.subviews lastObject];
+                if (iv.tag == self.currentPage) {
+                    childView.hidden = YES;
+                    break;
+                }
+            }
+        }
+    }else if (parsentView.subviews.count >= _photoCount){
+        parsentView = [self getParsentView:parsentView];
+        cView.hidden = NO;
+        [parsentView.subviews[self.currentPage] setHidden:YES];
     }
     
     // 动画执行的模式
@@ -340,6 +380,7 @@ static ZLBaseAnimationView *_singleBaseView;
         [myWindow addSubview:_baseView];
     }
     
+    self.lastCurrentPage = self.currentPage;
     _baseView.frame = [self setMaxMinZoomScalesForCurrentBounds];
     [UIView animateWithDuration:.25 animations:^{
         if (animations) {
@@ -359,8 +400,19 @@ static ZLBaseAnimationView *_singleBaseView;
         }
         
         [_baseView removeFromSuperview];
-        if (cView.superview.subviews.count > self.currentPage) {
-            [cView.superview.subviews[self.currentPage] setHidden:NO];
+        
+        if (cell) {
+            if ([cell isKindOfClass:[UICollectionViewCell class]]) {
+                for (UICollectionViewCell *childView in cell.superview.subviews) {
+                    if(![childView isKindOfClass:[UICollectionViewCell class]]) break;
+                    UIView *iv = [childView.contentView.subviews lastObject];
+                    if (iv.tag == self.currentPage) {
+                        childView.hidden = NO;
+                    }
+                }
+            }
+        }else if (parsentView.subviews.count >= _photoCount){
+            [parsentView.subviews[self.currentPage] setHidden:NO];
         }
         
         [self.options[UIViewAnimationToView] setHidden:NO];

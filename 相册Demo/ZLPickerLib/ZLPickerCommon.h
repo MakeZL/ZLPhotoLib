@@ -22,6 +22,12 @@ typedef NS_ENUM(NSInteger, ZLPickerBrowserAnimationStatus) {
     ZLPickerBrowserAnimationStatusFade // 淡入淡出
 };
 
+// 动画缩小时的ContentMode
+typedef NS_ENUM(NSInteger, ZLPickerBrowserAnimationMinScaleImageViewContentModel) {
+    ZLPickerBrowserAnimationMinScaleImageViewContentModelFit = 0,// 默认是Fit
+    ZLPickerBrowserAnimationMinScaleImageViewContentModelFill // 然后是Fill
+};
+
 // 点击销毁的block
 typedef void(^ZLPickerBrowserViewControllerTapDisMissBlock)(NSInteger);
 

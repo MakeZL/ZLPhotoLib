@@ -27,18 +27,17 @@
     }
 }
 
-- (void)setAsset:(ALAsset *)asset{
-    _asset = asset;
-    
-    // 自己去设置了封面图及详情图
-    
-    if (!self.thumbImage) {
-        self.thumbImage = [UIImage imageWithCGImage:[asset thumbnail]];
+- (UIImage *)photoImage{
+    if (!_photoImage && self.asset) {
+        _photoImage = [UIImage imageWithCGImage:[[self.asset defaultRepresentation] fullScreenImage]];
     }
-    
-    if (!self.photoImage) {
-        self.photoImage = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]];
-    }
+    return _photoImage;
 }
 
+- (UIImage *)thumbImage{
+    if (!_thumbImage && self.asset) {
+        _thumbImage = [UIImage imageWithCGImage:[self.asset thumbnail]];
+    }
+    return _thumbImage;
+}
 @end

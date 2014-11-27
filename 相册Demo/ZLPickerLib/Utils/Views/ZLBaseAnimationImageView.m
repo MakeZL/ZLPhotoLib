@@ -13,6 +13,7 @@
 #import "ZLPickerCommon.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 
+
 @interface ZLBaseAnimationImageView ()
 
 @property (nonatomic , strong) NSMutableArray *photos;
@@ -44,7 +45,7 @@
     
     NSAssert([options[UIViewAnimationImages] isKindOfClass:[NSArray class]], @"只能传图片数组!");
     _photos = options[UIViewAnimationImages];
-    
+    _photoCount = _photos.count;
     self.options = options;
     NSMutableDictionary *ops = [NSMutableDictionary dictionaryWithDictionary:options];
     // 根据索引值来赋值
@@ -62,9 +63,14 @@
     
     // 设置图片
     [self setingPhotoImageAtIndex:self.currentPage];
-    // 让游览效果更好
-    if ([self.options[UIViewAnimationAnimationStatus] integerValue] == ZLPickerBrowserAnimationStatusZoom && [self.options[UIViewAnimationFromView] width] < 200) {
+    ZLPickerBrowserAnimationMinScaleImageViewContentModel model = [self.options[UIViewAnimationZoomMinScaleImageViewContentModel] integerValue];
+    
+    // 按设置缩小的图片类型，没有则按默认判断当前的动画类型与点击的View的宽度
+    if ( ([self.options[UIViewAnimationAnimationStatus] integerValue] == ZLPickerBrowserAnimationStatusZoom && [self.options[UIViewAnimationToView] width] < 200)
+        || model == ZLPickerBrowserAnimationMinScaleImageViewContentModelFill) {
         self.imageView.contentMode = UIViewContentModeScaleAspectFill;
+    }else{
+        self.imageView.contentMode = UIViewContentModeScaleAspectFit;
     }
     
     return [super viewformIdentity:completion];
@@ -72,6 +78,10 @@
 
 #pragma make - 设置图片
 - (void) setingPhotoImageAtIndex:(NSInteger)index{
+    
+    if (!self.photos.count) {
+        return ;
+    }
     
     ZLPickerBrowserPhoto *photo = self.photos[index];//[self photoWithAtIndex:self.currentPage];
     UIButton *cView = self.options[UIViewAnimationToView];

@@ -116,6 +116,8 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     
+    NSAssert(self.dataSource, @"你没成为数据源代理");
+    
     // 初始化collectionView
     [self collectionView];
     
@@ -145,6 +147,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     options[UIViewAnimationTypeViewWithIndexPath] = [NSIndexPath indexPathForRow:self.currentPage inSection:0];
     // 动画执行的方式
     options[UIViewAnimationAnimationStatus] = @(self.animationStatus);
+    options[UIViewAnimationZoomMinScaleImageViewContentModel] = @(self.imageViewContentModel);
     
     // 间距
     options[UIViewAnimationSudokuMarginX] = [NSNumber numberWithFloat:self.sudokuMarginX];

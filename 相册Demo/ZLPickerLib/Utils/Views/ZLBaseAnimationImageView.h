@@ -8,7 +8,10 @@
 
 #import "ZLBaseAnimationView.h"
 
+// 传图片数组
 static NSString *const UIViewAnimationImages = @"UIViewAnimationImages";
+// 图片的缩小时候的模式
+static NSString *const UIViewAnimationZoomMinScaleImageViewContentModel = @"UIViewAnimationZoomMinScaleImageViewContentModel";
 
 @interface ZLBaseAnimationImageView : ZLBaseAnimationView
 @property (nonatomic , strong) UIImageView *imageView;

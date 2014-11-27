@@ -61,6 +61,7 @@ typedef void(^completion)();
     // 让继承者可以修改动画的结束跟开始位置
     NSValue *_startFrame;
     NSValue *_endFrame;
+    NSInteger _photoCount;
 }
 
 /**
