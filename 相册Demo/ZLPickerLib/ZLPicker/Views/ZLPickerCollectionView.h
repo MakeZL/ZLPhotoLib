@@ -29,10 +29,13 @@ typedef NS_ENUM(NSUInteger, ZLPickerCollectionViewShowOrderStatus){
 // 保存所有的数据
 @property (nonatomic , strong) NSArray *dataArray;
 // 保存选中的图片
-@property (nonatomic , strong , readonly) NSMutableArray *selectAsstes;
+@property (nonatomic , strong) NSMutableArray *selectAsstes;
 // delegate
 @property (nonatomic , weak) id <PickerCollectionViewDelegate> collectionViewDelegate;
 // 限制最大数
 @property (nonatomic , assign) NSInteger minCount;
+
+// 选中的索引值，为了防止重用
+@property (nonatomic , strong) NSMutableArray *selectsIndexPath;
 
 @end

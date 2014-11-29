@@ -1,12 +1,12 @@
 //
-//  BaseAnimationImageView.m
+//  ZLAnimationImageView.m
 //  ZLAssetsPickerDemo
 //
-//  Created by 张磊 on 14-11-18.
+//  Created by 张磊 on 14-11-27.
 //  Copyright (c) 2014年 com.zixue101.www. All rights reserved.
 //
 
-#import "ZLBaseAnimationImageView.h"
+#import "ZLAnimationImageView.h"
 #import "ZLPickerBrowserPhoto.h"
 #import "UIView+Extension.h"
 #import "UIImageView+WebCache.h"
@@ -14,41 +14,44 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 
 
-@interface ZLBaseAnimationImageView ()
+@interface ZLAnimationImageView ()
 
-@property (nonatomic , strong) NSMutableArray *photos;
-@property (nonatomic , strong) NSDictionary *options;
+//@property (nonatomic , strong) NSMutableArray *photos;
+//@property (nonatomic , strong) NSDictionary *options;
 
 @end
 
-@implementation ZLBaseAnimationImageView
+static NSArray *_photos;
+static UIImageView *_imageView;
+static NSDictionary *_options;
 
-- (NSMutableArray *)photos{
+@implementation ZLAnimationImageView
+
++ (NSArray *)photos{
     if (!_photos) {
-        _photos = [NSMutableArray array];
+        _photos = [NSArray array];
     }
     return _photos;
 }
 
-- (UIImageView *)imageView{
++ (UIImageView *)imageView{
     if (!_imageView) {
         UIImageView *imageView = [[UIImageView alloc] init];
         imageView.contentMode = UIViewContentModeScaleAspectFit;
         imageView.clipsToBounds = YES;
-        [self addSubview:imageView];
+        ZLAnimationBaseView *baseView = [ZLAnimationBaseView sharedManager];
+        [baseView addSubview:imageView];
         _imageView = imageView;
     }
     return _imageView;
 }
 
-- (instancetype)initViewWithOptions:(NSDictionary *)options completion:(void (^)(ZLBaseAnimationView *))completion{
++ (instancetype)animationViewWithOptions:(NSDictionary *)options animations:(void (^)())animations completion:(void (^)(ZLAnimationBaseView *))completion{
     
     NSAssert([options[UIViewAnimationImages] isKindOfClass:[NSArray class]], @"只能传图片数组!");
-    _photos = options[UIViewAnimationImages];
-    _photoCount = _photos.count;
-    self.options = options;
     
-    if ([self.options[UIViewAnimationToView] width] == [self.options[UIViewAnimationToView] height]) {
+    _photos = options[UIViewAnimationImages];
+    if ([options[UIViewAnimationToView] width] == [options[UIViewAnimationToView] height]) {
         self.imageView.contentMode = UIViewContentModeScaleAspectFill;
     }else{
         self.imageView.contentMode = UIViewContentModeScaleAspectFit;
@@ -59,28 +62,28 @@
     NSIndexPath *indexPath = options[UIViewAnimationTypeViewWithIndexPath];
     // 设置图片
     [self setingPhotoImageAtIndex:indexPath.row];
-    ops[UIViewAnimationSelfView] = self.imageView;
     
-    return [super initViewWithOptions:ops completion:completion];
+    ops[UIViewAnimationSelfView] = [self imageView];
+    _options = ops;
+    return [super animationViewWithOptions:ops animations:animations completion:completion];
 }
 
-#pragma mark -重写清空，赋值
-- (instancetype)viewformIdentity:(void (^)(ZLBaseAnimationView *))completion{
++ (void)restoreWithOptions:(NSDictionary *)options animation:(void (^)())completion{
     
-    // 设置图片
     [self setingPhotoImageAtIndex:self.currentPage];
-    return [super viewformIdentity:completion];
+
+    [super restoreWithOptions:options animation:completion];
 }
 
 #pragma make - 设置图片
-- (void) setingPhotoImageAtIndex:(NSInteger)index{
++ (void) setingPhotoImageAtIndex:(NSInteger)index{
     
-    if (!self.photos.count) {
+    if (!_photos.count) {
         return ;
     }
     
-    ZLPickerBrowserPhoto *photo = self.photos[index];//[self photoWithAtIndex:self.currentPage];
-    UIButton *cView = self.options[UIViewAnimationToView];
+    ZLPickerBrowserPhoto *photo = _photos[index];//[self photoWithAtIndex:self.currentPage];
+    UIButton *cView = _options[UIViewAnimationToView];
     UIImage *image = nil;
     
     if (photo.photoImage) {
@@ -98,8 +101,10 @@
         }
     }
     
-    self.imageView.image = image;
+    [[self imageView] setImage:image];
+    
+    
 }
 
-@end
 
+@end

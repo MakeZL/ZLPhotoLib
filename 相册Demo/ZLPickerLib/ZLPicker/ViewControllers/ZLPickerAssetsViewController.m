@@ -50,7 +50,7 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
 // 数据源
 @property (nonatomic , strong) NSMutableArray *assets;
 // 记录选中的assets
-@property (nonatomic , strong) NSArray *selectAssets;
+@property (nonatomic , strong) NSMutableArray *selectAssets;
 
 
 @end
@@ -106,9 +106,9 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
     }
     return _toolBarThumbCollectionView;
 }
-- (NSArray *)selectAssets{
+- (NSMutableArray *)selectAssets{
     if (!_selectAssets) {
-        _selectAssets = [NSArray array];
+        _selectAssets = [NSMutableArray array];
     }
     return _selectAssets;
 }
@@ -324,6 +324,7 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
     UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
     
     ZLPickerBrowserViewController *browserVc = [[ZLPickerBrowserViewController alloc] init];
+    browserVc.editing = YES;
     browserVc.fromView = self.view;
     browserVc.toView = [cell.contentView.subviews lastObject];
     browserVc.sudokuMarginX = 5;
@@ -342,6 +343,27 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
     ZLPickerBrowserPhoto *photo = [[ZLPickerBrowserPhoto alloc] init];
     photo.asset = self.selectAssets[index];
     return photo;
+}
+
+- (void)photoBrowser:(ZLPickerBrowserViewController *)photoBrowser removePhotoAtIndex:(NSUInteger)index{
+    
+    // 删除选中的照片
+    ALAsset *asset = self.selectAssets[index];
+    NSInteger currentPage = 0;
+    for (NSInteger i = 0; i < self.collectionView.dataArray.count; i++) {
+        ALAsset *photoAsset = self.collectionView.dataArray[i];
+        if([[[[asset defaultRepresentation] url] absoluteString] isEqualToString:[[[photoAsset defaultRepresentation] url] absoluteString]]){
+            currentPage = i;
+            break;
+        }
+    }
+    
+    [self.selectAssets removeObjectAtIndex:index];
+    [self.collectionView.selectsIndexPath removeObject:@(currentPage)];
+    [self.toolBarThumbCollectionView reloadData];
+    [self.collectionView reloadData];
+    
+    self.makeView.text = [NSString stringWithFormat:@"%d",self.selectAssets.count];
 }
 
 #pragma mark -<Navigation Actions>

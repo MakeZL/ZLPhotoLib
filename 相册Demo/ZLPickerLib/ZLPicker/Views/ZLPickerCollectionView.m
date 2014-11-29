@@ -16,8 +16,6 @@
 
 @interface ZLPickerCollectionView () <UICollectionViewDataSource,UICollectionViewDelegate>
 
-// 选中的索引值，为了防止重用
-@property (nonatomic , strong) NSMutableArray *selectsIndexPath;
 @property (nonatomic , strong) ZLPickerFooterCollectionReusableView *footerView;
 
 // 判断是否是第一次加载

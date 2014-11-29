@@ -13,7 +13,8 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "ZLPickerBrowserPhotoScrollView.h"
 #import "ZLPickerCommon.h"
-#import "ZLBaseAnimationImageView.h"
+//#import "ZLBaseAnimationImageView.h"
+#import "ZLAnimationScrollView.h"
 #import "ZLPickerCommon.h"
 
 static NSString *_cellIdentifier = @"collectionViewCell";
@@ -142,45 +143,72 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         return;
     }
     
-    NSMutableDictionary *options = [NSMutableDictionary dictionary];
-    // 来自那个父View
-    options[UIViewAnimationFromView] = self.fromView;
-    // 点击的那个View
-    options[UIViewAnimationToView] = self.toView;
-    // 将动画添加到当前View上
-    options[UIViewAnimationInView] = self.view;
-    // 排列方式
-    options[UIViewAnimationScrollDirection] = @(self.scrollDirection);
-    // 图片数组
-    options[UIViewAnimationImages] = self.photos;//[self getPhotos];
-    // 当前展示第几张图片
-    options[UIViewAnimationTypeViewWithIndexPath] = [NSIndexPath indexPathForRow:self.currentPage inSection:0];
-    // 动画执行的方式
-    options[UIViewAnimationAnimationStatus] = @(self.animationStatus);
-    options[UIViewAnimationZoomMinScaleImageViewContentModel] = @(self.imageViewContentModel);
+    NSDictionary *options = @{
+                              UIViewAnimationInView:self.view,
+                              UIViewAnimationToView:self.toView,
+                              UIViewAnimationFromView:self.fromView,
+                              UIViewAnimationImages:self.photos,
+                              UIViewAnimationTypeViewWithIndexPath:[NSIndexPath indexPathForRow:self.currentPage inSection:0]
+                              };
     
-    // 间距
-    options[UIViewAnimationSudokuMarginX] = [NSNumber numberWithFloat:self.sudokuMarginX];
-    options[UIViewAnimationSudokuMarginY] = [NSNumber numberWithFloat:self.sudokuMarginY];
-    
-    // 如果是九宫格的话
-    if ([options[UIViewAnimationScrollDirection] integerValue] == ZLPickerBrowserScrollDirectionSudoku) {
-        options[UIViewAnimationSudokuDisplayCellNumber] = [NSNumber numberWithInteger:self.sudokuDisplayCellNumber];
-    }
     __weak typeof(self) weakSelf = self;
-    [ZLBaseAnimationImageView animationViewWithOptions:options completion:^(ZLBaseAnimationView *baseView) {
+    
+    [ZLAnimationScrollView animationViewWithOptions:options animations:^{
+        
+    } completion:^(ZLAnimationBaseView *baseView) {
         // disMiss后调用
         weakSelf.disMissBlock = ^(NSInteger page){
-            baseView.currentPage = page;
+            [ZLAnimationScrollView setCurrentPage:page];
             [weakSelf dismissViewControllerAnimated:NO completion:nil];
-            [baseView viewformIdentity:^(ZLBaseAnimationView *baseView) {
-                
+            [ZLAnimationScrollView restoreAnimation:^{
+                NSLog(@"---");
             }];
         };
-        
         [weakSelf reloadData];
     }];
     
+    
+    /*
+     NSMutableDictionary *options = [NSMutableDictionary dictionary];
+     // 来自那个父View
+     options[UIViewAnimationFromView] = self.fromView;
+     // 点击的那个View
+     options[UIViewAnimationToView] = self.toView;
+     // 将动画添加到当前View上
+     options[UIViewAnimationInView] = self.view;
+     // 排列方式
+     options[UIViewAnimationScrollDirection] = @(self.scrollDirection);
+     // 图片数组
+     options[UIViewAnimationImages] = self.photos;//[self getPhotos];
+     // 当前展示第几张图片
+     options[UIViewAnimationTypeViewWithIndexPath] = [NSIndexPath indexPathForRow:self.currentPage inSection:0];
+     // 动画执行的方式
+     options[UIViewAnimationAnimationStatus] = @(self.animationStatus);
+     options[UIViewAnimationZoomMinScaleImageViewContentModel] = @(self.imageViewContentModel);
+     
+     // 间距
+     options[UIViewAnimationSudokuMarginX] = [NSNumber numberWithFloat:self.sudokuMarginX];
+     options[UIViewAnimationSudokuMarginY] = [NSNumber numberWithFloat:self.sudokuMarginY];
+     
+     // 如果是九宫格的话
+     if ([options[UIViewAnimationScrollDirection] integerValue] == ZLPickerBrowserScrollDirectionSudoku) {
+     options[UIViewAnimationSudokuDisplayCellNumber] = [NSNumber numberWithInteger:self.sudokuDisplayCellNumber];
+     }
+     __weak typeof(self) weakSelf = self;
+     [ZLBaseAnimationImageView animationViewWithOptions:options completion:^(ZLBaseAnimationView *baseView) {
+     // disMiss后调用
+     weakSelf.disMissBlock = ^(NSInteger page){
+     baseView.currentPage = page;
+     [weakSelf dismissViewControllerAnimated:NO completion:nil];
+     [baseView viewformIdentity:^(ZLBaseAnimationView *baseView) {
+     
+     }];
+     };
+     
+     [weakSelf reloadData];
+     }];
+     */
+
 }
 
 - (void)viewDidLoad {
@@ -300,6 +328,11 @@ static NSString *_cellIdentifier = @"collectionViewCell";
             [self.delegate photoBrowser:self removePhotoAtIndex:self.currentPage];
         }
         [self.photos removeObjectAtIndex:self.currentPage];
+        if (self.photos.count < 1)
+        {
+            [self dismissViewControllerAnimated:YES completion:nil];
+            [[UIApplication sharedApplication] setStatusBarHidden:NO];
+        }
         [self reloadData];
     }
 }

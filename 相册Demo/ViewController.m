@@ -11,9 +11,12 @@
 #import "UIView+Extension.h"
 #import "ZLPickerBrowserViewController.h"
 #import "ZLPickerCommon.h"
-#import "ZLBaseAnimationImageView.h"
+#import "ZLAnimationBaseView.h"
+//#import "ZLBaseAnimationImageView.h"
 #import "UIImageView+WebCache.h"
 #import <AssetsLibrary/AssetsLibrary.h>
+
+#import "ZLAnimationBaseView.h"
 
 @interface ViewController () <UITableViewDataSource,UITableViewDelegate,ZLPickerViewControllerDelegate,ZLPickerBrowserViewControllerDataSource,ZLPickerBrowserViewControllerDelegate>
 
@@ -45,16 +48,7 @@
     }
     return _assets;
 }
-
-- (UIImageView *)currentImageView{
-    if (!_currentImageView) {
-        _currentImageView = [[UIImageView alloc] init];
-        _currentImageView.alpha = 0;
-        [self.view.superview addSubview:_currentImageView];
-    }
-    return _currentImageView;
-}
-
+//
 - (UITableView *)tableView{
     if (!_tableView) {
         UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
@@ -74,16 +68,16 @@
     }
     return _tableView;
 }
-
+//
 - (void)viewDidLoad{
     [super viewDidLoad];
     
     self.view.backgroundColor = [UIColor whiteColor];
     // 设置AutoLayout参数
     [self setAutoLayoutParams];
-    
+
     [self setupButtons];
-    
+
     [self.tableView reloadData];
     
 }
@@ -137,20 +131,12 @@
     [self setupPhotoBrowser:cell];
 }
 
-#pragma mark 设置当前的缩放View符image
-- (void) setupCurrentImageViewPhotoAtIndex:(NSInteger)index{
-    ZLPickerBrowserPhoto *photo = [self photoBrowser:self.pickerBrowser photoAtIndex:index];
-    self.currentImageView.image = photo.photoImage;
-}
 
 - (void) setupPhotoBrowser:(UITableViewCell *) cell{
     
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     // 图片游览器
     ZLPickerBrowserViewController *pickerBrowser = [[ZLPickerBrowserViewController alloc] init];
-    // 默认拉伸 ： 淡入淡出 ZLPickerBrowserAnimationStatusFade
-//    pickerBrowser.animationStatus = ZLPickerBrowserAnimationStatusZoom;
-    pickerBrowser.sudokuMarginX = 5;
     pickerBrowser.toView = cell.imageView;
     pickerBrowser.fromView = self.view;
     pickerBrowser.delegate = self;
@@ -162,8 +148,7 @@
     [self presentViewController:pickerBrowser animated:NO completion:nil];
 }
 
-
-#pragma mark <ZLPickerBrowserViewControllerDataSource>
+//#pragma mark <ZLPickerBrowserViewControllerDataSource>
 - (NSInteger) numberOfPhotosInPickerBrowser:(ZLPickerBrowserViewController *)pickerBrowser{
     return self.assets.count;
 }
@@ -217,28 +202,24 @@
 #pragma mark - 自定义动画
 // 你也可以自定义动画
 // 参考BaseAnimationView
-//- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
-//
-//    UIView *boxView = [[UIView alloc] init];
-//
-//    NSValue *startV = [NSValue valueWithCGRect:CGRectMake(50, 50, 100, 100)];
-//    NSValue *endV = [NSValue valueWithCGRect:CGRectMake(100, 100, 200, 200)];
-//    NSNumber *duration = [NSNumber numberWithFloat:2.5];
-//
-//    NSDictionary *options = @{
-//                              UIViewAnimationStartFrame:startV,
-//                              UIViewAnimationEndFrame:endV,
-//                              UIViewAnimationDuration:duration,
-//                              UIViewAnimationInView:self.view,                            UIViewAnimationBackGroundColor:[UIColor yellowColor]
-//                              };
-//
-//    [BaseAnimationView animationViewWithOptions:options completion:^(BaseAnimationView *baseView) {
-//        baseView.backgroundColor = [UIColor redColor];
-//        [baseView viewformIdentity:^(BaseAnimationView *baseView) {
-//            NSLog(@" 结束了！！");
-//        }];
-//    }];
-//    [self.view addSubview:boxView];
-//}
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
+    
+    UIView *boxView = [[UIView alloc] init];
+    boxView.backgroundColor = [UIColor redColor];
+
+    NSDictionary *options = @{
+                              UIViewAnimationInView:self.view,
+                              UIViewAnimationToView:boxView,
+                              UIViewAnimationFromView:self.view
+                              };
+
+    
+    [ZLAnimationBaseView animationViewWithOptions:options animations:^{
+        
+    } completion:^(ZLAnimationBaseView *baseView) {
+        
+    }];
+
+}
 
 @end

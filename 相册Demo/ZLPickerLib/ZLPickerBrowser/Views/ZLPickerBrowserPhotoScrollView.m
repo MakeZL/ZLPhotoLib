@@ -106,6 +106,7 @@
     [[self.subviews lastObject] removeFromSuperview];
     
     // 判断是否为gif图片，不是的话就正常来展示图片
+    
     if ([photo.photoURL.absoluteString hasSuffix:@"gif"]) {
         ZLPickerBrowserPhotoGifView *gifView = [[ZLPickerBrowserPhotoGifView alloc] init];
         gifView.frame = self.bounds;
@@ -113,23 +114,22 @@
         [self addSubview:gifView];
     }else{
         ZLPickerBrowserPhotoImageView *zoomImageView = [[ZLPickerBrowserPhotoImageView alloc] init];
-        zoomImageView.delegate = self;
-        zoomImageView.scrollView = self;
         zoomImageView.frame = self.bounds;
-        zoomImageView.photo = photo;
-        [zoomImageView setProgress:self.progress];
         zoomImageView.downLoadWebImageCallBlock = ^{
             // 下载完毕后重新计算下Frame
             [self setMaxMinZoomScalesForCurrentBounds];
         };
-        self.zoomImageView = zoomImageView;
-        [self addSubview:zoomImageView];
         
-        if (!photo.photoURL.absoluteString.length) {
-            [self setMaxMinZoomScalesForCurrentBounds];
-        }
+        zoomImageView.delegate = self;
+        zoomImageView.scrollView = self;
+        zoomImageView.photo = photo;
+        [zoomImageView setProgress:self.progress];
+
+        [self addSubview:zoomImageView];
+        self.zoomImageView = zoomImageView;
     }
     
+    [self setMaxMinZoomScalesForCurrentBounds];
     
 }
 

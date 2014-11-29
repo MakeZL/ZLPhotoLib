@@ -121,8 +121,8 @@ static ZLBaseAnimationView *_singleBaseView;
     
     // 重置
     _baseView.alpha = 1.0;
-    _baseView.frame = startFrame;
     _baseView.hidden = NO;
+    _baseView.frame = startFrame;
     
     // 记录开始与结束的Frame
     _startFrame = self.options[UIViewAnimationEndFrame];
@@ -261,7 +261,7 @@ static ZLBaseAnimationView *_singleBaseView;
                     CGFloat viewX = CGRectGetMaxX(cView.frame) - (cView.tag + 1) * cView.superview.width + marginX;
                     
                     if (viewX < 0) {
-                        viewX = CGRectGetMaxX(cView.frame) - (cView.tag + 1) * cView.width + margin + (cView.width ) * self.currentPage;
+                        viewX = CGRectGetMaxX(cView.frame) - (cView.tag + 1) * cView.width + (cView.width ) * self.currentPage + (self.currentPage - cView.tag) * margin;
                         width = cView.width;
                     }else{
                         width = cView.superview.width;
@@ -269,6 +269,7 @@ static ZLBaseAnimationView *_singleBaseView;
                     }
                     
                     imageFrame = [cView.superview convertRect:CGRectMake(viewX,  cView.y, width, cView.height) toView: self.options[UIViewAnimationFromView]];
+
                 }else{
                     CGFloat margin = CGRectGetMaxX(cView.frame) - (cView.tag + 1) * cView.width;
                     CGFloat imageX = cView.frame.size.width * self.currentPage;
@@ -318,6 +319,7 @@ static ZLBaseAnimationView *_singleBaseView;
     return imageFrame;
 }
 
+
 - (UIView *) getParsentView:(UIView *) view{
     if ([[view subviews] count] >= _photoCount) {
         return view;
@@ -341,14 +343,13 @@ static ZLBaseAnimationView *_singleBaseView;
     if (cell) {
         cView.hidden = NO;
         if ([cell isKindOfClass:[UICollectionViewCell class]]) {
-            for (UICollectionViewCell *childView in cell.superview.subviews) {
-                if (![childView isKindOfClass:[UICollectionViewCell class]]) break;
-                UIView *iv = [childView.contentView.subviews lastObject];
-                if (iv.tag == self.currentPage) {
-                    childView.hidden = YES;
-                    break;
-                }
-            }
+            UICollectionView *collectionView = (UICollectionView *)[self getCollectionViewWithView:cell];
+            UICollectionViewCell *ce = [collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:self.currentPage inSection:0]];
+            ce.hidden = YES;
+        }else{
+            UITableView *tableView = (UITableView *)[self getTableViewWithView:cell];
+            UITableViewCell *ce = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:self.currentPage inSection:0]];
+            ce.hidden = YES;
         }
     }else if (parsentView.subviews.count >= _photoCount){
         parsentView = [self getParsentView:parsentView];
@@ -378,6 +379,8 @@ static ZLBaseAnimationView *_singleBaseView;
         [myWindow addSubview:_baseView];
     }
     
+//    _baseView.frame = [self.options[UIViewAnimationStartFrame] CGRectValue];
+
     _baseView.frame = [self setMaxMinZoomScalesForCurrentBounds];
     [UIView animateWithDuration:.25 animations:^{
         if (animations) {
@@ -400,13 +403,20 @@ static ZLBaseAnimationView *_singleBaseView;
         
         if (cell) {
             if ([cell isKindOfClass:[UICollectionViewCell class]]) {
-                for (UICollectionViewCell *childView in cell.superview.subviews) {
-                    if(![childView isKindOfClass:[UICollectionViewCell class]]) break;
-                    UIView *iv = [childView.contentView.subviews lastObject];
-                    if (iv.tag == self.currentPage) {
-                        childView.hidden = NO;
-                    }
-                }
+                UICollectionView *collectionView = (UICollectionView *)[self getCollectionViewWithView:cell];
+                UICollectionViewCell *ce = [collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:self.currentPage inSection:0]];
+                ce.hidden = NO;
+                //                for (UICollectionViewCell *childView in cell.superview.subviews) {
+                //                    if(![childView isKindOfClass:[UICollectionViewCell class]]) break;
+                //                    UIView *iv = [childView.contentView.subviews lastObject];
+                //                    if (iv.tag == self.currentPage) {
+                //                        childView.hidden = NO;
+                //                    }
+                //                }
+            }else{
+                UITableView *tableView = (UITableView *)[self getTableViewWithView:cell];
+                UITableViewCell *ce = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:self.currentPage inSection:0]];
+                ce.hidden = NO;
             }
         }else if (parsentView.subviews.count >= _photoCount){
             [parsentView.subviews[self.currentPage] setHidden:NO];
@@ -421,6 +431,20 @@ static ZLBaseAnimationView *_singleBaseView;
     }];
     
     return  _baseView;
+}
+
+- (UIView *) getTableViewWithView:(UIView *)view{
+    if ([view isKindOfClass:[UITableView class]]) {
+        return view;
+    }
+    return [self getTableViewWithView:view.superview];
+}
+
+- (UIView *) getCollectionViewWithView:(UIView *)view{
+    if ([view isKindOfClass:[UICollectionView class]]) {
+        return view;
+    }
+    return [self getCollectionViewWithView:view.superview];
 }
 
 #pragma mark - 结束动画
