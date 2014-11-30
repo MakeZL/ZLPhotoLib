@@ -324,10 +324,8 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
     UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
     
     ZLPickerBrowserViewController *browserVc = [[ZLPickerBrowserViewController alloc] init];
-    browserVc.editing = YES;
     browserVc.fromView = self.view;
     browserVc.toView = [cell.contentView.subviews lastObject];
-    browserVc.sudokuMarginX = 5;
     browserVc.currentPage = indexPath.item;
     browserVc.delegate = self;
     browserVc.dataSource = self;

@@ -20,6 +20,7 @@ static NSArray *_photos;
     toView.hidden = YES;
     
     _photos = options[UIViewAnimationImages];
+    
     _parsentView = toView.superview;
     
     return [super animationViewWithOptions:options animations:animations completion:completion];
@@ -32,7 +33,7 @@ static NSArray *_photos;
     UIView *toView = options[UIViewAnimationToView];
     
     // 所有的图片
-//    NSArray *images = options[UIViewAnimationImages];
+    //    NSArray *images = options[UIViewAnimationImages];
     
     UITableView *tableView = (UITableView *)[self getTableViewWithView:toView];
     UICollectionView *collectionView = (UICollectionView *)[self getCollectionViewWithView:toView];
@@ -46,7 +47,32 @@ static NSArray *_photos;
         if (tableView) {
             subViews = [tableView visibleCells];
         }else{
-            subViews = [[self getParsentView:_parsentView maxCount:_photos.count] subviews];
+            
+            NSMutableArray *cells = [[NSMutableArray alloc] init];
+            NSMutableArray *frames = [[NSMutableArray alloc] init];
+            
+            CGRect rect = [[[collectionView visibleCells] firstObject] frame];
+            
+            UIView *subV = [self getCollectionViewWithCell:_parsentView];
+            
+            for (UICollectionViewCell *cell in subV.subviews) {
+                cell.hidden = NO;
+                CGRect cellFrame = [cell.superview convertRect:cell.frame toView:options[UIViewAnimationFromView]];
+                [frames addObject:[NSNumber numberWithFloat:cellFrame.origin.x]];
+            }
+            
+            NSArray *framexs = [frames sortedArrayUsingSelector:@selector(compare:)];
+            
+            for (NSNumber *x in framexs) {
+                rect.origin.x = [x floatValue];
+                
+                UIView *cell = [collectionView hitTest:CGPointMake(rect.origin.x, rect.origin.y) withEvent:nil];
+                if (cell != nil) {
+                    [cells addObject:cell];
+                }
+            }
+            
+            subViews = cells;
         }
         
         compareView = [self traversalViewWithCell:toView];
@@ -59,13 +85,19 @@ static NSArray *_photos;
         compareView = toView;
     }
     
-    
     NSInteger nowPage = 0;
+    NSInteger currPage = 0;
     for (NSInteger index = 0; index < subViews.count; index++) {
         UIView *toBrotherView = subViews[index];
-        if (compareView == toBrotherView) {
+        if ([compareView isEqual:toBrotherView]) {
             // 记录当前第几页
             nowPage = index;
+        }
+        
+        if (collectionView) {
+            if ([subViews[[self currentPage]] isEqual:toBrotherView]) {
+                currPage = index;
+            }
         }
     }
     
@@ -92,12 +124,17 @@ static NSArray *_photos;
                 // 横屏
                 if (direction == UICollectionViewScrollDirectionHorizontal) {
                     // 分页数没改变的情况下, x值就是0
-                    CGFloat cellX = 0;
                     
-                    cellX = (self.currentPage - toView.tag) * (toView.width + flowLayout.minimumLineSpacing);
-                    startFrame = [_parsentView convertRect:CGRectMake(cellX, toView.y, toView.width, toView.height) toView: options[UIViewAnimationFromView]];
+                    startFrame = [_parsentView convertRect:toView.frame toView: options[UIViewAnimationFromView]];
                     
+                    startFrame.origin.x = self.currentPage * (toView.width + flowLayout.minimumLineSpacing) + collectionView.x;
                     
+                    //                    startFrame = [subViews[[self currentPage]] frame];
+                    //                    startFrame.size.width = toView.width;
+                    //                    startFrame.size.height = toView.height;
+                    //                    startFrame.origin.x = (toView.width + flowLayout.minimumLineSpacing)  * ([self currentPage] - nowPage);
+                    //                    startFrame = [toView.superview convertRect:startFrame toView:options[UIViewAnimationFromView]];
+                    [subViews[[self currentPage]] setHidden:YES];
                 }else {
                     // 竖屏
                     startFrame = [subViews[[self currentPage]] frame];
@@ -112,7 +149,7 @@ static NSArray *_photos;
                 }
                 
             }else{
-               // scrollView
+                // scrollView
                 startFrame = [subViews[[self currentPage]] frame];
                 startFrame = [_parsentView convertRect:startFrame toView:options[UIViewAnimationFromView]];
                 
@@ -139,14 +176,30 @@ static NSArray *_photos;
     
 }
 
-#pragma mark - 
+#pragma mark -
 #pragma mark 获取父View
 + (UIView *) getParsentView:(UIView *) view maxCount:(NSInteger)maxCount{
-    if ([[view subviews] count] >= maxCount) {
+    if ([[view subviews] count] >= maxCount || view == nil) {
         return view;
     }
     return [self getParsentView:view.superview maxCount:maxCount];
 }
+
+#pragma mark 获取ScrollView
++ (UIView *) getCollectionViewWithCell:(UIView *)view{
+    
+    for (int i = 0; i < view.subviews.count; i++) {
+        UICollectionViewCell *cell = view.subviews[i];
+        if ([cell isKindOfClass:[UICollectionViewCell class]] || view == nil) {
+            return view;
+        }
+    }
+    //    if ([view isKindOfClass:[UICollectionView class]] || view == nil) {
+    //        return view;
+    //    }
+    return [self getCollectionViewWithCell:view.superview];
+}
+
 
 #pragma mark 获取ScrollView
 + (UIView *) getScrollViewWithView:(UIView *)view{
