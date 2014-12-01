@@ -13,9 +13,8 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "ZLPickerBrowserPhotoScrollView.h"
 #import "ZLPickerCommon.h"
-//#import "ZLBaseAnimationImageView.h"
 #import "ZLAnimationScrollView.h"
-#import "ZLPickerCommon.h"
+//#import "ZLBaseAnimationImageView.h"
 
 static NSString *_cellIdentifier = @"collectionViewCell";
 
@@ -82,7 +81,15 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         UIButton *deleleBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         deleleBtn.translatesAutoresizingMaskIntoConstraints = NO;
         deleleBtn.titleLabel.font = [UIFont systemFontOfSize:15];
-        [deleleBtn setTitle:@"删除" forState:UIControlStateNormal];
+        //        [deleleBtn setTitle:@"删除" forState:UIControlStateNormal];
+        [deleleBtn setImage:[UIImage imageNamed:@"nav_delete_btn"] forState:UIControlStateNormal];
+        
+        // 设置阴影
+        deleleBtn.layer.shadowColor = [UIColor blackColor].CGColor;
+        deleleBtn.layer.shadowOffset = CGSizeMake(0, 0);
+        deleleBtn.layer.shadowRadius = 3;
+        deleleBtn.layer.shadowOpacity = 1.0;
+        
         [deleleBtn addTarget:self action:@selector(delete) forControlEvents:UIControlEventTouchUpInside];
         deleleBtn.hidden = YES;
         [self.view addSubview:deleleBtn];
@@ -208,7 +215,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
      [weakSelf reloadData];
      }];
      */
-
+    
 }
 
 - (void)viewDidLoad {
@@ -250,6 +257,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 - (void) reloadData{
     
     self.collectionView.dataSource = self;
+    
     [self.collectionView reloadData];
     
     if (self.currentPage >= 0) {
@@ -328,12 +336,13 @@ static NSString *_cellIdentifier = @"collectionViewCell";
             [self.delegate photoBrowser:self removePhotoAtIndex:self.currentPage];
         }
         [self.photos removeObjectAtIndex:self.currentPage];
+        [self reloadData];
+        
         if (self.photos.count < 1)
         {
-            [self dismissViewControllerAnimated:YES completion:nil];
+            [self dismissViewControllerAnimated:NO completion:nil];
             [[UIApplication sharedApplication] setStatusBarHidden:NO];
         }
-        [self reloadData];
     }
 }
 

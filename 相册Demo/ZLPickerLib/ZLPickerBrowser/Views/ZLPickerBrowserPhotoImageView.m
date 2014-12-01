@@ -45,8 +45,8 @@
             progressView.thicknessRatio = 0.2;
             progressView.roundedCorners = YES;
         }
-//        progressView.progressTintColor = [UIColor whiteColor];
-//        progressView.trackTintColor = [UIColor lightGrayColor];
+        //        progressView.progressTintColor = [UIColor whiteColor];
+        //        progressView.trackTintColor = [UIColor lightGrayColor];
         
         [self.scrollView addSubview:progressView];
         //        [[[[UIApplication sharedApplication] windows] lastObject] addSubview:progressView];
@@ -93,21 +93,15 @@
             }];
         }else{
             
-            // 网络URL
-            // 加蒙版层
             if (photo.thumbImage) {
-                self.backgroundColor = [UIColor blackColor];
-                self.alpha = 0.7;
+                self.image = photo.thumbImage;
             }
             
+            // 网络URL
             [self sd_setImageWithURL:photo.photoURL placeholderImage:photo.thumbImage options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize) {
                 self.progress = (double)receivedSize / expectedSize;
             } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                
-                self.alpha = 1.0;
                 self.image = image;
-                photo.thumbImage = image;
-                
                 // 下载完回调
                 if (self.downLoadWebImageCallBlock) {
                     self.downLoadWebImageCallBlock();

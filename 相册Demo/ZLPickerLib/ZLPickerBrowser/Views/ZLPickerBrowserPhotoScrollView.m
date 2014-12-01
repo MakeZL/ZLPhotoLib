@@ -17,6 +17,7 @@
 
 @property (nonatomic , weak) ZLPickerBrowserPhotoImageView *zoomImageView;
 @property (nonatomic , assign) CGFloat progress;
+@property (nonatomic , strong) UITapGestureRecognizer *scaleTap;
 
 @end
 
@@ -60,6 +61,8 @@
     scaleBigTap.numberOfTapsRequired = 2;
     scaleBigTap.numberOfTouchesRequired = 1;
     [self addGestureRecognizer:scaleBigTap];
+    self.scaleTap = scaleBigTap;
+    
     // 单击缩小
     UITapGestureRecognizer *disMissTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(disMissTap:)];
     disMissTap.numberOfTapsRequired = 1;
@@ -71,9 +74,7 @@
 
 - (void) scaleBigTap:(UITapGestureRecognizer *)tap{
     // Zoom
-    // Zoom
     // 重置
-    
     if (self.zoomScale == self.maximumZoomScale) {
         [self setZoomScale:self.minimumZoomScale animated:YES];
     }else{
@@ -115,6 +116,9 @@
     }else{
         ZLPickerBrowserPhotoImageView *zoomImageView = [[ZLPickerBrowserPhotoImageView alloc] init];
         zoomImageView.frame = self.bounds;
+        [self addSubview:zoomImageView];
+        self.zoomImageView = zoomImageView;
+        
         zoomImageView.downLoadWebImageCallBlock = ^{
             // 下载完毕后重新计算下Frame
             [self setMaxMinZoomScalesForCurrentBounds];
@@ -124,17 +128,24 @@
         zoomImageView.scrollView = self;
         zoomImageView.photo = photo;
         [zoomImageView setProgress:self.progress];
-
-        [self addSubview:zoomImageView];
-        self.zoomImageView = zoomImageView;
+        
+        if (!photo.photoURL.absoluteString.length) {
+            [self setMaxMinZoomScalesForCurrentBounds];
+        }
     }
     
-    [self setMaxMinZoomScalesForCurrentBounds];
     
 }
 
 - (void)pickerBrowserPhotoImageViewDownloadProgress:(CGFloat)progress{
     self.progress = progress;
+    
+    if (progress / 1.0 == 1.0) {
+        [self addGestureRecognizer:self.scaleTap];
+    }else {
+        [self removeGestureRecognizer:self.scaleTap];
+    }
+    
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -152,7 +163,7 @@
     
     // Sizes
     CGSize boundsSize = self.bounds.size;
-    CGSize imageSize = _zoomImageView.frame.size;
+    CGSize imageSize = _zoomImageView.image.size;
     
     // 获取最小比例
     CGFloat xScale = boundsSize.width / imageSize.width;
@@ -173,7 +184,7 @@
     self.zoomScale = minScale;
     
     // 重置
-//    _zoomImageView.frame = CGRectMake(0, 0, self.zoomImageView.width, self.zoomImageView.height);
+    //    _zoomImageView.frame = CGRectMake(0, 0, self.zoomImageView.width, self.zoomImageView.height);
     
     
     // Layout
