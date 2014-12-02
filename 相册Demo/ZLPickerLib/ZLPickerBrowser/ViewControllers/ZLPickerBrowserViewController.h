@@ -28,7 +28,7 @@
 @end
 
 // ZLPickerBrowserViewControllerDelegate
-@protocol ZLPickerBrowserViewControllerDelegate <NSObject>
+@protocol ZLPickerBrowserViewControllerDelegate <NSObject,NSKeyedArchiverDelegate>
 @optional
 /**
  *  删除那个图片
@@ -59,8 +59,6 @@
 
 // 点击的View
 @property (nonatomic , strong) UIView *toView;
-// 控制器的self.view作为参考
-@property (nonatomic , weak) UIView *fromView;
 
 // 是否可以编辑（删除照片）
 @property (nonatomic , assign,getter=isEditing) BOOL editing;

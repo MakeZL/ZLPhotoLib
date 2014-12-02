@@ -15,6 +15,7 @@
 #import "ZLPickerCommon.h"
 #import "ZLAnimationScrollView.h"
 //#import "ZLBaseAnimationImageView.h"
+#import <objc/runtime.h>
 
 static NSString *_cellIdentifier = @"collectionViewCell";
 
@@ -145,15 +146,16 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 
 // 开始动画
 - (void)startLogddingAnimation{
-    if (!(self.fromView) || !(self.toView) ) {
+    if (!(self.toView) ) {
         [self reloadData];
         return;
     }
     
     NSDictionary *options = @{
                               UIViewAnimationInView:self.view,
+                              UIViewAnimationFromView:object_getIvar(self.dataSource, class_getInstanceVariable([self.dataSource class],"_view")),
                               UIViewAnimationToView:self.toView,
-                              UIViewAnimationFromView:self.fromView,
+                              UIViewAnimationFromView:self.dataSource,
                               UIViewAnimationImages:self.photos,
                               UIViewAnimationTypeViewWithIndexPath:[NSIndexPath indexPathForRow:self.currentPage inSection:0]
                               };
