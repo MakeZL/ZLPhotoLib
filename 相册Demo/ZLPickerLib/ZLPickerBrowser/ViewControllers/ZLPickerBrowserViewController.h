@@ -61,22 +61,11 @@
 @property (nonatomic , strong) UIView *toView;
 // 控制器的self.view作为参考
 @property (nonatomic , weak) UIView *fromView;
-// 点击View的间距
-@property (nonatomic , assign) CGFloat sudokuMarginX;
-@property (nonatomic , assign) CGFloat sudokuMarginY;
-// 九宫格一行展示几个cell
-@property (nonatomic , assign) NSInteger sudokuDisplayCellNumber;
 
-// 决定你点击的View动画是从水平还是垂直，用于计算
-@property (nonatomic , assign) ZLPickerBrowserScrollDirection scrollDirection;
-// 缩小时候的contentModel
-@property (nonatomic , assign) ZLPickerBrowserAnimationMinScaleImageViewContentModel imageViewContentModel;
 // 是否可以编辑（删除照片）
 @property (nonatomic , assign,getter=isEditing) BOOL editing;
 // 当前提供的分页数
 @property (nonatomic , assign) NSInteger currentPage;
-// 动画执行方式
-@property (nonatomic , assign) ZLPickerBrowserAnimationStatus animationStatus;
 
 /**
  *  刷新表格

@@ -118,7 +118,9 @@ typedef ALAssetsLibraryAccessFailureBlock failureBlock;
 #pragma mark -传入一个AssetsURL来获取UIImage
 - (void) getAssetsPhotoWithURLs:(NSURL *) url callBack:(callBackBlock ) callBack{
     [self.library assetForURL:url resultBlock:^(ALAsset *asset) {
-        callBack([UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]]);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            callBack([UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]]);
+        });
     } failureBlock:nil];
 }
 
@@ -131,6 +133,7 @@ typedef ALAssetsLibraryAccessFailureBlock failureBlock;
         ALAsset *asset = (ALAsset *)imageObj;
         image = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]];
     }else if ([imageObj isKindOfClass:[NSURL class]]){
+        
         image = imageObj;
     }
     return image;

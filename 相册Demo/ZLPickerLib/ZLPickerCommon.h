@@ -9,25 +9,6 @@
 #ifndef ZLAssetsPickerDemo_PickerCommon_h
 #define ZLAssetsPickerDemo_PickerCommon_h
 
-// 决定x/y值的方向
-typedef NS_ENUM(NSInteger, ZLPickerBrowserScrollDirection) {
-    ZLPickerBrowserScrollDirectionVertical = 0,// 水平
-    ZLPickerBrowserScrollDirectionHorizontal, // 垂直
-    ZLPickerBrowserScrollDirectionSudoku // 九宫格的计算方式
-};
-
-// 执行动画模式
-typedef NS_ENUM(NSInteger, ZLPickerBrowserAnimationStatus) {
-    ZLPickerBrowserAnimationStatusZoom = 0,// 缩放
-    ZLPickerBrowserAnimationStatusFade // 淡入淡出
-};
-
-// 动画缩小时的ContentMode
-typedef NS_ENUM(NSInteger, ZLPickerBrowserAnimationMinScaleImageViewContentModel) {
-    ZLPickerBrowserAnimationMinScaleImageViewContentModelFit = 0,// 默认是Fit
-    ZLPickerBrowserAnimationMinScaleImageViewContentModelFill // 然后是Fill
-};
-
 // 点击销毁的block
 typedef void(^ZLPickerBrowserViewControllerTapDisMissBlock)(NSInteger);
 

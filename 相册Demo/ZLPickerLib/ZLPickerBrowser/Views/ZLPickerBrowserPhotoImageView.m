@@ -14,7 +14,7 @@
 #import "UIView+Extension.h"
 #import "ZLPickerCommon.h"
 
-@interface ZLPickerBrowserPhotoImageView ()
+@interface ZLPickerBrowserPhotoImageView () <UIActionSheetDelegate>
 
 @property (assign, nonatomic) CGFloat progress;
 @property (weak, nonatomic) CAShapeLayer *progressLayer;
@@ -22,8 +22,6 @@
 
 // 进度ProgressView
 @property (nonatomic , weak) DACircularProgressView *progressView;
-
-
 @end
 
 @implementation ZLPickerBrowserPhotoImageView
@@ -73,7 +71,40 @@
 - (void) setupProperty{
     self.contentMode = UIViewContentModeScaleAspectFit;
     self.clipsToBounds = YES;
+    self.userInteractionEnabled = YES;
+    
+    // 长按保存图片
+    UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressToDo:)];
+    [self addGestureRecognizer:longPressGesture];
+    
 }
+
+
+- (void) longPressToDo:(UILongPressGestureRecognizer *) longGesture{
+    if (longGesture.state == UIGestureRecognizerStateBegan) {
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"保存", nil];
+        
+        [actionSheet showInView:self];
+    }
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if (buttonIndex == 0) {
+        UIImageWriteToSavedPhotosAlbum(self.image, self, @selector(image:didFinishSavingWithError:contextInfo:), NULL);
+    }
+}
+
+- (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error  contextInfo:(void *)contextInfo{
+    if (error != NULL){
+        //失败
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"保存到相册失败\n无法访问相册" delegate:nil cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
+        [alertView show];
+    }
+    else{
+        //成功
+    }
+}
+
 
 - (void)setPhoto:(ZLPickerBrowserPhoto *)photo{
     _photo = photo;
@@ -89,13 +120,8 @@
         if (photoRange.location != NSNotFound){
             [[ZLPickerDatas defaultPicker] getAssetsPhotoWithURLs:photo.photoURL callBack:^(UIImage *obj) {
                 self.image = obj;
-                photo.thumbImage = obj;
             }];
         }else{
-            
-            if (photo.thumbImage) {
-                self.image = photo.thumbImage;
-            }
             
             // 网络URL
             [self sd_setImageWithURL:photo.photoURL placeholderImage:photo.thumbImage options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize) {

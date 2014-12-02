@@ -239,14 +239,15 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     
     ZLPickerBrowserPhoto *photo = self.photos[indexPath.item]; //[self.dataSource photoBrowser:self photoAtIndex:indexPath.item];
     
-    ZLPickerBrowserPhotoScrollView *scrollView = [cell.contentView.subviews lastObject];
-    if (![scrollView isKindOfClass:[ZLPickerBrowserPhotoScrollView class]]) {
-        scrollView = [[ZLPickerBrowserPhotoScrollView alloc] init];
-        // 为了监听单击photoView事件
-        scrollView.frame = cell.bounds;
-        scrollView.photoScrollViewDelegate = self;
-        [cell.contentView addSubview:scrollView];
+    if([[cell.contentView.subviews lastObject] isKindOfClass:[ZLPickerBrowserPhotoScrollView class]]){
+        [[cell.contentView.subviews lastObject] removeFromSuperview];
     }
+    
+    ZLPickerBrowserPhotoScrollView *scrollView =  [[ZLPickerBrowserPhotoScrollView alloc] init];
+    // 为了监听单击photoView事件
+    scrollView.frame = cell.bounds;
+    scrollView.photoScrollViewDelegate = self;
+    [cell.contentView addSubview:scrollView];
     scrollView.photo = photo;
     
     return cell;
@@ -335,6 +336,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         if ([self.delegate respondsToSelector:@selector(photoBrowser:removePhotoAtIndex:)]) {
             [self.delegate photoBrowser:self removePhotoAtIndex:self.currentPage];
         }
+        
         [self.photos removeObjectAtIndex:self.currentPage];
         [self reloadData];
         

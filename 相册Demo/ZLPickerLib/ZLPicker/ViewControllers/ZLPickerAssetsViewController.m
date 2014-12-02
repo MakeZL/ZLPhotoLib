@@ -329,7 +329,6 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
     browserVc.currentPage = indexPath.item;
     browserVc.delegate = self;
     browserVc.dataSource = self;
-    browserVc.scrollDirection = ZLPickerBrowserScrollDirectionHorizontal;
     [self presentViewController:browserVc animated:NO completion:nil];
 }
 
