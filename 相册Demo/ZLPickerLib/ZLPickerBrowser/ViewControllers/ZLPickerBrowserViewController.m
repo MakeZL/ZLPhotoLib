@@ -151,9 +151,14 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         return;
     }
     
+    UIView *fromView = object_getIvar(self.dataSource, class_getInstanceVariable([self.dataSource class],"_view"));
+    if (fromView == nil) {
+        fromView = [[UIView alloc] initWithFrame:self.view.bounds];
+    }
+    
     NSDictionary *options = @{
                               UIViewAnimationInView:self.view,
-                              UIViewAnimationFromView:object_getIvar(self.dataSource, class_getInstanceVariable([self.dataSource class],"_view")),
+                              UIViewAnimationFromView:fromView,
                               UIViewAnimationToView:self.toView,
                               UIViewAnimationFromView:self.dataSource,
                               UIViewAnimationImages:self.photos,
@@ -323,6 +328,14 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 
 #pragma mark -删除照片
 - (void) delete{
+    
+    // 准备删除
+    if ([self.delegate respondsToSelector:@selector(photoBrowser:willRemovePhotoAtIndex:)]) {
+        if(![self.delegate photoBrowser:self willRemovePhotoAtIndex:self.currentPage]){
+            return ;
+        }
+    }
+    
     UIAlertView *removeAlert = [[UIAlertView alloc]
                                 initWithTitle:@"确定要删除此图片？"
                                 message:nil

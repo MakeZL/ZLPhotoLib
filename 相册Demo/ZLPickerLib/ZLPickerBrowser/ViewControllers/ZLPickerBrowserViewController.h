@@ -28,8 +28,15 @@
 @end
 
 // ZLPickerBrowserViewControllerDelegate
-@protocol ZLPickerBrowserViewControllerDelegate <NSObject,NSKeyedArchiverDelegate>
+@protocol ZLPickerBrowserViewControllerDelegate <NSObject>
 @optional
+
+/**
+ *  准备删除那个图片
+ *
+ *  @param index        要删除的索引值
+ */
+- (BOOL)photoBrowser:(ZLPickerBrowserViewController *)photoBrowser willRemovePhotoAtIndex:(NSUInteger)index;
 /**
  *  删除那个图片
  *
@@ -52,18 +59,18 @@
 @end
 
 @interface ZLPickerBrowserViewController : UIViewController
-
+// @require
 // 数据源/代理
 @property (nonatomic , weak) id<ZLPickerBrowserViewControllerDataSource> dataSource;
 @property (nonatomic , weak) id<ZLPickerBrowserViewControllerDelegate> delegate;
-
 // 点击的View
 @property (nonatomic , strong) UIView *toView;
-
-// 是否可以编辑（删除照片）
-@property (nonatomic , assign,getter=isEditing) BOOL editing;
 // 当前提供的分页数
 @property (nonatomic , assign) NSInteger currentPage;
+
+// @optional
+// 是否可以编辑（删除照片）
+@property (nonatomic , assign,getter=isEditing) BOOL editing;
 
 /**
  *  刷新表格

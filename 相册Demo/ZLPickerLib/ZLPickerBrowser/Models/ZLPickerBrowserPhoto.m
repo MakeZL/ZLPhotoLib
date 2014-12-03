@@ -35,8 +35,12 @@
 }
 
 - (UIImage *)thumbImage{
-    if (!_thumbImage && self.asset) {
-        _thumbImage = [UIImage imageWithCGImage:[self.asset thumbnail]];
+    if (!_thumbImage) {
+        if (self.asset) {
+            _thumbImage = [UIImage imageWithCGImage:[self.asset thumbnail]];
+        }else if (_photoImage){
+            _thumbImage = _photoImage;
+        }
     }
     return _thumbImage;
 }
