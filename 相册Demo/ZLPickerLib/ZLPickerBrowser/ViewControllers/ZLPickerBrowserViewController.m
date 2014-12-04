@@ -148,6 +148,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 - (UIView *)getParsentView:(UIView *)view{
     Class superViewClass = NSClassFromString(@"UIViewControllerWrapperView");
     if ([view.superview isKindOfClass:superViewClass] || view == nil) {
+        // 控制器的根View,self.view
         return view;
     }
     
