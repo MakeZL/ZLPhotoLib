@@ -8,6 +8,7 @@
 
 #import "ZLAnimationScrollView.h"
 #import "UIView+Extension.h"
+#import "ZLPickerCommon.h"
 
 static UIView *_parsentView;
 static NSArray *_photos;
@@ -20,7 +21,6 @@ static NSArray *_photos;
     toView.hidden = YES;
     
     _photos = options[UIViewAnimationImages];
-    
     _parsentView = toView.superview;
     
     return [super animationViewWithOptions:options animations:animations completion:completion];
@@ -114,50 +114,42 @@ static NSArray *_photos;
     
     CGRect startFrame = CGRectZero;
     // 如果点击的图还是一样，并且图片的数量一致的就恢复
-    if (nowPage == [self currentPage] && subViews.count >= _photos.count) {
-        startFrame = [toView.superview convertRect:toView.frame toView:options[UIViewAnimationFromView]];
-    }else{
-        toView.hidden = NO;
-        if ([self currentPage] < subViews.count) {
-            if (tableView || collectionView) {
+    toView.hidden = NO;
+    if ([self currentPage] < subViews.count) {
+        if (tableView || collectionView) {
+            
+            // 横屏
+            if (direction == UICollectionViewScrollDirectionHorizontal) {
+                // 分页数没改变的情况下, x值就是0
                 
-                // 横屏
-                if (direction == UICollectionViewScrollDirectionHorizontal) {
-                    // 分页数没改变的情况下, x值就是0
-                    
-                    startFrame = [_parsentView convertRect:toView.frame toView: options[UIViewAnimationFromView]];
-                    
-                    startFrame.origin.x = self.currentPage * (toView.width + flowLayout.minimumLineSpacing) + collectionView.x;
-                    
-                    //                    startFrame = [subViews[[self currentPage]] frame];
-                    //                    startFrame.size.width = toView.width;
-                    //                    startFrame.size.height = toView.height;
-                    //                    startFrame.origin.x = (toView.width + flowLayout.minimumLineSpacing)  * ([self currentPage] - nowPage);
-                    //                    startFrame = [toView.superview convertRect:startFrame toView:options[UIViewAnimationFromView]];
-                    [subViews[[self currentPage]] setHidden:YES];
-                }else {
-                    // 竖屏
-                    startFrame = [subViews[[self currentPage]] frame];
-                    startFrame.origin.x = toView.x;
-                    startFrame.size.width = toView.width;
-                    startFrame.size.height = toView.height;
-                    startFrame.origin.y = toView.height * ([self currentPage] - (nowPage));
-                    
-                    startFrame = [toView.superview convertRect:startFrame toView:options[UIViewAnimationFromView]];
-                    
-                    [subViews[[self currentPage]] setHidden:YES];
-                }
+                startFrame = [_parsentView convertRect:toView.frame toView: options[UIViewAnimationFromView]];
                 
-            }else{
-                // scrollView
+                startFrame.origin.x = self.currentPage * (toView.width + flowLayout.minimumLineSpacing) + collectionView.x;
+                [subViews[[self currentPage]] setHidden:YES];
+            }else {
+                // 竖屏
                 startFrame = [subViews[[self currentPage]] frame];
-                startFrame = [_parsentView convertRect:startFrame toView:options[UIViewAnimationFromView]];
+                startFrame.origin.x = toView.x;
+                startFrame.size.width = toView.width;
+                startFrame.size.height = toView.height;
+                startFrame.origin.y = toView.height * ([self currentPage] - (nowPage));
+                
+                startFrame = [toView.superview convertRect:startFrame toView:options[UIViewAnimationFromView]];
                 
                 [subViews[[self currentPage]] setHidden:YES];
             }
             
+        }else{
+            // scrollView
+            startFrame = [subViews[[self currentPage]] frame];
+            startFrame = [_parsentView convertRect:startFrame toView:options[UIViewAnimationFromView]];
             
+            [subViews[[self currentPage]] setHidden:YES];
         }
+    }
+    
+    if (!iOS7gt) {
+        startFrame.origin.y += 20;
     }
     
     ops[UIViewAnimationEndFrame] = [NSValue valueWithCGRect:startFrame];

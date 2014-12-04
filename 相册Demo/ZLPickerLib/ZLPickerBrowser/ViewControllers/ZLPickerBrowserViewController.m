@@ -146,12 +146,9 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 
 #pragma mark - 获取父View
 - (UIView *)getParsentView:(UIView *)view{
-    Class superViewClass = NSClassFromString(@"UIViewControllerWrapperView");
-    if ([view.superview isKindOfClass:superViewClass] || view == nil) {
-        // 控制器的根View,self.view
+    if ([[view nextResponder] isKindOfClass:[UIViewController class]] || view == nil) {
         return view;
     }
-    
     return [self getParsentView:view.superview];
 }
 
@@ -162,7 +159,9 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         return;
     }
     
+    // 判断是否是控制器
     UIView *fromView = object_getIvar(self.dataSource, class_getInstanceVariable([self.dataSource class],"_view"));
+    // 如果是自定义View
     if (fromView == nil) {
         fromView = [self getParsentView:self.toView];
     }
@@ -192,53 +191,13 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         [weakSelf reloadData];
     }];
     
-    
-    /*
-     NSMutableDictionary *options = [NSMutableDictionary dictionary];
-     // 来自那个父View
-     options[UIViewAnimationFromView] = self.fromView;
-     // 点击的那个View
-     options[UIViewAnimationToView] = self.toView;
-     // 将动画添加到当前View上
-     options[UIViewAnimationInView] = self.view;
-     // 排列方式
-     options[UIViewAnimationScrollDirection] = @(self.scrollDirection);
-     // 图片数组
-     options[UIViewAnimationImages] = self.photos;//[self getPhotos];
-     // 当前展示第几张图片
-     options[UIViewAnimationTypeViewWithIndexPath] = [NSIndexPath indexPathForRow:self.currentPage inSection:0];
-     // 动画执行的方式
-     options[UIViewAnimationAnimationStatus] = @(self.animationStatus);
-     options[UIViewAnimationZoomMinScaleImageViewContentModel] = @(self.imageViewContentModel);
-     
-     // 间距
-     options[UIViewAnimationSudokuMarginX] = [NSNumber numberWithFloat:self.sudokuMarginX];
-     options[UIViewAnimationSudokuMarginY] = [NSNumber numberWithFloat:self.sudokuMarginY];
-     
-     // 如果是九宫格的话
-     if ([options[UIViewAnimationScrollDirection] integerValue] == ZLPickerBrowserScrollDirectionSudoku) {
-     options[UIViewAnimationSudokuDisplayCellNumber] = [NSNumber numberWithInteger:self.sudokuDisplayCellNumber];
-     }
-     __weak typeof(self) weakSelf = self;
-     [ZLBaseAnimationImageView animationViewWithOptions:options completion:^(ZLBaseAnimationView *baseView) {
-     // disMiss后调用
-     weakSelf.disMissBlock = ^(NSInteger page){
-     baseView.currentPage = page;
-     [weakSelf dismissViewControllerAnimated:NO completion:nil];
-     [baseView viewformIdentity:^(ZLBaseAnimationView *baseView) {
-     
-     }];
-     };
-     
-     [weakSelf reloadData];
-     }];
-     */
-    
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    // 隐藏状态栏
+    [[UIApplication sharedApplication] setStatusBarHidden:YES];
     self.view.backgroundColor = [UIColor blackColor];
 }
 

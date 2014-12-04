@@ -8,6 +8,7 @@
 
 #import "ZLAnimationBaseView.h"
 #import "ZLPickerCommon.h"
+#import "UIView+Extension.h"
 
 @implementation ZLAnimationBaseView
 // 当前的View
@@ -77,6 +78,7 @@ static ZLAnimationBaseView *_singleBaseView;
 
 #pragma mark 补充结束的位置
 + (CGRect)initEndFrameFromView:(UIView *)fromView{
+    
     return fromView.bounds;
 }
 
@@ -106,7 +108,7 @@ static ZLAnimationBaseView *_singleBaseView;
     _baseView.alpha = 1.0;
     _baseView.hidden = NO;
     _baseView.frame = startFrame;
-
+    
     // 避免重复添加View
     if (![inView.subviews.lastObject isKindOfClass:[ZLAnimationBaseView class]]) {
         [inView addSubview:_baseView];
@@ -118,7 +120,10 @@ static ZLAnimationBaseView *_singleBaseView;
             animations();
         }
         _baseView.frame = [self setMaxMinZoomScalesForCurrentBounds];
-//        _baseView.frame = endFrame;
+        if (!iOS7gt) {
+            // 在iOS6因为隐藏了状态栏。所以需要加上20的高度
+            _baseView.y += 20;
+        }
     } completion:^(BOOL finished) {
         if (completion) {
             completion(nil);
@@ -169,10 +174,19 @@ static ZLAnimationBaseView *_singleBaseView;
         if (completion) {
             completion();
         }
-        [self unLoadStopAnimationOperation];
+        
         [_baseView removeFromSuperview];
+        [self unLoadStopAnimationOperation];
     }];
 }
+
+#pragma mark -
+#pragma mark 准备开始动画前的操作
++ (void) willStartAnimationOperation{
+    [[UIApplication sharedApplication] setStatusBarHidden:YES];
+    //    [_options[UIViewAnimationFromView] setUserInteractionEnabled:NO];
+}
+
 
 // 计算Frame根据屏幕的尺寸拉伸或缩小
 + (CGRect )setMaxMinZoomScalesForCurrentBounds {
@@ -215,6 +229,11 @@ static ZLAnimationBaseView *_singleBaseView;
         frameToCenter.origin.y = 0;
     }
     
+    if (!iOS7gt){
+        frameToCenter.origin.y -= 20;
+    }
+    
+    
     // Center
     //    if (!CGRectEqualToRect(_baseView.frame, frameToCenter))
     return frameToCenter;
@@ -222,20 +241,14 @@ static ZLAnimationBaseView *_singleBaseView;
 }
 
 
-
 #pragma mark -
-#pragma mark 准备开始动画前的操作
-+ (void) willStartAnimationOperation{
-    [[UIApplication sharedApplication] setStatusBarHidden:YES];
-//    [_options[UIViewAnimationFromView] setUserInteractionEnabled:NO];
-}
-#pragma mark 准备结束动画
+#pragma mark 开始动画
 + (void) willUnLoadAnimationOperation{
     [[UIApplication sharedApplication] setStatusBarHidden:NO];
 }
 #pragma mark 结束动画的操作
 + (void) unLoadStopAnimationOperation{
-//    [_options[UIViewAnimationFromView] setUserInteractionEnabled:YES];
+    [_options[UIViewAnimationFromView] setUserInteractionEnabled:YES];
 }
 
 
