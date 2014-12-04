@@ -144,6 +144,16 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     [self startLogddingAnimation];
 }
 
+#pragma mark - 获取父View
+- (UIView *)getParsentView:(UIView *)view{
+    Class superViewClass = NSClassFromString(@"UIViewControllerWrapperView");
+    if ([view.superview isKindOfClass:superViewClass] || view == nil) {
+        return view;
+    }
+    
+    return [self getParsentView:view.superview];
+}
+
 // 开始动画
 - (void)startLogddingAnimation{
     if (!(self.toView) ) {
@@ -153,7 +163,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     
     UIView *fromView = object_getIvar(self.dataSource, class_getInstanceVariable([self.dataSource class],"_view"));
     if (fromView == nil) {
-        fromView = [[UIView alloc] initWithFrame:self.view.bounds];
+        fromView = [self getParsentView:self.toView];
     }
     
     NSDictionary *options = @{
