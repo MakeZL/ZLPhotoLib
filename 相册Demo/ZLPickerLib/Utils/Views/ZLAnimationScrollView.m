@@ -186,9 +186,6 @@ static NSArray *_photos;
             return view;
         }
     }
-    //    if ([view isKindOfClass:[UICollectionView class]] || view == nil) {
-    //        return view;
-    //    }
     return [self getCollectionViewWithCell:view.superview];
 }
 

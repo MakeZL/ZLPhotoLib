@@ -26,8 +26,6 @@
 		488D648E1A2976C4003FF558 /* ZLAnimationBaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = 488D64851A2976C4003FF558 /* ZLAnimationBaseView.m */; };
 		488D648F1A2976C4003FF558 /* ZLAnimationImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 488D64871A2976C4003FF558 /* ZLAnimationImageView.m */; };
 		488D64901A2976C4003FF558 /* ZLAnimationScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 488D64891A2976C4003FF558 /* ZLAnimationScrollView.m */; };
-		488D64911A2976C4003FF558 /* ZLBaseAnimationImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 488D648B1A2976C4003FF558 /* ZLBaseAnimationImageView.m */; };
-		488D64921A2976C4003FF558 /* ZLBaseAnimationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 488D648D1A2976C4003FF558 /* ZLBaseAnimationView.m */; };
 		48AE84021A1E0525002EEE6E /* UIView+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AE83CC1A1E0525002EEE6E /* UIView+Extension.m */; };
 		48AE84031A1E0525002EEE6E /* DACircularProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AE83CF1A1E0525002EEE6E /* DACircularProgressView.m */; };
 		48AE84041A1E0525002EEE6E /* AssetsPickerChecked.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AE83D21A1E0525002EEE6E /* AssetsPickerChecked.png */; };
@@ -108,10 +106,6 @@
 		488D64871A2976C4003FF558 /* ZLAnimationImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLAnimationImageView.m; sourceTree = "<group>"; };
 		488D64881A2976C4003FF558 /* ZLAnimationScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLAnimationScrollView.h; sourceTree = "<group>"; };
 		488D64891A2976C4003FF558 /* ZLAnimationScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLAnimationScrollView.m; sourceTree = "<group>"; };
-		488D648A1A2976C4003FF558 /* ZLBaseAnimationImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLBaseAnimationImageView.h; sourceTree = "<group>"; };
-		488D648B1A2976C4003FF558 /* ZLBaseAnimationImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLBaseAnimationImageView.m; sourceTree = "<group>"; };
-		488D648C1A2976C4003FF558 /* ZLBaseAnimationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLBaseAnimationView.h; sourceTree = "<group>"; };
-		488D648D1A2976C4003FF558 /* ZLBaseAnimationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLBaseAnimationView.m; sourceTree = "<group>"; };
 		48AE83C81A1E0525002EEE6E /* ZLPickerCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLPickerCommon.h; sourceTree = "<group>"; };
 		48AE83CB1A1E0525002EEE6E /* UIView+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Extension.h"; sourceTree = "<group>"; };
 		48AE83CC1A1E0525002EEE6E /* UIView+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Extension.m"; sourceTree = "<group>"; };
@@ -281,10 +275,6 @@
 				488D64871A2976C4003FF558 /* ZLAnimationImageView.m */,
 				488D64881A2976C4003FF558 /* ZLAnimationScrollView.h */,
 				488D64891A2976C4003FF558 /* ZLAnimationScrollView.m */,
-				488D648A1A2976C4003FF558 /* ZLBaseAnimationImageView.h */,
-				488D648B1A2976C4003FF558 /* ZLBaseAnimationImageView.m */,
-				488D648C1A2976C4003FF558 /* ZLBaseAnimationView.h */,
-				488D648D1A2976C4003FF558 /* ZLBaseAnimationView.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -577,7 +567,6 @@
 				48AE84111A1E0525002EEE6E /* ZLPickerFooterCollectionReusableView.m in Sources */,
 				481C56061A16DFB1004FF9B2 /* SDWebImageManager.m in Sources */,
 				48AE842D1A1E055D002EEE6E /* ZLPickerBrowserViewController.m in Sources */,
-				488D64921A2976C4003FF558 /* ZLBaseAnimationView.m in Sources */,
 				48AE84101A1E0525002EEE6E /* ZLPickerCollectionViewCell.m in Sources */,
 				481C560D1A16DFB1004FF9B2 /* UIImageView+WebCache.m in Sources */,
 				481C560C1A16DFB1004FF9B2 /* UIImageView+HighlightedWebCache.m in Sources */,
@@ -588,7 +577,6 @@
 				48AE84151A1E0525002EEE6E /* ZLPickerImageView.m in Sources */,
 				481C56071A16DFB1004FF9B2 /* SDWebImagePrefetcher.m in Sources */,
 				488D64901A2976C4003FF558 /* ZLAnimationScrollView.m in Sources */,
-				488D64911A2976C4003FF558 /* ZLBaseAnimationImageView.m in Sources */,
 				481C56011A16DFB1004FF9B2 /* SDImageCache.m in Sources */,
 				481C56051A16DFB1004FF9B2 /* SDWebImageDownloaderOperation.m in Sources */,
 				48AE843A1A1E067C002EEE6E /* ZLPickerBrowserPhotoScrollView.m in Sources */,
