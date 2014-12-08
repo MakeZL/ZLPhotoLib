@@ -101,7 +101,11 @@ static ZLAnimationBaseView *_singleBaseView;
     if (selfView) {
         _baseView = selfView;
     }else{
-        _baseView = [self sharedManager];//_options[UIViewAnimationToView];
+        if (!([_options[UIViewAnimationToView] isKindOfClass:[UIImageView class]])) {
+            _baseView = _options[UIViewAnimationToView];
+        }else{
+            _baseView = [self sharedManager];
+        }
     }
     
     // 初始化baseView的参数
@@ -114,21 +118,23 @@ static ZLAnimationBaseView *_singleBaseView;
         [inView addSubview:_baseView];
     }
     
+    __weak typeof(_baseView) weakBaseView = _baseView;
+    
     // 开始动画
     [UIView animateWithDuration:duration animations:^{
         if (animations) {
             animations();
         }
-        _baseView.frame = [self setMaxMinZoomScalesForCurrentBounds];
+        weakBaseView.frame = [self setMaxMinZoomScalesForCurrentBounds];
         if (!iOS7gt) {
             // 在iOS6因为隐藏了状态栏。所以需要加上20的高度
-            _baseView.y += 20;
+            weakBaseView.y += 20;
         }
     } completion:^(BOOL finished) {
         if (completion) {
             completion(nil);
         }
-        [_baseView removeFromSuperview];
+        [weakBaseView removeFromSuperview];
     }];
     
     return nil;
@@ -192,7 +198,13 @@ static ZLAnimationBaseView *_singleBaseView;
 + (CGRect )setMaxMinZoomScalesForCurrentBounds {
     
     UIImageView *imageView = (UIImageView *) _baseView;
-    if (imageView.image == nil) return CGRectZero;
+    if (!([imageView isKindOfClass:[UIImageView class]]) || imageView.image == nil) {
+        if (!([imageView isKindOfClass:[UIImageView class]])) {
+            return [_options[UIViewAnimationInView] frame];
+        }else{
+            return CGRectZero;
+        }
+    }
     
     // Sizes
     CGSize boundsSize = [UIScreen mainScreen].bounds.size;

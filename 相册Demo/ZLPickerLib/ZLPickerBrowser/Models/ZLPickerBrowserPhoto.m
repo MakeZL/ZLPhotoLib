@@ -44,4 +44,12 @@
     }
     return _thumbImage;
 }
+
++ (instancetype)photoAnyImageObjWith:(id)imageObj{
+    ZLPickerBrowserPhoto *photo = [[self alloc] init];
+    [photo setPhotoObj:imageObj];
+    return photo;
+}
+
+
 @end

@@ -155,10 +155,9 @@
 - (ZLPickerBrowserPhoto *) photoBrowser:(ZLPickerBrowserViewController *)pickerBrowser photoAtIndex:(NSUInteger)index{
     
     id imageObj = [self.assets objectAtIndex:index];
-    ZLPickerBrowserPhoto *photo = [[ZLPickerBrowserPhoto alloc] init];
+    ZLPickerBrowserPhoto *photo = [ZLPickerBrowserPhoto photoAnyImageObjWith:imageObj];
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
     photo.thumbImage = cell.imageView.image;
-    photo.photoObj = imageObj;
     
     return photo;
 }
@@ -209,7 +208,6 @@
     NSDictionary *options = @{
                               UIViewAnimationInView:self.view,
                               UIViewAnimationToView:boxView,
-                              UIViewAnimationFromView:self.view
                               };
 
     

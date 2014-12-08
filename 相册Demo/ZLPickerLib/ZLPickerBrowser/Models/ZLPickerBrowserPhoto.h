@@ -28,4 +28,6 @@
  */
 @property (nonatomic , strong) UIImage *thumbImage;
 
++ (instancetype)photoAnyImageObjWith:(id)imageObj;
+
 @end
