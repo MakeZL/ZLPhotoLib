@@ -45,6 +45,7 @@
     return _thumbImage;
 }
 
+#pragma mark - 传入一个图片对象，可以是URL/UIImage/NSString，返回一个实例
 + (instancetype)photoAnyImageObjWith:(id)imageObj{
     ZLPickerBrowserPhoto *photo = [[self alloc] init];
     [photo setPhotoObj:imageObj];

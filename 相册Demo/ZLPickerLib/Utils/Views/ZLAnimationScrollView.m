@@ -47,7 +47,8 @@ static NSArray *_photos;
         if (tableView) {
             subViews = [tableView visibleCells];
         }else{
-            
+            // note:collectionView visibleCells 里面的元素并不是按frame来排序的
+            // 进行frame来排序
             NSMutableArray *cells = [[NSMutableArray alloc] init];
             NSMutableArray *frames = [[NSMutableArray alloc] init];
             
@@ -56,6 +57,9 @@ static NSArray *_photos;
             UIView *subV = [self getCollectionViewWithCell:_parsentView];
             
             for (UICollectionViewCell *cell in subV.subviews) {
+                if (![cell isKindOfClass:[UICollectionViewCell class]]) {
+                    continue;
+                }
                 cell.hidden = NO;
                 CGRect cellFrame = [cell.superview convertRect:cell.frame toView:options[UIViewAnimationFromView]];
                 [frames addObject:[NSNumber numberWithFloat:cellFrame.origin.x]];
@@ -71,7 +75,6 @@ static NSArray *_photos;
                     [cells addObject:cell];
                 }
             }
-            
             subViews = cells;
         }
         
@@ -115,15 +118,16 @@ static NSArray *_photos;
     CGRect startFrame = CGRectZero;
     // 如果点击的图还是一样，并且图片的数量一致的就恢复
     toView.hidden = NO;
+    NSInteger ios6NavH = 20;
     if ([self currentPage] < subViews.count) {
         if (tableView || collectionView) {
             
             // 横屏
             if (direction == UICollectionViewScrollDirectionHorizontal) {
                 // 分页数没改变的情况下, x值就是0
-                
+                ios6NavH = -20;
                 startFrame = [_parsentView convertRect:toView.frame toView: options[UIViewAnimationFromView]];
-                
+                startFrame.origin.y = [ops[UIViewAnimationStartFrame] CGRectValue].origin.y;
                 startFrame.origin.x = self.currentPage * (toView.width + flowLayout.minimumLineSpacing) + collectionView.x;
                 [subViews[[self currentPage]] setHidden:YES];
             }else {
@@ -149,7 +153,7 @@ static NSArray *_photos;
     }
     
     if (!iOS7gt) {
-        startFrame.origin.y += 20;
+        startFrame.origin.y += ios6NavH;
     }
     
     ops[UIViewAnimationEndFrame] = [NSValue valueWithCGRect:startFrame];
