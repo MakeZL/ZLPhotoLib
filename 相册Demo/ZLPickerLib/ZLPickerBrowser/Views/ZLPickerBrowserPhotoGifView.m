@@ -8,9 +8,29 @@
 
 #import "ZLPickerBrowserPhotoGifView.h"
 #import "SDWebImageDownloader.h"
+#import "UIImageView+WebCache.h"
 #import "UIView+Extension.h"
 
+@interface ZLPickerBrowserPhotoGifView()
+
+@property (weak,nonatomic) UIImageView *gifView;
+
+@end
+
 @implementation ZLPickerBrowserPhotoGifView
+
+- (UIImageView *)gifView{
+    if (!_gifView) {
+        UIImageView *gifView = [[UIImageView alloc] init];
+        gifView.contentMode = UIViewContentModeScaleAspectFit;
+        gifView.clipsToBounds = YES;
+        gifView.frame = self.bounds;
+        [self addSubview:gifView];
+        self.gifView = gifView;
+    }
+    return _gifView;
+}
+
 - (id)initWithFrame:(CGRect)frame filePath:(NSString *)filePath
 {
     self = [super initWithFrame:frame];
@@ -38,6 +58,8 @@
     
     gifProperties = [NSDictionary dictionaryWithObject:gifLoopCount forKey:(__bridge NSString *)kCGImagePropertyGIFDictionary];
     
+    [self.gifView sd_setImageWithURL:[NSURL URLWithString:urlString] placeholderImage:[UIImage imageNamed:@"typing"]];
+    
     [[SDWebImageDownloader sharedDownloader] downloadImageWithURL:[NSURL URLWithString:urlString] options:SDWebImageDownloaderUseNSURLCache progress:^(NSInteger receivedSize, NSInteger expectedSize) {
         
     } completed:^(UIImage *image, NSData *data, NSError *error, BOOL finished) {
@@ -57,6 +79,7 @@
 
 -(void)play
 {
+    self.gifView.image = nil;
     index ++;
     index = index%count;
     CGImageRef ref = CGImageSourceCreateImageAtIndex(gif, index, (__bridge CFDictionaryRef)gifProperties);

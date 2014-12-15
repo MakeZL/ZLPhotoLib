@@ -81,7 +81,8 @@ static NSArray *_photos;
         compareView = [self traversalViewWithCell:toView];
     }else{
         // scrollView
-        subViews = toView.superview.subviews;
+        subViews = [[self getParsentView:toView maxCount:_photos.count] subviews];
+        //        subViews = toView.superview.subviews;
         if (toView.superview == nil) {
             subViews = _parsentView.subviews;
         }
@@ -145,8 +146,10 @@ static NSArray *_photos;
             
         }else{
             // scrollView
+            UIView *p = subViews[[self currentPage]];
+            
             startFrame = [subViews[[self currentPage]] frame];
-            startFrame = [_parsentView convertRect:startFrame toView:options[UIViewAnimationFromView]];
+            startFrame = [p.superview convertRect:startFrame toView:options[UIViewAnimationFromView]];
             
             [subViews[[self currentPage]] setHidden:YES];
         }
@@ -155,6 +158,8 @@ static NSArray *_photos;
     if (!iOS7gt) {
         startFrame.origin.y += ios6NavH;
     }
+    
+    startFrame.origin.y += [[self getParsentView:options[UIViewAnimationToView]] frame].origin.y;
     
     ops[UIViewAnimationEndFrame] = [NSValue valueWithCGRect:startFrame];
     [super restoreWithOptions:ops animation:^{
@@ -205,7 +210,17 @@ static NSArray *_photos;
 
 #pragma mark 获取TableView
 + (UIView *) getTableViewWithView:(UIView *)view{
+    
+    if ([view.superview isKindOfClass:[UITableView class]]) {
+        for (UIView *tView in view.superview.subviews) {
+            if ([tView isKindOfClass:[UITableViewHeaderFooterView class]]) {
+                return nil;
+            }
+        }
+    }
+    
     if ([view isKindOfClass:[UITableView class]] || view == nil) {
+        
         return view;
     }
     return [self getTableViewWithView:view.superview];
@@ -213,10 +228,22 @@ static NSArray *_photos;
 
 #pragma mark 获取CollectionView
 + (UIView *) getCollectionViewWithView:(UIView *)view{
+    
     if ([view isKindOfClass:[UICollectionView class]] || view == nil) {
         return view;
     }
     return [self getCollectionViewWithView:view.superview];
 }
+
+#pragma mark - 获取父View
++ (UIView *)getParsentView:(UIView *)view{
+    if ([[view nextResponder] isKindOfClass:[UIViewController class]] || view == nil) {
+        return view;
+    }
+    return [self getParsentView:view.superview];
+}
+
+
+
 
 @end
