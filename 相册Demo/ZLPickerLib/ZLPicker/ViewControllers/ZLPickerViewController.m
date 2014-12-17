@@ -58,6 +58,11 @@
     [self addNotification];
 }
 
+#pragma mark - 展示控制器
+- (void)show{
+    [[[UIApplication sharedApplication].keyWindow rootViewController] presentViewController:self animated:YES completion:nil];
+}
+
 - (void) addNotification{
     // 监听异步done通知
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{

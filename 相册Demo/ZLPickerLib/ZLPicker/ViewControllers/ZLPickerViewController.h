@@ -45,4 +45,9 @@ typedef NS_ENUM(NSInteger , PickerViewShowStatus) {
  */
 - (UIImage *) getImageWithImageObj:(id)imageObj;
 
+/**
+ *  展示控制器
+ */
+- (void)show;
+
 @end
