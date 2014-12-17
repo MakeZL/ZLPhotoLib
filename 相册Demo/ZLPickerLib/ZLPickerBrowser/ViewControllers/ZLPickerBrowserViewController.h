@@ -75,6 +75,11 @@
 /**
  *  刷新表格
  */
-- (void) reloadData;
+- (void)reloadData;
+
+/**
+ *  展示控制器
+ */
+- (void)show;
 
 @end

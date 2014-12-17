@@ -137,14 +137,18 @@
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     // 图片游览器
     ZLPickerBrowserViewController *pickerBrowser = [[ZLPickerBrowserViewController alloc] init];
+    // 传入点击图片View的话，会有微信朋友圈照片的风格
     pickerBrowser.toView = cell.imageView;
+    // 数据源/delegate
     pickerBrowser.delegate = self;
     pickerBrowser.dataSource = self;
+    // 是否可以删除照片
     pickerBrowser.editing = YES;
     // 当前选中的值
     pickerBrowser.currentPage = indexPath.row;
+    // 展示控制器
+    [pickerBrowser show];
     self.pickerBrowser = pickerBrowser;
-    [self presentViewController:pickerBrowser animated:NO completion:nil];
 }
 
 //#pragma mark <ZLPickerBrowserViewControllerDataSource>
@@ -212,9 +216,9 @@
 
     
     [ZLAnimationBaseView animationViewWithOptions:options animations:^{
-        
+        // TODO .. 执行动画时
     } completion:^(ZLAnimationBaseView *baseView) {
-        
+        // TODO .. 动画执行完时
     }];
 
 }

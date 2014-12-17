@@ -100,6 +100,7 @@
 		481C55FC1A16DFB1004FF9B2 /* UIImageView+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+WebCache.m"; sourceTree = "<group>"; };
 		481C55FD1A16DFB1004FF9B2 /* UIView+WebCacheOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+WebCacheOperation.h"; sourceTree = "<group>"; };
 		481C55FE1A16DFB1004FF9B2 /* UIView+WebCacheOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+WebCacheOperation.m"; sourceTree = "<group>"; };
+		4847350E1A41956A00CB61A1 /* ZLPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLPicker.h; sourceTree = "<group>"; };
 		488D64841A2976C4003FF558 /* ZLAnimationBaseView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLAnimationBaseView.h; sourceTree = "<group>"; };
 		488D64851A2976C4003FF558 /* ZLAnimationBaseView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLAnimationBaseView.m; sourceTree = "<group>"; };
 		488D64861A2976C4003FF558 /* ZLAnimationImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLAnimationImageView.h; sourceTree = "<group>"; };
@@ -441,6 +442,7 @@
 				48AE841C1A1E055D002EEE6E /* ZLPickerBrowser */,
 				48AE83C91A1E0525002EEE6E /* Utils */,
 				48AE83DB1A1E0525002EEE6E /* ZLPicker */,
+				4847350E1A41956A00CB61A1 /* ZLPicker.h */,
 			);
 			path = ZLPickerLib;
 			sourceTree = "<group>";

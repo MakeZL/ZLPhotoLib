@@ -295,6 +295,11 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     }
 }
 
+#pragma mark - 展示控制器
+- (void)show{
+    [[[UIApplication sharedApplication].keyWindow rootViewController] presentViewController:self animated:NO completion:nil];
+}
+
 
 #pragma mark -删除照片
 - (void) delete{
