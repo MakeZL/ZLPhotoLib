@@ -63,12 +63,12 @@ static NSMutableArray *_layouts;
     return _layout;
 }
 
-//- (void)addSubview:(UIView *)view{
-//    [self insertSubview:view atIndex:self.subviews.count];
-//    if (view == self) {
-//        [self setupLayouts:@[view]];
-//    }
-//}
+- (void)addSubview:(UIView *)view{
+    [self insertSubview:view atIndex:self.subviews.count];
+    if (view == self) {
+        [self setupLayouts:@[view]];
+    }
+}
 
 #pragma mark - Current view EqualTo ofView autoLayout.
 /**
