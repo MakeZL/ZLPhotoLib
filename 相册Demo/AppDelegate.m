@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "ViewController.h"
+#import "ZLNavigationController.h"
 
 @interface AppDelegate ()
 
@@ -20,7 +21,7 @@
     
     self.window = [[UIWindow alloc ]initWithFrame:[UIScreen mainScreen].bounds];
     
-    UINavigationController *navVc = [[UINavigationController alloc] initWithRootViewController:[[ViewController alloc] init]];
+    ZLNavigationController *navVc = [[ZLNavigationController alloc] initWithRootViewController:[[ViewController alloc] init]];
     
     self.window.rootViewController = navVc;
     

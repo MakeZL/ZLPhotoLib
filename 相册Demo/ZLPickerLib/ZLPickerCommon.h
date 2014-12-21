@@ -12,6 +12,12 @@
 // 点击销毁的block
 typedef void(^ZLPickerBrowserViewControllerTapDisMissBlock)(NSInteger);
 
+typedef NS_ENUM(NSUInteger, UIViewAnimationAnimationStatus) {
+    UIViewAnimationAnimationStatusZoom = 0,
+    UIViewAnimationAnimationStatusFade ,
+    UIViewAnimationAnimationStatusRotate
+};
+
 #define iOS7gt ([[UIDevice currentDevice].systemVersion doubleValue] >= 7.0)
 
 // ScrollView 滑动的间距
@@ -27,4 +33,5 @@ static NSInteger const ZLPickerProgressViewH = 50;
 
 // 分页控制器的高度
 static NSInteger const ZLPickerPageCtrlH = 25;
+
 #endif

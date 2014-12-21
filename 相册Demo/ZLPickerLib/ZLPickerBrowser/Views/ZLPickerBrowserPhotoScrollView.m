@@ -115,6 +115,7 @@
         [self addSubview:gifView];
     }else{
         ZLPickerBrowserPhotoImageView *zoomImageView = [[ZLPickerBrowserPhotoImageView alloc] init];
+        
         zoomImageView.frame = self.bounds;
         [self addSubview:zoomImageView];
         self.zoomImageView = zoomImageView;

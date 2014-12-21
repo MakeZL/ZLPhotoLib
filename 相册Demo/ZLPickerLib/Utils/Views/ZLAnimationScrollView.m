@@ -12,13 +12,50 @@
 
 static UIView *_parsentView;
 static NSArray *_photos;
+static NSMutableDictionary *_attachParams = nil;
+static NSUInteger prevAnimationStatusType;
 
 @implementation ZLAnimationScrollView
 
++ (void)orientationChanged:(NSNotification *)noti{
+    
+    UIDevice *device = noti.object;
+    if(device.orientation == UIDeviceOrientationLandscapeLeft || device.orientation == UIDeviceOrientationLandscapeRight){
+        _attachParams[UIViewAnimationAnimationStatusType] = @(UIViewAnimationAnimationStatusFade);
+    }else{
+        _attachParams[UIViewAnimationAnimationStatusType] = @(UIViewAnimationAnimationStatusZoom);
+    }
+}
+
++ (NSDictionary *)updateOptions:(NSDictionary *)updateOptions{
+    
+    
+    if (!_attachParams) {
+        _attachParams = [NSMutableDictionary dictionary];
+    }
+    
+    if (_attachParams) {
+        NSMutableDictionary *ops = [NSMutableDictionary dictionaryWithDictionary:updateOptions];
+        [ops addEntriesFromDictionary:_attachParams];
+        updateOptions = ops;
+    }
+    
+    return updateOptions;
+}
+
 + (instancetype)animationViewWithOptions:(NSDictionary *)options animations:(void (^)())animations completion:(void (^)(ZLAnimationBaseView *))completion{
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
+
+    prevAnimationStatusType = [options[UIViewAnimationAnimationStatusType] integerValue];
+    
+    options = [self updateOptions:options];
+    
     UIView *toView = options[UIViewAnimationToView];
-    toView.hidden = YES;
+    
+    if ([options[UIViewAnimationAnimationStatusType] integerValue] == UIViewAnimationAnimationStatusZoom) {
+        toView.hidden = YES;
+    }
     
     _photos = options[UIViewAnimationImages];
     _parsentView = toView.superview;
@@ -27,6 +64,10 @@ static NSArray *_photos;
 }
 
 + (void)restoreWithOptions:(NSDictionary *)options animation:(void (^)())completion{
+    
+    prevAnimationStatusType = [options[UIViewAnimationAnimationStatusType] integerValue];
+    
+    options = [self updateOptions:options];
     
     NSMutableDictionary *ops = [NSMutableDictionary dictionaryWithDictionary:options];
     
@@ -60,7 +101,9 @@ static NSArray *_photos;
                 if (![cell isKindOfClass:[UICollectionViewCell class]]) {
                     continue;
                 }
-                cell.hidden = NO;
+                if ([options[UIViewAnimationAnimationStatusType] integerValue] == UIViewAnimationAnimationStatusZoom) {
+                    cell.hidden = NO;
+                }
                 CGRect cellFrame = [cell.superview convertRect:cell.frame toView:options[UIViewAnimationFromView]];
                 [frames addObject:[NSNumber numberWithFloat:cellFrame.origin.x]];
             }
@@ -118,7 +161,9 @@ static NSArray *_photos;
     
     CGRect startFrame = CGRectZero;
     // 如果点击的图还是一样，并且图片的数量一致的就恢复
-    toView.hidden = NO;
+    if ([options[UIViewAnimationAnimationStatusType] integerValue] == UIViewAnimationAnimationStatusZoom) {
+        toView.hidden = NO;
+    }
     NSInteger ios6NavH = 20;
     if ([self currentPage] < subViews.count) {
         if (tableView || collectionView) {
@@ -130,7 +175,9 @@ static NSArray *_photos;
                 startFrame = [_parsentView convertRect:toView.frame toView: options[UIViewAnimationFromView]];
                 startFrame.origin.y = [ops[UIViewAnimationStartFrame] CGRectValue].origin.y;
                 startFrame.origin.x = self.currentPage * (toView.width + flowLayout.minimumLineSpacing) + collectionView.x;
-                [subViews[[self currentPage]] setHidden:YES];
+                if ([options[UIViewAnimationAnimationStatusType] integerValue] == UIViewAnimationAnimationStatusZoom) {
+                    [subViews[[self currentPage]] setHidden:YES];
+                }
             }else {
                 // 竖屏
                 startFrame = [subViews[[self currentPage]] frame];
@@ -140,8 +187,9 @@ static NSArray *_photos;
                 startFrame.origin.y = toView.height * ([self currentPage] - (nowPage));
                 
                 startFrame = [toView.superview convertRect:startFrame toView:options[UIViewAnimationFromView]];
-                
-                [subViews[[self currentPage]] setHidden:YES];
+                if ([options[UIViewAnimationAnimationStatusType] integerValue] == UIViewAnimationAnimationStatusZoom) {
+                    [subViews[[self currentPage]] setHidden:YES];
+                }
             }
             
         }else{
@@ -150,8 +198,9 @@ static NSArray *_photos;
             
             startFrame = [subViews[[self currentPage]] frame];
             startFrame = [p.superview convertRect:startFrame toView:options[UIViewAnimationFromView]];
-            
-            [subViews[[self currentPage]] setHidden:YES];
+            if ([options[UIViewAnimationAnimationStatusType] integerValue] == UIViewAnimationAnimationStatusZoom) {
+                [subViews[[self currentPage]] setHidden:YES];
+            }
         }
     }
     
@@ -159,7 +208,18 @@ static NSArray *_photos;
         startFrame.origin.y += ios6NavH;
     }
     
+    if ([options[UIViewAnimationAnimationStatusType] integerValue] == UIViewAnimationAnimationStatusFade) {
+        if ([self currentPage] < subViews.count) {
+            [subViews[[self currentPage]] setHidden:NO];
+        }
+        toView.hidden = NO;
+    }
+    
     startFrame.origin.y += [[self getParsentView:options[UIViewAnimationToView]] frame].origin.y;
+    
+    if ([options[UIViewAnimationAnimationStatusType] integerValue] == UIViewAnimationAnimationStatusZoom && prevAnimationStatusType != UIViewAnimationAnimationStatusZoom) {
+        startFrame.origin.y += 20;
+    }
     
     ops[UIViewAnimationEndFrame] = [NSValue valueWithCGRect:startFrame];
     [super restoreWithOptions:ops animation:^{

@@ -16,6 +16,7 @@ static ZLAnimationBaseView *_baseView = nil;
 // 参数
 static NSDictionary *_options = nil;
 static NSInteger _currentPage = 0;
+static NSMutableDictionary *_attachParams = nil;
 
 // 单例
 static ZLAnimationBaseView *_singleBaseView;
@@ -24,8 +25,22 @@ static ZLAnimationBaseView *_singleBaseView;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         _singleBaseView = [[self alloc] init];
+        _attachParams = [NSMutableDictionary dictionary];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
     });
+    
+    
     return _singleBaseView;
+}
+
++ (void)orientationChanged:(NSNotification *)noti{
+    UIDevice *device = noti.object;
+    if(device.orientation == UIDeviceOrientationLandscapeLeft || device.orientation == UIDeviceOrientationLandscapeRight){
+        _attachParams[UIViewAnimationAnimationStatusType] = @(UIViewAnimationAnimationStatusFade);
+    }else{
+        _attachParams[UIViewAnimationAnimationStatusType] = @(UIViewAnimationAnimationStatusZoom);
+    }
+    
 }
 
 // 补充空的字典
@@ -88,11 +103,15 @@ static ZLAnimationBaseView *_singleBaseView;
     // 准备动画前的一些操作
     [self willStartAnimationOperation];
     // 补充没填的参数
-    _options = [self supplementOptionsEmptyParamWithDict:options];
+//    _options = [self supplementOptionsEmptyParamWithDict:options];
+//    _options = [NSDictionary dictionaryWithDictionary:[self supplementOptionsEmptyParamWithDict:options]];
+    NSMutableDictionary *ops = [NSMutableDictionary dictionaryWithDictionary:[self supplementOptionsEmptyParamWithDict:options]];
+    [ops addEntriesFromDictionary:_attachParams];
+    _options = [NSMutableDictionary dictionaryWithDictionary:ops];
     
     // 起始位置、结束位置、动画时间
     CGRect  startFrame   =                 [_options[UIViewAnimationStartFrame] CGRectValue];
-    CGRect  endFrame     =                 [_options[UIViewAnimationEndFrame] CGRectValue];
+//    CGRect  endFrame     =                 [_options[UIViewAnimationEndFrame] CGRectValue];
     CGFloat duration     =                 [_options[UIViewAnimationDuration] floatValue];
     ZLAnimationBaseView *selfView    =      _options[UIViewAnimationSelfView];
     UIView *inView       =                  _options[UIViewAnimationInView];
@@ -158,7 +177,11 @@ static ZLAnimationBaseView *_singleBaseView;
     [self willUnLoadAnimationOperation];
     
     // 补充没填的参数
-    _options = [self supplementOptionsEmptyParamWithDict:options];
+//    _options = [self supplementOptionsEmptyParamWithDict:options];
+    
+    NSMutableDictionary *ops = [NSMutableDictionary dictionaryWithDictionary:[self supplementOptionsEmptyParamWithDict:options]];
+    [ops addEntriesFromDictionary:_attachParams];
+    _options = [NSMutableDictionary dictionaryWithDictionary:ops];
     
     CGRect endFrame      =  [_options[UIViewAnimationEndFrame] CGRectValue];;
     CGFloat duration     =                 [_options[UIViewAnimationDuration] floatValue];
@@ -174,15 +197,26 @@ static ZLAnimationBaseView *_singleBaseView;
     
     _baseView.frame = [self setMaxMinZoomScalesForCurrentBounds];
     
+    UIViewAnimationAnimationStatus status = [_options[UIViewAnimationAnimationStatusType] intValue];
+    
+    
     [UIView animateWithDuration:duration animations:^{
-        _baseView.frame = endFrame;
+        if (status == UIViewAnimationAnimationStatusRotate || status == UIViewAnimationAnimationStatusFade) {
+            _baseView.transform = CGAffineTransformMakeRotation(M_PI_4);
+            _baseView.alpha = 0;
+        }else {
+            _baseView.frame = endFrame;
+        }
     } completion:^(BOOL finished) {
         if (completion) {
             completion();
         }
-        
         [_baseView removeFromSuperview];
         [self unLoadStopAnimationOperation];
+        if (status == UIViewAnimationAnimationStatusRotate || status == UIViewAnimationAnimationStatusFade) {
+            _baseView.transform = CGAffineTransformIdentity;
+            _baseView.alpha = 1;
+        }
     }];
 }
 
@@ -277,6 +311,7 @@ static ZLAnimationBaseView *_singleBaseView;
 - (void)dealloc{
     [[UIApplication sharedApplication] setStatusBarHidden:NO];
     [_options[UIViewAnimationFromView] setUserInteractionEnabled:YES];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 @end

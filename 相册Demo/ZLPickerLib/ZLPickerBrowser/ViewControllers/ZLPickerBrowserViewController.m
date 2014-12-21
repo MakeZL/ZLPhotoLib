@@ -16,10 +16,11 @@
 #import "ZLAnimationScrollView.h"
 //#import "ZLBaseAnimationImageView.h"
 #import <objc/runtime.h>
+#import "UIView+ZLAutoLayout.h"
 
 static NSString *_cellIdentifier = @"collectionViewCell";
 
-@interface ZLPickerBrowserViewController () <UIScrollViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,PickerPhotoScrollViewDelegate>
+@interface ZLPickerBrowserViewController () <UIScrollViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,PickerPhotoScrollViewDelegate,UICollectionViewDelegateFlowLayout>
 // 自定义控件
 @property (nonatomic , weak) UIPageControl *pageCtrl;
 @property (nonatomic , weak) UIButton *deleleBtn;
@@ -32,6 +33,15 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 // 记录下载图片的进度条，防止重用
 @property (nonatomic , strong) NSMutableDictionary *photoProgerss;
 
+//@property (nonatomic , assign) UIDeviceOrientation orientation;
+@property (strong,nonatomic) UICollectionViewFlowLayout *flowLayout;
+
+@property (nonatomic , assign) CGSize currentSize;
+
+@property (nonatomic , assign) UIInterfaceOrientation orientation;
+
+@property (strong,nonatomic) NSMutableDictionary *animationParamsDict;
+
 @end
 
 
@@ -43,6 +53,13 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         _photoProgerss = [NSMutableDictionary dictionary];
     }
     return _photoProgerss;
+}
+
+- (NSMutableDictionary *)animationParamsDict{
+    if (!_animationParamsDict) {
+        _animationParamsDict = [NSMutableDictionary dictionary];
+    }
+    return _animationParamsDict;
 }
 
 - (NSMutableArray *)photos{
@@ -60,6 +77,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         flowLayout.minimumLineSpacing = ZLPickerColletionViewPadding;
         flowLayout.itemSize = self.view.size;
         flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+        self.flowLayout = flowLayout;
         
         UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, self.view.width + ZLPickerColletionViewPadding,self.view.height) collectionViewLayout:flowLayout];
         collectionView.showsHorizontalScrollIndicator = NO;
@@ -72,6 +90,14 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         
         [self.view addSubview:collectionView];
         self.collectionView = collectionView;
+        
+        _collectionView.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[_collectionView]-x-|" options:0 metrics:@{@"x":@(-20)} views:@{@"_collectionView":_collectionView}]];
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[_collectionView]-0-|" options:0 metrics:nil views:@{@"_collectionView":_collectionView}]];
+        
+        self.pageCtrl.numberOfPages = [self.dataSource numberOfPhotosInPickerBrowser:self];
+        self.pageCtrl.currentPage = self.currentPage;
+        self.deleleBtn.hidden = !self.isEditing;
     }
     return _collectionView;
 }
@@ -166,30 +192,59 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         fromView = [self getParsentView:self.toView];
     }
     
+    NSNumber *num;
+    if (self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft || self.interfaceOrientation == UIInterfaceOrientationLandscapeRight) {
+        num = @(UIViewAnimationAnimationStatusFade);
+    }else{
+        num = @(UIViewAnimationAnimationStatusZoom);
+    }
+    
     NSDictionary *options = @{
                               UIViewAnimationInView:self.view,
                               UIViewAnimationFromView:fromView,
                               UIViewAnimationToView:self.toView,
                               UIViewAnimationFromView:self.dataSource,
                               UIViewAnimationImages:self.photos,
+                              UIViewAnimationAnimationStatusType:num,
                               UIViewAnimationTypeViewWithIndexPath:[NSIndexPath indexPathForRow:self.currentPage inSection:0]
                               };
     
+    self.animationParamsDict = [NSMutableDictionary dictionaryWithDictionary:options];
+    
     __weak typeof(self) weakSelf = self;
     
-    [ZLAnimationScrollView animationViewWithOptions:options animations:^{
-        
-    } completion:^(ZLAnimationBaseView *baseView) {
-        // disMiss后调用
-        weakSelf.disMissBlock = ^(NSInteger page){
-            [ZLAnimationScrollView setCurrentPage:page];
-            [weakSelf dismissViewControllerAnimated:NO completion:nil];
-            [ZLAnimationScrollView restoreAnimation:^{
-                NSLog(@"---");
-            }];
-        };
-        [weakSelf reloadData];
-    }];
+//    if ([num integerValue]) {
+//        
+//        [ZLAnimationImageView animationViewWithOptions:options animations:^{
+//            
+//        } completion:^(ZLAnimationBaseView *baseView) {
+//            // disMiss后调用
+//            weakSelf.disMissBlock = ^(NSInteger page){
+//                [ZLAnimationScrollView setCurrentPage:page];
+//                [weakSelf dismissViewControllerAnimated:NO completion:nil];
+//                [ZLAnimationScrollView restoreAnimation:^{
+//                    NSLog(@"---");
+//                }];
+//            };
+//            [weakSelf reloadData];
+//        }];
+//    }else{
+    
+        [ZLAnimationScrollView animationViewWithOptions:options animations:^{
+            
+        } completion:^(ZLAnimationBaseView *baseView) {
+            // disMiss后调用
+            weakSelf.disMissBlock = ^(NSInteger page){
+                [ZLAnimationScrollView setCurrentPage:page];
+                [weakSelf dismissViewControllerAnimated:NO completion:nil];
+                [ZLAnimationScrollView restoreAnimation:^{
+                    NSLog(@"---");
+                }];
+            };
+            [weakSelf reloadData];
+        }];
+//    }
+    
     
 }
 
@@ -199,6 +254,28 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     // 隐藏状态栏
     [[UIApplication sharedApplication] setStatusBarHidden:YES];
     self.view.backgroundColor = [UIColor blackColor];
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
+    
+    [self.collectionView reloadData];
+    self.collectionView.hidden = YES;
+    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{
+    self.collectionView.hidden = NO;
+    [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:self.currentPage inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
+    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+}
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
+    
+    if (self.orientation == UIInterfaceOrientationPortraitUpsideDown || self.orientation == UIInterfaceOrientationPortrait || self.orientation == UIInterfaceOrientationUnknown) {
+        return CGSizeMake(self.collectionView.width-ZLPickerColletionViewPadding, self.collectionView.height);
+    }
+    
+    return CGSizeMake(self.collectionView.height-ZLPickerColletionViewPadding, self.collectionView.width);
 }
 
 #pragma mark -<UICollectionViewDataSource>
@@ -213,19 +290,32 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 - (UICollectionViewCell *) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:_cellIdentifier forIndexPath:indexPath];
+  
     
+    cell.backgroundColor = [UIColor clearColor];
     ZLPickerBrowserPhoto *photo = self.photos[indexPath.item]; //[self.dataSource photoBrowser:self photoAtIndex:indexPath.item];
-    
+
     if([[cell.contentView.subviews lastObject] isKindOfClass:[ZLPickerBrowserPhotoScrollView class]]){
         [[cell.contentView.subviews lastObject] removeFromSuperview];
     }
     
-    ZLPickerBrowserPhotoScrollView *scrollView =  [[ZLPickerBrowserPhotoScrollView alloc] init];
+//    NSLog(@"%@", NSStringFromCGRect(cell.bounds));
+    
+    ZLPickerBrowserPhotoScrollView *scrollView =  [ZLPickerBrowserPhotoScrollView instanceAutoLayoutView];//[[ alloc] init];
+    scrollView.backgroundColor = [UIColor clearColor];
     // 为了监听单击photoView事件
+//    scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     scrollView.frame = cell.bounds;
     scrollView.photoScrollViewDelegate = self;
     [cell.contentView addSubview:scrollView];
     scrollView.photo = photo;
+    
+    [scrollView autoEqualToSuperViewAutoLayouts];
+    
+//    [scrollView autoPinDirection:ZLAutoLayoutDirectionLeft toPinDirection:ZLAutoLayoutDirectionLeft ofView:cell];
+//    [scrollView autoPinDirection:ZLAutoLayoutDirectionRight toPinDirection:ZLAutoLayoutDirectionRight ofView:cell];
+//    [scrollView autoPinDirection:ZLAutoLayoutDirectionTop toPinDirection:ZLAutoLayoutDirectionTop ofView:cell];
+//    [scrollView autoPinDirection:ZLAutoLayoutDirectionBottom toPinDirection:ZLAutoLayoutDirectionBottom ofView:cell];
     
     return cell;
     
@@ -248,9 +338,6 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         self.collectionView.contentOffset = CGPointMake(self.currentPage * self.collectionView.width, 0);
         
     }
-    self.pageCtrl.numberOfPages = [self.dataSource numberOfPhotosInPickerBrowser:self];
-    self.pageCtrl.currentPage = self.currentPage;
-    self.deleleBtn.hidden = !self.isEditing;
     
 }
 
@@ -267,14 +354,28 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     return photos;
 }
 
-#pragma mark -<UIScrollViewDelegate>
+- (BOOL)shouldAutorotate{
+    return YES;
+}
+- (NSUInteger)supportedInterfaceOrientations{
+    return UIInterfaceOrientationMaskAllButUpsideDown;
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation{
+    return NO;
+}
+
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation{
+    return UIInterfaceOrientationPortrait;
+}
+
+//#pragma mark -<UIScrollViewDelegate>
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
-    self.currentPage = (NSInteger)((scrollView.contentOffset.x / scrollView.width) + 0.5);
-    
+    NSInteger currentPage = (NSInteger)((scrollView.contentOffset.x / scrollView.width) + 0.5);
     self.pageCtrl.currentPage = self.currentPage;
-    
+
     CGRect tempF = self.collectionView.frame;
-    if ((self.currentPage < [self.dataSource numberOfPhotosInPickerBrowser:self] - 1) || self.photos.count == 1) {
+    if ((currentPage < [self.dataSource numberOfPhotosInPickerBrowser:self] - 1) || self.photos.count == 1) {
         tempF.origin.x = 0;
     }else{
         tempF.origin.x = -ZLPickerColletionViewPadding;
@@ -284,6 +385,9 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
+    
+    self.currentPage = (NSInteger)(scrollView.contentOffset.x / (scrollView.width - ZLPickerColletionViewPadding));
+    
     if ([self.delegate respondsToSelector:@selector(photoBrowser:didCurrentPage:)]) {
         [self.delegate photoBrowser:self didCurrentPage:self.currentPage];
     }

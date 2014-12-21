@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+typedef void(^complation)();
+
 @class ZLAnimationBaseView;
 
 // 开始坐标 default 0,0
@@ -30,6 +32,10 @@ static NSString *const UIViewAnimationFromView = @"UIViewAnimationFromView";
 /** 类型参数配置 */
 // indexPath
 static NSString *const UIViewAnimationTypeViewWithIndexPath = @"UIViewAnimationTypeViewWithIndexPath";
+// 动画参数
+static NSString *const UIViewAnimationAnimationStatusType = @"UIViewAnimationAnimationStatus";
+
+static complation _completionBlock;
 
 @interface ZLAnimationBaseView : UIView
 
