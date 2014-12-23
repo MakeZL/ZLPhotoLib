@@ -100,6 +100,8 @@ static ZLAnimationBaseView *_singleBaseView;
 #pragma mark - 开始动画
 + (instancetype) animationViewWithOptions:(NSDictionary *)options animations:(void(^)())animations completion:(void (^)(ZLAnimationBaseView *baseView)) completion{
     
+    [_attachParams setObject:@(UIViewAnimationAnimationStatusZoom) forKey:UIViewAnimationAnimationStatusType];
+    
     // 准备动画前的一些操作
     [self willStartAnimationOperation];
     // 补充没填的参数
@@ -107,6 +109,7 @@ static ZLAnimationBaseView *_singleBaseView;
 //    _options = [NSDictionary dictionaryWithDictionary:[self supplementOptionsEmptyParamWithDict:options]];
     NSMutableDictionary *ops = [NSMutableDictionary dictionaryWithDictionary:[self supplementOptionsEmptyParamWithDict:options]];
     [ops addEntriesFromDictionary:_attachParams];
+    
     _options = [NSMutableDictionary dictionaryWithDictionary:ops];
     
     // 起始位置、结束位置、动画时间
@@ -199,10 +202,12 @@ static ZLAnimationBaseView *_singleBaseView;
     
     UIViewAnimationAnimationStatus status = [_options[UIViewAnimationAnimationStatusType] intValue];
     
+    __weak typeof(self) weakSelf = self;
     
     [UIView animateWithDuration:duration animations:^{
         if (status == UIViewAnimationAnimationStatusRotate || status == UIViewAnimationAnimationStatusFade) {
-            _baseView.transform = CGAffineTransformMakeRotation(M_PI_4);
+            _baseView.transform = CGAffineTransformMakeScale(0.7, 0.7);
+            _baseView.transform = CGAffineTransformRotate(_baseView.transform, M_PI_4);
             _baseView.alpha = 0;
         }else {
             _baseView.frame = endFrame;
@@ -212,7 +217,7 @@ static ZLAnimationBaseView *_singleBaseView;
             completion();
         }
         [_baseView removeFromSuperview];
-        [self unLoadStopAnimationOperation];
+        [weakSelf unLoadStopAnimationOperation];
         if (status == UIViewAnimationAnimationStatusRotate || status == UIViewAnimationAnimationStatusFade) {
             _baseView.transform = CGAffineTransformIdentity;
             _baseView.alpha = 1;
@@ -309,6 +314,7 @@ static ZLAnimationBaseView *_singleBaseView;
 
 #pragma mark - 生命周期
 - (void)dealloc{
+    _attachParams = nil;
     [[UIApplication sharedApplication] setStatusBarHidden:NO];
     [_options[UIViewAnimationFromView] setUserInteractionEnabled:YES];
     [[NSNotificationCenter defaultCenter] removeObserver:self];

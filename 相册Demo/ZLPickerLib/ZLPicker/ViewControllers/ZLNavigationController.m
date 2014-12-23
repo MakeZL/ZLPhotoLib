@@ -10,26 +10,36 @@
 
 @implementation ZLNavigationController
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
-{
-    return (toInterfaceOrientation == UIInterfaceOrientationPortrait);
-    
+- (BOOL)shouldAutorotate{
+    return self.topViewController.shouldAutorotate;
 }
 
-- (BOOL)shouldAutorotate
-
-{
-    
-    return NO;
-    
+- (NSUInteger)supportedInterfaceOrientations{
+    return UIInterfaceOrientationMaskPortrait;
 }
 
-- (NSUInteger)supportedInterfaceOrientations
-
-{
-    
-    return UIInterfaceOrientationMaskPortrait;//只支持这一个方向(正常的方向)
-    
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation{
+    return [self.topViewController shouldAutorotateToInterfaceOrientation:toInterfaceOrientation];
 }
+
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation{
+    return UIInterfaceOrientationPortrait;
+}
+
+//- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+//{
+//    return (toInterfaceOrientation == UIInterfaceOrientationPortrait);
+//}
+//
+//- (BOOL)shouldAutorotate
+//{
+//    return NO;
+//}
+//
+//- (NSUInteger)supportedInterfaceOrientations
+//{
+//    return UIInterfaceOrientationPortrait;//只支持这一个方向(正常的方向)
+//}
+
 
 @end

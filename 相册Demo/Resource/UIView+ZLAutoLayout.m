@@ -37,6 +37,9 @@ static NSMutableArray *_layouts;
 - (void)setupLayouts:(NSArray *)layouts{
     
     for (UIView *view in layouts) {
+        
+        if(self.translatesAutoresizingMaskIntoConstraints) break;
+        
         CGRect frame = view.frame;
         
         if (CGRectIsEmpty(frame)) {

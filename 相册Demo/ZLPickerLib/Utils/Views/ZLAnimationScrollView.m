@@ -29,7 +29,6 @@ static NSUInteger prevAnimationStatusType;
 
 + (NSDictionary *)updateOptions:(NSDictionary *)updateOptions{
     
-    
     if (!_attachParams) {
         _attachParams = [NSMutableDictionary dictionary];
     }
@@ -44,6 +43,8 @@ static NSUInteger prevAnimationStatusType;
 }
 
 + (instancetype)animationViewWithOptions:(NSDictionary *)options animations:(void (^)())animations completion:(void (^)(ZLAnimationBaseView *))completion{
+    [_attachParams setObject:@(UIViewAnimationAnimationStatusZoom) forKey:UIViewAnimationAnimationStatusType];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
 
