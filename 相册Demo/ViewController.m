@@ -12,9 +12,9 @@
 #import "ZLPickerBrowserViewController.h"
 #import "ZLPickerCommon.h"
 #import "ZLAnimationBaseView.h"
-//#import "ZLBaseAnimationImageView.h"
 #import "UIImageView+WebCache.h"
 #import <AssetsLibrary/AssetsLibrary.h>
+#import "ZLCameraViewController.h"
 
 #import "ZLAnimationBaseView.h"
 
@@ -29,6 +29,7 @@
 @property (nonatomic , strong) ZLPickerBrowserViewController *pickerBrowser;
 @property (nonatomic , assign) CGRect tempFrame;
 @property (nonatomic , strong) NSMutableDictionary *params;
+@property (strong,nonatomic)   ZLCameraViewController *cameraVc;
 
 @end
 
@@ -95,15 +96,33 @@
 
 
 - (void)selectPhotos {
+    
+    ZLCameraViewController *cameraVc = [[ZLCameraViewController alloc] init];
+    __weak typeof(self) weakSelf = self;
+    [cameraVc startCameraOrPhotoFileWithViewController:self complate:^(id object) {
+        [object enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            if ([obj isKindOfClass:[NSDictionary class]]) {
+                [weakSelf.assets addObjectsFromArray:[obj allValues]];
+            }else{
+                [weakSelf.assets addObject:obj];
+            }
+        }];
+        [weakSelf.tableView reloadData];
+    }];
+    self.cameraVc = cameraVc;
+    
+    // 可以用下面来创建ZLPickerViewController, 就没有拍照的选项了
+    /*
     // 创建控制器
     ZLPickerViewController *pickerVc = [[ZLPickerViewController alloc] init];
     // 默认显示相册里面的内容SavePhotos
     pickerVc.status = PickerViewShowStatusCameraRoll;
     // 选择图片的最大数
     // pickerVc.maxCount = 4;
-    
     pickerVc.delegate = self;
     [pickerVc show];
+     */
+    
     /**
      *
      传值可以用代理，或者用block来接收，以下是block的传值
@@ -189,6 +208,8 @@
         cell.imageView.image = [UIImage imageWithCGImage:[asset thumbnail]];
     }else if ([asset isKindOfClass:[NSString class]]){
         [cell.imageView sd_setImageWithURL:[NSURL URLWithString:(NSString *)asset] placeholderImage:[UIImage imageNamed:@"wallpaper_placeholder"]];
+    }else if([asset isKindOfClass:[UIImage class]]){
+        cell.imageView.image = (UIImage *)asset;
     }
     
     return cell;

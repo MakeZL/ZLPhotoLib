@@ -96,7 +96,7 @@
         NSUInteger minCount = (self.minCount > MAX_COUNT || self.minCount < 1) ? MAX_COUNT :  self.minCount;
         
         if (self.selectsIndexPath.count >= minCount) {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提醒" message:[NSString stringWithFormat:@"最多只能选择%d张图片",minCount] delegate:self cancelButtonTitle:nil otherButtonTitles:@"好的", nil];
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提醒" message:[NSString stringWithFormat:@"最多只能选择%zd张图片",minCount] delegate:self cancelButtonTitle:nil otherButtonTitles:@"好的", nil];
             [alertView show];
             return ;
         }
