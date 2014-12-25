@@ -229,7 +229,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     self.orientation = device.orientation;
         [self.collectionView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     
-    CGFloat attchValue = self.currentPage > 0 ? ZLPickerColletionViewPadding : 0;
+    CGFloat attchValue = self.currentPage > 0 ? ZLPickerColletionViewPadding : ZLPickerColletionViewPadding;
     
     self.collectionView.contentSize = CGSizeMake(self.photos.count * self.collectionView.width, 0);
     [self.collectionView reloadData];
