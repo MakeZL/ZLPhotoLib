@@ -87,7 +87,7 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
         flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
         
         // CGRectMake(0, 22, 300, 44)
-        UICollectionView *toolBarThumbCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(10, 0, self.view.width - self.doneBtn.width - 10, 44) collectionViewLayout:flowLayout];
+        UICollectionView *toolBarThumbCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(10, 0, self.view.width - 100, 44) collectionViewLayout:flowLayout];
         toolBarThumbCollectionView.backgroundColor = [UIColor clearColor];
         toolBarThumbCollectionView.dataSource = self;
         toolBarThumbCollectionView.delegate = self;
@@ -164,6 +164,7 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.view.bounds = [UIScreen mainScreen].bounds;
     self.view.backgroundColor = [UIColor whiteColor];
     
     // 初始化按钮
@@ -209,9 +210,9 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:heightVfl options:0 metrics:0 views:views]];
     
     // 左视图 中间距 右视图
-    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithCustomView:self.doneBtn];
-    UIBarButtonItem *fiexItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithCustomView:self.toolBarThumbCollectionView];
+    UIBarButtonItem *fiexItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithCustomView:self.doneBtn];
     
     toorBar.items = @[leftItem,fiexItem,rightItem];
     
