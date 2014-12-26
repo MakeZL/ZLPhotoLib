@@ -45,7 +45,7 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
 
 // 标记View
 @property (nonatomic , weak) UILabel *makeView;
-@property (nonatomic , weak) UIButton *doneBtn;
+@property (nonatomic , strong) UIButton *doneBtn;
 @property (nonatomic , weak) UIToolbar *toolBar;
 
 // 数据源
