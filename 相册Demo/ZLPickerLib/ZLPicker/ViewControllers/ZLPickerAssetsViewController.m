@@ -29,6 +29,7 @@
 #import "ZLPickerFooterCollectionReusableView.h"
 #import "ZLPickerBrowserViewController.h"
 #import "UIView+Extension.h"
+#import "UIView+ZLAutoLayout.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 
 static NSString *const _cellIdentifier = @"cell";
@@ -65,13 +66,13 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
         [rightBtn setTitleColor:[UIColor colorWithRed:0/255.0 green:91/255.0 blue:255/255.0 alpha:1.0] forState:UIControlStateNormal];
         [rightBtn setTitleColor:[UIColor grayColor] forState:UIControlStateDisabled];
         rightBtn.enabled = YES;
-        //        rightBtn.translatesAutoresizingMaskIntoConstraints = NO;
         rightBtn.titleLabel.font = [UIFont systemFontOfSize:17];
         rightBtn.frame = CGRectMake(0, 0, 45, 45);
         [rightBtn setTitle:@"完成" forState:UIControlStateNormal];
         [rightBtn addTarget:self action:@selector(done) forControlEvents:UIControlEventTouchUpInside];
         [rightBtn addSubview:self.makeView];
         self.doneBtn = rightBtn;
+        
     }
     
     return _doneBtn;
@@ -86,9 +87,8 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
         flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
         
         // CGRectMake(0, 22, 300, 44)
-        UICollectionView *toolBarThumbCollectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:flowLayout];
+        UICollectionView *toolBarThumbCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(10, 0, self.view.width - self.doneBtn.width - 10, 44) collectionViewLayout:flowLayout];
         toolBarThumbCollectionView.backgroundColor = [UIColor clearColor];
-        toolBarThumbCollectionView.translatesAutoresizingMaskIntoConstraints = NO;
         toolBarThumbCollectionView.dataSource = self;
         toolBarThumbCollectionView.delegate = self;
         [toolBarThumbCollectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:_identifier];
@@ -96,13 +96,6 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
         self.toolBarThumbCollectionView = toolBarThumbCollectionView;
         [self.toolBar addSubview:toolBarThumbCollectionView];
         
-        NSDictionary *views = NSDictionaryOfVariableBindings(toolBarThumbCollectionView, self.doneBtn);
-        NSString *widthVfl = @"H:|-10-[toolBarThumbCollectionView]-100-|";
-        NSString *heightVfl = @"V:|-0-[toolBarThumbCollectionView]-0-|";
-        
-        
-        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:widthVfl options:0 metrics:nil views:views]];
-        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:heightVfl options:0 metrics:nil views:views]];
     }
     return _toolBarThumbCollectionView;
 }

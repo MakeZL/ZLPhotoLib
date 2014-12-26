@@ -191,8 +191,10 @@ static NSMutableArray *_layouts;
     
     if([[self getParsentView:ofView] isEqual:ofView]){
         [ofView addConstraint:constraint];
-    }else{
+    }else if(ofView.superview != nil){
         [self.superview addConstraint:constraint];
+    }else{
+        [[self getParsentView:ofView] addConstraint:constraint];
     }
     
     
