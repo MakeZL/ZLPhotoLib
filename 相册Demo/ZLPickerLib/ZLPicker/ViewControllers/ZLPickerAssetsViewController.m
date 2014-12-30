@@ -246,37 +246,6 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
     self.selectAssets = pickerCollectionView.selectAsstes;
     [self.toolBarThumbCollectionView reloadData];
     
-    //    if (count < self.buttons.count) {
-    //        for (NSInteger i = self.buttons.count; i > count; i--) {
-    //            [self.buttons[i-1] removeFromSuperview];
-    //        }
-    //    }
-    
-    // 刷新 toolBarThumbCollectionView
-    
-    //    // 创建btn
-    //    for (int i = 0; i < count; i++) {
-    //        ALAsset *asset = pickerCollectionView.selectAsstes[i];
-    //
-    //        UIButton *btn = nil;
-    //        if (self.buttons.count <= i) {
-    //            btn = [UIButton buttonWithType:UIButtonTypeCustom];
-    //            [self.toolBar addSubview:btn];
-    //            [self.buttons addObject:btn];
-    //        }else if(self.buttons.count){
-    //            btn = self.buttons[i];
-    //            if (![btn.superview isKindOfClass:[self class]]) {
-    //                [self.toolBar addSubview:btn];
-    //            }
-    //        }
-    //
-    //        CGFloat btnW = (self.view.frame.size.width - 80 - TOOLBAR_IMG_MARGIN * 10) / TOOLBAR_COUNT;
-    //        CGFloat btnX = btnW * i + (i * TOOLBAR_IMG_MARGIN + TOOLBAR_IMG_MARGIN);
-    //        CGFloat btnY = (self.toolBar.frame.size.height - btnW) / 2.0;
-    //        [btn setImage:[UIImage imageWithCGImage:[asset thumbnail]] forState:UIControlStateNormal];
-    //        btn.frame = CGRectMake(btnX, btnY, btnW, btnW);
-    //
-    //    }
 }
 
 #pragma mark -
@@ -354,7 +323,7 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
     [self.toolBarThumbCollectionView reloadData];
     [self.collectionView reloadData];
     
-    self.makeView.text = [NSString stringWithFormat:@"%d",self.selectAssets.count];
+    self.makeView.text = [NSString stringWithFormat:@"%ld",self.selectAssets.count];
 }
 
 #pragma mark -<Navigation Actions>

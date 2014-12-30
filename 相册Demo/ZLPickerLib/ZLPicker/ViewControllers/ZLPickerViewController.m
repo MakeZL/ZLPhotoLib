@@ -11,6 +11,7 @@
 
 #import "ZLPickerViewController.h"
 #import "ZLPickerGroupViewController.h"
+#import "ZLNavigationController.h"
 #import "ZLPickerDatas.h"
 
 @interface ZLPickerViewController ()
@@ -31,7 +32,7 @@
 #pragma mark 初始化导航控制器
 - (void) createNavigationController{
     ZLPickerGroupViewController *groupVc = [[ZLPickerGroupViewController alloc] init];
-    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:groupVc];
+    ZLNavigationController *nav = [[ZLNavigationController alloc] initWithRootViewController:groupVc];
     nav.view.frame = self.view.bounds;
     [self addChildViewController:nav];
     [self.view addSubview:nav.view];
@@ -57,6 +58,23 @@
     
     [self addNotification];
 }
+
+- (BOOL)shouldAutorotate{
+    return YES;
+}
+
+- (NSUInteger)supportedInterfaceOrientations{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation{
+    return YES;
+}
+
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation{
+    return UIInterfaceOrientationPortrait;
+}
+
 
 #pragma mark - 展示控制器
 - (void)show{
