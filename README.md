@@ -1,11 +1,15 @@
 
+This is AssetsPicker/PhotoBrowser/CustomCamera Demo
+===========================
+相册多选
+--------
     // 创建图片多选控制器
     PickerViewController *pickerVc = [[PickerViewController alloc] init];
     // 默认显示相册里面的内容SavePhotos
     PickerVc.status = PickerViewShowStatusSavePhotos;
     // 选择图片的最小数，默认是9张图片最大也是9张
     pickerVc.minCount = 4; 
-    [self presentViewController:pickerVc animated:YES completion:nil];
+    [pickerVc show];
     
     // block回调或者代理
     // 用block来代替代理
@@ -26,7 +30,8 @@
       [self.tableView reloadData];
     }
 
-    // 图片游览器
+ZLPickerBrowserViewController 图片游览器
+----------
     ZLPickerBrowserViewController *pickerBrowser = [[ZLPickerBrowserViewController alloc] init];
     // 传入点击图片View的话，会有微信朋友圈照片的风格
     pickerBrowser.toView = cell.imageView;
@@ -40,23 +45,10 @@
     // 展示控制器
     [pickerBrowser show];
 
-    #pragma mark - 自定义动画
-    // 你也可以自定义动画
-    // 参考BaseAnimationView
-    - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
-    
-        UIView *boxView = [[UIView alloc] init];
-        boxView.backgroundColor = [UIColor redColor];
-
-        NSDictionary *options = @{
-                                  UIViewAnimationInView:self.view,
-                                  UIViewAnimationToView:boxView,
-                                  };
-
-    
-        [ZLAnimationBaseView animationViewWithOptions:options animations:^{
-            // TODO .. 执行动画时
-        } completion:^(ZLAnimationBaseView *baseView) {
-            // TODO .. 动画执行完时
-        }];
-    }
+ZLCameraViewController 自定义相机连拍
+-----------
+    ZLCameraViewController *cameraVc = [[ZLCameraViewController alloc] init];
+    [cameraVc startCameraOrPhotoFileWithViewController:self complate:^(id object) {
+        // to do.. 回调内容
+    }];
+    self.cameraVc = cameraVc;
