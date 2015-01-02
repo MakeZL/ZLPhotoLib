@@ -43,7 +43,7 @@
                                 @"http://cocoimg.365rili.com/schedule_pics/default/bd625d59-5e98-4719-8220-f1e56902f3c1.jpg!thumb320",
                                 @"http://e.hiphotos.baidu.com/zhidao/pic/item/574e9258d109b3de40f319c6cebf6c81810a4cd4.jpg",
                                 @"http://image.tianjimedia.com/uploadImages/2013/165/P9KJTQBA119S.jpg",
-//                                @"http://image.tianjimedia.com/uploadImages/2012/013/0C4PQ1XX78O3.jpg"
+                                //                                @"http://image.tianjimedia.com/uploadImages/2012/013/0C4PQ1XX78O3.jpg"
                                 ];
         self.assets = [NSMutableArray arrayWithArray:testAssets];
     }
@@ -76,9 +76,9 @@
     self.view.backgroundColor = [UIColor whiteColor];
     // 设置AutoLayout参数
     [self setAutoLayoutParams];
-
+    
     [self setupButtons];
-
+    
     [self.tableView reloadData];
     
 }
@@ -113,14 +113,14 @@
     
     // 可以用下面来创建ZLPickerViewController, 就没有拍照的选项了
     /*
-    // 创建控制器
-    ZLPickerViewController *pickerVc = [[ZLPickerViewController alloc] init];
-    // 默认显示相册里面的内容SavePhotos
-    pickerVc.status = PickerViewShowStatusCameraRoll;
-    // 选择图片的最大数
-    // pickerVc.maxCount = 4;
-    pickerVc.delegate = self;
-    [pickerVc show];
+     // 创建控制器
+     ZLPickerViewController *pickerVc = [[ZLPickerViewController alloc] init];
+     // 默认显示相册里面的内容SavePhotos
+     pickerVc.status = PickerViewShowStatusCameraRoll;
+     // 选择图片的最大数
+     // pickerVc.maxCount = 4;
+     pickerVc.delegate = self;
+     [pickerVc show];
      */
     
     /**
@@ -218,8 +218,8 @@
 
 // 代理回调方法
 - (void)pickerViewControllerDoneAsstes:(NSArray *)assets{
-    [self.assets addObjectsFromArray:assets];
-    [self.tableView reloadData];
+    //    [self.assets addObjectsFromArray:assets];
+    //    [self.tableView reloadData];
 }
 
 #pragma mark - 自定义动画
@@ -229,19 +229,19 @@
     
     UIView *boxView = [[UIView alloc] init];
     boxView.backgroundColor = [UIColor redColor];
-
+    
     NSDictionary *options = @{
                               UIViewAnimationInView:self.view,
                               UIViewAnimationToView:boxView,
                               };
-
+    
     
     [ZLAnimationBaseView animationViewWithOptions:options animations:^{
         // TODO .. 执行动画时
     } completion:^(ZLAnimationBaseView *baseView) {
         // TODO .. 动画执行完时
     }];
-
+    
 }
 
 @end

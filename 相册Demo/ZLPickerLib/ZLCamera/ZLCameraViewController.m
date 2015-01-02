@@ -18,6 +18,7 @@
 #import "ZLCameraView.h"
 #import "UIView+Extension.h"
 #import "ZLPickerViewController.h"
+#import <objc/message.h>
 
 @interface ZLCameraViewController () <UIActionSheetDelegate,UICollectionViewDataSource,UICollectionViewDelegate,AVCaptureMetadataOutputObjectsDelegate,ZLCameraImageViewDelegate,ZLCameraViewDelegate,ZLPickerViewControllerDelegate>
 
@@ -79,7 +80,7 @@
     {
         [self.session addOutput:_captureOutput];
     }
-
+    
     self.preview =[AVCaptureVideoPreviewLayer layerWithSession:self.session];
     self.preview.videoGravity = AVLayerVideoGravityResizeAspectFill;
     self.preview.frame = self.view.bounds;
@@ -108,9 +109,9 @@
         BOOL adjustingFocus = [ [change objectForKey:NSKeyValueChangeNewKey] isEqualToNumber:[NSNumber numberWithInt:1] ];
         NSLog(@"Is adjusting focus? %@", adjustingFocus ? @"YES" : @"NO" );
         NSLog(@"Change dictionary: %@", change);
-//        if (delegate) {
-//            [delegate foucusStatus:adjustingFocus];
-//        }
+        //        if (delegate) {
+        //            [delegate foucusStatus:adjustingFocus];
+        //        }
     }
 }
 
@@ -265,7 +266,7 @@
     NSDictionary *dict = self.images[indexPath.item];
     NSString *key = [[dict allKeys] firstObject];
     lastView.image = [dict objectForKey:key];
-//    lastView.image = [UIImage circleImageWithImage:image borderWidth:2 borderColor:[UIColor whiteColor]];
+    //    lastView.image = [UIImage circleImageWithImage:image borderWidth:2 borderColor:[UIColor whiteColor]];
     
     return cell;
 }
@@ -286,11 +287,11 @@
 - (void)startCameraOrPhotoFileWithViewController:(UIViewController *)viewController complate:(ZLComplate)complate{
     self.currentViewController = viewController;
     UIActionSheet *myActionSheet = [[UIActionSheet alloc]initWithTitle:nil
-                                               delegate:self
-                                      cancelButtonTitle:@"取消"
-                                 destructiveButtonTitle:nil
-                                      otherButtonTitles:@"打开照相机",@"从手机相册获取",nil];
-
+                                                              delegate:self
+                                                     cancelButtonTitle:@"取消"
+                                                destructiveButtonTitle:nil
+                                                     otherButtonTitles:@"打开照相机",@"从手机相册获取",nil];
+    
     [myActionSheet showInView:[UIApplication sharedApplication].keyWindow];
     self.complate = complate;
 }
@@ -389,19 +390,26 @@
     pickerVc.status = PickerViewShowStatusCameraRoll;
     pickerVc.delegate = self;
     [pickerVc show];
-//    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-//    picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-//    picker.delegate = self;
-//    //设置选择后的图片可被编辑
-//    picker.allowsEditing = YES;
-//    
-//    [self.currentViewController presentViewController:picker animated:YES completion:nil];
+    //    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    //    picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    //    picker.delegate = self;
+    //    //设置选择后的图片可被编辑
+    //    picker.allowsEditing = YES;
+    //
+    //    [self.currentViewController presentViewController:picker animated:YES completion:nil];
 }
 
 - (void)pickerViewControllerDoneAsstes:(NSArray *)assets{
     if (self.complate) {
         self.complate(assets);
     }
+    
+    if ([self.currentViewController respondsToSelector:@selector(pickerViewControllerDoneAsstes:)]) {
+        
+        [self.currentViewController performSelectorInBackground:@selector(pickerViewControllerDoneAsstes:) withObject:assets];
+    }
+    
+    
 }
 
 - (AVCaptureDevice *)cameraWithPosition:(AVCaptureDevicePosition)position
@@ -421,7 +429,7 @@
     [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
     [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight forView:self.view cache:YES];
     [UIView commitAnimations];
-
+    
     NSArray *inputs = self.session.inputs;
     for ( AVCaptureDeviceInput *input in inputs ) {
         AVCaptureDevice *device = input.device;
