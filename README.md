@@ -1,6 +1,7 @@
 
-This is AssetsPicker/PhotoBrowser/CustomCamera Demo
-===========================
+This is a photo album multiple-choice / photo browser example
+--------------
+
 相册多选
 --------
     // 创建图片多选控制器
