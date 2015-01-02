@@ -3,6 +3,7 @@ This is a photo album multiple-choice / photo browser example
 --------------
 
 * Demo Show
+\<br>
 ![](http://cc.cocimg.com/bbs/attachment/Fid_19/19_421709_3dcc945469f2d0e.gif)
 
 相册多选
