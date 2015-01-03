@@ -187,11 +187,18 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
         self.assets = [NSMutableArray array];
     }
     
+    __block NSMutableArray *assetsM = [NSMutableArray array];
     __weak typeof(self) weakSelf = self;
     ZLPickerDatas *datas = [ZLPickerDatas defaultPicker];
     [datas getGroupPhotosWithGroup:self.assetsGroup finished:^(NSArray *assets) {
         
-        weakSelf.collectionView.dataArray = assets;
+        [assets enumerateObjectsUsingBlock:^(ALAsset *asset, NSUInteger idx, BOOL *stop) {
+            ZLAssets *zlAsset = [[ZLAssets alloc] init];
+            zlAsset.asset = asset;
+            [assetsM addObject:zlAsset];
+        }];
+        
+        weakSelf.collectionView.dataArray = assetsM;
     }];
     
 }

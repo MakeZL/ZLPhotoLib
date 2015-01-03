@@ -72,9 +72,9 @@
     
     cellImgView.maskViewFlag = ([self.selectsIndexPath containsObject:@(indexPath.row)]);
     
-    ALAsset *asset = self.dataArray[indexPath.item];
-    if ([asset isKindOfClass:[ALAsset class]]) {
-        cellImgView.image = [UIImage imageWithCGImage:[asset thumbnail]];
+    ZLAssets *asset = self.dataArray[indexPath.item];
+    if ([asset isKindOfClass:[ZLAssets class]]) {
+        cellImgView.image = asset.thumbImage;
     }
     
     return cell;
@@ -85,9 +85,7 @@
     
     ZLPickerCollectionViewCell *cell = (ZLPickerCollectionViewCell *) [collectionView cellForItemAtIndexPath:indexPath];
     
-    ZLAssets *asset = [[ZLAssets alloc] init];
-    asset.asset = self.dataArray[indexPath.row];
-    
+    ZLAssets *asset = self.dataArray[indexPath.row];
     ZLPickerImageView *pickerImageView = [cell.contentView.subviews lastObject];
     // 如果没有就添加到数组里面，存在就移除
     if (pickerImageView.isMaskViewFlag) {

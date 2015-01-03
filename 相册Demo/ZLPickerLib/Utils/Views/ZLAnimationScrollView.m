@@ -182,12 +182,12 @@ static NSUInteger prevAnimationStatusType;
             }else {
                 // 竖屏
                 startFrame = [subViews[[self currentPage]] frame];
-                startFrame.origin.x = toView.x;
+                startFrame.origin.x = [toView.superview convertRect:toView.frame toView:options[UIViewAnimationFromView]].origin.x;
                 startFrame.size.width = toView.width;
                 startFrame.size.height = toView.height;
-                startFrame.origin.y = toView.height * ([self currentPage] - (nowPage));
+                startFrame.origin.y = toView.height * ([self currentPage]) + 64;
                 
-                startFrame = [toView.superview convertRect:startFrame toView:options[UIViewAnimationFromView]];
+//                startFrame = [toView.superview convertRect:startFrame toView:options[UIViewAnimationFromView]];
                 if ([options[UIViewAnimationAnimationStatusType] integerValue] == UIViewAnimationAnimationStatusZoom) {
                     [subViews[[self currentPage]] setHidden:YES];
                 }
