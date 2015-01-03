@@ -335,12 +335,12 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 //#pragma mark -<UIScrollViewDelegate>
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
     
-    [[self.collectionView visibleCells] enumerateObjectsUsingBlock:^(UICollectionViewCell *cell, NSUInteger idx, BOOL *stop) {
-        if (cell.isHidden) {
-            // 取消cell的隐藏
-            cell.hidden = NO;
-        }
-    }];
+//    [[self.collectionView visibleCells] enumerateObjectsUsingBlock:^(UICollectionViewCell *cell, NSUInteger idx, BOOL *stop) {
+//        if (cell.isHidden) {
+//            // 取消cell的隐藏
+//            cell.hidden = NO;
+//        }
+//    }];
     
     NSInteger currentPage = (NSInteger)((scrollView.contentOffset.x / scrollView.width) + 0.5);
     
@@ -413,6 +413,10 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 //        }];
 //        
         [self reloadData];
+        
+        if (self.photos.count > 0 && self.currentPage > 0) {
+            --self.currentPage;
+        }
         
         if (self.photos.count < 1)
         {
