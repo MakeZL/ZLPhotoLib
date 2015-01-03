@@ -47,7 +47,7 @@ static NSUInteger prevAnimationStatusType;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
-
+    
     prevAnimationStatusType = [options[UIViewAnimationAnimationStatusType] integerValue];
     
     options = [self updateOptions:options];
@@ -124,12 +124,31 @@ static NSUInteger prevAnimationStatusType;
         
         compareView = [self traversalViewWithCell:toView];
     }else{
+        
+        NSMutableArray *subViewsM = [NSMutableArray array];
+        
         // scrollView
-        subViews = [[self getParsentView:toView maxCount:_photos.count] subviews];
-        //        subViews = toView.superview.subviews;
         if (toView.superview == nil) {
             subViews = _parsentView.subviews;
+        } else {
+            subViews = [[self getParsentView:toView maxCount:_photos.count] subviews];
         }
+        
+        for (UIView *view in subViews) {
+            if (view.tag >= 1) {
+                [subViewsM addObject:view];
+            }
+        }
+        
+        for (int i = 0; i < subViews.count; i++) {
+            if ([subViews[i] tag] == 0) {
+                if([subViews[i] width] == [[subViewsM firstObject] width] && [subViews[i] isKindOfClass:[[subViewsM firstObject] class]]){
+                    [subViewsM insertObject:subViews[i] atIndex:0];
+                }
+            }
+        }
+        
+        subViews = subViewsM;
         compareView = toView;
     }
     
@@ -187,7 +206,7 @@ static NSUInteger prevAnimationStatusType;
                 startFrame.size.height = toView.height;
                 startFrame.origin.y = toView.height * ([self currentPage]) + 64;
                 
-//                startFrame = [toView.superview convertRect:startFrame toView:options[UIViewAnimationFromView]];
+                //                startFrame = [toView.superview convertRect:startFrame toView:options[UIViewAnimationFromView]];
                 if ([options[UIViewAnimationAnimationStatusType] integerValue] == UIViewAnimationAnimationStatusZoom) {
                     [subViews[[self currentPage]] setHidden:YES];
                 }
@@ -195,10 +214,13 @@ static NSUInteger prevAnimationStatusType;
             
         }else{
             // scrollView
-            UIView *p = subViews[[self currentPage]];
-            
             startFrame = [subViews[[self currentPage]] frame];
-            startFrame = [p.superview convertRect:startFrame toView:options[UIViewAnimationFromView]];
+            startFrame = [_parsentView convertRect:startFrame toView:options[UIViewAnimationFromView]];
+            
+            if (toView.superview == nil && _parsentView) {
+                startFrame.origin.y += 64;
+            }
+            
             if ([options[UIViewAnimationAnimationStatusType] integerValue] == UIViewAnimationAnimationStatusZoom) {
                 [subViews[[self currentPage]] setHidden:YES];
             }

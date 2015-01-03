@@ -227,7 +227,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 - (void)orientationChanged:(NSNotification *)noti{
     UIDevice *device = noti.object;
     self.orientation = device.orientation;
-        [self.collectionView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    [self.collectionView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     
     CGFloat attchValue = self.currentPage > 0 ? ZLPickerColletionViewPadding : 0;
     
@@ -265,7 +265,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     
     cell.backgroundColor = [UIColor clearColor];
     ZLPickerBrowserPhoto *photo = self.photos[indexPath.item]; //[self.dataSource photoBrowser:self photoAtIndex:indexPath.item];
-
+    
     if([[cell.contentView.subviews lastObject] isKindOfClass:[ZLPickerBrowserPhotoScrollView class]]){
         [[cell.contentView.subviews lastObject] removeFromSuperview];
     }else{
@@ -333,7 +333,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 
 //#pragma mark -<UIScrollViewDelegate>
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
-
+    
     [[self.collectionView visibleCells] enumerateObjectsUsingBlock:^(UICollectionViewCell *cell, NSUInteger idx, BOOL *stop) {
         if (cell.isHidden) {
             // 取消cell的隐藏
@@ -407,9 +407,6 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         
         [self.photos removeObjectAtIndex:self.currentPage];
         [self reloadData];
-        if (page > 0) {
-            --self.currentPage;
-        }
         
         if (self.photos.count < 1)
         {
