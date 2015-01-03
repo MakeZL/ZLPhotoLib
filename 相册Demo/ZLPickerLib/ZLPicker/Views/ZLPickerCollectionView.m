@@ -13,6 +13,7 @@
 #import "ZLPickerImageView.h"
 #import "ZLPickerFooterCollectionReusableView.h"
 #import <AssetsLibrary/AssetsLibrary.h>
+#import "ZLAssets.h"
 
 @interface ZLPickerCollectionView () <UICollectionViewDataSource,UICollectionViewDelegate>
 
@@ -84,7 +85,8 @@
     
     ZLPickerCollectionViewCell *cell = (ZLPickerCollectionViewCell *) [collectionView cellForItemAtIndexPath:indexPath];
     
-    ALAsset *asset = self.dataArray[indexPath.row];
+    ZLAssets *asset = [[ZLAssets alloc] init];
+    asset.asset = self.dataArray[indexPath.row];
     
     ZLPickerImageView *pickerImageView = [cell.contentView.subviews lastObject];
     // 如果没有就添加到数组里面，存在就移除

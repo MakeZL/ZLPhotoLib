@@ -273,7 +273,7 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
         }
         
         imageView.tag = indexPath.item;
-        imageView.image = [UIImage imageWithCGImage:[self.selectAssets[indexPath.item] thumbnail]];
+        imageView.image = [self.selectAssets[indexPath.item] thumbImage];
     }
     
     

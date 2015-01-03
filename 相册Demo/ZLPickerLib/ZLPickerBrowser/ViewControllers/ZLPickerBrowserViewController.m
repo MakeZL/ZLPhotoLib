@@ -411,6 +411,17 @@ static NSString *_cellIdentifier = @"collectionViewCell";
             [self dismissViewControllerAnimated:NO completion:nil];
             [[UIApplication sharedApplication] setStatusBarHidden:NO];
         }
+        
+        if (self.photos.count > 0) {
+            --self.currentPage;
+        }
+        
+        [[self.collectionView visibleCells] enumerateObjectsUsingBlock:^(UICollectionViewCell *cell, NSUInteger idx, BOOL *stop) {
+            if (cell.isHidden) {
+                // 取消cell的隐藏
+                cell.hidden = NO;
+            }
+        }];
     }
 }
 

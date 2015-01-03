@@ -8,13 +8,15 @@
 
 #import <UIKit/UIKit.h>
 #import <AssetsLibrary/AssetsLibrary.h>
+#import "ZLAssets.h"
+
 @interface ZLPickerBrowserPhoto : NSObject
 
 // 自动适配是不是以下几种数据
 @property (nonatomic , strong) id photoObj;
 
 // 保存相册模型
-@property (nonatomic , strong) ALAsset *asset;
+@property (nonatomic , strong) ZLAssets *asset;
 /**
  *  URL地址
  */

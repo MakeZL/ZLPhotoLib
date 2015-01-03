@@ -13,8 +13,8 @@
 - (void)setPhotoObj:(id)photoObj{
     _photoObj = photoObj;
     
-    if ([photoObj isKindOfClass:[ALAsset class]]) {
-        ALAsset *asset = (ALAsset *)photoObj;
+    if ([photoObj isKindOfClass:[ZLAssets class]]) {
+        ZLAssets *asset = (ZLAssets *)photoObj;
         self.asset = asset;
     }else if ([photoObj isKindOfClass:[NSURL class]]){
         self.photoURL = photoObj;
@@ -29,7 +29,7 @@
 
 - (UIImage *)photoImage{
     if (!_photoImage && self.asset) {
-        _photoImage = [UIImage imageWithCGImage:[[self.asset defaultRepresentation] fullScreenImage]];
+        _photoImage = [self.asset originImage];
     }
     return _photoImage;
 }
@@ -37,7 +37,7 @@
 - (UIImage *)thumbImage{
     if (!_thumbImage) {
         if (self.asset) {
-            _thumbImage = [UIImage imageWithCGImage:[self.asset thumbnail]];
+            _thumbImage = [self.asset thumbImage];
         }else if (_photoImage){
             _thumbImage = _photoImage;
         }

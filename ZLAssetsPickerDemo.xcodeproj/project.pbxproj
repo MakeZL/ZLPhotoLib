@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		48B02CEC1A57ABB000C73707 /* ZLAssets.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B02CEB1A57ABB000C73707 /* ZLAssets.m */; };
 		48B3E1761A11BABC0079F464 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B3E1751A11BABC0079F464 /* main.m */; };
 		48B3E1791A11BABC0079F464 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B3E1781A11BABC0079F464 /* AppDelegate.m */; };
 		48B3E17C1A11BABC0079F464 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B3E17B1A11BABC0079F464 /* ViewController.m */; };
@@ -72,6 +73,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		48B02CEA1A57ABB000C73707 /* ZLAssets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLAssets.h; sourceTree = "<group>"; };
+		48B02CEB1A57ABB000C73707 /* ZLAssets.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLAssets.m; sourceTree = "<group>"; };
 		48B3E1701A11BABC0079F464 /* 相册Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "相册Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		48B3E1741A11BABC0079F464 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		48B3E1751A11BABC0079F464 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -410,6 +413,8 @@
 				48C209421A4C1AC20031BCDA /* ZLPickerDatas.m */,
 				48C209431A4C1AC20031BCDA /* ZLPickerGroup.h */,
 				48C209441A4C1AC20031BCDA /* ZLPickerGroup.m */,
+				48B02CEA1A57ABB000C73707 /* ZLAssets.h */,
+				48B02CEB1A57ABB000C73707 /* ZLAssets.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -614,6 +619,7 @@
 				48C2098A1A4C1AC20031BCDA /* ZLPickerAssetsViewController.m in Sources */,
 				48C209831A4C1AC20031BCDA /* ZLAnimationScrollView.m in Sources */,
 				48C2097B1A4C1AC20031BCDA /* UIView+WebCacheOperation.m in Sources */,
+				48B02CEC1A57ABB000C73707 /* ZLAssets.m in Sources */,
 				48C209751A4C1AC20031BCDA /* UIButton+WebCache.m in Sources */,
 				48C209771A4C1AC20031BCDA /* UIImage+MultiFormat.m in Sources */,
 				48C2096A1A4C1AC20031BCDA /* UIView+Extension.m in Sources */,

@@ -13,8 +13,8 @@
 #import "ZLPickerCommon.h"
 #import "ZLAnimationBaseView.h"
 #import "UIImageView+WebCache.h"
-#import <AssetsLibrary/AssetsLibrary.h>
 #import "ZLCameraViewController.h"
+#import "ZLAssets.h"
 
 #import "ZLAnimationBaseView.h"
 
@@ -99,12 +99,12 @@
     
     ZLCameraViewController *cameraVc = [[ZLCameraViewController alloc] init];
     __weak typeof(self) weakSelf = self;
-    [cameraVc startCameraOrPhotoFileWithViewController:self complate:^(id object) {
-        [object enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            if ([obj isKindOfClass:[NSDictionary class]]) {
-                [weakSelf.assets addObjectsFromArray:[obj allValues]];
+    [cameraVc startCameraOrPhotoFileWithViewController:self complate:^(NSArray *object) {
+        [object enumerateObjectsUsingBlock:^(id asset, NSUInteger idx, BOOL *stop) {
+            if ([asset isKindOfClass:[NSDictionary class]]) {
+                [weakSelf.assets addObjectsFromArray:[asset allValues]];
             }else{
-                [weakSelf.assets addObject:obj];
+                [weakSelf.assets addObject:asset];
             }
         }];
         [weakSelf.tableView reloadData];
@@ -203,9 +203,9 @@
         cell.backgroundColor = [UIColor clearColor];
     }
     
-    ALAsset *asset = self.assets[indexPath.row];
-    if ([asset isKindOfClass:[ALAsset class]]) {
-        cell.imageView.image = [UIImage imageWithCGImage:[asset thumbnail]];
+    ZLAssets *asset = self.assets[indexPath.row];
+    if ([asset isKindOfClass:[ZLAssets class]]) {
+        cell.imageView.image = asset.thumbImage;
     }else if ([asset isKindOfClass:[NSString class]]){
         [cell.imageView sd_setImageWithURL:[NSURL URLWithString:(NSString *)asset] placeholderImage:[UIImage imageNamed:@"wallpaper_placeholder"]];
     }else if([asset isKindOfClass:[UIImage class]]){
