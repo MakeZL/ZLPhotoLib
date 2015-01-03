@@ -262,7 +262,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:_cellIdentifier forIndexPath:indexPath];
     
-    cell.hidden = !(self.currentPage == indexPath.row);
+//    cell.hidden = !(self.currentPage == indexPath.row);
     cell.backgroundColor = [UIColor clearColor];
     ZLPickerBrowserPhoto *photo = self.photos[indexPath.item]; //[self.dataSource photoBrowser:self photoAtIndex:indexPath.item];
 
@@ -404,24 +404,22 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         }
         
         [self.photos removeObjectAtIndex:self.currentPage];
+        
+//        [[self.collectionView visibleCells] enumerateObjectsUsingBlock:^(UICollectionViewCell *cell, NSUInteger idx, BOOL *stop) {
+//            if (cell.isHidden) {
+//                // 取消cell的隐藏
+//                cell.hidden = NO;
+//            }
+//        }];
+//        
         [self reloadData];
         
         if (self.photos.count < 1)
         {
-            [self dismissViewControllerAnimated:NO completion:nil];
+            [[NSNotificationCenter defaultCenter] removeObserver:self];
+            [self dismissViewControllerAnimated:YES completion:nil];
             [[UIApplication sharedApplication] setStatusBarHidden:NO];
         }
-        
-        if (self.photos.count > 0) {
-            --self.currentPage;
-        }
-        
-        [[self.collectionView visibleCells] enumerateObjectsUsingBlock:^(UICollectionViewCell *cell, NSUInteger idx, BOOL *stop) {
-            if (cell.isHidden) {
-                // 取消cell的隐藏
-                cell.hidden = NO;
-            }
-        }];
     }
 }
 
