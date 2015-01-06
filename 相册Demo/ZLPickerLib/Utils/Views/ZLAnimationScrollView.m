@@ -141,10 +141,16 @@ static NSUInteger prevAnimationStatusType;
         }
         
         for (int i = 0; i < subViews.count; i++) {
-            if ([subViews[i] tag] == 0) {
+            if ([(UIView *)subViews[i] tag] == 0) {
                 if([subViews[i] width] == [[subViewsM firstObject] width] && [subViews[i] isKindOfClass:[[subViewsM firstObject] class]]){
                     [subViewsM insertObject:subViews[i] atIndex:0];
                 }
+            }
+        }
+        
+        for (UIView *view in subViews) {
+            if (view.tag < 1) {
+                [subViewsM addObject:view];
             }
         }
         
@@ -244,6 +250,10 @@ static NSUInteger prevAnimationStatusType;
         startFrame.origin.y += 20;
     }
     
+    if (subViews.count == 1) {
+        startFrame.origin.x = toView.x + startFrame.origin.x;
+    }
+    
     ops[UIViewAnimationEndFrame] = [NSValue valueWithCGRect:startFrame];
     [super restoreWithOptions:ops animation:^{
         
@@ -263,9 +273,18 @@ static NSUInteger prevAnimationStatusType;
 #pragma mark -
 #pragma mark 获取父View
 + (UIView *) getParsentView:(UIView *) view maxCount:(NSInteger)maxCount{
+    
+    NSMutableArray *array = [NSMutableArray array];
+    for (UIView *childView in [view subviews]) {
+        if ([childView isKindOfClass:[UIImageView class]]) {
+            [array addObject:childView];
+        }
+    }
+    
     if ([[view subviews] count] >= maxCount || view == nil) {
         return view;
     }
+    
     return [self getParsentView:view.superview maxCount:maxCount];
 }
 

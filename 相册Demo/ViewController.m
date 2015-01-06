@@ -102,6 +102,7 @@
     [cameraVc startCameraOrPhotoFileWithViewController:self complate:^(NSArray *object) {
         [object enumerateObjectsUsingBlock:^(id asset, NSUInteger idx, BOOL *stop) {
             if ([asset isKindOfClass:[NSDictionary class]]) {
+                
                 [weakSelf.assets addObjectsFromArray:[asset allValues]];
             }else{
                 [weakSelf.assets addObject:asset];
