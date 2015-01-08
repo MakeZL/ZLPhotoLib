@@ -160,6 +160,14 @@ static NSUInteger prevAnimationStatusType;
     
     NSInteger nowPage = 0;
     NSInteger currPage = 0;
+    NSInteger val = [self currentPage];
+    if ([self currentPage] >= subViews.count) {
+        val = [self currentPage] - (([self currentPage] % subViews.count == 0 ? [self currentPage] - subViews.count  : [self currentPage] % subViews.count)) - 1;
+        if (val < 0) {
+            val = 0;
+        }
+    }
+    
     for (NSInteger index = 0; index < subViews.count; index++) {
         UIView *toBrotherView = subViews[index];
         if ([compareView isEqual:toBrotherView]) {
@@ -168,7 +176,7 @@ static NSUInteger prevAnimationStatusType;
         }
         
         if (collectionView) {
-            if ([subViews[[self currentPage]] isEqual:toBrotherView]) {
+            if ([subViews[val] isEqual:toBrotherView]) {
                 currPage = index;
             }
         }
@@ -191,18 +199,28 @@ static NSUInteger prevAnimationStatusType;
         toView.hidden = NO;
     }
     NSInteger ios6NavH = 20;
-    if ([self currentPage] < subViews.count) {
+    if (val < subViews.count) {
         if (tableView || collectionView) {
             
             // 横屏
             if (direction == UICollectionViewScrollDirectionHorizontal) {
                 // 分页数没改变的情况下, x值就是0
+                NSArray *indexPaths = [collectionView indexPathsForVisibleItems];
+                NSIndexPath *minPath = [[indexPaths sortedArrayUsingSelector:@selector(compare:)] firstObject];
+                NSIndexPath *maxPath = [[indexPaths sortedArrayUsingSelector:@selector(compare:)] lastObject];
+                
                 ios6NavH = -20;
                 startFrame = [_parsentView convertRect:toView.frame toView: options[UIViewAnimationFromView]];
                 startFrame.origin.y = [ops[UIViewAnimationStartFrame] CGRectValue].origin.y;
-                startFrame.origin.x = self.currentPage * (toView.width + flowLayout.minimumLineSpacing) + collectionView.x;
+                
+                NSInteger currentPage = [self currentPage];
+                if (maxPath.item > subViews.count) {
+                    currentPage = [self currentPage] - minPath.item;
+                }
+                startFrame.origin.x = currentPage * (toView.width + flowLayout.minimumLineSpacing) + collectionView.x;
                 if ([options[UIViewAnimationAnimationStatusType] integerValue] == UIViewAnimationAnimationStatusZoom) {
-                    [subViews[[self currentPage]] setHidden:YES];
+                    UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:[self currentPage] inSection:0]];
+                    [cell setHidden:YES];
                 }
             }else {
                 // 竖屏
@@ -212,7 +230,6 @@ static NSUInteger prevAnimationStatusType;
                 startFrame.size.height = toView.height;
                 startFrame.origin.y = toView.height * ([self currentPage]) + 64;
                 
-                //                startFrame = [toView.superview convertRect:startFrame toView:options[UIViewAnimationFromView]];
                 if ([options[UIViewAnimationAnimationStatusType] integerValue] == UIViewAnimationAnimationStatusZoom) {
                     [subViews[[self currentPage]] setHidden:YES];
                 }
@@ -257,7 +274,10 @@ static NSUInteger prevAnimationStatusType;
     ops[UIViewAnimationEndFrame] = [NSValue valueWithCGRect:startFrame];
     [super restoreWithOptions:ops animation:^{
         
-        if ([self currentPage] < subViews.count) {
+        if (collectionView) {
+            UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:[self currentPage] inSection:0]];
+            [cell setHidden:NO];
+        }else if ([self currentPage] < subViews.count) {
             [subViews[[self currentPage]] setHidden:NO];
         }
         
