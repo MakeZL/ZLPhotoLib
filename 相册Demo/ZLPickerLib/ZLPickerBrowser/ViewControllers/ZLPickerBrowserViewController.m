@@ -209,48 +209,18 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     [[UIApplication sharedApplication] setStatusBarHidden:YES];
     self.view.backgroundColor = [UIColor blackColor];
     
-//    if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)]) {
-//        SEL selector = NSSelectorFromString(@"setOrientation:");
-//        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[UIDevice instanceMethodSignatureForSelector:selector]];
-//        [invocation setSelector:selector];
-//        [invocation setTarget:[UIDevice currentDevice]];
-//        int val = UIInterfaceOrientationPortrait;
-//        [invocation setArgument:&val atIndex:2];
-//        [invocation invoke];
-//    }
-//    
-//    
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter]; //Get the notification centre for the app
     [nc addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification  object:nil];
 }
 
 - (void)viewWillLayoutSubviews{
-//    if (self.isOk) {
-        [self.collectionView.collectionViewLayout invalidateLayout];
-        [self.collectionView reloadData];
-//    }
+    [self.collectionView.collectionViewLayout invalidateLayout];
+    [self.collectionView reloadData];
 }
 
-//- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
-//    
-//    CGSize size = self.flowLayout.itemSize;
-//    if (self.orientation == UIDeviceOrientationPortrait || self.orientation == UIDeviceOrientationPortraitUpsideDown) {
-//        size = CGSizeMake(self.view.frame.size.width, self.view.frame.size.height);
-//    }else if (self.orientation == UIDeviceOrientationLandscapeLeft || self.orientation == UIDeviceOrientationLandscapeRight){
-//        size = self.view.frame.size;
-//    }
-//    
-//    return size;
-//}
-//
 - (void)orientationChanged:(NSNotification *)noti{
     UIDevice *device = noti.object;
     
-//    if (device.orientation == self.orientation || self.collectionView.isDragging) {
-//        return ;
-//    }
-    
-    NSIndexPath *indexPath = [[self.collectionView indexPathsForSelectedItems] lastObject];
     UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:self.currentPage inSection:0]];
     if (![self.collectionView isDragging]) {
         cell.hidden = NO;
@@ -282,20 +252,6 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     self.collectionView.bounds = CGRectMake(0, 0, size.width + ZLPickerColletionViewPadding, size.height);
     self.collectionView.contentOffset = CGPointMake(self.currentPage * self.view.width + self.currentPage * ZLPickerColletionViewPadding - (self.currentPage == [self.dataSource numberOfPhotosInPickerBrowser:self] - 1 ? ZLPickerColletionViewPadding : 0), 0);
 }
-//- (void)orientationChanged:(NSNotification *)noti{
-//    UIDevice *device = noti.object;
-//    self.orientation = device.orientation;
-//    [self.collectionView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
-//    
-//    CGFloat attchValue = self.currentPage > 0 ? ZLPickerColletionViewPadding : 0;
-//
-//    self.collectionView.contentSize = CGSizeMake(self.photos.count * self.collectionView.width, 0);
-//    [self.collectionView reloadData];
-////    [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:self.currentPage inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
-//    
-////    self.collectionView.contentOffset = CGPointMake(self.collectionView.contentOffset.x + attchValue, 0);
-//    [self.collectionView setContentOffset:CGPointMake(self.currentPage * self.view.width + attchValue, 0)];
-//}
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
     
@@ -403,24 +359,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 //    
     CGRect tempF = self.collectionView.frame;
     NSInteger currentPage = (NSInteger)((scrollView.contentOffset.x / scrollView.width) + 0.5);
-//    if (currentPage == [self.dataSource numberOfPhotosInPickerBrowser:self] - 1) {
-//        
-//        if ((self.orientation == UIDeviceOrientationLandscapeLeft && self.orientation == UIDeviceOrientationLandscapeRight)) {
-//            if (self.collectionView.x >= 0) {
-//                            self.collectionView.x -= ZLPickerColletionViewPadding;
-//            }
-//        }else{
-//            if (self.collectionView.x >= 0) {
-////                self.collectionView.x -= ZLPickerColletionViewPadding;
-//            }
-//        }
-//    }else{
-//        self.collectionView.x = 0;
-//    }
-//
-////    self.collectionView.frame = tempF;
-////
-
+    
     if ((currentPage < [self.dataSource numberOfPhotosInPickerBrowser:self] - 1) || self.photos.count == 1) {
         tempF.origin.x = 0;
     }else{
