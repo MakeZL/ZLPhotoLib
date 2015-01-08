@@ -14,7 +14,6 @@
 #import "ZLPickerBrowserPhotoScrollView.h"
 #import "ZLPickerCommon.h"
 #import "ZLAnimationScrollView.h"
-//#import "ZLBaseAnimationImageView.h"
 #import <objc/runtime.h>
 #import "UIView+ZLAutoLayout.h"
 
@@ -334,12 +333,13 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     return photos;
 }
 
+#pragma mark - supportedOrientations
 - (BOOL)shouldAutorotate{
     return YES;
 }
 
 - (NSUInteger)supportedInterfaceOrientations{
-    return UIInterfaceOrientationMaskAllButUpsideDown;
+    return UIInterfaceOrientationMaskAll;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation{
@@ -347,16 +347,12 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 }
 
 
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation{
+    return UIInterfaceOrientationPortrait;
+}
+
 //#pragma mark -<UIScrollViewDelegate>
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
-    
-//    [[self.collectionView visibleCells] enumerateObjectsUsingBlock:^(UICollectionViewCell *cell, NSUInteger idx, BOOL *stop) {
-//        if (cell.isHidden) {
-//            // 取消cell的隐藏
-//            cell.hidden = NO;
-//        }
-//    }];
-//    
     CGRect tempF = self.collectionView.frame;
     NSInteger currentPage = (NSInteger)((scrollView.contentOffset.x / scrollView.width) + 0.5);
     

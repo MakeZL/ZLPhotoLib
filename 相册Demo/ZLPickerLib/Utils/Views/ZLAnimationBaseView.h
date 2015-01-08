@@ -68,4 +68,6 @@ static complation _completionBlock;
 // 结束动画的操作
 + (void) unLoadStopAnimationOperation;
 
+
++ (void)setterParamsWithOrientation:(UIDevice *)device;
 @end

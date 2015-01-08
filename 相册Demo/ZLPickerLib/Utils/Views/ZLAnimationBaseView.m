@@ -34,13 +34,7 @@ static ZLAnimationBaseView *_singleBaseView;
 }
 
 + (void)orientationChanged:(NSNotification *)noti{
-    UIDevice *device = noti.object;
-    if(device.orientation == UIDeviceOrientationLandscapeLeft || device.orientation == UIDeviceOrientationLandscapeRight){
-        _attachParams[UIViewAnimationAnimationStatusType] = @(UIViewAnimationAnimationStatusFade);
-    }else{
-        _attachParams[UIViewAnimationAnimationStatusType] = @(UIViewAnimationAnimationStatusZoom);
-    }
-    
+    [self setterParamsWithOrientation:noti.object];
 }
 
 // 补充空的字典
@@ -102,6 +96,7 @@ static ZLAnimationBaseView *_singleBaseView;
     
     [_attachParams setObject:@(UIViewAnimationAnimationStatusZoom) forKey:UIViewAnimationAnimationStatusType];
     
+    [self setterParamsWithOrientation:[UIDevice currentDevice]];
     // 准备动画前的一些操作
     [self willStartAnimationOperation];
     // 补充没填的参数
@@ -291,6 +286,14 @@ static ZLAnimationBaseView *_singleBaseView;
     //    return CGRectZero;
 }
 
+
++ (void)setterParamsWithOrientation:(UIDevice *)device{
+    if(device.orientation == UIDeviceOrientationLandscapeLeft || device.orientation == UIDeviceOrientationLandscapeRight){
+        _attachParams[UIViewAnimationAnimationStatusType] = @(UIViewAnimationAnimationStatusFade);
+    }else{
+        _attachParams[UIViewAnimationAnimationStatusType] = @(UIViewAnimationAnimationStatusZoom);
+    }
+}
 
 #pragma mark -
 #pragma mark 开始动画

@@ -18,13 +18,7 @@ static NSUInteger prevAnimationStatusType;
 @implementation ZLAnimationScrollView
 
 + (void)orientationChanged:(NSNotification *)noti{
-    
-    UIDevice *device = noti.object;
-    if(device.orientation == UIDeviceOrientationLandscapeLeft || device.orientation == UIDeviceOrientationLandscapeRight){
-        _attachParams[UIViewAnimationAnimationStatusType] = @(UIViewAnimationAnimationStatusFade);
-    }else{
-        _attachParams[UIViewAnimationAnimationStatusType] = @(UIViewAnimationAnimationStatusZoom);
-    }
+    [self setterParamsWithOrientation:noti.object];
 }
 
 + (NSDictionary *)updateOptions:(NSDictionary *)updateOptions{
@@ -44,6 +38,9 @@ static NSUInteger prevAnimationStatusType;
 
 + (instancetype)animationViewWithOptions:(NSDictionary *)options animations:(void (^)())animations completion:(void (^)(ZLAnimationBaseView *))completion{
     [_attachParams setObject:@(UIViewAnimationAnimationStatusZoom) forKey:UIViewAnimationAnimationStatusType];
+    
+    [self setterParamsWithOrientation:[UIDevice currentDevice]];
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
@@ -54,7 +51,7 @@ static NSUInteger prevAnimationStatusType;
     
     UIView *toView = options[UIViewAnimationToView];
     
-    if ([options[UIViewAnimationAnimationStatusType] integerValue] == UIViewAnimationAnimationStatusZoom) {
+    if ([_attachParams[UIViewAnimationAnimationStatusType] integerValue] == UIViewAnimationAnimationStatusZoom) {
         toView.hidden = YES;
     }
     
@@ -62,6 +59,15 @@ static NSUInteger prevAnimationStatusType;
     _parsentView = toView.superview;
     
     return [super animationViewWithOptions:options animations:animations completion:completion];
+}
+
++ (void)setterParamsWithOrientation:(UIDevice *)device{
+    if(device.orientation == UIDeviceOrientationLandscapeLeft || device.orientation == UIDeviceOrientationLandscapeRight){
+        _attachParams[UIViewAnimationAnimationStatusType] = @(UIViewAnimationAnimationStatusFade);
+    }else{
+        _attachParams[UIViewAnimationAnimationStatusType] = @(UIViewAnimationAnimationStatusZoom);
+    }
+    [super setterParamsWithOrientation:device];
 }
 
 + (void)restoreWithOptions:(NSDictionary *)options animation:(void (^)())completion{
@@ -263,9 +269,9 @@ static NSUInteger prevAnimationStatusType;
     
     startFrame.origin.y += [[self getParsentView:options[UIViewAnimationToView]] frame].origin.y;
     
-    if ([options[UIViewAnimationAnimationStatusType] integerValue] == UIViewAnimationAnimationStatusZoom && prevAnimationStatusType != UIViewAnimationAnimationStatusZoom) {
-        startFrame.origin.y += 20;
-    }
+//    if ([options[UIViewAnimationAnimationStatusType] integerValue] == UIViewAnimationAnimationStatusZoom && prevAnimationStatusType != UIViewAnimationAnimationStatusZoom) {
+//        startFrame.origin.y += 20;
+//    }
     
     if (subViews.count == 1) {
         startFrame.origin.x = toView.x + startFrame.origin.x;
