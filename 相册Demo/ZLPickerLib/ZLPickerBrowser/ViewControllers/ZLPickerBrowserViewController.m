@@ -34,8 +34,6 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 
 @property (nonatomic , assign) UIDeviceOrientation orientation;
 
-@property (assign,nonatomic) BOOL isOk;
-
 
 @end
 
@@ -248,8 +246,14 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 - (void)orientationChanged:(NSNotification *)noti{
     UIDevice *device = noti.object;
     
-    if (device.orientation == self.orientation || self.collectionView.isDragging) {
-        return ;
+//    if (device.orientation == self.orientation || self.collectionView.isDragging) {
+//        return ;
+//    }
+    
+    NSIndexPath *indexPath = [[self.collectionView indexPathsForSelectedItems] lastObject];
+    UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:self.currentPage inSection:0]];
+    if (![self.collectionView isDragging]) {
+        cell.hidden = NO;
     }
     
     self.orientation = device.orientation;
@@ -276,7 +280,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     }
     
     self.collectionView.bounds = CGRectMake(0, 0, size.width + ZLPickerColletionViewPadding, size.height);
-    self.collectionView.contentOffset = CGPointMake(self.currentPage * size.width + attchValue, 0);
+    self.collectionView.contentOffset = CGPointMake(self.currentPage * self.view.width + self.currentPage * ZLPickerColletionViewPadding - (self.currentPage == [self.dataSource numberOfPhotosInPickerBrowser:self] - 1 ? ZLPickerColletionViewPadding : 0), 0);
 }
 //- (void)orientationChanged:(NSNotification *)noti{
 //    UIDevice *device = noti.object;
@@ -318,8 +322,11 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 - (UICollectionViewCell *) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:_cellIdentifier forIndexPath:indexPath];
-    
-    cell.hidden = !(self.currentPage == indexPath.row);
+    if (collectionView.isDragging || self.currentPage == indexPath.row) {
+        cell.hidden = NO;
+    }else{
+        cell.hidden = YES;
+    }
     cell.backgroundColor = [UIColor clearColor];
     ZLPickerBrowserPhoto *photo = self.photos[indexPath.item]; //[self.dataSource photoBrowser:self photoAtIndex:indexPath.item];
     
@@ -344,7 +351,6 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     
     self.collectionView.dataSource = self;
     [self.collectionView reloadData];
-//    self.isOk = YES;
     
     self.pageCtrl.numberOfPages = self.photos.count;
     if (self.currentPage >= 0) {
@@ -388,13 +394,13 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 //#pragma mark -<UIScrollViewDelegate>
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
     
-    [[self.collectionView visibleCells] enumerateObjectsUsingBlock:^(UICollectionViewCell *cell, NSUInteger idx, BOOL *stop) {
-        if (cell.isHidden) {
-            // 取消cell的隐藏
-            cell.hidden = NO;
-        }
-    }];
-    
+//    [[self.collectionView visibleCells] enumerateObjectsUsingBlock:^(UICollectionViewCell *cell, NSUInteger idx, BOOL *stop) {
+//        if (cell.isHidden) {
+//            // 取消cell的隐藏
+//            cell.hidden = NO;
+//        }
+//    }];
+//    
     CGRect tempF = self.collectionView.frame;
     NSInteger currentPage = (NSInteger)((scrollView.contentOffset.x / scrollView.width) + 0.5);
 //    if (currentPage == [self.dataSource numberOfPhotosInPickerBrowser:self] - 1) {
@@ -425,6 +431,13 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
+    
+    [[self.collectionView visibleCells] enumerateObjectsUsingBlock:^(UICollectionViewCell *cell, NSUInteger idx, BOOL *stop) {
+        if (cell.isHidden && idx != self.currentPage) {
+            // 取消cell的隐藏
+            cell.hidden = YES;
+        }
+    }];
     
     self.currentPage = (NSInteger)(scrollView.contentOffset.x / (scrollView.width - ZLPickerColletionViewPadding));
     self.pageCtrl.currentPage = self.currentPage;

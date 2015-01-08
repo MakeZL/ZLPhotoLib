@@ -20,11 +20,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "&#x76f8;&#x518c;Demo/ZLPickerLib/ZLPickerBrowser/ViewControllers/ZLPickerBrowserViewController.m"
-            timestampString = "442323041.270339"
+            timestampString = "442382925.269596"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "429"
-            endingLineNumber = "429"
+            startingLineNumber = "442"
+            endingLineNumber = "442"
             landmarkName = "-scrollViewDidEndDecelerating:"
             landmarkType = "5">
          </BreakpointContent>
