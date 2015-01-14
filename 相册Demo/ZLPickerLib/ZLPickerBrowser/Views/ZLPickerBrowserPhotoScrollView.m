@@ -90,12 +90,18 @@
         CGFloat scaleW = self.zoomImageView.image.size.width / self.width;
         CGFloat scaleH = self.zoomImageView.image.size.height / self.height;
         
-        
         CGFloat x = touchPoint.x * scaleW; //(self.zoomImageView.image.size.width - touchPoint.x * scale);
         
-        CGFloat y = touchPoint.y * MIN(scaleW, scaleH) ;//(self.zoomImageView.image.size.height - touchPoint.y) / 2;
+        CGFloat y = touchPoint.y * MIN(scaleW, scaleH); //touchPoint.y * MIN(scaleW, scaleH) ;//(self.zoomImageView.image.size.height - touchPoint.y) / 2;
         
-        [self zoomToRect:CGRectMake(x, y, 0 , 0) animated:YES];
+        [UIView animateWithDuration:.30 animations:^{
+            [self zoomToRect:CGRectMake(x, y, 0, 0 ) animated:NO];
+            self.zoomImageView.y = 0;
+        } completion:^(BOOL finished) {
+            
+        }];
+        
+        [self setZoomScale:self.maximumZoomScale];
     }
 }
 
@@ -192,45 +198,21 @@
     self.zoomScale = minScale;
     
     // 重置
-//    _zoomImageView.frame = CGRectMake(0, 0, self.zoomImageView.width, self.zoomImageView.height);
+    //    _zoomImageView.frame = CGRectMake(0, 0, self.zoomImageView.width, self.zoomImageView.height);
     
     // 避免不能滚动
-//    if (((NSInteger)_zoomImageView.width > self.width)) {
-//        return;
-//    }
-        self.contentSize = CGSizeMake(self.width, 0);
-    
-//    CGSize boundsSize = self.bounds.size;
-    CGRect frameToCenter = _zoomImageView.frame;
-    
-    
-    // 计算水平方向居中
-    if (frameToCenter.size.width < boundsSize.width) {
-        frameToCenter.origin.x = floorf((boundsSize.width - frameToCenter.size.width) / 2.0);
-    } else {
-        frameToCenter.origin.x = 0;
+    if (((NSInteger)_zoomImageView.width > self.width)) {
+        return;
     }
+    self.contentSize = CGSizeMake(self.width, 0);
     
-    // 计算垂直方向居中
-    if (frameToCenter.size.height < boundsSize.height) {
-        frameToCenter.origin.y = floorf((boundsSize.height - frameToCenter.size.height) / 2.0);
-    } else {
-        frameToCenter.origin.y = 0;
-    }
-    
-    self.firstFrame = frameToCenter;
-    // Center
-    if (!CGRectEqualToRect(_zoomImageView.frame, frameToCenter))
-        _zoomImageView.frame = frameToCenter;
+    [self setNeedsLayout];
 }
 
 - (void)layoutSubviews {
     
     [super layoutSubviews];
     
-    if (self.zoomScale == self.minimumZoomScale) {
-        return ;
-    }
     CGSize boundsSize = self.bounds.size;
     CGRect frameToCenter = _zoomImageView.frame;
     
@@ -247,7 +229,13 @@
         frameToCenter.origin.y = 0;
     }
     
-    _zoomImageView.frame = frameToCenter;
+    if (CGRectIsEmpty(self.firstFrame) && frameToCenter.origin.y > 0) {
+        self.firstFrame = frameToCenter;
+    }
+    
+    // Center
+    if (!CGRectEqualToRect(_zoomImageView.frame, frameToCenter))
+        _zoomImageView.frame = frameToCenter;
 }
 
 
