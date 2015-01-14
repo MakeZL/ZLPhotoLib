@@ -112,7 +112,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     return _deleleBtn;
 }
 
-#pragma mark -分页控件
+#pragma mark - 分页控件
 - (UIPageControl *)pageCtrl{
     if (!_pageCtrl) {
         
@@ -144,7 +144,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     // 初始化collectionView
     [self collectionView];
     
-    // 开始动画
+    // 初始化动画
     [self startLogddingAnimation];
     
 }
@@ -157,7 +157,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     return [self getParsentView:view.superview];
 }
 
-// 开始动画
+#pragma makr - init Animation
 - (void)startLogddingAnimation{
     if (!(self.toView) ) {
         [self reloadData];
@@ -212,6 +212,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     [nc addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification  object:nil];
 }
 
+#pragma mark - 屏幕旋转的时候需要
 - (void)viewWillLayoutSubviews{
     [self.collectionView.collectionViewLayout invalidateLayout];
     [self.collectionView reloadData];

@@ -7,16 +7,9 @@
 //
 
 #import "ViewController.h"
-#import "ZLPickerViewController.h"
 #import "UIView+Extension.h"
-#import "ZLPickerBrowserViewController.h"
-#import "ZLPickerCommon.h"
-#import "ZLAnimationBaseView.h"
 #import "UIImageView+WebCache.h"
-#import "ZLCameraViewController.h"
-#import "ZLAssets.h"
-
-#import "ZLAnimationBaseView.h"
+#import "ZLPicker.h"
 
 @interface ViewController () <UITableViewDataSource,UITableViewDelegate,ZLPickerViewControllerDelegate,ZLPickerBrowserViewControllerDataSource,ZLPickerBrowserViewControllerDelegate>
 
@@ -68,7 +61,7 @@
     }
     return _tableView;
 }
-//
+
 - (void)viewDidLoad{
     [super viewDidLoad];
     
@@ -99,6 +92,7 @@
     ZLCameraViewController *cameraVc = [[ZLCameraViewController alloc] init];
     __weak typeof(self) weakSelf = self;
     [cameraVc startCameraOrPhotoFileWithViewController:self complate:^(NSArray *object) {
+        // 回调 ,
         [object enumerateObjectsUsingBlock:^(id asset, NSUInteger idx, BOOL *stop) {
             if ([asset isKindOfClass:[NSDictionary class]]) {
                 
@@ -132,64 +126,11 @@
      [weakSelf.tableView reloadData];
      };
      */
-    
-    
 }
 
+#pragma mark - <UITableViewDataSource>
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return self.assets.count;
-}
-
-
-- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
-    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    
-    [self setupPhotoBrowser:cell];
-}
-
-
-- (void) setupPhotoBrowser:(UITableViewCell *) cell{
-    
-    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-    // 图片游览器
-    ZLPickerBrowserViewController *pickerBrowser = [[ZLPickerBrowserViewController alloc] init];
-    // 传入点击图片View的话，会有微信朋友圈照片的风格
-    pickerBrowser.toView = cell.imageView;
-    // 数据源/delegate
-    pickerBrowser.delegate = self;
-    pickerBrowser.dataSource = self;
-    // 是否可以删除照片
-    pickerBrowser.editing = YES;
-    // 当前选中的值
-    pickerBrowser.currentPage = indexPath.row;
-    // 展示控制器
-    [pickerBrowser show];
-    self.pickerBrowser = pickerBrowser;
-}
-
-//#pragma mark <ZLPickerBrowserViewControllerDataSource>
-- (NSInteger) numberOfPhotosInPickerBrowser:(ZLPickerBrowserViewController *)pickerBrowser{
-    return self.assets.count;
-}
-
-- (ZLPickerBrowserPhoto *) photoBrowser:(ZLPickerBrowserViewController *)pickerBrowser photoAtIndex:(NSUInteger)index{
-    
-    id imageObj = [self.assets objectAtIndex:index];
-    ZLPickerBrowserPhoto *photo = [ZLPickerBrowserPhoto photoAnyImageObjWith:imageObj];
-    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
-    photo.thumbImage = cell.imageView.image;
-    
-    return photo;
-}
-
-#pragma mark <ZLPickerBrowserViewControllerDelegate>
-- (void)photoBrowser:(ZLPickerBrowserViewController *)photoBrowser removePhotoAtIndex:(NSUInteger)index{
-    if (index > self.assets.count) return;
-    [self.assets removeObjectAtIndex:index];
-    [self.tableView reloadData];
 }
 
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -216,32 +157,64 @@
     
 }
 
+#pragma mark - <UITableViewDelegate>
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    
+    [self setupPhotoBrowser:cell];
+}
+
+#pragma mark - setupCell click ZLPickerBrowserViewController
+- (void) setupPhotoBrowser:(UITableViewCell *) cell{
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+    // 图片游览器
+    ZLPickerBrowserViewController *pickerBrowser = [[ZLPickerBrowserViewController alloc] init];
+    // 传入点击图片View的话，会有微信朋友圈照片的风格
+    pickerBrowser.toView = cell.imageView;
+    // 数据源/delegate
+    pickerBrowser.delegate = self;
+    pickerBrowser.dataSource = self;
+    // 是否可以删除照片
+    pickerBrowser.editing = YES;
+    // 当前选中的值
+    pickerBrowser.currentPage = indexPath.row;
+    // 展示控制器
+    [pickerBrowser show];
+    self.pickerBrowser = pickerBrowser;
+}
+
+#pragma mark - <ZLPickerBrowserViewControllerDataSource>
+- (NSInteger) numberOfPhotosInPickerBrowser:(ZLPickerBrowserViewController *)pickerBrowser{
+    return self.assets.count;
+}
+
+- (ZLPickerBrowserPhoto *) photoBrowser:(ZLPickerBrowserViewController *)pickerBrowser photoAtIndex:(NSUInteger)index{
+    
+    id imageObj = [self.assets objectAtIndex:index];
+    ZLPickerBrowserPhoto *photo = [ZLPickerBrowserPhoto photoAnyImageObjWith:imageObj];
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
+    photo.thumbImage = cell.imageView.image;
+    
+    return photo;
+}
+
+#pragma mark - <ZLPickerBrowserViewControllerDelegate>
+- (void)photoBrowser:(ZLPickerBrowserViewController *)photoBrowser removePhotoAtIndex:(NSUInteger)index{
+    if (index > self.assets.count) return;
+    [self.assets removeObjectAtIndex:index];
+    [self.tableView reloadData];
+}
+
+
+#pragma mark - <ZLPickerViewControllerDelegate>
 // 代理回调方法
 - (void)pickerViewControllerDoneAsstes:(NSArray *)assets{
     //    [self.assets addObjectsFromArray:assets];
     //    [self.tableView reloadData];
 }
 
-#pragma mark - 自定义动画
-// 你也可以自定义动画
-// 参考BaseAnimationView
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
-    
-    UIView *boxView = [[UIView alloc] init];
-    boxView.backgroundColor = [UIColor redColor];
-    
-    NSDictionary *options = @{
-                              UIViewAnimationInView:self.view,
-                              UIViewAnimationToView:boxView,
-                              };
-    
-    
-    [ZLAnimationBaseView animationViewWithOptions:options animations:^{
-        // TODO .. 执行动画时
-    } completion:^(ZLAnimationBaseView *baseView) {
-        // TODO .. 动画执行完时
-    }];
-    
-}
 
 @end
