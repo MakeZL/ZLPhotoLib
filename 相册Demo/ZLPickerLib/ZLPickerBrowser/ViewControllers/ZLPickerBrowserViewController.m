@@ -32,6 +32,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 @property (strong,nonatomic) UICollectionViewFlowLayout *flowLayout;
 
 @property (nonatomic , assign) UIDeviceOrientation orientation;
+@property (assign,nonatomic) BOOL isDelete;
 
 
 @end
@@ -278,27 +279,31 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 - (UICollectionViewCell *) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:_cellIdentifier forIndexPath:indexPath];
-    if (collectionView.isDragging || self.currentPage == indexPath.row) {
-        cell.hidden = NO;
-    }else{
-        cell.hidden = YES;
+    
+    if (self.photos.count) {
+        if (collectionView.isDragging || self.currentPage == indexPath.row || (self.isDelete && self.currentPage - 1 == indexPath.row)) {
+            cell.hidden = NO;
+        }else{
+            cell.hidden = YES;
+        }
+        cell.backgroundColor = [UIColor clearColor];
+        ZLPickerBrowserPhoto *photo = self.photos[indexPath.item]; //[self.dataSource photoBrowser:self photoAtIndex:indexPath.item];
+        
+        if([[cell.contentView.subviews lastObject] isKindOfClass:[ZLPickerBrowserPhotoScrollView class]]){
+            [[cell.contentView.subviews lastObject] removeFromSuperview];
+        }
+        
+        ZLPickerBrowserPhotoScrollView *scrollView =  [ZLPickerBrowserPhotoScrollView instanceAutoLayoutView];
+        scrollView.backgroundColor = [UIColor clearColor];
+        // 为了监听单击photoView事件
+        scrollView.frame = cell.bounds;
+        scrollView.photoScrollViewDelegate = self;
+        [cell.contentView addSubview:scrollView];
+        scrollView.photo = photo;
+        
+        [scrollView autoEqualToSuperViewAutoLayouts];
     }
-    cell.backgroundColor = [UIColor clearColor];
-    ZLPickerBrowserPhoto *photo = self.photos[indexPath.item]; //[self.dataSource photoBrowser:self photoAtIndex:indexPath.item];
     
-    if([[cell.contentView.subviews lastObject] isKindOfClass:[ZLPickerBrowserPhotoScrollView class]]){
-        [[cell.contentView.subviews lastObject] removeFromSuperview];
-    }
-    
-    ZLPickerBrowserPhotoScrollView *scrollView =  [ZLPickerBrowserPhotoScrollView instanceAutoLayoutView];
-    scrollView.backgroundColor = [UIColor clearColor];
-    // 为了监听单击photoView事件
-    scrollView.frame = cell.bounds;
-    scrollView.photoScrollViewDelegate = self;
-    [cell.contentView addSubview:scrollView];
-    scrollView.photo = photo;
-    
-    [scrollView autoEqualToSuperViewAutoLayouts];
     return cell;
 }
 
@@ -422,12 +427,16 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         
         NSInteger page = self.currentPage;
         if ([self.delegate respondsToSelector:@selector(photoBrowser:removePhotoAtIndex:)]) {
-            [self.delegate photoBrowser:self removePhotoAtIndex:page];
+            [self.delegate photoBrowser:self removePhotoAtIndex:page-1];
         }
         
+        if (self.currentPage >= self.photos.count) {
+            self.currentPage--;
+        }
+        
+        self.isDelete = YES;
         [self.photos removeObjectAtIndex:self.currentPage];
         [self reloadData];
-        
         if (self.photos.count < 1)
         {
             [[NSNotificationCenter defaultCenter] removeObserver:self];
