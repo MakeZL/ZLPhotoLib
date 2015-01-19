@@ -427,15 +427,16 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         
         NSInteger page = self.currentPage;
         if ([self.delegate respondsToSelector:@selector(photoBrowser:removePhotoAtIndex:)]) {
-            [self.delegate photoBrowser:self removePhotoAtIndex:page-1];
+            [self.delegate photoBrowser:self removePhotoAtIndex:page];
         }
+        
+        self.isDelete = YES;
+        [self.photos removeObjectAtIndex:self.currentPage];
         
         if (self.currentPage >= self.photos.count) {
             self.currentPage--;
         }
         
-        self.isDelete = YES;
-        [self.photos removeObjectAtIndex:self.currentPage];
         [self reloadData];
         if (self.photos.count < 1)
         {

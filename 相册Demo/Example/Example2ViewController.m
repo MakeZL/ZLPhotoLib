@@ -24,7 +24,7 @@
     if (!_assets) {
         _assets = [NSMutableArray arrayWithArray:@[
                                                    @"http://www.1tong.com/uploads/wallpaper/anime/124-2-1280x800.jpg",
-                                                   @"http://imgsrc.baidu.com/forum/pic/item/c59ca2ef76c6a7ef603e17c7fcfaaf51f2de6640.jpg",
+                                                   @"http://imgsrc.baidu.com/forum/pic/item/xc59ca2ef76c6a7ef603e17c7fcfaaf51f2de6640.jpg",
                                                    @"http://imgsrc.baidu.com/forum/pic/item/3f7dacaf2edda3cc7d2289ab01e93901233f92c5.jpg",
                                                    ]];
     }
@@ -77,7 +77,7 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     
     Example2CollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"Example2CollectionViewCell" forIndexPath:indexPath];
-    
+
     ZLAssets *asset = self.assets[indexPath.row];
     if ([asset isKindOfClass:[ZLAssets class]]) {
         cell.imageView.image = asset.thumbImage;
