@@ -112,15 +112,24 @@ static NSUInteger prevAnimationStatusType;
                     cell.hidden = NO;
                 }
                 CGRect cellFrame = [cell.superview convertRect:cell.frame toView:options[UIViewAnimationFromView]];
-                [frames addObject:[NSNumber numberWithFloat:cellFrame.origin.x]];
+                [frames addObject:[NSValue valueWithCGRect:cellFrame]];
             }
+
             
-            NSArray *framexs = [frames sortedArrayUsingSelector:@selector(compare:)];
+//            [frames sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+//                if ([obj1 CGRectValue].origin.x > [obj2 CGRectValue].origin.x || [obj1 CGRectValue].origin.y > [obj2 CGRectValue].origin.y) {
+//                    return NSOrderedDescending;
+//                }else{
+//                    return NSOrderedAscending;                    
+//                }
+//            }];
             
-            for (NSNumber *x in framexs) {
-                rect.origin.x = [x floatValue];
+            
+            for (NSValue *val in frames) {
                 
-                UIView *cell = [collectionView hitTest:CGPointMake(rect.origin.x, rect.origin.y) withEvent:nil];
+                CGRect valRect = [val CGRectValue];
+                
+                UIView *cell = [collectionView hitTest:CGPointMake(valRect.origin.x, valRect.origin.y) withEvent:nil];
                 if (cell != nil) {
                     [cells addObject:cell];
                 }
@@ -228,7 +237,8 @@ static NSUInteger prevAnimationStatusType;
                     UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:[self currentPage] inSection:0]];
                     [cell setHidden:YES];
                 }
-            }else {
+            } else if(tableView){
+                
                 // 竖屏
                 startFrame = [subViews[[self currentPage]] frame];
                 startFrame.origin.x = [toView.superview convertRect:toView.frame toView:options[UIViewAnimationFromView]].origin.x;
@@ -239,6 +249,18 @@ static NSUInteger prevAnimationStatusType;
                 if ([options[UIViewAnimationAnimationStatusType] integerValue] == UIViewAnimationAnimationStatusZoom) {
                     [subViews[[self currentPage]] setHidden:YES];
                 }
+            
+                if ([options[UIViewAnimationAnimationStatusType] integerValue] == UIViewAnimationAnimationStatusZoom) {
+                    [subViews[[self currentPage]] setHidden:YES];
+                }
+            }else{
+                // 竖屏
+                NSInteger count = collectionView.width / flowLayout.itemSize.width;
+                startFrame = [subViews[[self currentPage]] frame];
+                startFrame.origin.x = (toView.width + flowLayout.minimumLineSpacing) * ([self currentPage] % count);
+                startFrame.size.width = toView.width;
+                startFrame.size.height = toView.height;
+                startFrame.origin.y = (toView.height + flowLayout.minimumLineSpacing) * ([self currentPage] / count) + 64;
             }
             
         }else{
@@ -281,8 +303,9 @@ static NSUInteger prevAnimationStatusType;
     [super restoreWithOptions:ops animation:^{
         
         if (collectionView) {
-            UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:[self currentPage] inSection:0]];
-            [cell setHidden:NO];
+            [subViews[[self currentPage]] setHidden:NO];
+//            UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:[self currentPage] inSection:0]];
+//            [cell setHidden:NO];
         }else if ([self currentPage] < subViews.count) {
             [subViews[[self currentPage]] setHidden:NO];
         }

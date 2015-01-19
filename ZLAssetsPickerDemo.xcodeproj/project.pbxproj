@@ -60,6 +60,10 @@
 		48C209951A4C1AC20031BCDA /* ZLPickerBrowserPhotoGifView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C209641A4C1AC20031BCDA /* ZLPickerBrowserPhotoGifView.m */; };
 		48C209961A4C1AC20031BCDA /* ZLPickerBrowserPhotoImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C209661A4C1AC20031BCDA /* ZLPickerBrowserPhotoImageView.m */; };
 		48C209971A4C1AC20031BCDA /* ZLPickerBrowserPhotoScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C209681A4C1AC20031BCDA /* ZLPickerBrowserPhotoScrollView.m */; };
+		48ED22091A6D098C0008E783 /* Example1ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48ED22081A6D098C0008E783 /* Example1ViewController.m */; };
+		48ED220C1A6D0E370008E783 /* Example2ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48ED220B1A6D0E370008E783 /* Example2ViewController.m */; };
+		48ED22131A6D108C0008E783 /* Example2CollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 48ED22121A6D108C0008E783 /* Example2CollectionViewCell.m */; };
+		48ED22151A6D10960008E783 /* Example2CollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48ED22141A6D10960008E783 /* Example2CollectionViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -177,6 +181,13 @@
 		48C209671A4C1AC20031BCDA /* ZLPickerBrowserPhotoScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLPickerBrowserPhotoScrollView.h; sourceTree = "<group>"; };
 		48C209681A4C1AC20031BCDA /* ZLPickerBrowserPhotoScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLPickerBrowserPhotoScrollView.m; sourceTree = "<group>"; };
 		48C209691A4C1AC20031BCDA /* ZLPickerCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLPickerCommon.h; sourceTree = "<group>"; };
+		48ED22071A6D098C0008E783 /* Example1ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Example1ViewController.h; sourceTree = "<group>"; };
+		48ED22081A6D098C0008E783 /* Example1ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Example1ViewController.m; sourceTree = "<group>"; };
+		48ED220A1A6D0E370008E783 /* Example2ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Example2ViewController.h; sourceTree = "<group>"; };
+		48ED220B1A6D0E370008E783 /* Example2ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Example2ViewController.m; sourceTree = "<group>"; };
+		48ED22111A6D108C0008E783 /* Example2CollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Example2CollectionViewCell.h; sourceTree = "<group>"; };
+		48ED22121A6D108C0008E783 /* Example2CollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Example2CollectionViewCell.m; sourceTree = "<group>"; };
+		48ED22141A6D10960008E783 /* Example2CollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Example2CollectionViewCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -218,6 +229,7 @@
 		48B3E1721A11BABC0079F464 /* ZLAssetsPickerDemo */ = {
 			isa = PBXGroup;
 			children = (
+				48ED22061A6D080C0008E783 /* Example */,
 				48C208FE1A4C1AC20031BCDA /* ZLPickerLib */,
 				48B3E1771A11BABC0079F464 /* AppDelegate.h */,
 				48B3E1781A11BABC0079F464 /* AppDelegate.m */,
@@ -493,6 +505,28 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		48ED22061A6D080C0008E783 /* Example */ = {
+			isa = PBXGroup;
+			children = (
+				48ED22101A6D10720008E783 /* Views */,
+				48ED22071A6D098C0008E783 /* Example1ViewController.h */,
+				48ED22081A6D098C0008E783 /* Example1ViewController.m */,
+				48ED220A1A6D0E370008E783 /* Example2ViewController.h */,
+				48ED220B1A6D0E370008E783 /* Example2ViewController.m */,
+			);
+			path = Example;
+			sourceTree = "<group>";
+		};
+		48ED22101A6D10720008E783 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				48ED22111A6D108C0008E783 /* Example2CollectionViewCell.h */,
+				48ED22121A6D108C0008E783 /* Example2CollectionViewCell.m */,
+				48ED22141A6D10960008E783 /* Example2CollectionViewCell.xib */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -577,6 +611,7 @@
 				48B3E1811A11BABC0079F464 /* Images.xcassets in Resources */,
 				48C2097D1A4C1AC20031BCDA /* AssetsPickerChecked.png in Resources */,
 				48C2097F1A4C1AC20031BCDA /* AssetsPickerChecked@3x.png in Resources */,
+				48ED22151A6D10960008E783 /* Example2CollectionViewCell.xib in Resources */,
 				48C209911A4C1AC20031BCDA /* ZLPickerGroupTableViewCell.xib in Resources */,
 				48C2097E1A4C1AC20031BCDA /* AssetsPickerChecked@2x.png in Resources */,
 				48C209801A4C1AC20031BCDA /* Contents.json in Resources */,
@@ -609,6 +644,7 @@
 				48C209781A4C1AC20031BCDA /* UIImage+WebP.m in Sources */,
 				48C209741A4C1AC20031BCDA /* SDWebImagePrefetcher.m in Sources */,
 				48B3E17C1A11BABC0079F464 /* ViewController.m in Sources */,
+				48ED22131A6D108C0008E783 /* Example2CollectionViewCell.m in Sources */,
 				48C209931A4C1AC20031BCDA /* ZLPickerBrowserPhoto.m in Sources */,
 				48C209701A4C1AC20031BCDA /* SDWebImageDecoder.m in Sources */,
 				48C209711A4C1AC20031BCDA /* SDWebImageDownloader.m in Sources */,
@@ -624,11 +660,13 @@
 				48C209771A4C1AC20031BCDA /* UIImage+MultiFormat.m in Sources */,
 				48C2096A1A4C1AC20031BCDA /* UIView+Extension.m in Sources */,
 				48C209941A4C1AC20031BCDA /* ZLPickerBrowserViewController.m in Sources */,
+				48ED22091A6D098C0008E783 /* Example1ViewController.m in Sources */,
 				48C209971A4C1AC20031BCDA /* ZLPickerBrowserPhotoScrollView.m in Sources */,
 				48C209721A4C1AC20031BCDA /* SDWebImageDownloaderOperation.m in Sources */,
 				48C2098B1A4C1AC20031BCDA /* ZLPickerGroupViewController.m in Sources */,
 				48C209761A4C1AC20031BCDA /* UIImage+GIF.m in Sources */,
 				48C209811A4C1AC20031BCDA /* ZLAnimationBaseView.m in Sources */,
+				48ED220C1A6D0E370008E783 /* Example2ViewController.m in Sources */,
 				48C2098F1A4C1AC20031BCDA /* ZLPickerFooterCollectionReusableView.m in Sources */,
 				48C2096F1A4C1AC20031BCDA /* SDWebImageCompat.m in Sources */,
 				48C209861A4C1AC20031BCDA /* ZLCameraViewController.m in Sources */,

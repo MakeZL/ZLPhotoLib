@@ -11,37 +11,23 @@
 #import "UIImageView+WebCache.h"
 #import "ZLPicker.h"
 
-@interface ViewController () <UITableViewDataSource,UITableViewDelegate,ZLPickerViewControllerDelegate,ZLPickerBrowserViewControllerDataSource,ZLPickerBrowserViewControllerDelegate>
+@interface ViewController () <UITableViewDataSource,UITableViewDelegate>
 
-- (void)selectPhotos;
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (nonatomic , strong) NSMutableArray *assets;
-@property (nonatomic , weak) UILabel *zixueLabel;
-
-@property (nonatomic,strong) UIImageView *currentImageView;
-@property (nonatomic , strong) ZLPickerBrowserViewController *pickerBrowser;
-@property (nonatomic , assign) CGRect tempFrame;
-@property (nonatomic , strong) NSMutableDictionary *params;
-@property (strong,nonatomic)   ZLCameraViewController *cameraVc;
+@property (weak, nonatomic) UITableView *tableView;
+@property (strong,nonatomic) NSArray *examples;
 
 @end
 
 @implementation ViewController
 
-#pragma mark -getter
-- (NSMutableArray *)assets{
-    if (!_assets) {
-        // 测试数据
-        NSArray *testAssets = @[
-                                @"http://e.hiphotos.baidu.com/zhidao/pic/item/574e9258d109b3de40f319c6cebf6c81810a4cd4.jpg",
-                                @"http://image.tianjimedia.com/uploadImages/2013/165/P9KJTQBA119S.jpg",
-                                @"http://image.tianjimedia.com/uploadImages/2012/013/0C4PQ1XX78O3.jpg"
-                                ];
-        self.assets = [NSMutableArray arrayWithArray:testAssets];
-    }
-    return _assets;
+#pragma mark - getter
+- (NSArray *)examples{
+    return @[
+             @"相片多选 + 图片游览器 >>> TableView",
+             @"相片连拍/多选 + 图片游览器 >>> UICollectionView",
+            ];
 }
-//
+
 - (UITableView *)tableView{
     if (!_tableView) {
         UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
@@ -53,11 +39,11 @@
         
         tableView.translatesAutoresizingMaskIntoConstraints = NO;
         
-        NSString *vfl = @"V:|-topPadding-[tableView]-padding-|";
+        NSString *vfl = @"V:|-0-[tableView]-20-|";
         NSDictionary *views = NSDictionaryOfVariableBindings(tableView);
-        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:vfl options:0 metrics:self.params views:views]];
-        NSString *vfl2 = @"H:|-padding-[tableView]-padding-|";
-        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:vfl2 options:0 metrics:self.params views:views]];
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:vfl options:0 metrics:nil views:views]];
+        NSString *vfl2 = @"H:|-0-[tableView]-0-|";
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:vfl2 options:0 metrics:nil views:views]];
     }
     return _tableView;
 }
@@ -66,71 +52,15 @@
     [super viewDidLoad];
     
     self.view.backgroundColor = [UIColor whiteColor];
-    // 设置AutoLayout参数
-    [self setAutoLayoutParams];
     
-    [self setupButtons];
+    self.title = @"ZLPickerLib";
+    [self tableView];
     
-    [self.tableView reloadData];
-    
-}
-
-#pragma mark -setter
-#pragma mark 设置AutoLayout参数
-- (void) setAutoLayoutParams{
-    self.params = [NSMutableDictionary dictionary];
-    self.params[@"padding"] = @"20";
-    self.params[@"topPadding"] = @"0";
-}
-- (void) setupButtons{
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"选择照片" style:UIBarButtonItemStyleDone target:self action:@selector(selectPhotos)];
-}
-
-
-- (void)selectPhotos {
-    
-    ZLCameraViewController *cameraVc = [[ZLCameraViewController alloc] init];
-    __weak typeof(self) weakSelf = self;
-    [cameraVc startCameraOrPhotoFileWithViewController:self complate:^(NSArray *object) {
-        // 回调 ,
-        [object enumerateObjectsUsingBlock:^(id asset, NSUInteger idx, BOOL *stop) {
-            if ([asset isKindOfClass:[NSDictionary class]]) {
-                
-                [weakSelf.assets addObjectsFromArray:[asset allValues]];
-            }else{
-                [weakSelf.assets addObject:asset];
-            }
-        }];
-        [weakSelf.tableView reloadData];
-    }];
-    self.cameraVc = cameraVc;
-    
-    // 可以用下面来创建ZLPickerViewController, 就没有拍照的选项了
-    /*
-     // 创建控制器
-     ZLPickerViewController *pickerVc = [[ZLPickerViewController alloc] init];
-     // 默认显示相册里面的内容SavePhotos
-     pickerVc.status = PickerViewShowStatusCameraRoll;
-     // 选择图片的最大数
-     // pickerVc.maxCount = 4;
-     pickerVc.delegate = self;
-     [pickerVc show];
-     */
-    
-    /**
-     *
-     传值可以用代理，或者用block来接收，以下是block的传值
-     __weak typeof(self) weakSelf = self;
-     pickerVc.callBack = ^(NSArray *assets){
-     weakSelf.assets = assets;
-     [weakSelf.tableView reloadData];
-     };
-     */
 }
 
 #pragma mark - <UITableViewDataSource>
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return self.assets.count;
+    return self.examples.count;
 }
 
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -144,14 +74,7 @@
         cell.backgroundColor = [UIColor clearColor];
     }
     
-    ZLAssets *asset = self.assets[indexPath.row];
-    if ([asset isKindOfClass:[ZLAssets class]]) {
-        cell.imageView.image = asset.thumbImage;
-    }else if ([asset isKindOfClass:[NSString class]]){
-        [cell.imageView sd_setImageWithURL:[NSURL URLWithString:(NSString *)asset] placeholderImage:[UIImage imageNamed:@"wallpaper_placeholder"]];
-    }else if([asset isKindOfClass:[UIImage class]]){
-        cell.imageView.image = (UIImage *)asset;
-    }
+    cell.textLabel.text = self.examples[indexPath.row];
     
     return cell;
     
@@ -160,61 +83,8 @@
 #pragma mark - <UITableViewDelegate>
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
-    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    
-    [self setupPhotoBrowser:cell];
+    NSString *exampleVc = [NSString stringWithFormat:@"Example%ldViewController",indexPath.row + 1];
+    [self.navigationController pushViewController:[[NSClassFromString(exampleVc) alloc] init] animated:YES];
 }
-
-#pragma mark - setupCell click ZLPickerBrowserViewController
-- (void) setupPhotoBrowser:(UITableViewCell *) cell{
-    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-    // 图片游览器
-    ZLPickerBrowserViewController *pickerBrowser = [[ZLPickerBrowserViewController alloc] init];
-    // 传入点击图片View的话，会有微信朋友圈照片的风格
-    pickerBrowser.toView = cell.imageView;
-    // 数据源/delegate
-    pickerBrowser.delegate = self;
-    pickerBrowser.dataSource = self;
-    // 是否可以删除照片
-    pickerBrowser.editing = YES;
-    // 当前选中的值
-    pickerBrowser.currentPage = indexPath.row;
-    // 展示控制器
-    [pickerBrowser show];
-    self.pickerBrowser = pickerBrowser;
-}
-
-#pragma mark - <ZLPickerBrowserViewControllerDataSource>
-- (NSInteger) numberOfPhotosInPickerBrowser:(ZLPickerBrowserViewController *)pickerBrowser{
-    return self.assets.count;
-}
-
-- (ZLPickerBrowserPhoto *) photoBrowser:(ZLPickerBrowserViewController *)pickerBrowser photoAtIndex:(NSUInteger)index{
-    
-    id imageObj = [self.assets objectAtIndex:index];
-    ZLPickerBrowserPhoto *photo = [ZLPickerBrowserPhoto photoAnyImageObjWith:imageObj];
-    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
-    photo.thumbImage = cell.imageView.image;
-    
-    return photo;
-}
-
-#pragma mark - <ZLPickerBrowserViewControllerDelegate>
-- (void)photoBrowser:(ZLPickerBrowserViewController *)photoBrowser removePhotoAtIndex:(NSUInteger)index{
-    if (index > self.assets.count) return;
-    [self.assets removeObjectAtIndex:index];
-    [self.tableView reloadData];
-}
-
-
-#pragma mark - <ZLPickerViewControllerDelegate>
-// 代理回调方法
-- (void)pickerViewControllerDoneAsstes:(NSArray *)assets{
-    //    [self.assets addObjectsFromArray:assets];
-    //    [self.tableView reloadData];
-}
-
 
 @end
