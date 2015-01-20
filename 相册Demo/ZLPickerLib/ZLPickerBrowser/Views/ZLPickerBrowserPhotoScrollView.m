@@ -10,7 +10,6 @@
 #import "UIView+Extension.h"
 #import "ZLPickerBrowserPhotoImageView.h"
 #import "ZLPickerBrowserPhoto.h"
-#import "ZLPickerBrowserPhotoGifView.h"
 #import "ZLPickerCommon.h"
 
 @interface ZLPickerBrowserPhotoScrollView () <UIScrollViewDelegate,ZLPickerBrowserPhotoImageViewDelegate>
@@ -120,35 +119,25 @@
     // 避免cell重复创建控件，删除再添加
     [[self.subviews lastObject] removeFromSuperview];
     
-    // 判断是否为gif图片，不是的话就正常来展示图片
+    ZLPickerBrowserPhotoImageView *zoomImageView = [[ZLPickerBrowserPhotoImageView alloc] init];
     
-    if ([photo.photoURL.absoluteString hasSuffix:@"gif"]) {
-        ZLPickerBrowserPhotoGifView *gifView = [[ZLPickerBrowserPhotoGifView alloc] init];
-        gifView.frame = self.bounds;
-        [gifView playGifWithURLString:photo.photoURL.absoluteString];
-        [self addSubview:gifView];
-    }else{
-        ZLPickerBrowserPhotoImageView *zoomImageView = [[ZLPickerBrowserPhotoImageView alloc] init];
-        
-        zoomImageView.frame = self.bounds;
-        [self addSubview:zoomImageView];
-        self.zoomImageView = zoomImageView;
-        
-        zoomImageView.downLoadWebImageCallBlock = ^{
-            // 下载完毕后重新计算下Frame
-            [self setMaxMinZoomScalesForCurrentBounds];
-        };
-        
-        zoomImageView.delegate = self;
-        zoomImageView.scrollView = self;
-        zoomImageView.photo = photo;
-        [zoomImageView setProgress:self.progress];
-        
-        if (!photo.photoURL.absoluteString.length) {
-            [self setMaxMinZoomScalesForCurrentBounds];
-        }
+    zoomImageView.frame = self.bounds;
+    [self addSubview:zoomImageView];
+    self.zoomImageView = zoomImageView;
+    
+    zoomImageView.downLoadWebImageCallBlock = ^{
+        // 下载完毕后重新计算下Frame
+        [self setMaxMinZoomScalesForCurrentBounds];
+    };
+    
+    zoomImageView.delegate = self;
+    zoomImageView.scrollView = self;
+    zoomImageView.photo = photo;
+    [zoomImageView setProgress:self.progress];
+    
+    if (!photo.photoURL.absoluteString.length) {
+        [self setMaxMinZoomScalesForCurrentBounds];
     }
-    
     
 }
 

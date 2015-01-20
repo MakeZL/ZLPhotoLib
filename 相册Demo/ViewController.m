@@ -7,8 +7,6 @@
 //
 
 #import "ViewController.h"
-#import "UIView+Extension.h"
-#import "UIImageView+WebCache.h"
 #import "ZLPicker.h"
 
 @interface ViewController () <UITableViewDataSource,UITableViewDelegate>

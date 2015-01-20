@@ -57,7 +57,6 @@
 		48C209921A4C1AC20031BCDA /* ZLPickerImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C209591A4C1AC20031BCDA /* ZLPickerImageView.m */; };
 		48C209931A4C1AC20031BCDA /* ZLPickerBrowserPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C2095E1A4C1AC20031BCDA /* ZLPickerBrowserPhoto.m */; };
 		48C209941A4C1AC20031BCDA /* ZLPickerBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C209611A4C1AC20031BCDA /* ZLPickerBrowserViewController.m */; };
-		48C209951A4C1AC20031BCDA /* ZLPickerBrowserPhotoGifView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C209641A4C1AC20031BCDA /* ZLPickerBrowserPhotoGifView.m */; };
 		48C209961A4C1AC20031BCDA /* ZLPickerBrowserPhotoImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C209661A4C1AC20031BCDA /* ZLPickerBrowserPhotoImageView.m */; };
 		48C209971A4C1AC20031BCDA /* ZLPickerBrowserPhotoScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C209681A4C1AC20031BCDA /* ZLPickerBrowserPhotoScrollView.m */; };
 		48ED22091A6D098C0008E783 /* Example1ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48ED22081A6D098C0008E783 /* Example1ViewController.m */; };
@@ -174,8 +173,6 @@
 		48C2095E1A4C1AC20031BCDA /* ZLPickerBrowserPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLPickerBrowserPhoto.m; sourceTree = "<group>"; };
 		48C209601A4C1AC20031BCDA /* ZLPickerBrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLPickerBrowserViewController.h; sourceTree = "<group>"; };
 		48C209611A4C1AC20031BCDA /* ZLPickerBrowserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLPickerBrowserViewController.m; sourceTree = "<group>"; };
-		48C209631A4C1AC20031BCDA /* ZLPickerBrowserPhotoGifView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLPickerBrowserPhotoGifView.h; sourceTree = "<group>"; };
-		48C209641A4C1AC20031BCDA /* ZLPickerBrowserPhotoGifView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLPickerBrowserPhotoGifView.m; sourceTree = "<group>"; };
 		48C209651A4C1AC20031BCDA /* ZLPickerBrowserPhotoImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLPickerBrowserPhotoImageView.h; sourceTree = "<group>"; };
 		48C209661A4C1AC20031BCDA /* ZLPickerBrowserPhotoImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLPickerBrowserPhotoImageView.m; sourceTree = "<group>"; };
 		48C209671A4C1AC20031BCDA /* ZLPickerBrowserPhotoScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLPickerBrowserPhotoScrollView.h; sourceTree = "<group>"; };
@@ -495,8 +492,6 @@
 		48C209621A4C1AC20031BCDA /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				48C209631A4C1AC20031BCDA /* ZLPickerBrowserPhotoGifView.h */,
-				48C209641A4C1AC20031BCDA /* ZLPickerBrowserPhotoGifView.m */,
 				48C209651A4C1AC20031BCDA /* ZLPickerBrowserPhotoImageView.h */,
 				48C209661A4C1AC20031BCDA /* ZLPickerBrowserPhotoImageView.m */,
 				48C209671A4C1AC20031BCDA /* ZLPickerBrowserPhotoScrollView.h */,
@@ -671,7 +666,6 @@
 				48C2096F1A4C1AC20031BCDA /* SDWebImageCompat.m in Sources */,
 				48C209861A4C1AC20031BCDA /* ZLCameraViewController.m in Sources */,
 				48C209921A4C1AC20031BCDA /* ZLPickerImageView.m in Sources */,
-				48C209951A4C1AC20031BCDA /* ZLPickerBrowserPhotoGifView.m in Sources */,
 				48C2098D1A4C1AC20031BCDA /* ZLPickerCollectionView.m in Sources */,
 				48C2096D1A4C1AC20031BCDA /* NSData+ImageContentType.m in Sources */,
 				48B3E1761A11BABC0079F464 /* main.m in Sources */,
