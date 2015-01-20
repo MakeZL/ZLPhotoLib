@@ -438,6 +438,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         }
         
         [self reloadData];
+        
         if (self.photos.count < 1)
         {
             [[NSNotificationCenter defaultCenter] removeObserver:self];
