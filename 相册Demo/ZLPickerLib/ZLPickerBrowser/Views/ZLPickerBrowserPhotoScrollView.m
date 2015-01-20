@@ -77,11 +77,12 @@
     // Zoom
     // 重置
     if (self.zoomScale == self.maximumZoomScale) {
-        [UIView animateWithDuration:.4 animations:^{
+        [UIView animateWithDuration:.3 animations:^{
             _zoomImageView.y = self.firstFrame.origin.y;
+            [self setZoomScale:self.minimumZoomScale animated:NO];
         } completion:^(BOOL finished) {
         }];
-        [self setZoomScale:self.minimumZoomScale animated:YES];
+        
         
     }else{
         
@@ -98,10 +99,10 @@
             [self zoomToRect:CGRectMake(x, y, 0, 0 ) animated:NO];
             self.zoomImageView.y = 0;
         } completion:^(BOOL finished) {
+            [self setZoomScale:self.maximumZoomScale];
             
         }];
         
-        [self setZoomScale:self.maximumZoomScale];
     }
 }
 
