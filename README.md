@@ -2,9 +2,18 @@
 This is a photo album multiple-choice / photo browser example
 --------------
 
-* Demo Show
-\<br>
-![image](https://github.com/MakeZL/ZLAssetsPickerDemo/blob/master/screenshot.gif)
+### Demo Show
+#### UIScrollView
+![image](https://github.com/MakeZL/ZLAssetsPickerDemo/blob/master/screenshot1.gif)
+
+#### UITableView
+![image](https://github.com/MakeZL/ZLAssetsPickerDemo/blob/master/screenshot2.gif)
+
+#### Screen rotation
+![image](https://github.com/MakeZL/ZLAssetsPickerDemo/blob/master/screenshot3.gif)
+
+#### Custom ZLCamera
+![image](https://github.com/MakeZL/ZLAssetsPickerDemo/blob/master/screenshot4.png)
 
 相册多选
 --------
