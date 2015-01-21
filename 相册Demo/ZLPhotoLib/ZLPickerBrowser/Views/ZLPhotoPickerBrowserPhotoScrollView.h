@@ -24,4 +24,6 @@
 // delegate
 @property (nonatomic , weak) id <ZLPhotoPickerPhotoScrollViewDelegate> photoScrollViewDelegate;
 
+- (void)setMaxMinZoomScalesForCurrentBounds;
+
 @end
