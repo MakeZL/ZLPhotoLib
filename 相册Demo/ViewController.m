@@ -7,7 +7,7 @@
 //
 
 #import "ViewController.h"
-#import "ZLPicker.h"
+#import "ZLPhoto.h"
 
 @interface ViewController () <UITableViewDataSource,UITableViewDelegate>
 

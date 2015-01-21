@@ -7,9 +7,9 @@
 //
 
 #import "Example1ViewController.h"
-#import "ZLPicker.h"
+#import "ZLPhoto.h"
 
-@interface Example1ViewController() <ZLPickerViewControllerDelegate,UITableViewDataSource,UITableViewDelegate,ZLPickerBrowserViewControllerDataSource,ZLPickerBrowserViewControllerDelegate>
+@interface Example1ViewController() <ZLPhotoPickerViewControllerDelegate,UITableViewDataSource,UITableViewDelegate,ZLPhotoPickerBrowserViewControllerDataSource,ZLPhotoPickerBrowserViewControllerDelegate>
 
 @property (weak,nonatomic) UITableView *tableView;
 @property (nonatomic , strong) NSMutableArray *assets;
@@ -67,7 +67,7 @@
 #pragma mark - select Photo Library
 - (void)selectPhotos {
      // 创建控制器
-     ZLPickerViewController *pickerVc = [[ZLPickerViewController alloc] init];
+     ZLPhotoPickerViewController *pickerVc = [[ZLPhotoPickerViewController alloc] init];
      // 默认显示相册里面的内容SavePhotos
      pickerVc.status = PickerViewShowStatusCameraRoll;
      // 选择图片的最大数
@@ -106,8 +106,8 @@
         cell.backgroundColor = [UIColor clearColor];
     }
     
-    ZLAssets *asset = self.assets[indexPath.row];
-    if ([asset isKindOfClass:[ZLAssets class]]) {
+    ZLPhotoAssets *asset = self.assets[indexPath.row];
+    if ([asset isKindOfClass:[ZLPhotoAssets class]]) {
         cell.imageView.image = asset.thumbImage;
     }else if ([asset isKindOfClass:[NSString class]]){
         [cell.imageView sd_setImageWithURL:[NSURL URLWithString:(NSString *)asset] placeholderImage:[UIImage imageNamed:@"wallpaper_placeholder"]];
@@ -128,11 +128,11 @@
     [self setupPhotoBrowser:cell];
 }
 
-#pragma mark - setupCell click ZLPickerBrowserViewController
+#pragma mark - setupCell click ZLPhotoPickerBrowserViewController
 - (void) setupPhotoBrowser:(UITableViewCell *) cell{
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     // 图片游览器
-    ZLPickerBrowserViewController *pickerBrowser = [[ZLPickerBrowserViewController alloc] init];
+    ZLPhotoPickerBrowserViewController *pickerBrowser = [[ZLPhotoPickerBrowserViewController alloc] init];
     // 传入点击图片View的话，会有微信朋友圈照片的风格
     pickerBrowser.toView = cell.imageView;
     // 数据源/delegate
@@ -146,23 +146,23 @@
     [pickerBrowser show];
 }
 
-#pragma mark - <ZLPickerBrowserViewControllerDataSource>
-- (NSInteger) numberOfPhotosInPickerBrowser:(ZLPickerBrowserViewController *)pickerBrowser{
+#pragma mark - <ZLPhotoPickerBrowserViewControllerDataSource>
+- (NSInteger) numberOfPhotosInPickerBrowser:(ZLPhotoPickerBrowserViewController *)pickerBrowser{
     return self.assets.count;
 }
 
-- (ZLPickerBrowserPhoto *) photoBrowser:(ZLPickerBrowserViewController *)pickerBrowser photoAtIndex:(NSUInteger)index{
+- (ZLPhotoPickerBrowserPhoto *) photoBrowser:(ZLPhotoPickerBrowserViewController *)pickerBrowser photoAtIndex:(NSUInteger)index{
 
-    id imageObj = [self.assets objectAtIndex:index];
-    ZLPickerBrowserPhoto *photo = [ZLPickerBrowserPhoto photoAnyImageObjWith:imageObj];
+    ZLPhotoAssets *imageObj = [self.assets objectAtIndex:index];
+    ZLPhotoPickerBrowserPhoto *photo = [ZLPhotoPickerBrowserPhoto photoAnyImageObjWith:imageObj];
+    
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
     photo.thumbImage = cell.imageView.image;
-
     return photo;
 }
 
-#pragma mark - <ZLPickerBrowserViewControllerDelegate>
-- (void)photoBrowser:(ZLPickerBrowserViewController *)photoBrowser removePhotoAtIndex:(NSUInteger)index{
+#pragma mark - <ZLPhotoPickerBrowserViewControllerDelegate>
+- (void)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser removePhotoAtIndex:(NSUInteger)index{
     if (index > self.assets.count) return;
     [self.assets removeObjectAtIndex:index];
     [self.tableView reloadData];

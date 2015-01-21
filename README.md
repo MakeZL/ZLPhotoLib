@@ -18,9 +18,9 @@ This is a photo album multiple-choice / photo browser example
 相册多选
 --------
     // 创建图片多选控制器
-    PickerViewController *pickerVc = [[PickerViewController alloc] init];
+    ZLPhotoPickerViewController *pickerVc = [[ZLPhotoPickerViewController alloc] init];
     // 默认显示相册里面的内容SavePhotos
-    PickerVc.status = PickerViewShowStatusSavePhotos;
+    pickerVc.status = PickerViewShowStatusSavePhotos;
     // 选择图片的最小数，默认是9张图片最大也是9张
     pickerVc.minCount = 4; 
     [pickerVc show];
@@ -44,9 +44,9 @@ This is a photo album multiple-choice / photo browser example
       [self.tableView reloadData];
     }
 
-ZLPickerBrowserViewController 图片游览器
+ZLPhotoPickerBrowserViewController 图片游览器
 ----------
-    ZLPickerBrowserViewController *pickerBrowser = [[ZLPickerBrowserViewController alloc] init];
+    ZLPhotoPickerBrowserViewController *pickerBrowser = [[ZLPhotoPickerBrowserViewController alloc] init];
     // 传入点击图片View的话，会有微信朋友圈照片的风格
     pickerBrowser.toView = cell.imageView;
     // 数据源/delegate

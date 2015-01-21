@@ -8,9 +8,9 @@
 
 #import "Example2ViewController.h"
 #import "Example2CollectionViewCell.h"
-#import "ZLPicker.h"
+#import "ZLPhoto.h"
 
-@interface Example2ViewController () <UICollectionViewDataSource,UICollectionViewDelegate,ZLPickerBrowserViewControllerDataSource,ZLPickerBrowserViewControllerDelegate>
+@interface Example2ViewController () <UICollectionViewDataSource,UICollectionViewDelegate,ZLPhotoPickerBrowserViewControllerDataSource,ZLPhotoPickerBrowserViewControllerDelegate>
 
 @property (nonatomic , strong) NSMutableArray *assets;
 @property (weak,nonatomic) UICollectionView *collectionView;
@@ -31,7 +31,6 @@
     }
     return _assets;
 }
-
 
 - (void)viewDidLoad{
     [super viewDidLoad];
@@ -79,8 +78,8 @@
     
     Example2CollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"Example2CollectionViewCell" forIndexPath:indexPath];
 
-    ZLAssets *asset = self.assets[indexPath.row];
-    if ([asset isKindOfClass:[ZLAssets class]]) {
+    ZLPhotoAssets *asset = self.assets[indexPath.row];
+    if ([asset isKindOfClass:[ZLPhotoAssets class]]) {
         cell.imageView.image = asset.thumbImage;
     }else if ([asset isKindOfClass:[NSString class]]){
         [cell.imageView sd_setImageWithURL:[NSURL URLWithString:(NSString *)asset] placeholderImage:[UIImage imageNamed:@"wallpaper_placeholder"]];
@@ -97,7 +96,7 @@
     
     Example2CollectionViewCell *cell = (Example2CollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
     // 图片游览器
-    ZLPickerBrowserViewController *pickerBrowser = [[ZLPickerBrowserViewController alloc] init];
+    ZLPhotoPickerBrowserViewController *pickerBrowser = [[ZLPhotoPickerBrowserViewController alloc] init];
     // 传入点击图片View的话，会有微信朋友圈照片的风格
     pickerBrowser.toView = cell.imageView;
     // 数据源/delegate
@@ -111,23 +110,25 @@
     [pickerBrowser show];
 }
 
-#pragma mark - <ZLPickerBrowserViewControllerDataSource>
-- (NSInteger) numberOfPhotosInPickerBrowser:(ZLPickerBrowserViewController *)pickerBrowser{
+#pragma mark - <ZLPhotoPickerBrowserViewControllerDataSource>
+- (NSInteger) numberOfPhotosInPickerBrowser:(ZLPhotoPickerBrowserViewController *)pickerBrowser{
     return self.assets.count;
 }
 
-- (ZLPickerBrowserPhoto *) photoBrowser:(ZLPickerBrowserViewController *)pickerBrowser photoAtIndex:(NSUInteger)index{
-
+- (ZLPhotoPickerBrowserPhoto *) photoBrowser:(ZLPhotoPickerBrowserViewController *)pickerBrowser photoAtIndex:(NSUInteger)index{
+    
     id imageObj = [self.assets objectAtIndex:index];
-    ZLPickerBrowserPhoto *photo = [ZLPickerBrowserPhoto photoAnyImageObjWith:imageObj];
+    ZLPhotoPickerBrowserPhoto *photo = [ZLPhotoPickerBrowserPhoto photoAnyImageObjWith:imageObj];
+    
     Example2CollectionViewCell *cell = (Example2CollectionViewCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
+    
     photo.thumbImage = cell.imageView.image;
-
+    
     return photo;
 }
 
-#pragma mark - <ZLPickerBrowserViewControllerDelegate>
-- (void)photoBrowser:(ZLPickerBrowserViewController *)photoBrowser removePhotoAtIndex:(NSUInteger)index{
+#pragma mark - <ZLPhotoPickerBrowserViewControllerDelegate>
+- (void)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser removePhotoAtIndex:(NSUInteger)index{
     if (index > self.assets.count) return;
     [self.assets removeObjectAtIndex:index];
     [self.collectionView reloadData];
