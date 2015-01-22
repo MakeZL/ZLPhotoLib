@@ -9,7 +9,9 @@
 #import <UIKit/UIKit.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 
-@interface ZLPhotoAssets : ALAsset
+@interface ZLPhotoAssets : NSObject
+
+@property (strong,nonatomic) ALAsset *asset;
 /**
  *  缩略图
  */

@@ -193,7 +193,8 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
     [[ZLPhotoPickerDatas defaultPicker] getGroupPhotosWithGroup:self.assetsGroup finished:^(NSArray *assets) {
         
         [assets enumerateObjectsUsingBlock:^(ALAsset *asset, NSUInteger idx, BOOL *stop) {
-            ZLPhotoAssets *zlAsset = (ZLPhotoAssets *)asset;
+            ZLPhotoAssets *zlAsset = [[ZLPhotoAssets alloc] init];
+            zlAsset.asset = asset;
             [assetsM addObject:zlAsset];
         }];
         

@@ -11,11 +11,11 @@
 @implementation ZLPhotoAssets
 
 - (UIImage *)thumbImage{
-    return [UIImage imageWithCGImage:[self thumbnail]];
+    return [UIImage imageWithCGImage:[self.asset thumbnail]];
 }
 
 - (UIImage *)originImage{
-    return [UIImage imageWithCGImage:[[self defaultRepresentation] fullScreenImage]];
+    return [UIImage imageWithCGImage:[[self.asset defaultRepresentation] fullScreenImage]];
 }
 
 @end
