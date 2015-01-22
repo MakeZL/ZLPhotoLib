@@ -55,16 +55,8 @@
 - (id)initWithFrame:(CGRect)frame{
     if (self = [super initWithFrame:frame]) {
         self.userInteractionEnabled = YES;
-        [self addRecognizer];
     }
     return self;
-}
-
-- (void)addRecognizer
-{
-    UITapGestureRecognizer *gesture1 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)];
-    self.contentMode = UIViewContentModeScaleAspectFit;
-    [self addGestureRecognizer:gesture1];
 }
 
 #pragma mark 删除图片
@@ -74,63 +66,8 @@
     }
 }
 
-- (void)handleGesture:(UITapGestureRecognizer *)gesture
-{
-    // 防止多次点击
-    self.userInteractionEnabled = NO;
-    self.point = [gesture locationInView:self];
-    UIImageView *imageView = [[UIImageView alloc] init];
-    imageView.contentMode = UIViewContentModeScaleAspectFit;
-    imageView.backgroundColor = [UIColor blackColor];
-    if (self.originalImageView) {
-        imageView.image = self.originalImageView;
-    }
-    else
-    {
-        imageView.image = self.image;
-    }
-    
-    imageView.center = [self convertPoint:self.point fromView:self.superview];
-
-    imageView.userInteractionEnabled = YES;
-    UITapGestureRecognizer *gesture1 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture1:)];
-    [imageView addGestureRecognizer:gesture1];
-    [self.window addSubview:imageView];
-    [UIView animateWithDuration:0.5 animations:^{
-        imageView.frame = self.window.frame;
-    } completion:^(BOOL finished) {
-        self.userInteractionEnabled = YES;
-    }];
-}
-
-- (void)handleGesture1:(UITapGestureRecognizer *)gesture
-{
-    UIView *view = gesture.view;
-    [UIView animateWithDuration:0.5 animations:^{
-        view.bounds = CGRectZero;
-        CGPoint point = self.point;
-        point.y = self.frame.origin.y + point.y;
-        point.x = self.frame.origin.x + point.x;
-        view.center = point;
-        view.backgroundColor = [UIColor clearColor];
-    } completion:^(BOOL finished) {
-        [view removeFromSuperview];
-    }];
-}
-
 - (void)drawRect:(CGRect)rect{
     
 }
 
-
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-}
-*/
-
-- (void)awakeFromNib {[self addRecognizer];}
 @end

@@ -9,7 +9,6 @@
 #define isPad (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 #define CAMERA_TRANSFORM_X 1.2
 #define CAMERA_TRANSFORM_Y 1.2
-#define BOTTOM_HEIGHT 60
 
 #import "ZLCameraViewController.h"
 #import "ZLCameraImageView.h"
@@ -17,10 +16,14 @@
 #import <ImageIO/ImageIO.h>
 #import "ZLCameraView.h"
 #import "UIView+Extension.h"
-#import "ZLPhotoPickerViewController.h"
+#import "ZLPhoto.h"
 #import <objc/message.h>
 
-@interface ZLCameraViewController () <UIActionSheetDelegate,UICollectionViewDataSource,UICollectionViewDelegate,AVCaptureMetadataOutputObjectsDelegate,ZLCameraImageViewDelegate,ZLCameraViewDelegate,ZLPhotoPickerViewControllerDelegate>
+static CGFloat ZLCameraColletionViewW = 80;
+static CGFloat ZLCameraColletionViewPadding = 20;
+static CGFloat BOTTOM_HEIGHT = 60;
+
+@interface ZLCameraViewController () <UIActionSheetDelegate,UICollectionViewDataSource,UICollectionViewDelegate,AVCaptureMetadataOutputObjectsDelegate,ZLCameraImageViewDelegate,ZLCameraViewDelegate,ZLPhotoPickerViewControllerDelegate,ZLPhotoPickerBrowserViewControllerDataSource,ZLPhotoPickerBrowserViewControllerDelegate>
 
 @property (weak, nonatomic) UIView *controlView;
 
@@ -128,14 +131,13 @@
         
         UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
         layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-        layout.itemSize = CGSizeMake(80, 80);
-        layout.minimumLineSpacing = 0;
-        layout.minimumInteritemSpacing = 15;
+        layout.itemSize = CGSizeMake(ZLCameraColletionViewW, ZLCameraColletionViewW);
+        layout.minimumLineSpacing = ZLCameraColletionViewPadding;
         
-        CGFloat collectionViewH = 80;
+        CGFloat collectionViewH = ZLCameraColletionViewW;
         CGFloat collectionViewY = self.caramView.height - collectionViewH - 10;
         
-        UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, collectionViewY, self.view.width, collectionViewH)
+        UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(ZLCameraColletionViewPadding, collectionViewY, self.view.width, collectionViewH)
                                                               collectionViewLayout:layout];
         collectionView.backgroundColor = [UIColor clearColor];
         [collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"cell"];
@@ -158,6 +160,7 @@
     if (self.session) {
         [self.session startRunning];
     }
+    
 }
 
 #pragma mark 初始化按钮
@@ -258,7 +261,7 @@
         imageView.edit = YES;
         imageView.image = image;
         imageView.frame = cell.bounds;
-        imageView.contentMode = UIViewContentModeScaleAspectFit;
+        imageView.contentMode = UIViewContentModeScaleAspectFill;
         [cell.contentView addSubview:imageView];
     }
     
@@ -269,6 +272,37 @@
     //    lastView.image = [UIImage circleImageWithImage:image borderWidth:2 borderColor:[UIColor whiteColor]];
     
     return cell;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
+    
+    ZLPhotoPickerBrowserViewController *browserVc = [[ZLPhotoPickerBrowserViewController alloc] init];
+    browserVc.toView = [[[[collectionView cellForItemAtIndexPath:indexPath] contentView] subviews] lastObject];
+    browserVc.dataSource = self;
+    browserVc.delegate = self;
+    browserVc.currentPage = indexPath.item;
+    browserVc.editing = YES;
+    [self presentViewController:browserVc animated:NO completion:nil];
+    
+}
+
+
+#pragma mark - <ZLPhotoPickerBrowserViewControllerDataSource>
+- (NSInteger) numberOfPhotosInPickerBrowser:(ZLPhotoPickerBrowserViewController *)pickerBrowser{
+    return self.images.count;
+}
+
+- (ZLPhotoPickerBrowserPhoto *) photoBrowser:(ZLPhotoPickerBrowserViewController *)pickerBrowser photoAtIndex:(NSUInteger)index{
+    
+    id imageObj = [[[self.images objectAtIndex:index] allValues] lastObject];
+    ZLPhotoPickerBrowserPhoto *photo = [ZLPhotoPickerBrowserPhoto photoAnyImageObjWith:imageObj];
+    
+    UICollectionViewCell *cell = (UICollectionViewCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
+    
+    UIImageView *imageView = [[cell.contentView subviews] lastObject];
+    photo.thumbImage = imageView.image;
+    
+    return photo;
 }
 
 - (void)deleteImageView:(ZLCameraImageView *)imageView{
