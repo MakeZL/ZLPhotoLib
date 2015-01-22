@@ -203,28 +203,30 @@
     
     [super layoutSubviews];
     
-    // Center the image as it becomes smaller than the size of the screen
     CGSize boundsSize = self.bounds.size;
     CGRect frameToCenter = _zoomImageView.frame;
     
-    // Horizontally
     if (frameToCenter.size.width < boundsSize.width) {
         frameToCenter.origin.x = floorf((boundsSize.width - frameToCenter.size.width) / 2.0);
     } else {
         frameToCenter.origin.x = 0;
     }
     
-    // Vertically
+    // 计算垂直方向居中
     if (frameToCenter.size.height < boundsSize.height) {
         frameToCenter.origin.y = floorf((boundsSize.height - frameToCenter.size.height) / 2.0);
     } else {
         frameToCenter.origin.y = 0;
     }
     
+    if (CGRectIsEmpty(self.firstFrame) && frameToCenter.origin.y > 0) {
+        self.firstFrame = frameToCenter;
+    }
+    
     // Center
     if (!CGRectEqualToRect(_zoomImageView.frame, frameToCenter))
         _zoomImageView.frame = frameToCenter;
-    
 }
+
 
 @end
