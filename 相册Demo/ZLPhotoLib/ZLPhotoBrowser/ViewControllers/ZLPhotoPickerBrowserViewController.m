@@ -77,6 +77,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
             [_scrollView addSubview:scrollView];
         }
 
+        self.deleleBtn.hidden = !self.isEditing;
     }
     return _scrollView;
 }
