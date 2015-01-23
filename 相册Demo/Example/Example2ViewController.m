@@ -85,6 +85,8 @@
         [cell.imageView sd_setImageWithURL:[NSURL URLWithString:(NSString *)asset] placeholderImage:[UIImage imageNamed:@"wallpaper_placeholder"]];
     }else if([asset isKindOfClass:[UIImage class]]){
         cell.imageView.image = (UIImage *)asset;
+    }else if ([asset isKindOfClass:[ZLCamera class]]){
+        cell.imageView.image = [asset thumbImage];
     }
     
     return cell;
@@ -141,9 +143,8 @@
     [cameraVc startCameraOrPhotoFileWithViewController:self complate:^(NSArray *object) {
         // 回调 ,
         [object enumerateObjectsUsingBlock:^(id asset, NSUInteger idx, BOOL *stop) {
-            if ([asset isKindOfClass:[NSDictionary class]]) {
-                
-                [weakSelf.assets addObjectsFromArray:[asset allValues]];
+            if ([asset isKindOfClass:[ZLCamera class]]) {
+                [weakSelf.assets addObject:asset];
             }else{
                 [weakSelf.assets addObject:asset];
             }

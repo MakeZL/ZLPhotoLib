@@ -250,12 +250,12 @@ static CGFloat BOTTOM_HEIGHT = 60;
     
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:indexPath];
     
+    ZLCamera *camera = self.images[indexPath.item];
+    
     ZLCameraImageView *lastView = [cell.contentView.subviews lastObject];
     if(![lastView isKindOfClass:[ZLCameraImageView class]]){
         // 解决重用问题
-        NSDictionary *dict = self.images[indexPath.item];
-        NSString *key = [[dict allKeys] firstObject];
-        UIImage *image = [dict objectForKey:key];
+        UIImage *image = camera.thumbImage;
         ZLCameraImageView *imageView = [[ZLCameraImageView alloc] init];
         imageView.delegatge = self;
         imageView.edit = YES;
@@ -265,11 +265,7 @@ static CGFloat BOTTOM_HEIGHT = 60;
         [cell.contentView addSubview:imageView];
     }
     
-    
-    NSDictionary *dict = self.images[indexPath.item];
-    NSString *key = [[dict allKeys] firstObject];
-    lastView.image = [dict objectForKey:key];
-    //    lastView.image = [UIImage circleImageWithImage:image borderWidth:2 borderColor:[UIColor whiteColor]];
+    lastView.image = camera.thumbImage;
     
     return cell;
 }
@@ -294,7 +290,7 @@ static CGFloat BOTTOM_HEIGHT = 60;
 
 - (ZLPhotoPickerBrowserPhoto *) photoBrowser:(ZLPhotoPickerBrowserViewController *)pickerBrowser photoAtIndex:(NSUInteger)index{
     
-    id imageObj = [[[self.images objectAtIndex:index] allValues] lastObject];
+    id imageObj = [[self.images objectAtIndex:index] fullScreenImage];
     ZLPhotoPickerBrowserPhoto *photo = [ZLPhotoPickerBrowserPhoto photoAnyImageObjWith:imageObj];
     
     UICollectionViewCell *cell = (UICollectionViewCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
@@ -307,11 +303,10 @@ static CGFloat BOTTOM_HEIGHT = 60;
 
 - (void)deleteImageView:(ZLCameraImageView *)imageView{
     NSMutableArray *arrM = [self.images mutableCopy];
-    for (NSDictionary *dict in self.images) {
-        NSString *key = [[dict allKeys] firstObject];
-        UIImage *image = [dict valueForKey:key];
+    for (ZLCamera *camera in self.images) {
+        UIImage *image = camera.thumbImage;
         if ([image isEqual:imageView.image]) {
-            [arrM removeObject:dict];
+            [arrM removeObject:camera];
         }
     }
     self.images = arrM;
@@ -387,9 +382,20 @@ static CGFloat BOTTOM_HEIGHT = 60;
          NSDateFormatter *formater = [[NSDateFormatter alloc] init];
          formater.dateFormat = @"yyyyMMddHHmmss";
          NSString *currentTimeStr = [[formater stringFromDate:[NSDate date]] stringByAppendingFormat:@"_%d" ,arc4random_uniform(10000)];
+
+         t_image = [self fixOrientation:t_image];
          
-         NSDictionary *dict = @{ currentTimeStr : t_image};
-         [self.images addObject:dict];
+         NSString *path = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:currentTimeStr];
+         [UIImagePNGRepresentation(t_image) writeToFile:path atomically:YES];
+         
+         
+         
+         NSData *data = UIImageJPEGRepresentation(t_image, 0.3);
+         ZLCamera *camera = [[ZLCamera alloc] init];
+         camera.imagePath = path;
+         camera.thumbImage = [UIImage imageWithData:data];
+         [self.images addObject:camera];
+         
          [self.collectionView reloadData];
          [self.collectionView selectItemAtIndexPath:[NSIndexPath indexPathForItem:self.images.count - 1 inSection:0] animated:YES scrollPosition:UICollectionViewScrollPositionRight];
          
@@ -544,39 +550,6 @@ static CGFloat BOTTOM_HEIGHT = 60;
     }];
 }
 
-#pragma mark - Camera Delegate
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
-{
-    NSString *type = [info objectForKey:UIImagePickerControllerMediaType];
-    //当选择的类型是图片
-    if ([type isEqualToString:@"public.image"])
-    {
-        UIImage* image;
-        //先把图片转成NSData
-        if(picker.sourceType == UIImagePickerControllerSourceTypePhotoLibrary){
-            image = [self imageCompressForWidth:[info objectForKey:@"UIImagePickerControllerEditedImage"] targetWidth:[UIScreen mainScreen].bounds.size.width];
-        }else{
-            image = [self imageCompressForWidth:[info objectForKey:@"UIImagePickerControllerOriginalImage"] targetWidth:[UIScreen mainScreen].bounds.size.width];
-        }
-        
-        NSDateFormatter *formater = [[NSDateFormatter alloc] init];
-        formater.dateFormat = @"yyyyMMddHHmmss";
-        NSString *currentTimeStr = [[formater stringFromDate:[NSDate date]] stringByAppendingFormat:@"_%d" ,arc4random_uniform(10000)];
-        
-        NSDictionary *dict = @{ currentTimeStr : image};
-        [self.images addObject:dict];
-        [self.collectionView reloadData];
-        if (picker.sourceType == UIImagePickerControllerSourceTypePhotoLibrary) {
-            if (self.complate) {
-                self.complate(dict);
-            }
-            [[UIApplication sharedApplication] setStatusBarHidden:NO];
-            [self.currentViewController dismissViewControllerAnimated:YES completion:nil];
-        }
-        
-    }
-}
-
 - (BOOL)shouldAutorotate{
     return YES;
 }
@@ -593,50 +566,75 @@ static CGFloat BOTTOM_HEIGHT = 60;
     return UIInterfaceOrientationPortrait;
 }
 
--(UIImage *) imageCompressForWidth:(UIImage *)sourceImage targetWidth:(CGFloat)defineWidth{
-    UIImage *newImage = nil;
-    CGSize imageSize = sourceImage.size;
-    CGFloat width = imageSize.width;
-    CGFloat height = imageSize.height;
-    CGFloat targetWidth = defineWidth;
-    CGFloat targetHeight = height / (width / targetWidth);
-    CGSize size = CGSizeMake(targetWidth, targetHeight);
-    CGFloat scaleFactor = 0.0;
-    CGFloat scaledWidth = targetWidth;
-    CGFloat scaledHeight = targetHeight;
-    CGPoint thumbnailPoint = CGPointMake(0.0, 0.0);
-    if(CGSizeEqualToSize(imageSize, size) == NO){
-        CGFloat widthFactor = targetWidth / width;
-        CGFloat heightFactor = targetHeight / height;
-        if(widthFactor > heightFactor){
-            scaleFactor = widthFactor;
-        }
-        else{
-            scaleFactor = heightFactor;
-        }
-        scaledWidth = width * scaleFactor;
-        scaledHeight = height * scaleFactor;
-        if(widthFactor > heightFactor){
-            thumbnailPoint.y = (targetHeight - scaledHeight) * 0.5;
-        }else if(widthFactor < heightFactor){
-            thumbnailPoint.x = (targetWidth - scaledWidth) * 0.5;
-        }
-    }
-    UIGraphicsBeginImageContext(size);
-    CGRect thumbnailRect = CGRectZero;
-    thumbnailRect.origin = thumbnailPoint;
-    thumbnailRect.size.width = scaledWidth;
-    thumbnailRect.size.height = scaledHeight;
-    
-    [sourceImage drawInRect:thumbnailRect];
-    
-    newImage = UIGraphicsGetImageFromCurrentImageContext();
-    if(newImage == nil){
-        NSLog(@"scale image fail");
+- (UIImage *)fixOrientation:(UIImage *)srcImg
+{
+    if (srcImg.imageOrientation == UIImageOrientationUp) return srcImg;
+    CGAffineTransform transform = CGAffineTransformIdentity;
+    switch (srcImg.imageOrientation) {
+        case UIImageOrientationDown:
+        case UIImageOrientationDownMirrored:
+            transform = CGAffineTransformTranslate(transform, srcImg.size.width, srcImg.size.height);
+            transform = CGAffineTransformRotate(transform, M_PI);
+            break;
+            
+        case UIImageOrientationLeft:
+        case UIImageOrientationLeftMirrored:
+            transform = CGAffineTransformTranslate(transform, srcImg.size.width, 0);
+            transform = CGAffineTransformRotate(transform, M_PI_2);
+            break;
+            
+        case UIImageOrientationRight:
+        case UIImageOrientationRightMirrored:
+            transform = CGAffineTransformTranslate(transform, 0, srcImg.size.height);
+            transform = CGAffineTransformRotate(transform, -M_PI_2);
+            break;
+        case UIImageOrientationUp:
+        case UIImageOrientationUpMirrored:
+            break;
     }
     
-    UIGraphicsEndImageContext();
-    return newImage;
+    switch (srcImg.imageOrientation) {
+        case UIImageOrientationUpMirrored:
+        case UIImageOrientationDownMirrored:
+            transform = CGAffineTransformTranslate(transform, srcImg.size.width, 0);
+            transform = CGAffineTransformScale(transform, -1, 1);
+            break;
+            
+        case UIImageOrientationLeftMirrored:
+        case UIImageOrientationRightMirrored:
+            transform = CGAffineTransformTranslate(transform, srcImg.size.height, 0);
+            transform = CGAffineTransformScale(transform, -1, 1);
+            break;
+        case UIImageOrientationUp:
+        case UIImageOrientationDown:
+        case UIImageOrientationLeft:
+        case UIImageOrientationRight:
+            break;
+    }
+    
+    CGContextRef ctx = CGBitmapContextCreate(NULL, srcImg.size.width, srcImg.size.height,
+                                             CGImageGetBitsPerComponent(srcImg.CGImage), 0,
+                                             CGImageGetColorSpace(srcImg.CGImage),
+                                             CGImageGetBitmapInfo(srcImg.CGImage));
+    CGContextConcatCTM(ctx, transform);
+    switch (srcImg.imageOrientation) {
+        case UIImageOrientationLeft:
+        case UIImageOrientationLeftMirrored:
+        case UIImageOrientationRight:
+        case UIImageOrientationRightMirrored:
+            CGContextDrawImage(ctx, CGRectMake(0,0,srcImg.size.height,srcImg.size.width), srcImg.CGImage);
+            break;
+            
+        default:
+            CGContextDrawImage(ctx, CGRectMake(0,0,srcImg.size.width,srcImg.size.height), srcImg.CGImage);
+            break;
+    }
+    
+    CGImageRef cgimg = CGBitmapContextCreateImage(ctx);
+    UIImage *img = [UIImage imageWithCGImage:cgimg];
+    CGContextRelease(ctx);
+    CGImageRelease(cgimg);
+    return img;
 }
 
 @end

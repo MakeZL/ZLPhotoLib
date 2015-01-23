@@ -60,6 +60,7 @@
 		48263F431A709FED00CF136E /* ZLCameraImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48263F3E1A709FED00CF136E /* ZLCameraImageView.m */; };
 		48263F441A709FED00CF136E /* ZLCameraView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48263F401A709FED00CF136E /* ZLCameraView.m */; };
 		48263F451A709FED00CF136E /* ZLCameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48263F421A709FED00CF136E /* ZLCameraViewController.m */; };
+		484401161A72358400171D22 /* ZLCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = 484401151A72358400171D22 /* ZLCamera.m */; };
 		48B3E1761A11BABC0079F464 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B3E1751A11BABC0079F464 /* main.m */; };
 		48B3E1791A11BABC0079F464 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B3E1781A11BABC0079F464 /* AppDelegate.m */; };
 		48B3E17C1A11BABC0079F464 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B3E17B1A11BABC0079F464 /* ViewController.m */; };
@@ -180,6 +181,8 @@
 		48263F401A709FED00CF136E /* ZLCameraView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLCameraView.m; sourceTree = "<group>"; };
 		48263F411A709FED00CF136E /* ZLCameraViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLCameraViewController.h; sourceTree = "<group>"; };
 		48263F421A709FED00CF136E /* ZLCameraViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLCameraViewController.m; sourceTree = "<group>"; };
+		484401141A72358400171D22 /* ZLCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLCamera.h; sourceTree = "<group>"; };
+		484401151A72358400171D22 /* ZLCamera.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLCamera.m; sourceTree = "<group>"; };
 		48B3E1701A11BABC0079F464 /* 相册Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "相册Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		48B3E1741A11BABC0079F464 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		48B3E1751A11BABC0079F464 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -487,6 +490,8 @@
 				48263F401A709FED00CF136E /* ZLCameraView.m */,
 				48263F411A709FED00CF136E /* ZLCameraViewController.h */,
 				48263F421A709FED00CF136E /* ZLCameraViewController.m */,
+				484401141A72358400171D22 /* ZLCamera.h */,
+				484401151A72358400171D22 /* ZLCamera.m */,
 			);
 			path = ZLCamera;
 			sourceTree = "<group>";
@@ -707,6 +712,7 @@
 				48263EBF1A709F7000CF136E /* ZLPhotoPickerDatas.m in Sources */,
 				48263EC01A709F7000CF136E /* ZLPhotoPickerGroup.m in Sources */,
 				48263F261A709FCD00CF136E /* UIImageView+WebCache.m in Sources */,
+				484401161A72358400171D22 /* ZLCamera.m in Sources */,
 				48263F241A709FCD00CF136E /* UIImage+WebP.m in Sources */,
 				48263F1A1A709FCD00CF136E /* SDImageCache.m in Sources */,
 				48263F3A1A709FCD00CF136E /* ZLAnimationImageView.m in Sources */,

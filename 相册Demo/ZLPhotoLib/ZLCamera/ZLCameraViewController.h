@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ZLCamera.h"
 
 typedef void(^codeBlock)();
 typedef void(^ZLComplate)(id object);
