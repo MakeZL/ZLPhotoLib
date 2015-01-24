@@ -121,7 +121,6 @@
     
     ZLPhotoPickerBrowserPhotoImageView *zoomImageView = [[ZLPhotoPickerBrowserPhotoImageView alloc] init];
     zoomImageView.frame = self.frame;
-    zoomImageView.width -= ZLPickerColletionViewPadding;
     [self addSubview:zoomImageView];
     
     zoomImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -217,20 +216,12 @@
         frameToCenter.size.width = boundsSize.width;
     }
     
-    if (self.orientation != [UIDevice currentDevice].orientation) {
-        frameToCenter.size.width -= ZLPickerColletionViewPadding;
-    }
-    
     // Horizontally
     if (frameToCenter.size.width < boundsSize.width) {
         frameToCenter.origin.x = floorf((boundsSize.width - frameToCenter.size.width) / 2.0);
     } else {
         frameToCenter.origin.x = 0;
-        if (self.isZooming) {
-            frameToCenter.origin.x += ZLPickerColletionViewPadding / 2.0;
-        }
     }
-    
     
     // Vertically
     if (frameToCenter.size.height < boundsSize.height) {
