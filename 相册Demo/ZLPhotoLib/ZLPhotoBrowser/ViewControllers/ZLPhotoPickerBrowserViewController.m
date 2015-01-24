@@ -78,6 +78,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         
         self.pageCtrl.numberOfPages = [self.dataSource numberOfPhotosInPickerBrowser:self];
         self.pageCtrl.currentPage = self.currentPage;
+        self.pageCtrl.hidden =  [self.dataSource numberOfPhotosInPickerBrowser:self] <= 1;
         self.deleleBtn.hidden = !self.isEditing;
     }
     return _collectionView;

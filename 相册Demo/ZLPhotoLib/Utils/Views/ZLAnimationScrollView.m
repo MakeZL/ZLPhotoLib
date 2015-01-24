@@ -19,10 +19,6 @@ static NSArray *_subViews = nil;
 
 @implementation ZLAnimationScrollView
 
-+ (void)orientationChanged:(NSNotification *)noti{
-    [self setterParamsWithOrientation:noti.object];
-}
-
 + (NSDictionary *)updateOptions:(NSDictionary *)updateOptions{
     
     if (!_attachParams) {
@@ -37,15 +33,11 @@ static NSArray *_subViews = nil;
 
 + (instancetype)animationViewWithOptions:(NSDictionary *)options animations:(void (^)())animations completion:(void (^)(ZLAnimationBaseView *))completion{
     
-//    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
-//    
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
-//    
     options = [self updateOptions:options];
     
     UIView *toView = options[UIViewAnimationToView];
     
-    if ([_attachParams[UIViewAnimationAnimationStatusType] integerValue] == UIViewAnimationAnimationStatusZoom) {
+    if ([_attachParams[UIViewAnimationAnimationStatusType] integerValue] == UIViewAnimationAnimationStatusZoom && (![self getCollectionViewWithView:toView])) {
         toView.hidden = YES;
     }
     
@@ -53,15 +45,6 @@ static NSArray *_subViews = nil;
     _parsentView = toView.superview;
     
     return [super animationViewWithOptions:options animations:animations completion:completion];
-}
-
-+ (void)setterParamsWithOrientation:(UIDevice *)device{
-//    if(device.orientation == UIDeviceOrientationLandscapeLeft || device.orientation == UIDeviceOrientationLandscapeRight){
-//        _attachParams[UIViewAnimationAnimationStatusType] = @(UIViewAnimationAnimationStatusFade);
-//    }else{
-//        _attachParams[UIViewAnimationAnimationStatusType] = @(UIViewAnimationAnimationStatusZoom);
-//    }
-    [super setterParamsWithOrientation:device];
 }
 
 + (void)restoreWithOptions:(NSDictionary *)options animation:(void (^)())completion{
@@ -254,7 +237,7 @@ static NSArray *_subViews = nil;
                 startFrame.size.height = toView.height;
                 startFrame.origin.y += 64;
                 
-                if ([options[UIViewAnimationAnimationStatusType] integerValue] == UIViewAnimationAnimationStatusZoom && [[collectionView visibleCells] count]) {
+                if ([options[UIViewAnimationAnimationStatusType] integerValue] == UIViewAnimationAnimationStatusZoom) {
                     [subViews[[self currentPage]] setHidden:YES];
                 }
             }
@@ -294,11 +277,7 @@ static NSArray *_subViews = nil;
     ops[UIViewAnimationEndFrame] = [NSValue valueWithCGRect:startFrame];
     [super restoreWithOptions:ops animation:^{
         
-        if (collectionView) {
-            [subViews[[self currentPage]] setHidden:NO];
-        }else if ([self currentPage] < subViews.count) {
-            [subViews[[self currentPage]] setHidden:NO];
-        }
+        [subViews[[self currentPage]] setHidden:NO];
         
         toView.hidden = NO;
         subViews = nil;

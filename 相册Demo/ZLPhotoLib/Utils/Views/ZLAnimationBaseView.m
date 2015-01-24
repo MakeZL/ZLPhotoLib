@@ -26,15 +26,10 @@ static ZLAnimationBaseView *_singleBaseView;
     dispatch_once(&onceToken, ^{
         _singleBaseView = [[self alloc] init];
         _attachParams = [NSMutableDictionary dictionary];
-//        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
     });
     
     
     return _singleBaseView;
-}
-
-+ (void)orientationChanged:(NSNotification *)noti{
-    [self setterParamsWithOrientation:noti.object];
 }
 
 // 补充空的字典
@@ -94,12 +89,9 @@ static ZLAnimationBaseView *_singleBaseView;
 #pragma mark - 开始动画
 + (instancetype) animationViewWithOptions:(NSDictionary *)options animations:(void(^)())animations completion:(void (^)(ZLAnimationBaseView *baseView)) completion{
     
-//    [self setterParamsWithOrientation:[UIDevice currentDevice]];
     // 准备动画前的一些操作
     [self willStartAnimationOperation];
     // 补充没填的参数
-//    _options = [self supplementOptionsEmptyParamWithDict:options];
-//    _options = [NSDictionary dictionaryWithDictionary:[self supplementOptionsEmptyParamWithDict:options]];
     NSMutableDictionary *ops = [NSMutableDictionary dictionaryWithDictionary:[self supplementOptionsEmptyParamWithDict:options]];
     [ops addEntriesFromDictionary:_attachParams];
     
@@ -107,7 +99,6 @@ static ZLAnimationBaseView *_singleBaseView;
     
     // 起始位置、结束位置、动画时间
     CGRect  startFrame   =                 [_options[UIViewAnimationStartFrame] CGRectValue];
-//    CGRect  endFrame     =                 [_options[UIViewAnimationEndFrame] CGRectValue];
     CGFloat duration     =                 [_options[UIViewAnimationDuration] floatValue];
     ZLAnimationBaseView *selfView    =      _options[UIViewAnimationSelfView];
     UIView *inView       =                  _options[UIViewAnimationInView];
@@ -151,7 +142,7 @@ static ZLAnimationBaseView *_singleBaseView;
         }
         if ([ops[UIViewAnimationAnimationStatusType] integerValue] == UIViewAnimationAnimationStatusFade) {
             // 淡入淡出
-            _baseView.alpha = 1.0;
+            weakBaseView.alpha = 1.0;
         }else{
             // 缩放/旋转
             weakBaseView.frame = [self setMaxMinZoomScalesForCurrentBounds];
@@ -211,26 +202,27 @@ static ZLAnimationBaseView *_singleBaseView;
     UIViewAnimationAnimationStatus status = [_options[UIViewAnimationAnimationStatusType] intValue];
     
     __weak typeof(self) weakSelf = self;
+    __weak UIView *weakBaseView = _baseView;
     
     [UIView animateWithDuration:duration animations:^{
         if (status == UIViewAnimationAnimationStatusRotate) {
-            _baseView.transform = CGAffineTransformMakeScale(0.7, 0.7);
-            _baseView.transform = CGAffineTransformRotate(_baseView.transform, M_PI_4);
-            _baseView.alpha = 0;
+            weakBaseView.transform = CGAffineTransformMakeScale(0.7, 0.7);
+            weakBaseView.transform = CGAffineTransformRotate(_baseView.transform, M_PI_4);
+            weakBaseView.alpha = 0;
         }else if(status == UIViewAnimationAnimationStatusFade){
-            _baseView.alpha = 0.0;
+            weakBaseView.alpha = 0.0;
         }else{
-            _baseView.frame = endFrame;
+            weakBaseView.frame = endFrame;
         }
     } completion:^(BOOL finished) {
         if (completion) {
             completion();
         }
-        [_baseView removeFromSuperview];
+        [weakBaseView removeFromSuperview];
         [weakSelf unLoadStopAnimationOperation];
         if (status == UIViewAnimationAnimationStatusRotate || status == UIViewAnimationAnimationStatusFade) {
-            _baseView.transform = CGAffineTransformIdentity;
-            _baseView.alpha = 1;
+            weakBaseView.transform = CGAffineTransformIdentity;
+            weakBaseView.alpha = 1;
         }
     }];
 }
