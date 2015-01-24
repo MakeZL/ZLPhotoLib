@@ -72,6 +72,8 @@
 // 是否可以编辑（删除照片）
 @property (nonatomic , assign,getter=isEditing) BOOL editing;
 
+// status
+@property (assign,nonatomic) UIViewAnimationAnimationStatus status;
 /**
  *  刷新表格
  */

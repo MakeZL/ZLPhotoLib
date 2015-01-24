@@ -102,6 +102,14 @@
     // 传入点击图片View的话，会有微信朋友圈照片的风格
     pickerBrowser.toView = cell.imageView;
     // 数据源/delegate
+    // 动画方式
+    /*
+     * 
+         UIViewAnimationAnimationStatusZoom = 0, // 放大缩小
+         UIViewAnimationAnimationStatusFade , // 淡入淡出
+         UIViewAnimationAnimationStatusRotate // 旋转
+         pickerBrowser.status = UIViewAnimationAnimationStatusFade;
+     */
     pickerBrowser.delegate = self;
     pickerBrowser.dataSource = self;
     // 是否可以删除照片

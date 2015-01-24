@@ -26,7 +26,7 @@ static ZLAnimationBaseView *_singleBaseView;
     dispatch_once(&onceToken, ^{
         _singleBaseView = [[self alloc] init];
         _attachParams = [NSMutableDictionary dictionary];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
+//        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
     });
     
     
@@ -94,9 +94,7 @@ static ZLAnimationBaseView *_singleBaseView;
 #pragma mark - 开始动画
 + (instancetype) animationViewWithOptions:(NSDictionary *)options animations:(void(^)())animations completion:(void (^)(ZLAnimationBaseView *baseView)) completion{
     
-    [_attachParams setObject:@(UIViewAnimationAnimationStatusZoom) forKey:UIViewAnimationAnimationStatusType];
-    
-    [self setterParamsWithOrientation:[UIDevice currentDevice]];
+//    [self setterParamsWithOrientation:[UIDevice currentDevice]];
     // 准备动画前的一些操作
     [self willStartAnimationOperation];
     // 补充没填的参数
@@ -126,9 +124,18 @@ static ZLAnimationBaseView *_singleBaseView;
     }
     
     // 初始化baseView的参数
-    _baseView.alpha = 1.0;
     _baseView.hidden = NO;
     _baseView.frame = startFrame;
+    
+    if ([_options[UIViewAnimationAnimationStatusType] integerValue] == UIViewAnimationAnimationStatusFade) {
+        // 淡入淡出
+        _baseView.alpha = 0.0;
+        _baseView.frame = [self setMaxMinZoomScalesForCurrentBounds];
+    }else{
+        // 缩放/旋转
+        _baseView.alpha = 1.0;
+        _baseView.frame = startFrame;
+    }
     
     // 避免重复添加View
     if (![inView.subviews.lastObject isKindOfClass:[ZLAnimationBaseView class]]) {
@@ -142,7 +149,13 @@ static ZLAnimationBaseView *_singleBaseView;
         if (animations) {
             animations();
         }
-        weakBaseView.frame = [self setMaxMinZoomScalesForCurrentBounds];
+        if ([ops[UIViewAnimationAnimationStatusType] integerValue] == UIViewAnimationAnimationStatusFade) {
+            // 淡入淡出
+            _baseView.alpha = 1.0;
+        }else{
+            // 缩放/旋转
+            weakBaseView.frame = [self setMaxMinZoomScalesForCurrentBounds];
+        }
         if (!iOS7gt) {
             // 在iOS6因为隐藏了状态栏。所以需要加上20的高度
             weakBaseView.y += 20;
@@ -200,11 +213,13 @@ static ZLAnimationBaseView *_singleBaseView;
     __weak typeof(self) weakSelf = self;
     
     [UIView animateWithDuration:duration animations:^{
-        if (status == UIViewAnimationAnimationStatusRotate || status == UIViewAnimationAnimationStatusFade) {
+        if (status == UIViewAnimationAnimationStatusRotate) {
             _baseView.transform = CGAffineTransformMakeScale(0.7, 0.7);
             _baseView.transform = CGAffineTransformRotate(_baseView.transform, M_PI_4);
             _baseView.alpha = 0;
-        }else {
+        }else if(status == UIViewAnimationAnimationStatusFade){
+            _baseView.alpha = 0.0;
+        }else{
             _baseView.frame = endFrame;
         }
     } completion:^(BOOL finished) {
@@ -289,7 +304,7 @@ static ZLAnimationBaseView *_singleBaseView;
 
 + (void)setterParamsWithOrientation:(UIDevice *)device{
     if(device.orientation == UIDeviceOrientationLandscapeLeft || device.orientation == UIDeviceOrientationLandscapeRight){
-        _attachParams[UIViewAnimationAnimationStatusType] = @(UIViewAnimationAnimationStatusFade);
+        _attachParams[UIViewAnimationAnimationStatusType] = @(UIViewAnimationAnimationStatusRotate);
     }else{
         _attachParams[UIViewAnimationAnimationStatusType] = @(UIViewAnimationAnimationStatusZoom);
     }

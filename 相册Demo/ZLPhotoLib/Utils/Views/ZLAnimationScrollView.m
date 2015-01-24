@@ -36,16 +36,11 @@ static NSArray *_subViews = nil;
 }
 
 + (instancetype)animationViewWithOptions:(NSDictionary *)options animations:(void (^)())animations completion:(void (^)(ZLAnimationBaseView *))completion{
-    [_attachParams setObject:@(UIViewAnimationAnimationStatusZoom) forKey:UIViewAnimationAnimationStatusType];
     
-    [self setterParamsWithOrientation:[UIDevice currentDevice]];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
-    
-    prevAnimationStatusType = [options[UIViewAnimationAnimationStatusType] integerValue];
-    
+//    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
+//    
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
+//    
     options = [self updateOptions:options];
     
     UIView *toView = options[UIViewAnimationToView];
@@ -61,11 +56,11 @@ static NSArray *_subViews = nil;
 }
 
 + (void)setterParamsWithOrientation:(UIDevice *)device{
-    if(device.orientation == UIDeviceOrientationLandscapeLeft || device.orientation == UIDeviceOrientationLandscapeRight){
-        _attachParams[UIViewAnimationAnimationStatusType] = @(UIViewAnimationAnimationStatusFade);
-    }else{
-        _attachParams[UIViewAnimationAnimationStatusType] = @(UIViewAnimationAnimationStatusZoom);
-    }
+//    if(device.orientation == UIDeviceOrientationLandscapeLeft || device.orientation == UIDeviceOrientationLandscapeRight){
+//        _attachParams[UIViewAnimationAnimationStatusType] = @(UIViewAnimationAnimationStatusFade);
+//    }else{
+//        _attachParams[UIViewAnimationAnimationStatusType] = @(UIViewAnimationAnimationStatusZoom);
+//    }
     [super setterParamsWithOrientation:device];
 }
 
@@ -283,7 +278,7 @@ static NSArray *_subViews = nil;
         startFrame.origin.y += ios6NavH;
     }
     
-    if ([options[UIViewAnimationAnimationStatusType] integerValue] == UIViewAnimationAnimationStatusFade) {
+    if ([options[UIViewAnimationAnimationStatusType] integerValue] == UIViewAnimationAnimationStatusRotate) {
         if ([self currentPage] < subViews.count) {
             [subViews[[self currentPage]] setHidden:NO];
         }

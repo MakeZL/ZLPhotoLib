@@ -12,10 +12,11 @@
 // 点击销毁的block
 typedef void(^ZLPickerBrowserViewControllerTapDisMissBlock)(NSInteger);
 
+// 点击View执行的动画
 typedef NS_ENUM(NSUInteger, UIViewAnimationAnimationStatus) {
-    UIViewAnimationAnimationStatusZoom = 0,
-    UIViewAnimationAnimationStatusFade ,
-    UIViewAnimationAnimationStatusRotate
+    UIViewAnimationAnimationStatusZoom = 0, // 放大缩小
+    UIViewAnimationAnimationStatusFade , // 淡入淡出
+    UIViewAnimationAnimationStatusRotate // 旋转
 };
 
 #define iOS7gt ([[UIDevice currentDevice].systemVersion doubleValue] >= 7.0)

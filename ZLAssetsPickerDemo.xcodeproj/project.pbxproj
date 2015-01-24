@@ -14,7 +14,6 @@
 		48263EBE1A709F7000CF136E /* ZLPhotoAssets.m in Sources */ = {isa = PBXBuildFile; fileRef = 48263EA01A709F7000CF136E /* ZLPhotoAssets.m */; };
 		48263EBF1A709F7000CF136E /* ZLPhotoPickerDatas.m in Sources */ = {isa = PBXBuildFile; fileRef = 48263EA21A709F7000CF136E /* ZLPhotoPickerDatas.m */; };
 		48263EC01A709F7000CF136E /* ZLPhotoPickerGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 48263EA41A709F7000CF136E /* ZLPhotoPickerGroup.m */; };
-		48263EC11A709F7000CF136E /* ZLNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48263EA71A709F7000CF136E /* ZLNavigationController.m */; };
 		48263EC21A709F7000CF136E /* ZLPhotoPickerAssetsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48263EA91A709F7000CF136E /* ZLPhotoPickerAssetsViewController.m */; };
 		48263EC31A709F7000CF136E /* ZLPhotoPickerGroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48263EAB1A709F7000CF136E /* ZLPhotoPickerGroupViewController.m */; };
 		48263EC41A709F7000CF136E /* ZLPhotoPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48263EAD1A709F7000CF136E /* ZLPhotoPickerViewController.m */; };
@@ -98,8 +97,6 @@
 		48263EA21A709F7000CF136E /* ZLPhotoPickerDatas.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLPhotoPickerDatas.m; sourceTree = "<group>"; };
 		48263EA31A709F7000CF136E /* ZLPhotoPickerGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLPhotoPickerGroup.h; sourceTree = "<group>"; };
 		48263EA41A709F7000CF136E /* ZLPhotoPickerGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLPhotoPickerGroup.m; sourceTree = "<group>"; };
-		48263EA61A709F7000CF136E /* ZLNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLNavigationController.h; sourceTree = "<group>"; };
-		48263EA71A709F7000CF136E /* ZLNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLNavigationController.m; sourceTree = "<group>"; };
 		48263EA81A709F7000CF136E /* ZLPhotoPickerAssetsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLPhotoPickerAssetsViewController.h; sourceTree = "<group>"; };
 		48263EA91A709F7000CF136E /* ZLPhotoPickerAssetsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLPhotoPickerAssetsViewController.m; sourceTree = "<group>"; };
 		48263EAA1A709F7000CF136E /* ZLPhotoPickerGroupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLPhotoPickerGroupViewController.h; sourceTree = "<group>"; };
@@ -300,8 +297,6 @@
 		48263EA51A709F7000CF136E /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				48263EA61A709F7000CF136E /* ZLNavigationController.h */,
-				48263EA71A709F7000CF136E /* ZLNavigationController.m */,
 				48263EA81A709F7000CF136E /* ZLPhotoPickerAssetsViewController.h */,
 				48263EA91A709F7000CF136E /* ZLPhotoPickerAssetsViewController.m */,
 				48263EAA1A709F7000CF136E /* ZLPhotoPickerGroupViewController.h */,
@@ -719,7 +714,6 @@
 				48ED220C1A6D0E370008E783 /* Example2ViewController.m in Sources */,
 				48263F231A709FCD00CF136E /* UIImage+MultiFormat.m in Sources */,
 				48263F1E1A709FCD00CF136E /* SDWebImageDownloaderOperation.m in Sources */,
-				48263EC11A709F7000CF136E /* ZLNavigationController.m in Sources */,
 				48263F251A709FCD00CF136E /* UIImageView+HighlightedWebCache.m in Sources */,
 				48B3E1761A11BABC0079F464 /* main.m in Sources */,
 				48263F171A709FCD00CF136E /* DACircularProgressView.m in Sources */,

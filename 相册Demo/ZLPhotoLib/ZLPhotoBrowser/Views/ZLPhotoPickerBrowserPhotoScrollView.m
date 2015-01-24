@@ -52,12 +52,6 @@
     // 监听手势
     [self addGesture];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addRotationChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
-    
-}
-
-- (void)addRotationChange:(NSNotification *)notification{
-    self.orientation = [notification.object orientation];
 }
 
 #pragma mark -监听手势

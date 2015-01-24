@@ -188,11 +188,10 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         fromView = [self getParsentView:self.toView];
     }
     
-    
     NSDictionary *options = @{
                               UIViewAnimationInView:self.view,
                               UIViewAnimationFromView:fromView,
-                              UIViewAnimationAnimationStatusType:@(0),
+                              UIViewAnimationAnimationStatusType:@(self.status),
                               UIViewAnimationToView:self.toView,
                               UIViewAnimationFromView:self.dataSource,
                               UIViewAnimationImages:self.photos,
