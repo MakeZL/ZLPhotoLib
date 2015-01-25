@@ -299,11 +299,6 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:_cellIdentifier forIndexPath:indexPath];
     
     if (self.photos.count) {
-        if (collectionView.isDragging || self.currentPage == indexPath.row || (self.isDelete && self.currentPage - 1 == indexPath.row)) {
-            cell.hidden = NO;
-        }else{
-            cell.hidden = YES;
-        }
         cell.backgroundColor = [UIColor clearColor];
         ZLPhotoPickerBrowserPhoto *photo = self.photos[indexPath.item]; //[self.dataSource photoBrowser:self photoAtIndex:indexPath.item];
         
@@ -357,13 +352,6 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
-    
-    [[self.collectionView visibleCells] enumerateObjectsUsingBlock:^(UICollectionViewCell *cell, NSUInteger idx, BOOL *stop) {
-        if (cell.isHidden && idx != self.currentPage) {
-            // 取消cell的隐藏
-            cell.hidden = YES;
-        }
-    }];
     
     self.currentPage = (NSInteger)(scrollView.contentOffset.x / (scrollView.width - ZLPickerColletionViewPadding));
     self.pageCtrl.currentPage = self.currentPage;
