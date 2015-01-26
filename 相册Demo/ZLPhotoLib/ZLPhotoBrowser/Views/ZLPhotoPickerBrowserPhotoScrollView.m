@@ -88,33 +88,61 @@
 - (void) scaleBigTap:(UITapGestureRecognizer *)tap{
     // Zoom
     // 重置
-    if (self.zoomScale == self.maximumZoomScale) {
-        [UIView animateWithDuration:.3 animations:^{
-            _zoomImageView.y = self.firstFrame.origin.y;
-            [self setZoomScale:self.minimumZoomScale animated:NO];
-        } completion:^(BOOL finished) {
-        }];
+    CGPoint touchPoint = [tap locationInView:tap.view];
+    CGFloat touchX = touchPoint.x;
+    CGFloat touchY = touchPoint.y;
+    
+    if ([tap.view isEqual:self]) {
+        touchX *= 1/self.zoomScale;
+        touchY *= 1/self.zoomScale;
+        touchX += self.contentOffset.x;
+        touchY += self.contentOffset.y;
+    }
+    
+    
+    // Zoom
+    if (self.zoomScale != self.minimumZoomScale && self.zoomScale != [self initialZoomScaleWithMinScale]) {
         
+        // Zoom out
+        [self setZoomScale:self.minimumZoomScale animated:YES];
         
-    }else{
+    } else {
         
-        CGPoint touchPoint = [tap locationInView:tap.view];
-        
-        CGFloat scaleW = self.zoomImageView.image.size.width / self.width;
-        CGFloat scaleH = self.zoomImageView.image.size.height / self.height;
-        
-        CGFloat x = touchPoint.x * scaleW;
-        CGFloat y = touchPoint.y * MIN(scaleW, scaleH);
-        
-        [UIView animateWithDuration:.30 animations:^{
-            [self zoomToRect:CGRectMake(x, y, 0, 0 ) animated:NO];
-            self.zoomImageView.y = 0;
-        } completion:^(BOOL finished) {
-            [self setZoomScale:self.maximumZoomScale];
-            
-        }];
+        // Zoom in to twice the size
+        CGFloat newZoomScale = ((self.maximumZoomScale + self.minimumZoomScale) / 2);
+        CGFloat xsize = self.bounds.size.width / newZoomScale;
+        CGFloat ysize = self.bounds.size.height / newZoomScale;
+        [self zoomToRect:CGRectMake(touchX - xsize/2, touchY - ysize/2, xsize, ysize) animated:YES];
         
     }
+    
+    //    if (self.zoomScale == self.maximumZoomScale) {
+    //        [UIView animateWithDuration:.3 animations:^{
+    //            _zoomImageView.y = self.firstFrame.origin.y;
+    //            [self setZoomScale:self.minimumZoomScale animated:NO];
+    //        } completion:^(BOOL finished) {
+    //        }];
+    //
+    //
+    //    }else{
+    //
+    //        CGPoint touchPoint = [tap locationInView:tap.view];
+    //
+    //        CGFloat scaleW = self.zoomImageView.image.size.width / self.width;
+    //        CGFloat scaleH = self.zoomImageView.image.size.height / self.height;
+    //
+    //        CGFloat x = touchPoint.x * scaleW;
+    //        CGFloat y = touchPoint.y * MIN(scaleW, scaleH);
+    //
+    //        [UIView animateWithDuration:.30 animations:^{
+    //            [self zoomToRect:CGRectMake(x, y, 0, 0 ) animated:NO];
+    //            self.zoomImageView.y = 0;
+    //            self.zoomImageView.x = 0;
+    //        } completion:^(BOOL finished) {
+    //            [self setZoomScale:self.maximumZoomScale];
+    //        }];
+    //
+    //    }
 }
 
 #pragma mark - disMissTap
@@ -131,17 +159,26 @@
     // 避免cell重复创建控件，删除再添加
     [[self.subviews lastObject] removeFromSuperview];
     
-    ZLPhotoPickerBrowserPhotoImageView *zoomImageView = [[ZLPhotoPickerBrowserPhotoImageView alloc] init];
-    zoomImageView.frame = self.frame;
+    ZLPhotoPickerBrowserPhotoImageView *zoomImageView = [[ZLPhotoPickerBrowserPhotoImageView alloc] initWithFrame:CGRectZero];
     [self addSubview:zoomImageView];
     
     zoomImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
     self.zoomImageView = zoomImageView;
     
+    UITapGestureRecognizer *scaleBigTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(scaleBigTap:)];
+    scaleBigTap.numberOfTapsRequired = 2;
+    scaleBigTap.numberOfTouchesRequired = 1;
+    _zoomImageView.userInteractionEnabled = YES;
+    [_zoomImageView addGestureRecognizer:scaleBigTap];
+    self.scaleTap = scaleBigTap;
+    
+    
+    __weak typeof(self) weakSelf = self;
+    
     zoomImageView.downLoadWebImageCallBlock = ^{
         // 下载完毕后重新计算下Frame
-        [self setMaxMinZoomScalesForCurrentBounds];
+        [weakSelf displayImage];
     };
     
     zoomImageView.delegate = self;
@@ -149,11 +186,42 @@
     zoomImageView.photo = photo;
     [zoomImageView setProgress:self.progress];
     
-    if (!photo.photoURL.absoluteString.length) {
+    if (zoomImageView.image) {
+        [self displayImage];
+    }else if (!photo.photoURL.absoluteString.length) {
         [self setMaxMinZoomScalesForCurrentBounds];
     }
     
 }
+
+- (void)displayImage {
+//    if ( _zoomImageView.image == nil) {
+    
+        // Reset
+        self.maximumZoomScale = 1;
+        self.minimumZoomScale = 1;
+        self.zoomScale = 1;
+        self.contentSize = CGSizeMake(0, 0);
+        
+        // Get image from browser as it handles ordering of fetching
+        if (_zoomImageView.image) {
+            
+            // Setup photo frame
+            CGRect photoImageViewFrame;
+            photoImageViewFrame.origin = CGPointZero;
+            photoImageViewFrame.size = _zoomImageView.image.size;
+            _zoomImageView.frame = photoImageViewFrame;
+            self.contentSize = photoImageViewFrame.size;
+            
+            // Set zoom to minimum zoom
+            [self setMaxMinZoomScalesForCurrentBounds];
+            
+        }
+        
+        [self setNeedsLayout];
+//    }
+}
+
 
 - (void)pickerBrowserPhotoImageViewDownloadProgress:(CGFloat)progress{
     self.progress = progress;
@@ -176,57 +244,112 @@
 #pragma mark - setMaxMinZoomScalesForCurrentBounds
 - (void)setMaxMinZoomScalesForCurrentBounds {
     
+    // Reset
+    self.maximumZoomScale = 1;
+    self.minimumZoomScale = 1;
+    self.zoomScale = 1;
+    
+    // Bail if no image
     if (_zoomImageView.image == nil) return;
     
-    _zoomImageView.frame = (CGRect) {CGPointZero , _zoomImageView.image.size};
+    // Reset position
+    _zoomImageView.frame = CGRectMake(0, 0, _zoomImageView.frame.size.width, _zoomImageView.frame.size.height);
     
     // Sizes
     CGSize boundsSize = self.bounds.size;
     CGSize imageSize = _zoomImageView.image.size;
     
-    // 获取最小比例
-    CGFloat xScale = boundsSize.width / imageSize.width;
-    CGFloat yScale = boundsSize.height / imageSize.height;
-    CGFloat minScale = MIN(xScale, yScale);
+    // Calculate Min
+    CGFloat xScale = boundsSize.width / imageSize.width;    // the scale needed to perfectly fit the image width-wise
+    CGFloat yScale = boundsSize.height / imageSize.height;  // the scale needed to perfectly fit the image height-wise
+    CGFloat minScale = MIN(xScale, yScale);                 // use minimum of these to allow the image to become fully visible
     
-    
+    // Calculate Max
+    CGFloat maxScale = 3;
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        self.maximumZoomScale = self.maximumZoomScale + 1.0;
-    }
-    // 最大的比例不能超过1.0，最小比例按屏幕来拉伸
-    if (xScale > 1 && yScale > 1) {
-        minScale = MIN(xScale, yScale);
+        // Let them go a bit bigger on a bigger screen!
+        maxScale = 4;
     }
     
-    // 初始化拉伸比例
+    // Image is smaller than screen so no zooming!
+    if (xScale >= 1 && yScale >= 1) {
+        minScale = 1.0;
+    }
+    
+    
+    // Set min/max zoom
+    self.maximumZoomScale = maxScale;
     self.minimumZoomScale = minScale;
-    self.zoomScale = minScale;
     
-    // 重置
-//    _zoomImageView.frame = CGRectMake(0, 0, self.zoomImageView.width, self.zoomImageView.height);
+    // Initial zoom
+    self.zoomScale = [self initialZoomScaleWithMinScale];
     
-    // 避免不能滚动
-    if (((NSInteger)_zoomImageView.width > self.width)) {
-        return;
+    // If we're zooming to fill then centralise
+    if (self.zoomScale != minScale) {
+        // Centralise
+        self.contentOffset = CGPointMake((imageSize.width * self.zoomScale - boundsSize.width) / 2.0,
+                                         (imageSize.height * self.zoomScale - boundsSize.height) / 2.0);
+        // Disable scrolling initially until the first pinch to fix issues with swiping on an initally zoomed in photo
+        self.scrollEnabled = NO;
     }
-    self.contentSize = CGSizeMake(self.width, 0);
     
+    // Layout
     [self setNeedsLayout];
+    
 }
 
+//
+//- (void)layoutSubviews {
+//
+//    // Center the image as it becomes smaller than the size of the screen
+//    CGSize boundsSize = self.bounds.size;
+//    CGRect frameToCenter = _zoomImageView.frame;
+//
+//    if (frameToCenter.size.height < 100) {
+//        frameToCenter.size.height = [UIScreen mainScreen].bounds.size.height - frameToCenter.size.height;
+//    }
+//
+//    if (frameToCenter.size.width < boundsSize.width) {
+//        frameToCenter.size.width = boundsSize.width;
+//    }
+//
+//    // Horizontally
+//    if (frameToCenter.size.width < boundsSize.width) {
+//        frameToCenter.origin.x = floorf((boundsSize.width - frameToCenter.size.width) / 2.0);
+//    } else {
+//        frameToCenter.origin.x = 0;
+//    }
+//
+//    // Vertically
+//    if (frameToCenter.size.height < boundsSize.height) {
+//        frameToCenter.origin.y = floorf((boundsSize.height - frameToCenter.size.height) / 2.0);
+//    } else {
+//        frameToCenter.origin.y = 0;
+//    }
+//
+//    if (CGRectIsEmpty(self.firstFrame) && frameToCenter.origin.y > 0) {
+//        self.firstFrame = frameToCenter;
+//    }
+//
+//
+//    // Center
+//    if (!CGRectEqualToRect(_zoomImageView.frame, frameToCenter))
+//        _zoomImageView.frame = frameToCenter;
+//
+//    [super layoutSubviews];
+//
+//}
+
+
+#pragma mark - Layout
+
 - (void)layoutSubviews {
+    
+    [super layoutSubviews];
     
     // Center the image as it becomes smaller than the size of the screen
     CGSize boundsSize = self.bounds.size;
     CGRect frameToCenter = _zoomImageView.frame;
-    
-    if (frameToCenter.size.height < 100) {
-        frameToCenter.size.height = [UIScreen mainScreen].bounds.size.height - frameToCenter.size.height;
-    }
-    
-    if (frameToCenter.size.width < boundsSize.width) {
-        frameToCenter.size.width = boundsSize.width;
-    }
     
     // Horizontally
     if (frameToCenter.size.width < boundsSize.width) {
@@ -242,17 +365,55 @@
         frameToCenter.origin.y = 0;
     }
     
-    if (CGRectIsEmpty(self.firstFrame) && frameToCenter.origin.y > 0) {
-        self.firstFrame = frameToCenter;
-    }
-
-    
     // Center
     if (!CGRectEqualToRect(_zoomImageView.frame, frameToCenter))
         _zoomImageView.frame = frameToCenter;
     
-    [super layoutSubviews];
+}
+
+- (void)handleDoubleTap:(CGPoint)touchPoint {
     
+    // Cancel any single tap handling
+    //    [NSObject cancelPreviousPerformRequestsWithTarget:_photoBrowser];
+    
+    // Zoom
+    if (self.zoomScale != self.minimumZoomScale && self.zoomScale != [self initialZoomScaleWithMinScale]) {
+        
+        // Zoom out
+        [self setZoomScale:self.minimumZoomScale animated:YES];
+        
+    } else {
+        
+        // Zoom in to twice the size
+        CGFloat newZoomScale = ((self.maximumZoomScale + self.minimumZoomScale) / 2);
+        CGFloat xsize = self.bounds.size.width / newZoomScale;
+        CGFloat ysize = self.bounds.size.height / newZoomScale;
+        [self zoomToRect:CGRectMake(touchPoint.x - xsize/2, touchPoint.y - ysize/2, xsize, ysize) animated:YES];
+        
+    }
+    
+    
+}
+
+
+- (CGFloat)initialZoomScaleWithMinScale {
+    CGFloat zoomScale = self.minimumZoomScale;
+    if (_zoomImageView) {
+        // Zoom image to fill if the aspect ratios are fairly similar
+        CGSize boundsSize = self.bounds.size;
+        CGSize imageSize = _zoomImageView.image.size;
+        CGFloat boundsAR = boundsSize.width / boundsSize.height;
+        CGFloat imageAR = imageSize.width / imageSize.height;
+        CGFloat xScale = boundsSize.width / imageSize.width;    // the scale needed to perfectly fit the image width-wise
+        CGFloat yScale = boundsSize.height / imageSize.height;  // the scale needed to perfectly fit the image height-wise
+        // Zooms standard portrait images on a 3.5in screen but not on a 4in screen.
+        if (ABS(boundsAR - imageAR) < 0.17) {
+            zoomScale = MAX(xScale, yScale);
+            // Ensure we don't zoom in or out too far, just in case
+            zoomScale = MIN(MAX(self.minimumZoomScale, zoomScale), self.maximumZoomScale);
+        }
+    }
+    return zoomScale;
 }
 
 - (void)dealloc{

@@ -250,16 +250,19 @@ static NSString *_cellIdentifier = @"collectionViewCell";
             [[cell.contentView.subviews lastObject] removeFromSuperview];
         }
         
-        ZLPhotoPickerBrowserPhotoScrollView *scrollView =  [ZLPhotoPickerBrowserPhotoScrollView instanceAutoLayoutView];
-
+        ZLPhotoPickerBrowserPhotoScrollView *scrollView =  [[ZLPhotoPickerBrowserPhotoScrollView alloc] init];
+        
         scrollView.backgroundColor = [UIColor clearColor];
         // 为了监听单击photoView事件
         scrollView.frame = cell.bounds;
         scrollView.photoScrollViewDelegate = self;
         [cell.contentView addSubview:scrollView];
         scrollView.photo = photo;
+        scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+        if (self.currentPage == self.photos.count - 1 && scrollView.x >= 0) {
+            scrollView.x = 0;
+        }
         
-        [scrollView autoEqualToSuperViewAutoLayouts];
     }
     
     return cell;

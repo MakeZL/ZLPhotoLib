@@ -265,16 +265,12 @@ static ZLAnimationBaseView *_singleBaseView;
     CGFloat minScale = MIN(xScale, yScale);
     
     // 最大的比例不能超过1.0，最小比例按屏幕来拉伸
-    if (xScale > 1 && yScale > 1) {
-        minScale = MIN(xScale, yScale);
+    if (xScale >= 1 && yScale >= 1) {
+        minScale = 1.0;
     }
     
-    // 重置
-    imageView.frame = CGRectMake(0, 0, imageView.image.size.width * minScale, imageView.image.size.height * minScale);
-    
-    
     // Size
-    CGRect frameToCenter = _baseView.frame;
+    CGRect frameToCenter = CGRectMake(0, 0, imageView.image.size.width * minScale, imageView.image.size.height * minScale);
     
     // 计算水平方向居中
     if (frameToCenter.size.width < boundsSize.width) {

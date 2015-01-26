@@ -180,6 +180,8 @@
 		48263F421A709FED00CF136E /* ZLCameraViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLCameraViewController.m; sourceTree = "<group>"; };
 		484401141A72358400171D22 /* ZLCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLCamera.h; sourceTree = "<group>"; };
 		484401151A72358400171D22 /* ZLCamera.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLCamera.m; sourceTree = "<group>"; };
+		48A707C01A76342C008DA272 /* MWTapDetectingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWTapDetectingView.h; sourceTree = "<group>"; };
+		48A707C11A76342C008DA272 /* MWTapDetectingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWTapDetectingView.m; sourceTree = "<group>"; };
 		48B3E1701A11BABC0079F464 /* 相册Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "相册Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		48B3E1741A11BABC0079F464 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		48B3E1751A11BABC0079F464 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -263,6 +265,8 @@
 		48263E981A709F7000CF136E /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				48A707C01A76342C008DA272 /* MWTapDetectingView.h */,
+				48A707C11A76342C008DA272 /* MWTapDetectingView.m */,
 				48263E991A709F7000CF136E /* ZLPhotoPickerBrowserPhotoImageView.h */,
 				48263E9A1A709F7000CF136E /* ZLPhotoPickerBrowserPhotoImageView.m */,
 				48263E9B1A709F7000CF136E /* ZLPhotoPickerBrowserPhotoScrollView.h */,
