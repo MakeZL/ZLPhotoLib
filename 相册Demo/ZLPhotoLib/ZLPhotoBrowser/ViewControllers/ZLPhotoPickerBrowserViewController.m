@@ -21,7 +21,8 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 
 @interface ZLPhotoPickerBrowserViewController () <UIScrollViewDelegate,ZLPhotoPickerPhotoScrollViewDelegate,UICollectionViewDelegateFlowLayout,UICollectionViewDataSource,UICollectionViewDelegate>
 // 自定义控件
-@property (nonatomic , weak) UIPageControl *pageCtrl;
+//@property (nonatomic , weak) UIPageControl *pageCtrl;
+@property (weak,nonatomic) UILabel *pageLabel;
 @property (nonatomic , weak) UIButton *deleleBtn;
 @property (weak,nonatomic) UIButton *backBtn;
 @property (nonatomic , weak) UICollectionView *collectionView;
@@ -75,9 +76,6 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[_collectionView]-x-|" options:0 metrics:@{@"x":@(-20)} views:@{@"_collectionView":_collectionView}]];
         [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[_collectionView]-0-|" options:0 metrics:nil views:@{@"_collectionView":_collectionView}]];
         
-        self.pageCtrl.numberOfPages = [self.dataSource numberOfPhotosInPickerBrowser:self];
-        self.pageCtrl.currentPage = self.currentPage;
-        self.pageCtrl.hidden =  [self.dataSource numberOfPhotosInPickerBrowser:self] <= 1;
         self.deleleBtn.hidden = !self.isEditing;
     }
     return _collectionView;
@@ -116,27 +114,27 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 }
 
 #pragma mark - 分页控件
-- (UIPageControl *)pageCtrl{
-    if (!_pageCtrl) {
+- (UILabel *)pageLabel{
+    if (!_pageLabel) {
+        UILabel *pageLabel = [[UILabel alloc] init];
+        pageLabel.font = [UIFont systemFontOfSize:18];
+        pageLabel.textAlignment = NSTextAlignmentCenter;
+        pageLabel.userInteractionEnabled = NO;
+        pageLabel.translatesAutoresizingMaskIntoConstraints = NO;
+        pageLabel.textColor = [UIColor whiteColor];
+        [self.view addSubview:pageLabel];
+        self.pageLabel = pageLabel;
         
-        UIPageControl *pageCtrl = [[UIPageControl alloc] init];
-        pageCtrl.userInteractionEnabled = NO;
-        pageCtrl.translatesAutoresizingMaskIntoConstraints = NO;
-        pageCtrl.currentPageIndicatorTintColor = [UIColor whiteColor];
-        pageCtrl.pageIndicatorTintColor = [UIColor lightGrayColor];
-        [self.view addSubview:pageCtrl];
-        self.pageCtrl = pageCtrl;
-        
-        NSString *widthVfl = @"H:|-0-[pageCtrl]-0-|";
-        NSString *heightVfl = @"V:[pageCtrl(ZLPickerPageCtrlH)]-20-|";
-        NSDictionary *views = NSDictionaryOfVariableBindings(pageCtrl);
+        NSString *widthVfl = @"H:|-0-[pageLabel]-0-|";
+        NSString *heightVfl = @"V:[pageLabel(ZLPickerPageCtrlH)]-20-|";
+        NSDictionary *views = NSDictionaryOfVariableBindings(pageLabel);
         NSDictionary *metrics = @{@"ZLPickerPageCtrlH":@(ZLPickerPageCtrlH)};
         
         [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:widthVfl options:0 metrics:metrics views:views]];
         [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:heightVfl options:0 metrics:metrics views:views]];
         
     }
-    return _pageCtrl;
+    return _pageLabel;
 }
 
 - (void)viewDidAppear:(BOOL)animated{
@@ -217,7 +215,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     self.collectionView.dataSource = self;
     [self.collectionView reloadData];
     
-    self.pageCtrl.numberOfPages = self.photos.count;
+    [self setPageLabelPage:self.currentPage];
     if (self.currentPage >= 0) {
         CGFloat attachVal = 0;
         if (self.currentPage == [self.dataSource numberOfPhotosInPickerBrowser:self]-1 && self.currentPage > 0) {
@@ -300,8 +298,11 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 
 - (void)setCurrentPage:(NSInteger)currentPage{
     _currentPage = currentPage;
-    
-    self.pageCtrl.currentPage = self.currentPage;
+    [self setPageLabelPage:currentPage];
+}
+
+-(void)setPageLabelPage:(NSInteger)page{
+    self.pageLabel.text = [NSString stringWithFormat:@"%ld / %ld",page + 1, self.photos.count];
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
