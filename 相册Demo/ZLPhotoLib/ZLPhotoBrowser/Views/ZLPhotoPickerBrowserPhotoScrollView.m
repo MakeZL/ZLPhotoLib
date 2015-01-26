@@ -105,6 +105,7 @@
         
         [UIView animateWithDuration:.3 animations:^{
             _zoomImageView.y = self.firstFrame.origin.y;
+            _zoomImageView.x = self.firstFrame.origin.x;
             [self setZoomScale:self.minimumZoomScale animated:NO];
         } completion:^(BOOL finished) {
         }];
@@ -116,41 +117,22 @@
         CGFloat xsize = self.bounds.size.width / newZoomScale;
         CGFloat ysize = self.bounds.size.height / newZoomScale;
         
+        
+        
         [UIView animateWithDuration:.25 animations:^{
-            _zoomImageView.y = 0;
+            
+            if (self.bounds.size.width > _zoomImageView.width) {
+                _zoomImageView.y = _zoomImageView.height / ([UIScreen mainScreen].bounds.size.height / (_zoomImageView.height * self.zoomScale * self.maximumZoomScale)) + ZLPickerColletionViewPadding / 4. ;
+                
+                _zoomImageView.x = ZLPickerColletionViewPadding / 3.;
+            }else{
+                _zoomImageView.y = 0;
+                _zoomImageView.x = 0;
+            }
+            
             [self zoomToRect:CGRectMake(touchX - xsize/2, touchY - ysize/2, xsize, ysize) animated:NO];
         }];
-        
-        
     }
-    
-    //    if (self.zoomScale == self.maximumZoomScale) {
-//            [UIView animateWithDuration:.3 animations:^{
-//                _zoomImageView.y = self.firstFrame.origin.y;
-//                [self setZoomScale:self.minimumZoomScale animated:NO];
-//            } completion:^(BOOL finished) {
-//            }];
-    //
-    //
-    //    }else{
-    //
-    //        CGPoint touchPoint = [tap locationInView:tap.view];
-    //
-    //        CGFloat scaleW = self.zoomImageView.image.size.width / self.width;
-    //        CGFloat scaleH = self.zoomImageView.image.size.height / self.height;
-    //
-    //        CGFloat x = touchPoint.x * scaleW;
-    //        CGFloat y = touchPoint.y * MIN(scaleW, scaleH);
-    //
-    //        [UIView animateWithDuration:.30 animations:^{
-    //            [self zoomToRect:CGRectMake(x, y, 0, 0 ) animated:NO];
-    //            self.zoomImageView.y = 0;
-    //            self.zoomImageView.x = 0;
-    //        } completion:^(BOOL finished) {
-    //            [self setZoomScale:self.maximumZoomScale];
-    //        }];
-    //
-    //    }
 }
 
 #pragma mark - disMissTap
@@ -305,49 +287,6 @@
     [self setNeedsLayout];
     
 }
-
-//
-//- (void)layoutSubviews {
-//
-//    // Center the image as it becomes smaller than the size of the screen
-//    CGSize boundsSize = self.bounds.size;
-//    CGRect frameToCenter = _zoomImageView.frame;
-//
-//    if (frameToCenter.size.height < 100) {
-//        frameToCenter.size.height = [UIScreen mainScreen].bounds.size.height - frameToCenter.size.height;
-//    }
-//
-//    if (frameToCenter.size.width < boundsSize.width) {
-//        frameToCenter.size.width = boundsSize.width;
-//    }
-//
-//    // Horizontally
-//    if (frameToCenter.size.width < boundsSize.width) {
-//        frameToCenter.origin.x = floorf((boundsSize.width - frameToCenter.size.width) / 2.0);
-//    } else {
-//        frameToCenter.origin.x = 0;
-//    }
-//
-//    // Vertically
-//    if (frameToCenter.size.height < boundsSize.height) {
-//        frameToCenter.origin.y = floorf((boundsSize.height - frameToCenter.size.height) / 2.0);
-//    } else {
-//        frameToCenter.origin.y = 0;
-//    }
-//
-//    if (CGRectIsEmpty(self.firstFrame) && frameToCenter.origin.y > 0) {
-//        self.firstFrame = frameToCenter;
-//    }
-//
-//
-//    // Center
-//    if (!CGRectEqualToRect(_zoomImageView.frame, frameToCenter))
-//        _zoomImageView.frame = frameToCenter;
-//
-//    [super layoutSubviews];
-//
-//}
-
 
 #pragma mark - Layout
 

@@ -35,6 +35,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 
 @property (nonatomic , assign) UIDeviceOrientation orientation;
 @property (assign,nonatomic) BOOL isDelete;
+@property (assign,nonatomic) BOOL isScrollingEnd;
 
 @end
 
@@ -310,12 +311,15 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
     
-    self.currentPage = (NSInteger)(scrollView.contentOffset.x / (scrollView.width - ZLPickerColletionViewPadding));
+    NSInteger currentPage = (NSInteger)scrollView.contentOffset.x / (scrollView.width - ZLPickerColletionViewPadding);
     
-    if (self.currentPage == self.photos.count - 1 && self.collectionView.x <= 0) {
+    if ((currentPage == self.photos.count - 1) && currentPage != self.currentPage && _collectionView.x == -ZLPickerColletionViewPadding) {
         self.collectionView.contentOffset = CGPointMake(self.collectionView.contentOffset.x + ZLPickerColletionViewPadding, 0);
     }
 
+    
+    self.currentPage = currentPage;
+    
     if ([self.delegate respondsToSelector:@selector(photoBrowser:didCurrentPage:)]) {
         [self.delegate photoBrowser:self didCurrentPage:self.currentPage];
     }
