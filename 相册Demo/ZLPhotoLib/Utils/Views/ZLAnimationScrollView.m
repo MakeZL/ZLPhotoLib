@@ -13,19 +13,23 @@
 static UIView *_parsentView;
 static NSArray *_photos;
 static NSMutableDictionary *_attachParams = nil;
-static NSUInteger prevAnimationStatusType;
-
 static NSArray *_subViews = nil;
 
 @implementation ZLAnimationScrollView
 
-+ (NSDictionary *)updateOptions:(NSDictionary *)updateOptions{
++ (NSDictionary *)updateOptions:(NSDictionary *)updateOptions statusStart:(BOOL)start{
     
     if (!_attachParams) {
         _attachParams = [NSMutableDictionary dictionary];
     }
     
     NSMutableDictionary *ops = [NSMutableDictionary dictionaryWithDictionary:updateOptions];
+    
+    if (!start) {
+        if ([self currentPage] >= KPhotoShowMaxCount) {
+            ops[UIViewAnimationAnimationStatusType] = @(UIViewAnimationAnimationStatusFade);
+        }
+    }
     [ops addEntriesFromDictionary:_attachParams];
     
     return ops;
@@ -33,7 +37,8 @@ static NSArray *_subViews = nil;
 
 + (instancetype)animationViewWithOptions:(NSDictionary *)options animations:(void (^)())animations completion:(void (^)(ZLAnimationBaseView *))completion{
     
-    options = [self updateOptions:options];
+    options = [self updateOptions:options statusStart:YES];
+
     
     UIView *toView = options[UIViewAnimationToView];
     
@@ -49,12 +54,8 @@ static NSArray *_subViews = nil;
 
 + (void)restoreWithOptions:(NSDictionary *)options animation:(void (^)())completion{
     
-    prevAnimationStatusType = [options[UIViewAnimationAnimationStatusType] integerValue];
-    
-    options = [self updateOptions:options];
-    
+    options = [self updateOptions:options statusStart:NO];
     NSMutableDictionary *ops = [NSMutableDictionary dictionaryWithDictionary:options];
-    
     UIView *toView = options[UIViewAnimationToView];
     
     UITableView *tableView = (UITableView *)[self getTableViewWithView:toView];

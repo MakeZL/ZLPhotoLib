@@ -19,6 +19,9 @@ typedef NS_ENUM(NSUInteger, UIViewAnimationAnimationStatus) {
     UIViewAnimationAnimationStatusRotate // 旋转
 };
 
+// 图片最多显示9张，超过9张取消单击事件
+static NSInteger const KPhotoShowMaxCount = 9;
+
 #define iOS7gt ([[UIDevice currentDevice].systemVersion doubleValue] >= 7.0)
 
 // ScrollView 滑动的间距

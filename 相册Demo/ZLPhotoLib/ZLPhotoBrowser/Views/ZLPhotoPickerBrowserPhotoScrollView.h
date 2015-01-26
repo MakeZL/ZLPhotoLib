@@ -24,6 +24,9 @@
 // delegate
 @property (nonatomic , weak) id <ZLPhotoPickerPhotoScrollViewDelegate> photoScrollViewDelegate;
 
+// 取消单击事件
+@property (assign,nonatomic) BOOL cancleSingleClick;
+
 - (void)setMaxMinZoomScalesForCurrentBounds;
 
 @end

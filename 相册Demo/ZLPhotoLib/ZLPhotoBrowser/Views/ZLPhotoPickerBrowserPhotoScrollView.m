@@ -17,6 +17,7 @@
 @property (nonatomic , weak) ZLPhotoPickerBrowserPhotoImageView *zoomImageView;
 @property (nonatomic , assign) CGFloat progress;
 @property (nonatomic , strong) UITapGestureRecognizer *scaleTap;
+@property (nonatomic , strong) UITapGestureRecognizer *signleTap;
 @property (assign,nonatomic) CGRect firstFrame;
 @property (assign,nonatomic) BOOL firstLayout;
 @property (assign,nonatomic) UIDeviceOrientation orientation;
@@ -54,6 +55,16 @@
     
 }
 
+- (void)setCancleSingleClick:(BOOL)cancleSingleClick{
+    _cancleSingleClick = cancleSingleClick;
+    
+    if (cancleSingleClick) {
+        [self removeGestureRecognizer:self.signleTap];
+    }else{
+        [self addGestureRecognizer:self.signleTap];
+    }
+}
+
 #pragma mark -监听手势
 - (void) addGesture{
     
@@ -69,6 +80,7 @@
     disMissTap.numberOfTapsRequired = 1;
     disMissTap.numberOfTouchesRequired = 1;
     [self addGestureRecognizer:disMissTap];
+    self.signleTap = disMissTap;
     // 只能有一个手势存在
     [disMissTap requireGestureRecognizerToFail:scaleBigTap];
 }
@@ -246,76 +258,5 @@
 - (void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
-
-//#pragma mark - setMaxMinZoomScalesForCurrentBounds
-//- (void)setMaxMinZoomScalesForCurrentBounds {
-//    
-//    if (_zoomImageView.image == nil) return;
-//    
-//    _zoomImageView.frame = (CGRect) {CGPointZero , _zoomImageView.image.size};
-//    
-//    // Sizes
-//    CGSize boundsSize = self.bounds.size;
-//    CGSize imageSize = _zoomImageView.image.size;
-//    
-//    // 获取最小比例
-//    CGFloat xScale = boundsSize.width / imageSize.width;
-//    CGFloat yScale = boundsSize.height / imageSize.height;
-//    CGFloat minScale = MIN(xScale, yScale);
-//    
-//    
-//    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-//        self.maximumZoomScale = self.maximumZoomScale + 1.0;
-//    }
-//    // 最大的比例不能超过1.0，最小比例按屏幕来拉伸
-//    if (xScale > 1 && yScale > 1) {
-//        minScale = MIN(xScale, yScale);
-//    }
-//    
-//    // 初始化拉伸比例
-//    self.minimumZoomScale = minScale;
-//    self.zoomScale = minScale;
-//    
-//    // 重置
-//    //    _zoomImageView.frame = CGRectMake(0, 0, self.zoomImageView.width, self.zoomImageView.height);
-//    
-//    // 避免不能滚动
-//    if (((NSInteger)_zoomImageView.width > self.width)) {
-//        return;
-//    }
-//    self.contentSize = CGSizeMake(self.width, 0);
-//    
-//    [self setNeedsLayout];
-//}
-//
-//- (void)layoutSubviews {
-//    
-//    [super layoutSubviews];
-//    
-//    CGSize boundsSize = self.bounds.size;
-//    CGRect frameToCenter = _zoomImageView.frame;
-//    
-//    if (frameToCenter.size.width < boundsSize.width) {
-//        frameToCenter.origin.x = floorf((boundsSize.width - frameToCenter.size.width) / 2.0);
-//    } else {
-//        frameToCenter.origin.x = 0;
-//    }
-//    
-//    // 计算垂直方向居中
-//    if (frameToCenter.size.height < boundsSize.height) {
-//        frameToCenter.origin.y = floorf((boundsSize.height - frameToCenter.size.height) / 2.0);
-//    } else {
-//        frameToCenter.origin.y = 0;
-//    }
-//    
-//    if (CGRectIsEmpty(self.firstFrame) && frameToCenter.origin.y > 0) {
-//        self.firstFrame = frameToCenter;
-//    }
-//
-//    // Center
-//    if (!CGRectEqualToRect(_zoomImageView.frame, frameToCenter))
-//        _zoomImageView.frame = frameToCenter;
-//}
-
 
 @end

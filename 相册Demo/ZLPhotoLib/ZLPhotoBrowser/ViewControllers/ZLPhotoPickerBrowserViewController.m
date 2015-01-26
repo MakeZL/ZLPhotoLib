@@ -23,8 +23,8 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 // 自定义控件
 @property (nonatomic , weak) UIPageControl *pageCtrl;
 @property (nonatomic , weak) UIButton *deleleBtn;
+@property (weak,nonatomic) UIButton *backBtn;
 @property (nonatomic , weak) UICollectionView *collectionView;
-//@property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
 // 单击时执行销毁的block
 @property (nonatomic , copy) ZLPickerBrowserViewControllerTapDisMissBlock disMissBlock;
 // 装着所有的图片模型
@@ -34,7 +34,6 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 
 @property (nonatomic , assign) UIDeviceOrientation orientation;
 @property (assign,nonatomic) BOOL isDelete;
-@property (assign,nonatomic) BOOL isLoadScrollView;
 
 @end
 
@@ -83,56 +82,6 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     }
     return _collectionView;
 }
-
-//- (UIScrollView *)scrollView{
-//    if (!_scrollView) {
-//        self.scrollView = [[UIScrollView alloc] init];
-//        self.scrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-//        self.scrollView.delegate = self;
-//        self.scrollView.frame = self.view.frame;
-//        self.scrollView.backgroundColor = [UIColor clearColor];
-//        self.scrollView.pagingEnabled = YES;
-//        self.scrollView.showsHorizontalScrollIndicator = NO;
-//        self.scrollView.showsVerticalScrollIndicator = NO;
-//        [self.view addSubview:_scrollView];
-//        
-//        self.scrollView.width += ZLPickerColletionViewPadding;
-//        
-//        for (NSInteger i = 0; i < [self.dataSource numberOfPhotosInPickerBrowser:self]; i++) {
-//            ZLPhotoPickerBrowserPhoto *photo = self.photos[i];
-//            ZLPhotoPickerBrowserPhotoScrollView *scrollView =  [ZLPhotoPickerBrowserPhotoScrollView instanceAutoLayoutView];
-//            scrollView.backgroundColor = [UIColor clearColor];
-//            // 为了监听单击photoView事件
-//            
-//            scrollView.frame = CGRectMake(_scrollView.frame.size.width * i, 0, self.view.frame.size.width, self.view.frame.size.height);
-//            scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-//            scrollView.photoScrollViewDelegate = self;
-//            scrollView.photo = photo;
-//            [_scrollView addSubview:scrollView];
-//        }
-//
-//        self.deleleBtn.hidden = !self.isEditing;
-//    }
-//    return _scrollView;
-//}
-
-
-//- (void)viewWillLayoutSubviews{
-//    
-//    
-//    if (self.isLoadScrollView) {
-//        self.scrollView.contentSize = CGSizeMake([self.dataSource numberOfPhotosInPickerBrowser:self] * self.scrollView.width, 0);
-//        for (NSInteger i = 0; i < [self.dataSource numberOfPhotosInPickerBrowser:self]; i++) {
-//            ZLPhotoPickerBrowserPhotoScrollView *imageView = (ZLPhotoPickerBrowserPhotoScrollView *)[self.scrollView subviews][i];
-//            imageView.frame = CGRectMake(i * self.scrollView.width - ZLPickerColletionViewPadding / 2, 0, self.scrollView.frame.size.width, self.scrollView.frame.size.height);
-//            
-//        }
-//        
-//        [_scrollView setContentOffset:CGPointMake(self.scrollView.width * [self currentPage], 0)];
-//    }
-//    [super viewWillLayoutSubviews];
-//    
-//}
 
 #pragma mark -删除按钮
 - (UIButton *)deleleBtn{
@@ -238,9 +187,6 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     [ZLAnimationScrollView animationViewWithOptions:options animations:^{
         
     } completion:^(ZLAnimationBaseView *baseView) {
-        if (!weakSelf.isLoadScrollView){
-            weakSelf.isLoadScrollView = YES;
-        }
         // disMiss后调用
         weakSelf.disMissBlock = ^(NSInteger page){
             [ZLAnimationScrollView setCurrentPage:page];
@@ -261,9 +207,9 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     // 隐藏状态栏
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
     self.view.backgroundColor = [UIColor blackColor];
+    
 }
 
-#pragma mark -刷新表格
 
 #pragma mark -刷新表格
 - (void) reloadData{
@@ -307,6 +253,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         }
         
         ZLPhotoPickerBrowserPhotoScrollView *scrollView =  [ZLPhotoPickerBrowserPhotoScrollView instanceAutoLayoutView];
+
         scrollView.backgroundColor = [UIColor clearColor];
         // 为了监听单击photoView事件
         scrollView.frame = cell.bounds;
@@ -351,10 +298,15 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     self.collectionView.frame = tempF;
 }
 
+- (void)setCurrentPage:(NSInteger)currentPage{
+    _currentPage = currentPage;
+    
+    self.pageCtrl.currentPage = self.currentPage;
+}
+
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
     
     self.currentPage = (NSInteger)(scrollView.contentOffset.x / (scrollView.width - ZLPickerColletionViewPadding));
-    self.pageCtrl.currentPage = self.currentPage;
     
     if ([self.delegate respondsToSelector:@selector(photoBrowser:didCurrentPage:)]) {
         [self.delegate photoBrowser:self didCurrentPage:self.currentPage];

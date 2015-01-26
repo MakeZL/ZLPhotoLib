@@ -93,7 +93,9 @@ static ZLAnimationBaseView *_singleBaseView;
     [self willStartAnimationOperation];
     // 补充没填的参数
     NSMutableDictionary *ops = [NSMutableDictionary dictionaryWithDictionary:[self supplementOptionsEmptyParamWithDict:options]];
+    
     [ops addEntriesFromDictionary:_attachParams];
+    
     
     _options = [NSMutableDictionary dictionaryWithDictionary:ops];
     
@@ -183,6 +185,12 @@ static ZLAnimationBaseView *_singleBaseView;
     
     NSMutableDictionary *ops = [NSMutableDictionary dictionaryWithDictionary:[self supplementOptionsEmptyParamWithDict:options]];
     [ops addEntriesFromDictionary:_attachParams];
+    
+    if ([self currentPage] > KPhotoShowMaxCount) {
+        ops[UIViewAnimationAnimationStatusType] = @(UIViewAnimationAnimationStatusFade);
+    }
+    
+    
     _options = [NSMutableDictionary dictionaryWithDictionary:ops];
     
     CGRect endFrame      =  [_options[UIViewAnimationEndFrame] CGRectValue];;
