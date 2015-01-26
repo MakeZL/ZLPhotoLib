@@ -173,7 +173,7 @@ static NSArray *_subViews = nil;
         }
         
         if (collectionView) {
-            if ([subViews[val] isEqual:toBrotherView]) {
+            if (val < subViews.count && [subViews[val] isEqual:toBrotherView]) {
                 currPage = index;
             }
         }
@@ -232,11 +232,14 @@ static NSArray *_subViews = nil;
                     [subViews[[self currentPage]] setHidden:YES];
                 }
             }else{
-                // 竖屏 UICollectionView 九宫格
-                startFrame = [subViews[[self currentPage]] frame];
-                startFrame.size.width = toView.width;
-                startFrame.size.height = toView.height;
-                startFrame.origin.y += 64;
+
+                if ([options[UIViewAnimationAnimationStatusType] integerValue] != UIViewAnimationAnimationStatusFade) {
+                    // 竖屏 UICollectionView 九宫格
+                    startFrame = [subViews[[self currentPage]] frame];
+                    startFrame.size.width = toView.width;
+                    startFrame.size.height = toView.height;
+                    startFrame.origin.y += 64;
+                }
                 
                 if ([options[UIViewAnimationAnimationStatusType] integerValue] == UIViewAnimationAnimationStatusZoom) {
                     [subViews[[self currentPage]] setHidden:YES];
@@ -278,7 +281,10 @@ static NSArray *_subViews = nil;
     ops[UIViewAnimationEndFrame] = [NSValue valueWithCGRect:startFrame];
     [super restoreWithOptions:ops animation:^{
         
-        [subViews[[self currentPage]] setHidden:NO];
+        if ([ops[UIViewAnimationAnimationStatusType] integerValue] != UIViewAnimationAnimationStatusFade) {
+            [subViews[[self currentPage]] setHidden:NO];
+        }
+        
         
         toView.hidden = NO;
         subViews = nil;

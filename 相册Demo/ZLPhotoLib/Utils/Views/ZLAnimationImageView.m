@@ -82,6 +82,10 @@ static NSDictionary *_options;
         return ;
     }
     
+    if (index >= _photos.count) {
+        index = _photos.count - 1;
+    }
+    
     ZLPhotoPickerBrowserPhoto *photo = _photos[index];//[self photoWithAtIndex:self.currentPage];
     UIButton *cView = _options[UIViewAnimationToView];
     UIImage *image = nil;
