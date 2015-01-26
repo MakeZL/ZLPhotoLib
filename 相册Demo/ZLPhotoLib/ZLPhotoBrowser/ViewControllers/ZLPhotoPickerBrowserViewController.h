@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "ZLPhotoPickerBrowserPhoto.h"
 #import "ZLPhotoPickerCommon.h"
+#import "ZLPhotoPickerCustomToolBarView.h"
 
 @class ZLPhotoPickerBrowserViewController;
 
@@ -31,6 +32,12 @@
 @protocol ZLPhotoPickerBrowserViewControllerDelegate <NSObject>
 @optional
 
+/**
+ *  返回用户自定义的toolBarView(类似tableView FooterView)
+ *
+ *  @return 返回用户自定义的toolBarView
+ */
+- (ZLPhotoPickerCustomToolBarView *)photoBrowserShowToolBarViewWithphotoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser;
 /**
  *  准备删除那个图片
  *

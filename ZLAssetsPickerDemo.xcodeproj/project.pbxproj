@@ -60,6 +60,7 @@
 		48263F441A709FED00CF136E /* ZLCameraView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48263F401A709FED00CF136E /* ZLCameraView.m */; };
 		48263F451A709FED00CF136E /* ZLCameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48263F421A709FED00CF136E /* ZLCameraViewController.m */; };
 		484401161A72358400171D22 /* ZLCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = 484401151A72358400171D22 /* ZLCamera.m */; };
+		48A707C61A767836008DA272 /* ZLPhotoPickerCustomToolBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A707C51A767836008DA272 /* ZLPhotoPickerCustomToolBarView.m */; };
 		48B3E1761A11BABC0079F464 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B3E1751A11BABC0079F464 /* main.m */; };
 		48B3E1791A11BABC0079F464 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B3E1781A11BABC0079F464 /* AppDelegate.m */; };
 		48B3E17C1A11BABC0079F464 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B3E17B1A11BABC0079F464 /* ViewController.m */; };
@@ -180,8 +181,8 @@
 		48263F421A709FED00CF136E /* ZLCameraViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLCameraViewController.m; sourceTree = "<group>"; };
 		484401141A72358400171D22 /* ZLCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLCamera.h; sourceTree = "<group>"; };
 		484401151A72358400171D22 /* ZLCamera.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLCamera.m; sourceTree = "<group>"; };
-		48A707C01A76342C008DA272 /* MWTapDetectingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWTapDetectingView.h; sourceTree = "<group>"; };
-		48A707C11A76342C008DA272 /* MWTapDetectingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWTapDetectingView.m; sourceTree = "<group>"; };
+		48A707C41A767836008DA272 /* ZLPhotoPickerCustomToolBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLPhotoPickerCustomToolBarView.h; sourceTree = "<group>"; };
+		48A707C51A767836008DA272 /* ZLPhotoPickerCustomToolBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLPhotoPickerCustomToolBarView.m; sourceTree = "<group>"; };
 		48B3E1701A11BABC0079F464 /* 相册Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "相册Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		48B3E1741A11BABC0079F464 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		48B3E1751A11BABC0079F464 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -265,12 +266,12 @@
 		48263E981A709F7000CF136E /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				48A707C01A76342C008DA272 /* MWTapDetectingView.h */,
-				48A707C11A76342C008DA272 /* MWTapDetectingView.m */,
 				48263E991A709F7000CF136E /* ZLPhotoPickerBrowserPhotoImageView.h */,
 				48263E9A1A709F7000CF136E /* ZLPhotoPickerBrowserPhotoImageView.m */,
 				48263E9B1A709F7000CF136E /* ZLPhotoPickerBrowserPhotoScrollView.h */,
 				48263E9C1A709F7000CF136E /* ZLPhotoPickerBrowserPhotoScrollView.m */,
+				48A707C41A767836008DA272 /* ZLPhotoPickerCustomToolBarView.h */,
+				48A707C51A767836008DA272 /* ZLPhotoPickerCustomToolBarView.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -727,6 +728,7 @@
 				48263F191A709FCD00CF136E /* NSData+ImageContentType.m in Sources */,
 				48263EC51A709F7000CF136E /* ZLPhotoPickerCollectionView.m in Sources */,
 				48263EBD1A709F7000CF136E /* ZLPhotoPickerBrowserPhotoScrollView.m in Sources */,
+				48A707C61A767836008DA272 /* ZLPhotoPickerCustomToolBarView.m in Sources */,
 				48263EC61A709F7000CF136E /* ZLPhotoPickerCollectionViewCell.m in Sources */,
 				48263F1C1A709FCD00CF136E /* SDWebImageDecoder.m in Sources */,
 				48263EBE1A709F7000CF136E /* ZLPhotoAssets.m in Sources */,

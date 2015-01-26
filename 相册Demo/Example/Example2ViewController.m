@@ -138,6 +138,14 @@
 }
 
 #pragma mark - <ZLPhotoPickerBrowserViewControllerDelegate>
+#pragma mark 返回自定义View
+- (ZLPhotoPickerCustomToolBarView *)photoBrowserShowToolBarViewWithphotoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser{
+    UIButton *customBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [customBtn setTitle:@"实现代理自定义ToolBar" forState:UIControlStateNormal];
+    customBtn.frame = CGRectMake(10, 0, 200, 100);
+    return (ZLPhotoPickerCustomToolBarView *)customBtn;
+}
+
 - (void)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser removePhotoAtIndex:(NSUInteger)index{
     if (index > self.assets.count) return;
     [self.assets removeObjectAtIndex:index];

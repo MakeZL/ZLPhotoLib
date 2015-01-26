@@ -77,6 +77,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[_collectionView]-x-|" options:0 metrics:@{@"x":@(-20)} views:@{@"_collectionView":_collectionView}]];
         [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[_collectionView]-0-|" options:0 metrics:nil views:@{@"_collectionView":_collectionView}]];
         
+        self.pageLabel.hidden = NO;
         self.deleleBtn.hidden = !self.isEditing;
     }
     return _collectionView;
@@ -210,11 +211,27 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 }
 
 
-#pragma mark -刷新表格
+#pragma mark - 刷新表格
 - (void) reloadData{
     
     self.collectionView.dataSource = self;
     [self.collectionView reloadData];
+    
+    // 添加自定义View
+    if ([self.delegate photoBrowserShowToolBarViewWithphotoBrowser:self]) {
+        UIView *toolBarView = [self.delegate photoBrowserShowToolBarViewWithphotoBrowser:self];
+        toolBarView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+        CGFloat width = self.view.width;
+        CGFloat x = self.view.x;
+        if (toolBarView.width) {
+            width = toolBarView.width;
+        }
+        if (toolBarView.x) {
+            x = toolBarView.x;
+        }
+        toolBarView.frame = CGRectMake(x, self.view.height - 44, width, 44);
+        [self.view addSubview:toolBarView];
+    }
     
     [self setPageLabelPage:self.currentPage];
     if (self.currentPage >= 0) {
@@ -230,7 +247,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 }
 
 
-#pragma mark -<UICollectionViewDataSource>
+#pragma mark - <UICollectionViewDataSource>
 - (NSInteger) numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
     return 1;
 }
@@ -269,10 +286,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     return cell;
 }
 
-
-/**
- *  获取所有的图片
- */
+#pragma mark - 获取所有的图片
 - (NSArray *) getPhotos{
     NSMutableArray *photos = [NSMutableArray array];
     NSInteger count = [self.dataSource numberOfPhotosInPickerBrowser:self];
@@ -282,9 +296,6 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     
     return photos;
 }
-
-#pragma mark - <UIScrollViewDelegate>
-
 
 #pragma mark - <UIScrollViewDelegate>
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
@@ -298,11 +309,6 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     }
     
     self.collectionView.frame = tempF;
-}
-
-- (void)setCurrentPage:(NSInteger)currentPage{
-    _currentPage = currentPage;
-    [self setPageLabelPage:currentPage];
 }
 
 -(void)setPageLabelPage:(NSInteger)page{
@@ -319,6 +325,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 
     
     self.currentPage = currentPage;
+    [self setPageLabelPage:currentPage];
     
     if ([self.delegate respondsToSelector:@selector(photoBrowser:didCurrentPage:)]) {
         [self.delegate photoBrowser:self didCurrentPage:self.currentPage];
@@ -379,7 +386,6 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         }
     }
 }
-
 
 #pragma mark - <PickerPhotoScrollViewDelegate>
 - (void)pickerPhotoScrollViewDidSingleClick:(ZLPhotoPickerBrowserPhotoScrollView *)photoScrollView{
