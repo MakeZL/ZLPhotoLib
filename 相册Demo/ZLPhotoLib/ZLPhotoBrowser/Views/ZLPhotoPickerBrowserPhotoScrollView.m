@@ -103,8 +103,11 @@
     // Zoom
     if (self.zoomScale != self.minimumZoomScale && self.zoomScale != [self initialZoomScaleWithMinScale]) {
         
-        // Zoom out
-        [self setZoomScale:self.minimumZoomScale animated:YES];
+        [UIView animateWithDuration:.3 animations:^{
+            _zoomImageView.y = self.firstFrame.origin.y;
+            [self setZoomScale:self.minimumZoomScale animated:NO];
+        } completion:^(BOOL finished) {
+        }];
         
     } else {
         
@@ -112,16 +115,21 @@
         CGFloat newZoomScale = ((self.maximumZoomScale + self.minimumZoomScale) / 2);
         CGFloat xsize = self.bounds.size.width / newZoomScale;
         CGFloat ysize = self.bounds.size.height / newZoomScale;
-        [self zoomToRect:CGRectMake(touchX - xsize/2, touchY - ysize/2, xsize, ysize) animated:YES];
+        
+        [UIView animateWithDuration:.25 animations:^{
+            _zoomImageView.y = 0;
+            [self zoomToRect:CGRectMake(touchX - xsize/2, touchY - ysize/2, xsize, ysize) animated:NO];
+        }];
+        
         
     }
     
     //    if (self.zoomScale == self.maximumZoomScale) {
-    //        [UIView animateWithDuration:.3 animations:^{
-    //            _zoomImageView.y = self.firstFrame.origin.y;
-    //            [self setZoomScale:self.minimumZoomScale animated:NO];
-    //        } completion:^(BOOL finished) {
-    //        }];
+//            [UIView animateWithDuration:.3 animations:^{
+//                _zoomImageView.y = self.firstFrame.origin.y;
+//                [self setZoomScale:self.minimumZoomScale animated:NO];
+//            } completion:^(BOOL finished) {
+//            }];
     //
     //
     //    }else{
@@ -365,36 +373,15 @@
         frameToCenter.origin.y = 0;
     }
     
+    if (CGRectIsEmpty(self.firstFrame) && frameToCenter.origin.y > 0) {
+        self.firstFrame = frameToCenter;
+    }
+    
     // Center
     if (!CGRectEqualToRect(_zoomImageView.frame, frameToCenter))
         _zoomImageView.frame = frameToCenter;
     
 }
-
-- (void)handleDoubleTap:(CGPoint)touchPoint {
-    
-    // Cancel any single tap handling
-    //    [NSObject cancelPreviousPerformRequestsWithTarget:_photoBrowser];
-    
-    // Zoom
-    if (self.zoomScale != self.minimumZoomScale && self.zoomScale != [self initialZoomScaleWithMinScale]) {
-        
-        // Zoom out
-        [self setZoomScale:self.minimumZoomScale animated:YES];
-        
-    } else {
-        
-        // Zoom in to twice the size
-        CGFloat newZoomScale = ((self.maximumZoomScale + self.minimumZoomScale) / 2);
-        CGFloat xsize = self.bounds.size.width / newZoomScale;
-        CGFloat ysize = self.bounds.size.height / newZoomScale;
-        [self zoomToRect:CGRectMake(touchPoint.x - xsize/2, touchPoint.y - ysize/2, xsize, ysize) animated:YES];
-        
-    }
-    
-    
-}
-
 
 - (CGFloat)initialZoomScaleWithMinScale {
     CGFloat zoomScale = self.minimumZoomScale;

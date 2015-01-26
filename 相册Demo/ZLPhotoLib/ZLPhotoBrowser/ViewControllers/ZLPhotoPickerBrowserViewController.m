@@ -259,7 +259,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         [cell.contentView addSubview:scrollView];
         scrollView.photo = photo;
         scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-        if (self.currentPage == self.photos.count - 1 && scrollView.x >= 0) {
+        if (self.currentPage == self.photos.count - 1 && scrollView.x >= 0 && !collectionView.isDragging) {
             scrollView.x = 0;
         }
         
@@ -312,6 +312,10 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     
     self.currentPage = (NSInteger)(scrollView.contentOffset.x / (scrollView.width - ZLPickerColletionViewPadding));
     
+    if (self.currentPage == self.photos.count - 1 && self.collectionView.x <= 0) {
+        self.collectionView.contentOffset = CGPointMake(self.collectionView.contentOffset.x + ZLPickerColletionViewPadding, 0);
+    }
+
     if ([self.delegate respondsToSelector:@selector(photoBrowser:didCurrentPage:)]) {
         [self.delegate photoBrowser:self didCurrentPage:self.currentPage];
     }
