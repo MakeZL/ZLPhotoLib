@@ -218,7 +218,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     [self.collectionView reloadData];
     
     // 添加自定义View
-    if ([self.delegate photoBrowserShowToolBarViewWithphotoBrowser:self]) {
+    if ([self.delegate respondsToSelector:@selector(photoBrowserShowToolBarViewWithphotoBrowser:)]) {
         UIView *toolBarView = [self.delegate photoBrowserShowToolBarViewWithphotoBrowser:self];
         toolBarView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         CGFloat width = self.view.width;
