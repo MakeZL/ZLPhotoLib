@@ -181,7 +181,7 @@ static ZLAnimationBaseView *_singleBaseView;
     [self willUnLoadAnimationOperation];
     
     // 补充没填的参数
-//    _options = [self supplementOptionsEmptyParamWithDict:options];
+    //    _options = [self supplementOptionsEmptyParamWithDict:options];
     
     NSMutableDictionary *ops = [NSMutableDictionary dictionaryWithDictionary:[self supplementOptionsEmptyParamWithDict:options]];
     [ops addEntriesFromDictionary:_attachParams];
@@ -265,12 +265,16 @@ static ZLAnimationBaseView *_singleBaseView;
     CGFloat minScale = MIN(xScale, yScale);
     
     // 最大的比例不能超过1.0，最小比例按屏幕来拉伸
-    if (xScale >= 1 && yScale >= 1) {
-        minScale = 1.0;
+    if (xScale > 1 && yScale > 1) {
+        minScale = MIN(xScale, yScale);
     }
     
+    // 重置
+    imageView.frame = CGRectMake(0, 0, imageView.image.size.width * minScale, imageView.image.size.height * minScale);
+    
+    
     // Size
-    CGRect frameToCenter = CGRectMake(0, 0, imageView.image.size.width * minScale, imageView.image.size.height * minScale);
+    CGRect frameToCenter = _baseView.frame;
     
     // 计算水平方向居中
     if (frameToCenter.size.width < boundsSize.width) {
@@ -296,7 +300,6 @@ static ZLAnimationBaseView *_singleBaseView;
     return frameToCenter;
     //    return CGRectZero;
 }
-
 
 + (void)setterParamsWithOrientation:(UIDevice *)device{
     if(device.orientation == UIDeviceOrientationLandscapeLeft || device.orientation == UIDeviceOrientationLandscapeRight){

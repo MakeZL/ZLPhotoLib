@@ -38,7 +38,7 @@ static NSArray *_subViews = nil;
 + (instancetype)animationViewWithOptions:(NSDictionary *)options animations:(void (^)())animations completion:(void (^)(ZLAnimationBaseView *))completion{
     
     options = [self updateOptions:options statusStart:YES];
-
+    
     
     UIView *toView = options[UIViewAnimationToView];
     
@@ -155,38 +155,11 @@ static NSArray *_subViews = nil;
         compareView = toView;
     }
     
-    NSInteger nowPage = 0;
-    NSInteger currPage = 0;
     NSInteger val = [self currentPage];
     if ([self currentPage] >= subViews.count) {
         val = [self currentPage] - (([self currentPage] % subViews.count == 0 ? [self currentPage] - subViews.count  : [self currentPage] % subViews.count)) - 1;
         if (val < 0) {
             val = 0;
-        }
-    }
-    
-    for (NSInteger index = 0; index < subViews.count; index++) {
-        UIView *toBrotherView = subViews[index];
-        if ([compareView isEqual:toBrotherView]) {
-            // 记录当前第几页
-            nowPage = index;
-        }
-        
-        if (collectionView) {
-            if (val < subViews.count && [subViews[val] isEqual:toBrotherView]) {
-                currPage = index;
-            }
-        }
-    }
-    
-    // 计算当前的值
-    if (tableView || collectionView) {
-        if (tableView) {
-            nowPage = [[tableView indexPathForCell:(UITableViewCell *)compareView] row];
-        }
-        
-        if (collectionView) {
-            nowPage = [[collectionView indexPathForCell:(UICollectionViewCell *)compareView] row];
         }
     }
     
@@ -232,7 +205,7 @@ static NSArray *_subViews = nil;
                     [subViews[[self currentPage]] setHidden:YES];
                 }
             }else{
-
+                
                 if ([options[UIViewAnimationAnimationStatusType] integerValue] != UIViewAnimationAnimationStatusFade) {
                     // 竖屏 UICollectionView 九宫格
                     startFrame = [subViews[[self currentPage]] frame];
