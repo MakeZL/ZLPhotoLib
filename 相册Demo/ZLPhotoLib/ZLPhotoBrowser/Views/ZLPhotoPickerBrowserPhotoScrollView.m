@@ -99,7 +99,7 @@
     // 避免cell重复创建控件，删除再添加
     [[self.subviews lastObject] removeFromSuperview];
     
-    ZLPhotoPickerBrowserPhotoImageView *zoomImageView = [[ZLPhotoPickerBrowserPhotoImageView alloc] initWithFrame:CGRectZero];
+    ZLPhotoPickerBrowserPhotoImageView *zoomImageView = [[ZLPhotoPickerBrowserPhotoImageView alloc] initWithFrame:self.frame];
     [self addSubview:zoomImageView];
     
     zoomImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
