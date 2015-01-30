@@ -35,6 +35,8 @@
 - (void)viewDidLoad{
     [super viewDidLoad];
     [self setupUI];
+    [[SDImageCache sharedImageCache] clearDisk];
+    [[SDImageCache sharedImageCache] clearMemory];
 }
 
 - (void)setupUI{

@@ -247,10 +247,6 @@ static NSArray *_subViews = nil;
     
     startFrame.origin.y += [[self getParsentView:options[UIViewAnimationToView]] frame].origin.y;
     
-    if (subViews.count == 1) {
-        startFrame.origin.x = toView.x + startFrame.origin.x;
-    }
-    
     ops[UIViewAnimationEndFrame] = [NSValue valueWithCGRect:startFrame];
     [super restoreWithOptions:ops animation:^{
         

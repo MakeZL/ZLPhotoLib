@@ -123,7 +123,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         pageLabel.textAlignment = NSTextAlignmentCenter;
         pageLabel.userInteractionEnabled = NO;
         pageLabel.translatesAutoresizingMaskIntoConstraints = NO;
-        pageLabel.textColor = [UIColor whiteColor];
+        pageLabel.textColor = [UIColor clearColor];
         [self.view addSubview:pageLabel];
         self.pageLabel = pageLabel;
         
