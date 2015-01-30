@@ -1,9 +1,9 @@
 //
-//  UIImageViewTap.m
-//  Momento
+//  ZLPhotoPickerBrowserPhotoImageView.m
+//  ZLAssetsPickerDemo
 //
-//  Created by Michael Waterfall on 04/11/2009.
-//  Copyright 2009 d3i. All rights reserved.
+//  Created by 张磊 on 14-11-14.
+//  Copyright (c) 2014年 com.zixue101.www. All rights reserved.
 //
 
 #import "ZLPhotoPickerBrowserPhotoImageView.h"
