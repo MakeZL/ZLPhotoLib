@@ -15,7 +15,6 @@
 #import "ZLPhotoPickerCommon.h"
 #import "ZLAnimationScrollView.h"
 #import <objc/runtime.h>
-#import "UIView+ZLAutoLayout.h"
 
 static NSString *_cellIdentifier = @"collectionViewCell";
 
@@ -306,6 +305,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     if ((currentPage < [self.dataSource numberOfPhotosInPickerBrowser:self] - 1) || self.photos.count == 1) {
         tempF.origin.x = 0;
     }else{
+        
         tempF.origin.x = -ZLPickerColletionViewPadding;
     }
     
@@ -320,10 +320,9 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     
     NSInteger currentPage = (NSInteger)scrollView.contentOffset.x / (scrollView.width - ZLPickerColletionViewPadding);
     
-    if ((currentPage == self.photos.count - 1) && currentPage != self.currentPage && _collectionView.x == -ZLPickerColletionViewPadding) {
+    if (currentPage == self.photos.count - 1 && currentPage != self.currentPage && [[[UIDevice currentDevice] systemVersion] doubleValue] >= 8.0) {
         self.collectionView.contentOffset = CGPointMake(self.collectionView.contentOffset.x + ZLPickerColletionViewPadding, 0);
     }
-
     
     self.currentPage = currentPage;
     [self setPageLabelPage:currentPage];

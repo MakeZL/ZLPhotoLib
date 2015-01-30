@@ -259,46 +259,31 @@ static ZLAnimationBaseView *_singleBaseView;
     CGSize boundsSize = [UIScreen mainScreen].bounds.size;
     CGSize imageSize = imageView.image.size;
     
-    // 获取最小比例
-    CGFloat xScale = boundsSize.width / imageSize.width;
-    CGFloat yScale = boundsSize.height / imageSize.height;
-    CGFloat minScale = MIN(xScale, yScale);
-    
-    // 最大的比例不能超过1.0，最小比例按屏幕来拉伸
-    if (xScale > 1 && yScale > 1) {
+    CGFloat xScale = boundsSize.width / imageSize.width;    // the scale needed to perfectly fit the image width-wise
+    CGFloat yScale = boundsSize.height / imageSize.height;  // the scale needed to perfectly fit the image height-wise
+    CGFloat minScale = MIN(xScale, yScale);                 // use minimum of these to allow the image to become fully visible
+    // Image is smaller than screen so no zooming!
+    if (xScale >= 1 && yScale >= 1) {
         minScale = MIN(xScale, yScale);
     }
     
-    // 重置
-    imageView.frame = CGRectMake(0, 0, imageView.image.size.width * minScale, imageView.image.size.height * minScale);
+    CGRect frameToCenter = CGRectMake(0, 0, imageSize.width * minScale, imageSize.height * minScale);
     
-    
-    // Size
-    CGRect frameToCenter = _baseView.frame;
-    
-    // 计算水平方向居中
+    // Horizontally
     if (frameToCenter.size.width < boundsSize.width) {
         frameToCenter.origin.x = floorf((boundsSize.width - frameToCenter.size.width) / 2.0);
     } else {
         frameToCenter.origin.x = 0;
     }
     
-    // 计算垂直方向居中
+    // Vertically
     if (frameToCenter.size.height < boundsSize.height) {
         frameToCenter.origin.y = floorf((boundsSize.height - frameToCenter.size.height) / 2.0);
     } else {
         frameToCenter.origin.y = 0;
     }
     
-    if (!iOS7gt){
-        frameToCenter.origin.y -= 20;
-    }
-    
-    
-    // Center
-    //    if (!CGRectEqualToRect(_baseView.frame, frameToCenter))
     return frameToCenter;
-    //    return CGRectZero;
 }
 
 + (void)setterParamsWithOrientation:(UIDevice *)device{

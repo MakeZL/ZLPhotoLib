@@ -1,38 +1,28 @@
 //
-//  PickerImageView.h
-//  ZLAssetsPickerDemo
+//  UIImageViewTap.h
+//  Momento
 //
-//  Created by 张磊 on 14-11-15.
-//  Copyright (c) 2014年 com.zixue101.www. All rights reserved.
+//  Created by Michael Waterfall on 04/11/2009.
+//  Copyright 2009 d3i. All rights reserved.
 //
 
-typedef void(^downLoadWebImageCallBlock)();
+#import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-@protocol ZLPickerBrowserPhotoImageViewDelegate <NSObject>
+@protocol ZLPhotoPickerBrowserPhotoImageViewDelegate;
 
-@optional
-/**
- *  告诉代理下载的进度
- *
- *  @param progess 进度
- */
-- (void) pickerBrowserPhotoImageViewDownloadProgress:(CGFloat)progress;
+@interface ZLPhotoPickerBrowserPhotoImageView : UIImageView {}
+
+@property (nonatomic, weak) id <ZLPhotoPickerBrowserPhotoImageViewDelegate> tapDelegate;
+@property (assign,nonatomic) CGFloat progress;
 
 @end
 
+@protocol ZLPhotoPickerBrowserPhotoImageViewDelegate <NSObject>
 
-@class ZLPhotoPickerBrowserPhoto;
+@optional
 
-@interface ZLPhotoPickerBrowserPhotoImageView : UIImageView
-
-@property (nonatomic , strong) ZLPhotoPickerBrowserPhoto *photo;
-// 下载完回调
-@property (nonatomic , copy) downLoadWebImageCallBlock downLoadWebImageCallBlock;
-@property (nonatomic , strong) UIScrollView *scrollView;
-@property (nonatomic , weak) id <ZLPickerBrowserPhotoImageViewDelegate> delegate;
-
-// 设置进度值
-- (void) setProgress:(CGFloat) progress;
+- (void)imageView:(UIImageView *)imageView singleTapDetected:(UITouch *)touch;
+- (void)imageView:(UIImageView *)imageView doubleTapDetected:(UITouch *)touch;
 
 @end

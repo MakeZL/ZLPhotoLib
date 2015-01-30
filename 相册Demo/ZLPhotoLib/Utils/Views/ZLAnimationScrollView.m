@@ -245,6 +245,9 @@ static NSArray *_subViews = nil;
         toView.hidden = NO;
     }
     
+    if (subViews.count == 1) {
+        startFrame.origin.x += toView.x;
+    }
     startFrame.origin.y += [[self getParsentView:options[UIViewAnimationToView]] frame].origin.y;
     
     ops[UIViewAnimationEndFrame] = [NSValue valueWithCGRect:startFrame];

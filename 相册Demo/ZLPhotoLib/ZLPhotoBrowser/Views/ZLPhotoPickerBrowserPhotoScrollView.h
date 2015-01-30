@@ -1,14 +1,18 @@
 //
-//  PickerPhotoScrollView.h
-//  ZLAssetsPickerDemo
+//  ZoomingScrollView.h
+//  MWPhotoBrowser
 //
-//  Created by 张磊 on 14-11-14.
-//  Copyright (c) 2014年 com.zixue101.www. All rights reserved.
+//  Created by Michael Waterfall on 14/10/2010.
+//  Copyright 2010 d3i. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import "ZLPhotoPickerBrowserPhotoImageView.h"
+#import "ZLPhotoPickerBrowserPhotoView.h"
+#import "ZLPhotoPickerBrowserPhoto.h"
 
-@class ZLPhotoPickerBrowserPhoto,ZLPhotoPickerBrowserPhotoScrollView;
+@class ZLPhotoPickerBrowserPhotoScrollView;
 
 @protocol ZLPhotoPickerPhotoScrollViewDelegate <NSObject>
 @optional
@@ -17,16 +21,16 @@
 
 @end
 
-@interface ZLPhotoPickerBrowserPhotoScrollView : UIScrollView
+@interface ZLPhotoPickerBrowserPhotoScrollView : UIScrollView <UIScrollViewDelegate, ZLPhotoPickerBrowserPhotoImageViewDelegate,ZLPhotoPickerBrowserPhotoViewDelegate> {
 
-// 传入模型来赋值
-@property (nonatomic , strong) ZLPhotoPickerBrowserPhoto *photo;
-// delegate
+}
+
+@property () NSUInteger index;
+@property (nonatomic) ZLPhotoPickerBrowserPhoto *photo;
+
 @property (nonatomic , weak) id <ZLPhotoPickerPhotoScrollViewDelegate> photoScrollViewDelegate;
 
-// 取消单击事件
-@property (assign,nonatomic) BOOL cancleSingleClick;
-
+- (void)displayImage;
 - (void)setMaxMinZoomScalesForCurrentBounds;
 
 @end
