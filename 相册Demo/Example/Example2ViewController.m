@@ -62,6 +62,7 @@
     flowLayout.minimumInteritemSpacing = 0;
     flowLayout.minimumLineSpacing = 10;
     flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
+    flowLayout.sectionInset = UIEdgeInsetsMake(10, 0, 0, 0);
     
     UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:flowLayout];
     collectionView.backgroundColor = [UIColor clearColor];
@@ -178,9 +179,9 @@
         // 回调 ,
         [object enumerateObjectsUsingBlock:^(id asset, NSUInteger idx, BOOL *stop) {
             if ([asset isKindOfClass:[ZLCamera class]]) {
-                [weakSelf.assets addObject:asset];
+                [[weakSelf.assets firstObject] addObject:asset];
             }else{
-                [weakSelf.assets addObject:asset];
+                [[weakSelf.assets firstObject] addObject:asset];
             }
         }];
         [weakSelf.collectionView reloadData];
