@@ -51,10 +51,24 @@ ZLPhotoPickerBrowserViewController 图片游览器
     pickerBrowser.dataSource = self;
     // 是否可以删除照片
     pickerBrowser.editing = YES;
-    // 当前选中的值
-    pickerBrowser.currentPage = indexPath.row;
+    // 当前显示的分页数
+    pickerBrowser.currentIndexPath = indexPath;
     // 展示控制器
     [pickerBrowser show];
+
+### ZLPhotoPickerBrowser - DataSource
+    /**
+     *  有多少组
+     */
+    - (NSInteger) numberOfSectionInPhotosInPickerBrowser:(ZLPhotoPickerBrowserViewController *) pickerBrowser;
+    /**
+     *  每个组多少个图片
+     */
+    - (NSInteger) photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser numberOfItemsInSection:(NSUInteger)section;
+    /**
+     *  每个对应的IndexPath展示什么内容
+     */
+    - (ZLPhotoPickerBrowserPhoto *)photoBrowser:(ZLPhotoPickerBrowserViewController *)pickerBrowser photoAtIndexPath:(NSIndexPath *)indexPath;
 
 ZLCameraViewController 自定义相机连拍
 -----------
