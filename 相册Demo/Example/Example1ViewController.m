@@ -147,26 +147,29 @@
 }
 
 #pragma mark - <ZLPhotoPickerBrowserViewControllerDataSource>
-- (NSInteger) numberOfPhotosInPickerBrowser:(ZLPhotoPickerBrowserViewController *)pickerBrowser{
+- (NSInteger)numberOfSectionInPhotosInPickerBrowser:(ZLPhotoPickerBrowserViewController *)pickerBrowser{
+    return 1;
+}
+
+- (NSInteger)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser numberOfItemsInSection:(NSUInteger)section{
     return self.assets.count;
 }
 
-- (ZLPhotoPickerBrowserPhoto *) photoBrowser:(ZLPhotoPickerBrowserViewController *)pickerBrowser photoAtIndex:(NSUInteger)index{
+- (ZLPhotoPickerBrowserPhoto *) photoBrowser:(ZLPhotoPickerBrowserViewController *)pickerBrowser photoAtIndexPath:(NSIndexPath *)indexPath{
 
-    ZLPhotoAssets *imageObj = [self.assets objectAtIndex:index];
+    ZLPhotoAssets *imageObj = [self.assets objectAtIndex:indexPath.row];
     ZLPhotoPickerBrowserPhoto *photo = [ZLPhotoPickerBrowserPhoto photoAnyImageObjWith:imageObj];
     
-    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
     photo.thumbImage = cell.imageView.image;
     return photo;
 }
 
 #pragma mark - <ZLPhotoPickerBrowserViewControllerDelegate>
-- (void)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser removePhotoAtIndex:(NSUInteger)index{
-    if (index > self.assets.count) return;
-    [self.assets removeObjectAtIndex:index];
+- (void)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser removePhotoAtIndexPath:(NSIndexPath *)indexPath{
+    if (indexPath.row > [self.assets count]) return;
+    [self.assets removeObjectAtIndex:indexPath.row];
     [self.tableView reloadData];
 }
-
 
 @end

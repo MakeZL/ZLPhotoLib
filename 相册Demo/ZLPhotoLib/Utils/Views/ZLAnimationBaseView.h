@@ -57,9 +57,9 @@ static complation _completionBlock;
 // 遍历view的父节点是不是TableViewCell 或者 UICollectionCell
 + (UIView *)traversalViewWithCell:(UIView *)view;
 
-// 当前是第几页
-+ (void) setCurrentPage:(NSInteger)currentPage;
-+ (NSInteger) currentPage;
+// 当前是第几页第几组
++ (void)setCurrentIndexPath:(NSIndexPath *)indexPath;
++ (NSIndexPath *)currentIndexPath;
 
 // 准备开始动画前的操作
 + (void) willStartAnimationOperation;

@@ -16,6 +16,7 @@ static ZLAnimationBaseView *_baseView = nil;
 // 参数
 static NSDictionary *_options = nil;
 static NSInteger _currentPage = 0;
+static NSIndexPath *_currentIndexPath = nil;
 static NSMutableDictionary *_attachParams = nil;
 
 // 单例
@@ -186,10 +187,9 @@ static ZLAnimationBaseView *_singleBaseView;
     NSMutableDictionary *ops = [NSMutableDictionary dictionaryWithDictionary:[self supplementOptionsEmptyParamWithDict:options]];
     [ops addEntriesFromDictionary:_attachParams];
     
-    if ([self currentPage] > KPhotoShowMaxCount) {
+    if ([[self currentIndexPath] item] > KPhotoShowMaxCount) {
         ops[UIViewAnimationAnimationStatusType] = @(UIViewAnimationAnimationStatusFade);
     }
-    
     
     _options = [NSMutableDictionary dictionaryWithDictionary:ops];
     
@@ -222,6 +222,7 @@ static ZLAnimationBaseView *_singleBaseView;
         }else{
             weakBaseView.frame = endFrame;
         }
+        myWindow.userInteractionEnabled = NO;
     } completion:^(BOOL finished) {
         if (completion) {
             completion();
@@ -298,10 +299,12 @@ static ZLAnimationBaseView *_singleBaseView;
 #pragma mark 开始动画
 + (void) willUnLoadAnimationOperation{
     [[UIApplication sharedApplication] setStatusBarHidden:NO];
+    [UIApplication sharedApplication].keyWindow.userInteractionEnabled = NO;
 }
 #pragma mark 结束动画的操作
 + (void) unLoadStopAnimationOperation{
     [_options[UIViewAnimationFromView] setUserInteractionEnabled:YES];
+    [UIApplication sharedApplication].keyWindow.userInteractionEnabled = YES;
 }
 
 
@@ -312,6 +315,14 @@ static ZLAnimationBaseView *_singleBaseView;
 }
 + (NSInteger) currentPage{
     return _currentPage;
+}
+
++ (void)setCurrentIndexPath:(NSIndexPath *)indexPath{
+    _currentIndexPath = indexPath;
+}
+
++ (NSIndexPath *)currentIndexPath{
+    return _currentIndexPath;
 }
 
 #pragma mark - 生命周期

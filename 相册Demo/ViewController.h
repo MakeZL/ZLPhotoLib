@@ -49,28 +49,31 @@
  // 是否可以删除照片
  pickerBrowser.editing = YES;
  // 当前选中的值
+ pickerBrowser.currentIndexPath = indexPath;
  pickerBrowser.currentPage = indexPath.row;
  // 展示控制器
  [pickerBrowser show];
  
  数据源 ----- <ZLPickerBrowserViewControllerDataSource>
- // 有多少个图片
- - (NSInteger) numberOfPhotosInPickerBrowser:(ZLPickerBrowserViewController *) pickerBrowser;
- 
- // 每个图片展示什么内容
- - (ZLPickerBrowserPhoto *)photoBrowser:(ZLPickerBrowserViewController *)pickerBrowser photoAtIndex:(NSUInteger)index;
- 
+    有多少组
+    - (NSInteger) numberOfSectionInPhotosInPickerBrowser:(ZLPhotoPickerBrowserViewController *) pickerBrowser;
+    每个组多少个图片
+    - (NSInteger) photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser numberOfItemsInSection:(NSUInteger)section;
+    每个对应的IndexPath展示什么内容
+    - (ZLPhotoPickerBrowserPhoto *)photoBrowser:(ZLPhotoPickerBrowserViewController *)pickerBrowser photoAtIndexPath:(NSIndexPath *)indexPath;
+
  
  代理 ----- <ZLPickerBrowserViewControllerDelegate>
- 
- // 准备删除那个图片的索引值
- - (BOOL)photoBrowser:(ZLPickerBrowserViewController *)photoBrowser willRemovePhotoAtIndex:(NSUInteger)index;
- // 删除图片的索引值
- - (void)photoBrowser:(ZLPickerBrowserViewController *)photoBrowser removePhotoAtIndex:(NSUInteger)index;
- // 滑动结束的页数
- - (void)photoBrowser:(ZLPickerBrowserViewController *)photoBrowser didCurrentPage:(NSUInteger)page;
- //滑动开始的页数
- - (void)photoBrowser:(ZLPickerBrowserViewController *)photoBrowser willCurrentPage:(NSUInteger)page;
+    返回用户自定义的toolBarView(类似tableView FooterView)
+    - (ZLPhotoPickerCustomToolBarView *)photoBrowserShowToolBarViewWithphotoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser;
+    准备删除那个图片
+    - (BOOL)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser willRemovePhotoAtIndexPath:(NSIndexPath *)indexPath;
+    删除indexPath对应索引的图片
+    - (void)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser removePhotoAtIndexPath:(NSIndexPath *)indexPath;
+    滑动结束的页数
+    - (void)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser didCurrentPage:(NSUInteger)page;
+    滑动开始的页数
+    - (void)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser willCurrentPage:(NSUInteger)page;
  
  */
 

@@ -61,7 +61,7 @@ static NSDictionary *_options;
     // 根据索引值来赋值
     NSIndexPath *indexPath = options[UIViewAnimationTypeViewWithIndexPath];
     // 设置图片
-    [self setingPhotoImageAtIndex:indexPath.row];
+    [self setingPhotoImageAtIndex:indexPath.row ];
     
     ops[UIViewAnimationSelfView] = [self imageView];
     _options = ops;
@@ -70,7 +70,7 @@ static NSDictionary *_options;
 
 + (void)restoreWithOptions:(NSDictionary *)options animation:(void (^)())completion{
     
-    [self setingPhotoImageAtIndex:self.currentPage];
+    [self setingPhotoImageAtIndex:[[self currentIndexPath] item]];
 
     [super restoreWithOptions:options animation:completion];
 }

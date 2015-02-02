@@ -26,7 +26,7 @@ static NSArray *_subViews = nil;
     NSMutableDictionary *ops = [NSMutableDictionary dictionaryWithDictionary:updateOptions];
     
     if (!start) {
-        if ([self currentPage] >= KPhotoShowMaxCount) {
+        if ([[self currentIndexPath] item] >= KPhotoShowMaxCount) {
             ops[UIViewAnimationAnimationStatusType] = @(UIViewAnimationAnimationStatusFade);
         }
     }
@@ -75,13 +75,25 @@ static NSArray *_subViews = nil;
             NSMutableArray *cells = [[NSMutableArray alloc] init];
             NSMutableArray *frames = [[NSMutableArray alloc] init];
             
-            if ([[collectionView visibleCells] count]) {
-                subViews = [collectionView visibleCells];
-            }else{
-                subViews = [[self getCollectionViewWithCell:_parsentView] subviews];
+            if (collectionView.visibleCells.count == 0) {
+                ops[UIViewAnimationAnimationStatusType] = @(UIViewAnimationAnimationStatusFade);
             }
             
-            for (UICollectionViewCell *cell in subViews) {
+            for (NSInteger i = 0; i < [collectionView.dataSource collectionView:collectionView numberOfItemsInSection:[self currentIndexPath].section]; i++) {
+                UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:i inSection:[self currentIndexPath].section]];
+                if (cell) {
+                    [cells addObject:cell];
+                }
+            }
+            
+//            subViews = [collectionView.dataSource collectionView:<#(UICollectionView *)#> cellForItemAtIndexPath:<#(NSIndexPath *)#>];
+//            if ([[collectionView visibleCells] count]) {
+//                subViews = [collectionView visibleCells];
+//            }else{
+//                subViews = [[self getCollectionViewWithCell:_parsentView] subviews];
+//            }
+            
+            for (UICollectionViewCell *cell in cells) {
                 if (![cell isKindOfClass:[UICollectionViewCell class]]) {
                     continue;
                 }
@@ -155,13 +167,28 @@ static NSArray *_subViews = nil;
         compareView = toView;
     }
     
-    NSInteger val = [self currentPage];
-    if ([self currentPage] >= subViews.count) {
-        val = [self currentPage] - (([self currentPage] % subViews.count == 0 ? [self currentPage] - subViews.count  : [self currentPage] % subViews.count)) - 1;
-        if (val < 0) {
-            val = 0;
+    __block NSInteger val = 0;
+    if (collectionView) {
+        UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:[self currentIndexPath]];
+        [subViews enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            if ([cell isEqual:obj]) {
+                val = idx;
+                *stop = YES;
+            }
+        }];
+    }else{
+        
+        val = [self currentIndexPath].item;
+        if (val >= subViews.count) {
+            val = val - ((val % subViews.count == 0 ? val - subViews.count  : val % subViews.count)) - 1;
+            if (val < 0) {
+                val = 0;
+            }
         }
     }
+    
+    
+//    [self setCurrentPage:val];
     
     CGRect startFrame = CGRectZero;
     // 如果点击的图还是一样，并且图片的数量一致的就恢复
@@ -183,45 +210,45 @@ static NSArray *_subViews = nil;
                 startFrame = [_parsentView convertRect:toView.frame toView: options[UIViewAnimationFromView]];
                 startFrame.origin.y = [ops[UIViewAnimationStartFrame] CGRectValue].origin.y;
                 
-                NSInteger currentPage = [self currentPage];
+                NSInteger currentPage = val;
                 if (maxPath.item > subViews.count) {
-                    currentPage = [self currentPage] - minPath.item;
+                    currentPage = val - minPath.item;
                 }
                 startFrame.origin.x = currentPage * (toView.width + flowLayout.minimumLineSpacing) + collectionView.x;
                 if ([options[UIViewAnimationAnimationStatusType] integerValue] == UIViewAnimationAnimationStatusZoom) {
-                    UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:[self currentPage] inSection:0]];
+                    UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:val inSection:0]];
                     [cell setHidden:YES];
                 }
             } else if(tableView){
                 
                 // 竖屏
-                startFrame = [subViews[[self currentPage]] frame];
+                startFrame = [subViews[val] frame];
                 startFrame.origin.x = [toView.superview convertRect:toView.frame toView:options[UIViewAnimationFromView]].origin.x;
                 startFrame.size.width = toView.width;
                 startFrame.size.height = toView.height;
-                startFrame.origin.y = toView.height * ([self currentPage]) + 64;
+                startFrame.origin.y = toView.height * val + 64;
                 
                 if ([options[UIViewAnimationAnimationStatusType] integerValue] == UIViewAnimationAnimationStatusZoom) {
-                    [subViews[[self currentPage]] setHidden:YES];
+                    [subViews[val] setHidden:YES];
                 }
             }else{
                 
                 if ([options[UIViewAnimationAnimationStatusType] integerValue] != UIViewAnimationAnimationStatusFade) {
                     // 竖屏 UICollectionView 九宫格
-                    startFrame = [subViews[[self currentPage]] frame];
+                    startFrame = [subViews[[[self currentIndexPath] item]] frame];
+                    startFrame.origin.y -= collectionView.contentOffset.y;
                     startFrame.size.width = toView.width;
                     startFrame.size.height = toView.height;
-                    startFrame.origin.y += 64;
                 }
                 
                 if ([options[UIViewAnimationAnimationStatusType] integerValue] == UIViewAnimationAnimationStatusZoom) {
-                    [subViews[[self currentPage]] setHidden:YES];
+                    [subViews[val] setHidden:YES];
                 }
             }
             
         }else{
             // scrollView
-            startFrame = [subViews[[self currentPage]] frame];
+            startFrame = [subViews[val] frame];
             startFrame = [_parsentView convertRect:startFrame toView:options[UIViewAnimationFromView]];
             
             if (toView.superview == nil && _parsentView) {
@@ -229,7 +256,7 @@ static NSArray *_subViews = nil;
             }
             
             if ([options[UIViewAnimationAnimationStatusType] integerValue] == UIViewAnimationAnimationStatusZoom) {
-                [subViews[[self currentPage]] setHidden:YES];
+                [subViews[val] setHidden:YES];
             }
         }
     }
@@ -239,8 +266,8 @@ static NSArray *_subViews = nil;
     }
     
     if ([options[UIViewAnimationAnimationStatusType] integerValue] == UIViewAnimationAnimationStatusRotate) {
-        if ([self currentPage] < subViews.count) {
-            [subViews[[self currentPage]] setHidden:NO];
+        if (val < subViews.count) {
+            [subViews[val] setHidden:NO];
         }
         toView.hidden = NO;
     }
@@ -248,13 +275,15 @@ static NSArray *_subViews = nil;
     if (subViews.count == 1) {
         startFrame.origin.x += toView.x;
     }
-    startFrame.origin.y += [[self getParsentView:options[UIViewAnimationToView]] frame].origin.y;
+//    startFrame.origin.y += [[self getParsentView:options[UIViewAnimationToView]] frame].origin.y;
     
     ops[UIViewAnimationEndFrame] = [NSValue valueWithCGRect:startFrame];
     [super restoreWithOptions:ops animation:^{
         
         if ([ops[UIViewAnimationAnimationStatusType] integerValue] != UIViewAnimationAnimationStatusFade) {
-            [subViews[[self currentPage]] setHidden:NO];
+            if (subViews.count > val) {
+                [subViews[val] setHidden:NO];
+            }
         }
         
         

@@ -172,6 +172,12 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         fromView = [self getParsentView:self.toView];
     }
     
+    if (!self.currentIndexPath) {
+        self.currentIndexPath = [NSIndexPath indexPathForItem:self.currentPage inSection:0];
+    }else{
+        self.currentPage = self.currentIndexPath.row;
+    }
+    
     NSDictionary *options = @{
                               UIViewAnimationInView:self.view,
                               UIViewAnimationFromView:fromView,
@@ -179,7 +185,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
                               UIViewAnimationToView:self.toView,
                               UIViewAnimationFromView:self.dataSource,
                               UIViewAnimationImages:self.photos,
-                              UIViewAnimationTypeViewWithIndexPath:[NSIndexPath indexPathForRow:self.currentPage inSection:0]
+                              UIViewAnimationTypeViewWithIndexPath:self.currentIndexPath
                               };
     
     __weak typeof(self) weakSelf = self;
@@ -189,7 +195,12 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     } completion:^(ZLAnimationBaseView *baseView) {
         // disMiss后调用
         weakSelf.disMissBlock = ^(NSInteger page){
-            [ZLAnimationScrollView setCurrentPage:page];
+//            [ZLAnimationScrollView setCurrentPage:page];
+            if (self.currentIndexPath) {
+                [ZLAnimationScrollView setCurrentIndexPath:[NSIndexPath indexPathForItem:page inSection:self.currentIndexPath.section]];
+            }else{
+                [ZLAnimationScrollView setCurrentIndexPath:[NSIndexPath indexPathForItem:page inSection:0]];
+            }
             [weakSelf dismissViewControllerAnimated:NO completion:nil];
             [ZLAnimationScrollView restoreAnimation:^{
                 //                NSLog(@"动画执行完...");
@@ -236,7 +247,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     [self setPageLabelPage:self.currentPage];
     if (self.currentPage >= 0) {
         CGFloat attachVal = 0;
-        if (self.currentPage == [self.dataSource numberOfPhotosInPickerBrowser:self]-1 && self.currentPage > 0) {
+        if (self.currentPage == [self.dataSource photoBrowser:self numberOfItemsInSection:self.currentIndexPath.section] - 1 && self.currentPage > 0) {
             attachVal = ZLPickerColletionViewPadding;
         }
         
@@ -253,7 +264,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 }
 
 - (NSInteger) collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
-    return [self.dataSource numberOfPhotosInPickerBrowser:self];
+    return [self.dataSource photoBrowser:self numberOfItemsInSection:self.currentIndexPath.section];
 }
 
 - (UICollectionViewCell *) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
@@ -289,9 +300,10 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 #pragma mark - 获取所有的图片
 - (NSArray *) getPhotos{
     NSMutableArray *photos = [NSMutableArray array];
-    NSInteger count = [self.dataSource numberOfPhotosInPickerBrowser:self];
-    for (NSInteger i = 0; i < count; i++) {
-        [photos addObject:[self.dataSource photoBrowser:self photoAtIndex:i]];
+    NSInteger section = self.currentIndexPath.section;
+    NSInteger rows = [self.dataSource photoBrowser:self numberOfItemsInSection:section];
+    for (NSInteger i = 0; i < rows; i++) {
+        [photos addObject:[self.dataSource photoBrowser:self photoAtIndexPath:[NSIndexPath indexPathForItem:i inSection:section]]];
     }
     
     return photos;
@@ -302,7 +314,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     CGRect tempF = self.collectionView.frame;
     NSInteger currentPage = (NSInteger)((scrollView.contentOffset.x / scrollView.width) + 0.5);
     
-    if ((currentPage < [self.dataSource numberOfPhotosInPickerBrowser:self] - 1) || self.photos.count == 1) {
+    if ((currentPage < [self.dataSource photoBrowser:self numberOfItemsInSection:self.currentIndexPath.section] - 1) || self.photos.count == 1) {
         tempF.origin.x = 0;
     }else{
         
@@ -344,8 +356,8 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 - (void) delete{
     
     // 准备删除
-    if ([self.delegate respondsToSelector:@selector(photoBrowser:willRemovePhotoAtIndex:)]) {
-        if(![self.delegate photoBrowser:self willRemovePhotoAtIndex:self.currentPage]){
+    if ([self.delegate respondsToSelector:@selector(photoBrowser:willRemovePhotoAtIndexPath:)]) {
+        if(![self.delegate photoBrowser:self willRemovePhotoAtIndexPath:[NSIndexPath indexPathForItem:self.currentPage inSection:self.currentIndexPath.section]]){
             return ;
         }
     }
@@ -365,8 +377,8 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         
         
         NSInteger page = self.currentPage;
-        if ([self.delegate respondsToSelector:@selector(photoBrowser:removePhotoAtIndex:)]) {
-            [self.delegate photoBrowser:self removePhotoAtIndex:page];
+        if ([self.delegate respondsToSelector:@selector(photoBrowser:removePhotoAtIndexPath:)]) {
+            [self.delegate photoBrowser:self removePhotoAtIndexPath:[NSIndexPath indexPathForItem:page inSection:self.currentIndexPath.section]];
         }
         
         self.isDelete = YES;

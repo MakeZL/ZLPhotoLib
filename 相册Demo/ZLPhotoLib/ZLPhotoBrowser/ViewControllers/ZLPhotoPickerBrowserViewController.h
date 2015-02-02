@@ -17,14 +17,17 @@
 // ZLPhotoPickerBrowserViewControllerDataSource
 @protocol ZLPhotoPickerBrowserViewControllerDataSource <NSObject>
 /**
- *  有多少个图片
+ *  有多少组
  */
-- (NSInteger) numberOfPhotosInPickerBrowser:(ZLPhotoPickerBrowserViewController *) pickerBrowser;
-
+- (NSInteger) numberOfSectionInPhotosInPickerBrowser:(ZLPhotoPickerBrowserViewController *) pickerBrowser;
 /**
- *  每个图片展示什么内容
+ *  每个组多少个图片
  */
-- (ZLPhotoPickerBrowserPhoto *)photoBrowser:(ZLPhotoPickerBrowserViewController *)pickerBrowser photoAtIndex:(NSUInteger)index;
+- (NSInteger) photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser numberOfItemsInSection:(NSUInteger)section;
+/**
+ *  每个对应的IndexPath展示什么内容
+ */
+- (ZLPhotoPickerBrowserPhoto *)photoBrowser:(ZLPhotoPickerBrowserViewController *)pickerBrowser photoAtIndexPath:(NSIndexPath *)indexPath;
 
 @end
 
@@ -43,13 +46,13 @@
  *
  *  @param index        要删除的索引值
  */
-- (BOOL)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser willRemovePhotoAtIndex:(NSUInteger)index;
+- (BOOL)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser willRemovePhotoAtIndexPath:(NSIndexPath *)indexPath;
 /**
- *  删除那个图片
+ *  删除indexPath对应索引的图片
  *
- *  @param index        要删除的索引值
+ *  @param indexPath        要删除的索引值
  */
-- (void)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser removePhotoAtIndex:(NSUInteger)index;
+- (void)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser removePhotoAtIndexPath:(NSIndexPath *)indexPath;
 /**
  *  滑动结束的页数
  *
@@ -74,6 +77,8 @@
 @property (nonatomic , strong) UIView *toView;
 // 当前提供的分页数
 @property (nonatomic , assign) NSInteger currentPage;
+// 当前提供的组
+@property (strong,nonatomic) NSIndexPath *currentIndexPath;
 
 // @optional
 // 是否可以编辑（删除照片）
