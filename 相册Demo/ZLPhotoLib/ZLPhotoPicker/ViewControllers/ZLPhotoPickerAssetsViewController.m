@@ -106,6 +106,25 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
     return _selectAssets;
 }
 
+- (void)setSelectPickerAssets:(NSArray *)selectPickerAssets{
+    _selectPickerAssets = selectPickerAssets;
+    
+    for (ZLPhotoAssets *assets in selectPickerAssets) {
+        if ([assets isKindOfClass:[ZLPhotoAssets class]]) {
+            [self.selectAssets addObject:assets];
+        }
+    }
+
+    self.collectionView.isRecoderSelectPicker = YES;
+    self.collectionView.selectAsstes = self.selectAssets;
+    NSInteger count = self.selectAssets.count;
+    self.makeView.hidden = !count;
+    self.makeView.text = [NSString stringWithFormat:@"%ld",(long)count];
+    self.doneBtn.enabled = (count > 0);
+    
+    
+}
+
 #pragma mark collectionView
 - (ZLPhotoPickerCollectionView *)collectionView{
     if (!_collectionView) {
@@ -301,20 +320,19 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
     [self presentViewController:browserVc animated:NO completion:nil];
 }
 
-- (NSInteger) numberOfPhotosInPickerBrowser:(ZLPhotoPickerBrowserViewController *)pickerBrowser{
+- (NSInteger)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser numberOfItemsInSection:(NSUInteger)section{
     return self.selectAssets.count;
 }
 
-- (ZLPhotoPickerBrowserPhoto *)photoBrowser:(ZLPhotoPickerBrowserViewController *)pickerBrowser photoAtIndex:(NSUInteger)index{
+-  (ZLPhotoPickerBrowserPhoto *)photoBrowser:(ZLPhotoPickerBrowserViewController *)pickerBrowser photoAtIndexPath:(NSIndexPath *)indexPath{
     ZLPhotoPickerBrowserPhoto *photo = [[ZLPhotoPickerBrowserPhoto alloc] init];
-    photo.asset = self.selectAssets[index];
+    photo.asset = self.selectAssets[indexPath.row];
     return photo;
 }
-
-- (void)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser removePhotoAtIndex:(NSUInteger)index{
+- (void)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser removePhotoAtIndexPath:(NSIndexPath *)indexPath{
     
     // 删除选中的照片
-    ALAsset *asset = self.selectAssets[index];
+    ALAsset *asset = self.selectAssets[indexPath.row];
     NSInteger currentPage = 0;
     for (NSInteger i = 0; i < self.collectionView.dataArray.count; i++) {
         ALAsset *photoAsset = self.collectionView.dataArray[i];
@@ -324,7 +342,7 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
         }
     }
     
-    [self.selectAssets removeObjectAtIndex:index];
+    [self.selectAssets removeObjectAtIndex:indexPath.row];
     [self.collectionView.selectsIndexPath removeObject:@(currentPage)];
     [self.toolBarThumbCollectionView reloadData];
     [self.collectionView reloadData];

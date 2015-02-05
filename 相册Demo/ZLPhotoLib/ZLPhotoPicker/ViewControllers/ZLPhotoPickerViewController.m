@@ -39,6 +39,11 @@
     
 }
 
+- (void)setSelectPickers:(NSArray *)selectPickers{
+    _selectPickers = selectPickers;
+    self.groupVc.selectAsstes = selectPickers;
+}
+
 - (void)setStatus:(PickerViewShowStatus)status{
     _status = status;
     self.groupVc.status = status;

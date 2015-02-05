@@ -36,7 +36,8 @@ typedef NS_ENUM(NSInteger , PickerViewShowStatus) {
 @property (nonatomic , copy) callBackBlock callBack;
 // 每次选择图片的最小数, 默认与最大数是9
 @property (nonatomic , assign) NSInteger minCount;
-
+// 记录选中的值
+@property (strong,nonatomic) NSArray *selectPickers;
 
 /**
  *  传入一个图片对象（ALAsset、URL）

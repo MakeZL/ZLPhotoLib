@@ -105,6 +105,7 @@
     if (!gp) return ;
     
     ZLPhotoPickerAssetsViewController *assetsVc = [[ZLPhotoPickerAssetsViewController alloc] init];
+    assetsVc.selectPickerAssets = self.selectAsstes;
     assetsVc.assetsGroup = gp;
     assetsVc.minCount = self.minCount;
     [self.navigationController pushViewController:assetsVc animated:NO];

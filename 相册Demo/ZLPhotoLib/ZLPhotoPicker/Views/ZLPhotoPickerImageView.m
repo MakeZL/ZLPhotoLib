@@ -17,6 +17,14 @@
 
 @implementation ZLPhotoPickerImageView
 
+- (instancetype)initWithFrame:(CGRect)frame{
+    if (self = [super initWithFrame:frame]) {
+        self.contentMode = UIViewContentModeScaleAspectFill;
+        self.clipsToBounds = YES;
+    }
+    return self;
+}
+
 - (UIView *)maskView{
     if (!_maskView) {
         UIView *maskView = [[UIView alloc] init];

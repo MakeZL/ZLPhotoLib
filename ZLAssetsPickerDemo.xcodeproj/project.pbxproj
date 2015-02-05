@@ -55,6 +55,7 @@
 		48263F441A709FED00CF136E /* ZLCameraView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48263F401A709FED00CF136E /* ZLCameraView.m */; };
 		48263F451A709FED00CF136E /* ZLCameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48263F421A709FED00CF136E /* ZLCameraViewController.m */; };
 		484401161A72358400171D22 /* ZLCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = 484401151A72358400171D22 /* ZLCamera.m */; };
+		485F4E8C1A83182E00B6D448 /* Example3ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 485F4E8B1A83182E00B6D448 /* Example3ViewController.m */; };
 		488D90FD1A7BB38600935702 /* ZLPhotoPickerBrowserPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 488D90F01A7BB38600935702 /* ZLPhotoPickerBrowserPhoto.m */; };
 		488D90FE1A7BB38600935702 /* ZLPhotoPickerBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 488D90F31A7BB38600935702 /* ZLPhotoPickerBrowserViewController.m */; };
 		488D90FF1A7BB38600935702 /* ZLPhotoPickerBrowserPhotoImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 488D90F61A7BB38600935702 /* ZLPhotoPickerBrowserPhotoImageView.m */; };
@@ -172,6 +173,8 @@
 		48263F421A709FED00CF136E /* ZLCameraViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLCameraViewController.m; sourceTree = "<group>"; };
 		484401141A72358400171D22 /* ZLCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLCamera.h; sourceTree = "<group>"; };
 		484401151A72358400171D22 /* ZLCamera.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLCamera.m; sourceTree = "<group>"; };
+		485F4E8A1A83182E00B6D448 /* Example3ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Example3ViewController.h; sourceTree = "<group>"; };
+		485F4E8B1A83182E00B6D448 /* Example3ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Example3ViewController.m; sourceTree = "<group>"; };
 		488D90EF1A7BB38600935702 /* ZLPhotoPickerBrowserPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLPhotoPickerBrowserPhoto.h; sourceTree = "<group>"; };
 		488D90F01A7BB38600935702 /* ZLPhotoPickerBrowserPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLPhotoPickerBrowserPhoto.m; sourceTree = "<group>"; };
 		488D90F21A7BB38600935702 /* ZLPhotoPickerBrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLPhotoPickerBrowserViewController.h; sourceTree = "<group>"; };
@@ -566,6 +569,8 @@
 		48ED22061A6D080C0008E783 /* Example */ = {
 			isa = PBXGroup;
 			children = (
+				485F4E8A1A83182E00B6D448 /* Example3ViewController.h */,
+				485F4E8B1A83182E00B6D448 /* Example3ViewController.m */,
 				48ED22101A6D10720008E783 /* Views */,
 				48ED22071A6D098C0008E783 /* Example1ViewController.h */,
 				48ED22081A6D098C0008E783 /* Example1ViewController.m */,
@@ -724,6 +729,7 @@
 				48263F3A1A709FCD00CF136E /* ZLAnimationImageView.m in Sources */,
 				48ED220C1A6D0E370008E783 /* Example2ViewController.m in Sources */,
 				48263F231A709FCD00CF136E /* UIImage+MultiFormat.m in Sources */,
+				485F4E8C1A83182E00B6D448 /* Example3ViewController.m in Sources */,
 				48263F1E1A709FCD00CF136E /* SDWebImageDownloaderOperation.m in Sources */,
 				48263F251A709FCD00CF136E /* UIImageView+HighlightedWebCache.m in Sources */,
 				48B3E1761A11BABC0079F464 /* main.m in Sources */,

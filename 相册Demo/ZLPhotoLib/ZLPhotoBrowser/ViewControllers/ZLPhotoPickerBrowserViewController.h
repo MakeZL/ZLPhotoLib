@@ -16,10 +16,14 @@
 
 // ZLPhotoPickerBrowserViewControllerDataSource
 @protocol ZLPhotoPickerBrowserViewControllerDataSource <NSObject>
+
+@optional
 /**
  *  有多少组
  */
 - (NSInteger) numberOfSectionInPhotosInPickerBrowser:(ZLPhotoPickerBrowserViewController *) pickerBrowser;
+
+@required
 /**
  *  每个组多少个图片
  */
@@ -84,7 +88,7 @@
 // 是否可以编辑（删除照片）
 @property (nonatomic , assign,getter=isEditing) BOOL editing;
 
-// status
+// 动画status
 @property (assign,nonatomic) UIViewAnimationAnimationStatus status;
 /**
  *  刷新表格

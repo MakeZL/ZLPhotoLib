@@ -38,6 +38,20 @@
 - (void)setDataArray:(NSArray *)dataArray{
     _dataArray = dataArray;
     
+    // 需要记录选中的值的数据
+    if (self.isRecoderSelectPicker){
+        NSMutableArray *selectAssets = [NSMutableArray array];
+        for (ZLPhotoAssets *asset in self.selectAsstes) {
+            for (ZLPhotoAssets *asset2 in self.dataArray) {
+                if ([asset.asset.defaultRepresentation.url isEqual:asset2.asset.defaultRepresentation.url]) {
+                    [selectAssets addObject:asset2];
+                    break;
+                }
+            }
+        }
+        _selectAsstes = selectAssets;
+    }
+    
     [self reloadData];
 }
 
@@ -66,8 +80,17 @@
     ZLPhotoPickerCollectionViewCell *cell = [ZLPhotoPickerCollectionViewCell cellWithCollectionView:collectionView cellForItemAtIndexPath:indexPath];
     
     ZLPhotoPickerImageView *cellImgView = [[ZLPhotoPickerImageView alloc] initWithFrame:cell.bounds];
-    cellImgView.contentMode = UIViewContentModeScaleAspectFill;
-    cellImgView.clipsToBounds = YES;
+    cellImgView.maskViewFlag = YES;
+
+    // 需要记录选中的值的数据
+    if (self.isRecoderSelectPicker) {
+        for (ZLPhotoAssets *asset in self.selectAsstes) {
+            if ([asset.asset.defaultRepresentation.url isEqual:[self.dataArray[indexPath.item] asset].defaultRepresentation.url]) {
+                [self.selectsIndexPath addObject:@(indexPath.row)];
+            }
+        }
+    }
+    
     [cell.contentView addSubview:cellImgView];
     
     cellImgView.maskViewFlag = ([self.selectsIndexPath containsObject:@(indexPath.row)]);

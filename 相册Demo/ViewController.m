@@ -23,6 +23,7 @@
     return @[
              @"相片多选 + 图片游览器 >>> TableView",
              @"相片连拍/多选 + 图片游览器 >>> UICollectionView",
+             @"相片多选/支持不重复选择照片 >>> UICollectionView",
             ];
 }
 

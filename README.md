@@ -9,6 +9,9 @@ This is a photo album multiple-choice / photo browser example
 #### UITableView
 ![image](https://github.com/MakeZL/ZLAssetsPickerDemo/blob/master/screenshot2.gif)
 
+#### Recoder SelectedAssets
+![image](https://github.com/MakeZL/ZLAssetsPickerDemo/blob/master/screenshot5.gif)
+
 #### Custom ZLCamera
 ![image](https://github.com/MakeZL/ZLAssetsPickerDemo/blob/master/screenshot4.png)
 

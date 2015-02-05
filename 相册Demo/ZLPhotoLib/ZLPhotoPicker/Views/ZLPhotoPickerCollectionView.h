@@ -37,5 +37,7 @@ typedef NS_ENUM(NSUInteger, ZLPickerCollectionViewShowOrderStatus){
 
 // 选中的索引值，为了防止重用
 @property (nonatomic , strong) NSMutableArray *selectsIndexPath;
+// 记录选中的值
+@property (assign,nonatomic) BOOL isRecoderSelectPicker;
 
 @end
