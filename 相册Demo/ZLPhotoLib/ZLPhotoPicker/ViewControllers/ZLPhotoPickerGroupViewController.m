@@ -121,6 +121,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     ZLPhotoPickerGroup *group = self.groups[indexPath.row];
     ZLPhotoPickerAssetsViewController *assetsVc = [[ZLPhotoPickerAssetsViewController alloc] init];
+    assetsVc.selectPickerAssets = self.selectAsstes;
     assetsVc.assetsGroup = group;
     assetsVc.minCount = self.minCount;
     [self.navigationController pushViewController:assetsVc animated:YES];

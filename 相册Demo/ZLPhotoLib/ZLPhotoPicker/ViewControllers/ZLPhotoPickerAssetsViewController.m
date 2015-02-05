@@ -216,7 +216,7 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
             zlAsset.asset = asset;
             [assetsM addObject:zlAsset];
         }];
-        
+
         weakSelf.collectionView.dataArray = assetsM;
     }];
     
@@ -357,7 +357,7 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
 }
 - (void) done{
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [[NSNotificationCenter defaultCenter] postNotificationName:PICKER_TAKE_DONE object:nil userInfo:@{@"selectAssets":self.collectionView.selectAsstes}];
+        [[NSNotificationCenter defaultCenter] postNotificationName:PICKER_TAKE_DONE object:nil userInfo:@{@"selectAssets":self.selectAssets}];
     });
     
     [self dismissViewControllerAnimated:YES completion:nil];
