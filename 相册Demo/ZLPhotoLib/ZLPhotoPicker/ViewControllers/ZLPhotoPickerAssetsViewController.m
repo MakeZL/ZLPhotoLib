@@ -364,4 +364,9 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
 }
 
 
+- (void)dealloc{
+    // 赋值给上一个控制器
+    self.groupVc.selectAsstes = self.selectAssets;
+}
+
 @end

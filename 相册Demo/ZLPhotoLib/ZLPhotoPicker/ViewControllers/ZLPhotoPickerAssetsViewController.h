@@ -12,11 +12,13 @@ typedef void(^callBackBlock)(id obj);
 
 #import <UIKit/UIKit.h>
 #import "ZLPhotoPickerCommon.h"
+#import "ZLPhotoPickerGroupViewController.h"
 
 @class ZLPhotoPickerGroup;
 
 @interface ZLPhotoPickerAssetsViewController : UIViewController
 
+@property (strong,nonatomic) ZLPhotoPickerGroupViewController *groupVc;
 @property (nonatomic , strong) ZLPhotoPickerGroup *assetsGroup;
 @property (nonatomic , assign) NSInteger minCount;
 // 需要记录选中的值的数据

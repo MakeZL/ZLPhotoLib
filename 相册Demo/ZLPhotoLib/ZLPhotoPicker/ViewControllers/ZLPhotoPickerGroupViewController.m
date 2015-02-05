@@ -107,6 +107,7 @@
     ZLPhotoPickerAssetsViewController *assetsVc = [[ZLPhotoPickerAssetsViewController alloc] init];
     assetsVc.selectPickerAssets = self.selectAsstes;
     assetsVc.assetsGroup = gp;
+    assetsVc.groupVc = self;
     assetsVc.minCount = self.minCount;
     [self.navigationController pushViewController:assetsVc animated:NO];
 }
@@ -122,6 +123,7 @@
     ZLPhotoPickerGroup *group = self.groups[indexPath.row];
     ZLPhotoPickerAssetsViewController *assetsVc = [[ZLPhotoPickerAssetsViewController alloc] init];
     assetsVc.selectPickerAssets = self.selectAsstes;
+    assetsVc.groupVc = self;
     assetsVc.assetsGroup = group;
     assetsVc.minCount = self.minCount;
     [self.navigationController pushViewController:assetsVc animated:YES];
