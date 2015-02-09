@@ -298,7 +298,7 @@
         
         // Zoom out
         [self setZoomScale:self.minimumZoomScale animated:YES];
-        
+        self.contentSize = CGSizeMake(self.frame.size.width, 0);
     } else {
         
         // Zoom in to twice the size
