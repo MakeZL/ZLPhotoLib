@@ -222,11 +222,12 @@ static NSArray *_subViews = nil;
             } else if(tableView){
                 
                 // 竖屏
+                CGFloat cellHeight = [tableView.delegate tableView:tableView heightForRowAtIndexPath:options[UIViewAnimationTypeViewWithIndexPath]];
                 startFrame = [subViews[val] frame];
                 startFrame.origin.x = [toView.superview convertRect:toView.frame toView:options[UIViewAnimationFromView]].origin.x;
                 startFrame.size.width = toView.width;
                 startFrame.size.height = toView.height;
-                startFrame.origin.y = toView.height * val + 64;
+                startFrame.origin.y = cellHeight * val + 64 + toView.y;
                 
                 if ([options[UIViewAnimationAnimationStatusType] integerValue] == UIViewAnimationAnimationStatusZoom) {
                     [subViews[val] setHidden:YES];

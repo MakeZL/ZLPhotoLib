@@ -63,6 +63,8 @@
 		488D91011A7BB38600935702 /* ZLPhotoPickerBrowserPhotoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 488D90FA1A7BB38600935702 /* ZLPhotoPickerBrowserPhotoView.m */; };
 		488D91021A7BB38600935702 /* ZLPhotoPickerCustomToolBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 488D90FC1A7BB38600935702 /* ZLPhotoPickerCustomToolBarView.m */; };
 		48AAD6BD1A7A559200E06878 /* UIView+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AAD6BC1A7A559200E06878 /* UIView+Extension.m */; };
+		48B338A41AA469D800650D81 /* Example1TableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B338A31AA469D800650D81 /* Example1TableViewCell.m */; };
+		48B338A61AA469EB00650D81 /* Example1TableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48B338A51AA469EB00650D81 /* Example1TableViewCell.xib */; };
 		48B3E1761A11BABC0079F464 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B3E1751A11BABC0079F464 /* main.m */; };
 		48B3E1791A11BABC0079F464 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B3E1781A11BABC0079F464 /* AppDelegate.m */; };
 		48B3E17C1A11BABC0079F464 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B3E17B1A11BABC0079F464 /* ViewController.m */; };
@@ -189,6 +191,9 @@
 		488D90FC1A7BB38600935702 /* ZLPhotoPickerCustomToolBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLPhotoPickerCustomToolBarView.m; sourceTree = "<group>"; };
 		48AAD6BB1A7A559200E06878 /* UIView+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Extension.h"; sourceTree = "<group>"; };
 		48AAD6BC1A7A559200E06878 /* UIView+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Extension.m"; sourceTree = "<group>"; };
+		48B338A21AA469D800650D81 /* Example1TableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Example1TableViewCell.h; sourceTree = "<group>"; };
+		48B338A31AA469D800650D81 /* Example1TableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Example1TableViewCell.m; sourceTree = "<group>"; };
+		48B338A51AA469EB00650D81 /* Example1TableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Example1TableViewCell.xib; sourceTree = "<group>"; };
 		48B3E1701A11BABC0079F464 /* 相册Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "相册Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		48B3E1741A11BABC0079F464 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		48B3E1751A11BABC0079F464 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -574,6 +579,9 @@
 				48ED22101A6D10720008E783 /* Views */,
 				48ED22071A6D098C0008E783 /* Example1ViewController.h */,
 				48ED22081A6D098C0008E783 /* Example1ViewController.m */,
+				48B338A21AA469D800650D81 /* Example1TableViewCell.h */,
+				48B338A31AA469D800650D81 /* Example1TableViewCell.m */,
+				48B338A51AA469EB00650D81 /* Example1TableViewCell.xib */,
 				48ED220A1A6D0E370008E783 /* Example2ViewController.h */,
 				48ED220B1A6D0E370008E783 /* Example2ViewController.m */,
 			);
@@ -680,6 +688,7 @@
 				48B3E1841A11BABC0079F464 /* LaunchScreen.xib in Resources */,
 				48B3E1811A11BABC0079F464 /* Images.xcassets in Resources */,
 				48263F371A709FCD00CF136E /* xiang.png in Resources */,
+				48B338A61AA469EB00650D81 /* Example1TableViewCell.xib in Resources */,
 				48263F2B1A709FCD00CF136E /* AssetsPickerChecked@3x.png in Resources */,
 				48263F351A709FCD00CF136E /* shanguangdeng2@2x.png in Resources */,
 				48263F2F1A709FCD00CF136E /* paizhao@2x.png in Resources */,
@@ -743,6 +752,7 @@
 				48263F281A709FCD00CF136E /* UIView+ZLAutoLayout.m in Sources */,
 				48263F191A709FCD00CF136E /* NSData+ImageContentType.m in Sources */,
 				48263EC51A709F7000CF136E /* ZLPhotoPickerCollectionView.m in Sources */,
+				48B338A41AA469D800650D81 /* Example1TableViewCell.m in Sources */,
 				48263EC61A709F7000CF136E /* ZLPhotoPickerCollectionViewCell.m in Sources */,
 				48263F1C1A709FCD00CF136E /* SDWebImageDecoder.m in Sources */,
 				48263EBE1A709F7000CF136E /* ZLPhotoAssets.m in Sources */,

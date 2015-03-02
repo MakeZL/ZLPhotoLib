@@ -7,6 +7,7 @@
 //
 
 #import "Example1ViewController.h"
+#import "Example1TableViewCell.h"
 #import "ZLPhoto.h"
 
 @interface Example1ViewController() <ZLPhotoPickerViewControllerDelegate,UITableViewDataSource,UITableViewDelegate,ZLPhotoPickerBrowserViewControllerDataSource,ZLPhotoPickerBrowserViewControllerDelegate>
@@ -39,6 +40,8 @@
         tableView.delegate = self;
         [self.view addSubview:tableView];
         self.tableView = tableView;
+        
+        [tableView registerNib:[UINib nibWithNibName:@"Example1TableViewCell" bundle:nil] forCellReuseIdentifier:@"cell"];
         
         tableView.translatesAutoresizingMaskIntoConstraints = NO;
         
@@ -98,43 +101,43 @@
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     static NSString *ID = @"cell";
-    
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ID];
-    
-    if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ID];
-        cell.backgroundColor = [UIColor clearColor];
-    }
+    Example1TableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ID];
     
     ZLPhotoAssets *asset = self.assets[indexPath.row];
     if ([asset isKindOfClass:[ZLPhotoAssets class]]) {
-        cell.imageView.image = asset.thumbImage;
+        cell.imageview1.image = asset.thumbImage;
     }else if ([asset isKindOfClass:[NSString class]]){
-        [cell.imageView sd_setImageWithURL:[NSURL URLWithString:(NSString *)asset] placeholderImage:[UIImage imageNamed:@"wallpaper_placeholder"]];
+        [cell.imageview1 sd_setImageWithURL:[NSURL URLWithString:(NSString *)asset] placeholderImage:[UIImage imageNamed:@"wallpaper_placeholder"]];
     }else if([asset isKindOfClass:[UIImage class]]){
-        cell.imageView.image = (UIImage *)asset;
+        cell.imageview1.image = (UIImage *)asset;
     }
-
-    return cell;
     
+    cell.imageview2.image = [UIImage imageNamed:@"wallpaper_placeholder"];
+    
+    return cell;
 }
+
 
 #pragma mark - <UITableViewDelegate>
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    Example1TableViewCell *cell = (Example1TableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
 
     [self setupPhotoBrowser:cell];
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 95;
+}
+
 #pragma mark - setupCell click ZLPhotoPickerBrowserViewController
-- (void) setupPhotoBrowser:(UITableViewCell *) cell{
+- (void) setupPhotoBrowser:(Example1TableViewCell *) cell{
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     // 图片游览器
     ZLPhotoPickerBrowserViewController *pickerBrowser = [[ZLPhotoPickerBrowserViewController alloc] init];
     // 传入点击图片View的话，会有微信朋友圈照片的风格
-    pickerBrowser.toView = cell.imageView;
+    pickerBrowser.toView = cell.imageview1;
     // 数据源/delegate
     pickerBrowser.delegate = self;
     pickerBrowser.dataSource = self;
@@ -160,8 +163,8 @@
     ZLPhotoAssets *imageObj = [self.assets objectAtIndex:indexPath.row];
     ZLPhotoPickerBrowserPhoto *photo = [ZLPhotoPickerBrowserPhoto photoAnyImageObjWith:imageObj];
     
-    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
-    photo.thumbImage = cell.imageView.image;
+    Example1TableViewCell *cell = (Example1TableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+    photo.thumbImage = cell.imageview1.image;
     return photo;
 }
 

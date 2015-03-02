@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="75" id="XJS-y1-PCG" customClass="Example1TableViewCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="95"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="XJS-y1-PCG" id="jpv-lL-fWg">
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" tag="100" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Md9-wE-oHT">
+                        <rect key="frame" x="13" y="13" width="70" height="70"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="70" id="hm0-DE-aL3"/>
+                            <constraint firstAttribute="height" constant="70" id="uwb-Gm-ILz"/>
+                        </constraints>
+                    </imageView>
+                    <imageView userInteractionEnabled="NO" tag="101" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="dIy-rY-g6W">
+                        <rect key="frame" x="237" y="13" width="70" height="70"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="70" id="agU-lW-uYI"/>
+                            <constraint firstAttribute="height" constant="70" id="vYl-Ir-6xs"/>
+                        </constraints>
+                    </imageView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="Md9-wE-oHT" firstAttribute="leading" secondItem="jpv-lL-fWg" secondAttribute="leadingMargin" constant="5" id="0Oi-N1-c1r"/>
+                    <constraint firstItem="Md9-wE-oHT" firstAttribute="top" secondItem="jpv-lL-fWg" secondAttribute="topMargin" constant="5" id="X4B-Fw-Stb"/>
+                    <constraint firstItem="dIy-rY-g6W" firstAttribute="top" secondItem="jpv-lL-fWg" secondAttribute="topMargin" constant="5" id="j2I-16-l0X"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="dIy-rY-g6W" secondAttribute="trailing" constant="5" id="uks-Bd-r2l"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="imageview1" destination="Md9-wE-oHT" id="ko0-i1-wfA"/>
+                <outlet property="imageview2" destination="dIy-rY-g6W" id="cFf-3V-Zfc"/>
+            </connections>
+            <point key="canvasLocation" x="137" y="215.5"/>
+        </tableViewCell>
+    </objects>
+</document>
