@@ -221,8 +221,16 @@ static NSArray *_subViews = nil;
                 }
             } else if(tableView){
                 
+                CGFloat cellHeight = toView.height;
+                if ([tableView.delegate respondsToSelector:@selector(tableView:heightForRowAtIndexPath:)]) {
+                    if (options[UIViewAnimationTypeViewWithIndexPath] != nil) {
+                        cellHeight = [tableView.delegate tableView:tableView heightForRowAtIndexPath:options[UIViewAnimationTypeViewWithIndexPath]];
+                    }else{
+                        cellHeight = [tableView.delegate tableView:tableView heightForRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
+                    }
+                }
+                
                 // 竖屏
-                CGFloat cellHeight = [tableView.delegate tableView:tableView heightForRowAtIndexPath:options[UIViewAnimationTypeViewWithIndexPath]];
                 startFrame = [subViews[val] frame];
                 startFrame.origin.x = [toView.superview convertRect:toView.frame toView:options[UIViewAnimationFromView]].origin.x;
                 startFrame.size.width = toView.width;
