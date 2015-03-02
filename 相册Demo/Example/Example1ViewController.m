@@ -112,8 +112,6 @@
         cell.imageview1.image = (UIImage *)asset;
     }
     
-    cell.imageview2.image = [UIImage imageNamed:@"wallpaper_placeholder"];
-    
     return cell;
 }
 
@@ -123,7 +121,6 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
     Example1TableViewCell *cell = (Example1TableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
-
     [self setupPhotoBrowser:cell];
 }
 
