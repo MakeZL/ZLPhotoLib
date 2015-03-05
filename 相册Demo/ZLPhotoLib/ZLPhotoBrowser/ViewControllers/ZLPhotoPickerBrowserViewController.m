@@ -301,6 +301,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 - (NSArray *) getPhotos{
     NSMutableArray *photos = [NSMutableArray array];
     NSInteger section = self.currentIndexPath.section;
+    
     NSInteger rows = [self.dataSource photoBrowser:self numberOfItemsInSection:section];
     for (NSInteger i = 0; i < rows; i++) {
         [photos addObject:[self.dataSource photoBrowser:self photoAtIndexPath:[NSIndexPath indexPathForItem:i inSection:section]]];
