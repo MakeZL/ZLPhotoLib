@@ -1,23 +1,23 @@
 //
-//  Example1ViewController.m
+//  Example4ViewController.m
 //  ZLAssetsPickerDemo
 //
-//  Created by 张磊 on 15-1-19.
+//  Created by 张磊 on 15-3-8.
 //  Copyright (c) 2015年 com.zixue101.www. All rights reserved.
 //
 
-#import "Example1ViewController.h"
+#import "Example4ViewController.h"
 #import "Example1TableViewCell.h"
 #import "ZLPhoto.h"
 
-@interface Example1ViewController() <ZLPhotoPickerViewControllerDelegate,UITableViewDataSource,UITableViewDelegate,ZLPhotoPickerBrowserViewControllerDataSource,ZLPhotoPickerBrowserViewControllerDelegate>
+@interface Example4ViewController() <ZLPhotoPickerViewControllerDelegate,UITableViewDataSource,UITableViewDelegate,ZLPhotoPickerBrowserViewControllerDataSource,ZLPhotoPickerBrowserViewControllerDelegate>
 
 @property (weak,nonatomic) UITableView *tableView;
 @property (nonatomic , strong) NSMutableArray *assets;
 
 @end
 
-@implementation Example1ViewController
+@implementation Example4ViewController
 
 - (NSMutableArray *)assets{
     if (!_assets) {
@@ -69,12 +69,14 @@
 
 #pragma mark - select Photo Library
 - (void)selectPhotos {
-     // 创建控制器
-     ZLPhotoPickerViewController *pickerVc = [[ZLPhotoPickerViewController alloc] init];
-     // 默认显示相册里面的内容SavePhotos
-     pickerVc.status = PickerViewShowStatusCameraRoll;
-     pickerVc.delegate = self;
-     [pickerVc show];
+    // 创建控制器
+    ZLPhotoPickerViewController *pickerVc = [[ZLPhotoPickerViewController alloc] init];
+    // 默认显示相册里面的内容SavePhotos
+    pickerVc.status = PickerViewShowStatusCameraRoll;
+    // 限制图片还能选择的最大数 5 == 最多只能选5张
+    pickerVc.minCount = 9;
+    pickerVc.delegate = self;
+    [pickerVc show];
     /**
      *
      传值可以用代理，或者用block来接收，以下是block的传值
@@ -117,7 +119,7 @@
 #pragma mark - <UITableViewDelegate>
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-
+    
     Example1TableViewCell *cell = (Example1TableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
     [self setupPhotoBrowser:cell];
 }
@@ -154,7 +156,7 @@
 }
 
 - (ZLPhotoPickerBrowserPhoto *) photoBrowser:(ZLPhotoPickerBrowserViewController *)pickerBrowser photoAtIndexPath:(NSIndexPath *)indexPath{
-
+    
     ZLPhotoAssets *imageObj = [self.assets objectAtIndex:indexPath.row];
     ZLPhotoPickerBrowserPhoto *photo = [ZLPhotoPickerBrowserPhoto photoAnyImageObjWith:imageObj];
     
