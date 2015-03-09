@@ -138,6 +138,8 @@ static ZLAnimationBaseView *_singleBaseView;
     
     __weak typeof(_baseView) weakBaseView = _baseView;
     
+    // 隐藏状态栏
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
     // 开始动画
     [UIView animateWithDuration:duration animations:^{
         if (animations) {
@@ -212,6 +214,7 @@ static ZLAnimationBaseView *_singleBaseView;
     __weak typeof(self) weakSelf = self;
     __weak UIView *weakBaseView = _baseView;
     
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
     [UIView animateWithDuration:duration animations:^{
         if (status == UIViewAnimationAnimationStatusRotate) {
             weakBaseView.transform = CGAffineTransformMakeScale(0.7, 0.7);
