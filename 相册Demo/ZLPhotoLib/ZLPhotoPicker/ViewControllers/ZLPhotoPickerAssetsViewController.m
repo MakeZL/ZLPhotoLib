@@ -14,8 +14,6 @@
 
 // 通知
 #define PICKER_TAKE_DONE @"PICKER_TAKE_DONE"
-// TOOLBAR 展示最大图片数
-#define TOOLBAR_COUNT 9
 // 间距
 #define TOOLBAR_IMG_MARGIN 2
 
@@ -107,7 +105,14 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
 }
 
 - (void)setSelectPickerAssets:(NSArray *)selectPickerAssets{
-    _selectPickerAssets = selectPickerAssets;
+    NSSet *set = [NSSet setWithArray:selectPickerAssets];
+    _selectPickerAssets = [set allObjects];
+    
+    if (!self.assets) {
+        self.assets = [NSMutableArray arrayWithArray:selectPickerAssets];
+    }else{
+        [self.assets addObjectsFromArray:selectPickerAssets];
+    }
     
     for (ZLPhotoAssets *assets in selectPickerAssets) {
         if ([assets isKindOfClass:[ZLPhotoAssets class]]) {
@@ -115,6 +120,7 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
         }
     }
 
+    self.collectionView.lastDataArray = nil;
     self.collectionView.isRecoderSelectPicker = YES;
     self.collectionView.selectAsstes = self.selectAssets;
     NSInteger count = self.selectAssets.count;
@@ -247,6 +253,11 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
 #pragma mark - setter
 -(void)setMinCount:(NSInteger)minCount{
     _minCount = minCount;
+    if (self.assets.count > minCount) {
+        minCount = 0;
+    }else{
+        minCount = minCount - self.selectAssets.count;
+    }
     self.collectionView.minCount = minCount;
 }
 
@@ -263,13 +274,15 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
 
 
 - (void)pickerCollectionViewDidSelected:(ZLPhotoPickerCollectionView *)pickerCollectionView{
-    NSInteger count = pickerCollectionView.selectAsstes.count;
+    
+    self.selectAssets = [NSMutableArray arrayWithArray:self.assets];
+    [self.selectAssets addObjectsFromArray:pickerCollectionView.lastDataArray];
+    
+    NSInteger count = self.selectAssets.count;
     self.makeView.hidden = !count;
     self.makeView.text = [NSString stringWithFormat:@"%ld",(long)count];
     self.doneBtn.enabled = (count > 0);
     
-    
-    self.selectAssets = pickerCollectionView.selectAsstes;
     [self.toolBarThumbCollectionView reloadData];
     
 }

@@ -428,16 +428,11 @@ static CGFloat BOTTOM_HEIGHT = 60;
 -(void)LocalPhoto
 {
     ZLPhotoPickerViewController *pickerVc = [[ZLPhotoPickerViewController alloc] init];
+    // 最多能选9张图片
+    pickerVc.minCount = 9;
     pickerVc.status = PickerViewShowStatusCameraRoll;
     pickerVc.delegate = self;
     [pickerVc show];
-    //    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-    //    picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-    //    picker.delegate = self;
-    //    //设置选择后的图片可被编辑
-    //    picker.allowsEditing = YES;
-    //
-    //    [self.currentViewController presentViewController:picker animated:YES completion:nil];
 }
 
 - (void)pickerViewControllerDoneAsstes:(NSArray *)assets{

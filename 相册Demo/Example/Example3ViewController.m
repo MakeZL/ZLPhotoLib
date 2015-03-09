@@ -66,8 +66,8 @@
     // 默认显示相册里面的内容SavePhotos
     pickerVc.status = PickerViewShowStatusCameraRoll;
     pickerVc.selectPickers = self.assets;
-    // 选择图片的最大数
-    // pickerVc.maxCount = 4;
+    // 最多能选9张图片
+    pickerVc.minCount = 9;
     pickerVc.delegate = self;
     [pickerVc show];
     /**

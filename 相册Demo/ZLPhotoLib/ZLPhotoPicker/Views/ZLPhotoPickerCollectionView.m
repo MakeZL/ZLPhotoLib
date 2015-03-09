@@ -105,6 +105,10 @@
 
 #pragma mark - <UICollectionViewDelegate>
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
+
+    if (!self.lastDataArray) {
+        self.lastDataArray = [NSMutableArray array];
+    }
     
     ZLPhotoPickerCollectionViewCell *cell = (ZLPhotoPickerCollectionViewCell *) [collectionView cellForItemAtIndexPath:indexPath];
     
@@ -114,20 +118,27 @@
     if (pickerImageView.isMaskViewFlag) {
         [self.selectsIndexPath removeObject:@(indexPath.row)];
         [self.selectAsstes removeObject:asset];
+        [self.lastDataArray removeObject:asset];
     }else{
-        // 1 判断图片数超过最大数或者小于1
-        NSUInteger minCount = (self.minCount > MAX_COUNT || self.minCount < 1) ? MAX_COUNT :  self.minCount;
+        // 1 判断图片数超过最大数或者小于0
+        NSUInteger minCount = (self.minCount > MAX_COUNT || self.minCount < 0) ? MAX_COUNT :  self.minCount;
         
         if (self.selectsIndexPath.count >= minCount) {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提醒" message:[NSString stringWithFormat:@"最多只能选择%zd张图片",minCount] delegate:self cancelButtonTitle:nil otherButtonTitles:@"好的", nil];
+            NSString *format = [NSString stringWithFormat:@"最多只能选择%zd张图片",minCount];
+            if (minCount == 0) {
+                format = [NSString stringWithFormat:@"您已经选满了图片呦."];
+            }
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提醒" message:format delegate:self cancelButtonTitle:nil otherButtonTitles:@"好的", nil];
             [alertView show];
             return ;
         }
         
         [self.selectsIndexPath addObject:@(indexPath.row)];
         [self.selectAsstes addObject:asset];
+        [self.lastDataArray addObject:asset];
     }
     pickerImageView.maskViewFlag = ([pickerImageView isKindOfClass:[ZLPhotoPickerImageView class]]) && !pickerImageView.isMaskViewFlag;
+    
     
     // 告诉代理现在被点击了!
     if ([self.collectionViewDelegate respondsToSelector:@selector(pickerCollectionViewDidSelected:)]) {

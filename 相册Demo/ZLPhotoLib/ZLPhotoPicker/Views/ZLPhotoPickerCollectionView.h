@@ -24,12 +24,13 @@ typedef NS_ENUM(NSUInteger, ZLPickerCollectionViewShowOrderStatus){
 
 @interface ZLPhotoPickerCollectionView : UICollectionView
 
-
 @property (nonatomic , assign) ZLPickerCollectionViewShowOrderStatus status;
 // 保存所有的数据
 @property (nonatomic , strong) NSArray *dataArray;
 // 保存选中的图片
 @property (nonatomic , strong) NSMutableArray *selectAsstes;
+// 最后保存的一次图片
+@property (strong,nonatomic) NSMutableArray *lastDataArray;
 // delegate
 @property (nonatomic , weak) id <ZLPhotoPickerCollectionViewDelegate> collectionViewDelegate;
 // 限制最大数
