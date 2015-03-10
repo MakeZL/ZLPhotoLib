@@ -223,7 +223,9 @@ static NSArray *_subViews = nil;
                 startFrame.origin.x = [toView.superview convertRect:toView.frame toView:options[UIViewAnimationFromView]].origin.x;
                 startFrame.size.width = toView.width;
                 startFrame.size.height = toView.height;
-                startFrame.origin.y = cellHeight * val + 64 + toView.y;
+                
+                CGFloat offsetValue = tableView.contentOffset.y + 64;
+                startFrame.origin.y = cellHeight * [self currentIndexPath].item + 64 + toView.y - offsetValue;
                 
                 if ([options[UIViewAnimationAnimationStatusType] integerValue] == UIViewAnimationAnimationStatusZoom) {
                     [subViews[val] setHidden:YES];
