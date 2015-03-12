@@ -63,6 +63,10 @@ static NSArray *_subViews = nil;
     UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)collectionView.collectionViewLayout;
     UICollectionViewScrollDirection direction = flowLayout.scrollDirection;
     
+    if ([options[UIViewAnimationAnimationStatusType] longLongValue] == UIViewAnimationAnimationStatusFade) {
+        toView.hidden = NO;
+    }
+    
     __block NSArray *subViews = nil;
     UIView *compareView = nil;
     // 如果是TableView子控件的话
@@ -176,10 +180,9 @@ static NSArray *_subViews = nil;
                 *stop = YES;
             }
         }];
-    }else{
-        
+    }else if(tableView){
         val = [self currentIndexPath].item;
-        if (val >= subViews.count) {
+        if (subViews.count && val >= subViews.count) {
             val = val - ((val % subViews.count == 0 ? val - subViews.count  : val % subViews.count)) - 1;
             if (val < 0) {
                 val = 0;

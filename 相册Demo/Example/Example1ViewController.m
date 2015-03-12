@@ -141,7 +141,7 @@
     // 是否可以删除照片
     pickerBrowser.editing = YES;
     // 当前选中的值
-    pickerBrowser.currentPage = indexPath.row;
+    pickerBrowser.currentIndexPath = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
     // 展示控制器
     [pickerBrowser show];
 }
