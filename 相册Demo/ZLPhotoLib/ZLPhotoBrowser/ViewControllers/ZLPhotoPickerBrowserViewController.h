@@ -79,8 +79,6 @@
 @property (nonatomic , weak) id<ZLPhotoPickerBrowserViewControllerDelegate> delegate;
 // 点击的View
 @property (nonatomic , strong) UIView *toView;
-// 当前提供的分页数
-@property (nonatomic , assign) NSInteger currentPage;
 // 当前提供的组
 @property (strong,nonatomic) NSIndexPath *currentIndexPath;
 
@@ -88,8 +86,14 @@
 // 是否可以编辑（删除照片）
 @property (nonatomic , assign,getter=isEditing) BOOL editing;
 
-// 动画status
+// 动画status (放大缩小/淡入淡出/旋转)
 @property (assign,nonatomic) UIViewAnimationAnimationStatus status;
+
+/**
+ *  长按保存图片会调用sheet
+ */
+@property (strong,nonatomic) UIActionSheet *sheet;
+
 /**
  *  刷新表格
  */

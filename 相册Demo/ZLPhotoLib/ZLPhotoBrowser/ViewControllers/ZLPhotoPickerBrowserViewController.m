@@ -35,7 +35,8 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 @property (nonatomic , assign) UIDeviceOrientation orientation;
 @property (assign,nonatomic) BOOL isDelete;
 @property (assign,nonatomic) BOOL isScrollingEnd;
-
+// 当前提供的分页数
+@property (nonatomic , assign) NSInteger currentPage;
 @end
 
 
@@ -104,7 +105,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         
         NSString *widthVfl = @"H:[deleleBtn(deleteBtnWH)]-margin-|";
         NSString *heightVfl = @"V:|-margin-[deleleBtn(deleteBtnWH)]";
-        NSDictionary *metrics = @{@"deleteBtnWH":@(30),@"margin":@(10)};
+        NSDictionary *metrics = @{@"deleteBtnWH":@(50),@"margin":@(10)};
         NSDictionary *views = NSDictionaryOfVariableBindings(deleleBtn);
         
         [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:widthVfl options:0 metrics:metrics views:views]];
@@ -278,7 +279,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         }
         
         ZLPhotoPickerBrowserPhotoScrollView *scrollView =  [[ZLPhotoPickerBrowserPhotoScrollView alloc] init];
-        
+        scrollView.sheet = self.sheet;
         scrollView.backgroundColor = [UIColor clearColor];
         // 为了监听单击photoView事件
         scrollView.frame = cell.bounds;

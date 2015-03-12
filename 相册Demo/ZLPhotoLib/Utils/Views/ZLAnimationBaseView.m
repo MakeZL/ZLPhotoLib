@@ -58,7 +58,7 @@ static ZLAnimationBaseView *_singleBaseView;
     
     // 如果没有动画时间
     if (![ops[UIViewAnimationDuration] floatValue]) {
-        ops[UIViewAnimationDuration] = [NSNumber numberWithFloat:.25];
+        ops[UIViewAnimationDuration] = [NSNumber numberWithFloat:.35];
     }
     
     return ops;

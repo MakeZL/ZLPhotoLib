@@ -25,10 +25,13 @@
 
 }
 
-@property () NSUInteger index;
-@property (nonatomic) ZLPhotoPickerBrowserPhoto *photo;
-
-@property (nonatomic , weak) id <ZLPhotoPickerPhotoScrollViewDelegate> photoScrollViewDelegate;
+@property (nonatomic,assign) NSUInteger index;
+@property (nonatomic,strong) ZLPhotoPickerBrowserPhoto *photo;
+@property (nonatomic, weak) id <ZLPhotoPickerPhotoScrollViewDelegate> photoScrollViewDelegate;
+/**
+ *  长按图片的操作，可以外接传入
+ */
+@property (strong,nonatomic) UIActionSheet *sheet;
 
 - (void)displayImage;
 - (void)setMaxMinZoomScalesForCurrentBounds;

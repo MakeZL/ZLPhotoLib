@@ -276,7 +276,7 @@ static CGFloat BOTTOM_HEIGHT = 60;
     browserVc.toView = [[[[collectionView cellForItemAtIndexPath:indexPath] contentView] subviews] lastObject];
     browserVc.dataSource = self;
     browserVc.delegate = self;
-    browserVc.currentPage = indexPath.item;
+    browserVc.currentIndexPath = [NSIndexPath indexPathForItem:indexPath.item inSection:0];
     browserVc.editing = YES;
     [self presentViewController:browserVc animated:NO completion:nil];
     

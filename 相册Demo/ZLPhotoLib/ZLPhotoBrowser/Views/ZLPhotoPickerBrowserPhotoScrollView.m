@@ -13,7 +13,7 @@
 #import "ZLPhotoPickerCommon.h"
 
 // Private methods and properties
-@interface ZLPhotoPickerBrowserPhotoScrollView () {
+@interface ZLPhotoPickerBrowserPhotoScrollView ()<UIActionSheetDelegate> {
     ZLPhotoPickerBrowserPhotoView *_tapView; // for background taps
     ZLPhotoPickerBrowserPhotoImageView *_photoImageView;
 }
@@ -74,8 +74,28 @@
         self.decelerationRate = UIScrollViewDecelerationRateFast;
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         
+        UILongPressGestureRecognizer *longGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longGesture:)];
+        [self addGestureRecognizer:longGesture];
+        
     }
     return self;
+}
+
+- (void)longGesture:(UILongPressGestureRecognizer *)gesture{
+    if (gesture.state == UIGestureRecognizerStateBegan) {
+        
+        if (!self.sheet) {
+            self.sheet = [[UIActionSheet alloc] initWithTitle:@"提示" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"保存到相册" otherButtonTitles:nil, nil];
+        }
+
+        [self.sheet showInView:self];
+    }
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if (buttonIndex == 0){
+        UIImageWriteToSavedPhotosAlbum(_photoImageView.image, nil, nil, nil);
+    }
 }
 
 - (void)dealloc {
