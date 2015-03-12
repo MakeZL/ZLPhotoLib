@@ -254,6 +254,7 @@ static NSArray *_subViews = nil;
             // scrollView
             startFrame = [subViews[val] frame];
             startFrame = [_parsentView convertRect:startFrame toView:options[UIViewAnimationFromView]];
+            startFrame.size.width = toView.width;
             
             if (toView.superview == nil && _parsentView) {
                 startFrame.origin.y += 64;
