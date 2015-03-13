@@ -5,7 +5,6 @@ Pod::Spec.new do |s|
   s.homepage     = "https://github.com/MakeZL/ZLPhotoLib"
   s.license      = { :type => 'MIT', :file => 'LICENSE' }
   s.author       = { "zhangleo" => "120886865@qq.com" }
-  s.social_media_url = "weibo.com/makezl"
   s.platform     = :ios, '6.0'
   s.source       = { :git => "https://github.com/MakeZL/ZLPhotoLib.git", :tag => "#{s.version}" }
  
