@@ -171,7 +171,7 @@ static NSArray *_subViews = nil;
         compareView = toView;
     }
     
-    __block NSInteger val = 0;
+    __block NSInteger val = [self currentIndexPath].item;
     if (collectionView) {
         UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:[self currentIndexPath]];
         [subViews enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
@@ -189,8 +189,6 @@ static NSArray *_subViews = nil;
             }
         }
     }
-    
-//    [self setCurrentPage:val];
     
     CGRect startFrame = CGRectZero;
     // 如果点击的图还是一样，并且图片的数量一致的就恢复

@@ -24,6 +24,7 @@
              @"相片多选 + 图片游览器 >>> TableView",
              @"相片连拍/多选 + 图片游览器 >>> UICollectionView",
              @"相片多选/支持不重复选择照片 >>> UICollectionView",
+             @"图片游览器 -> 自定义UIView >>> UIView",
             ];
 }
 
@@ -83,7 +84,9 @@
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
     NSString *exampleVc = [NSString stringWithFormat:@"Example%ldViewController",indexPath.row + 1];
-    [self.navigationController pushViewController:[[NSClassFromString(exampleVc) alloc] init] animated:YES];
+    UIViewController *vc = [[NSClassFromString(exampleVc) alloc] init];
+    vc.title = self.examples[indexPath.row];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end

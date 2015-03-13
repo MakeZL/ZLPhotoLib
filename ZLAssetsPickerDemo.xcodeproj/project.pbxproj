@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4806BC811AB283ED004B8AB0 /* Example4ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4806BC801AB283ED004B8AB0 /* Example4ViewController.m */; };
 		48263EBE1A709F7000CF136E /* ZLPhotoAssets.m in Sources */ = {isa = PBXBuildFile; fileRef = 48263EA01A709F7000CF136E /* ZLPhotoAssets.m */; };
 		48263EBF1A709F7000CF136E /* ZLPhotoPickerDatas.m in Sources */ = {isa = PBXBuildFile; fileRef = 48263EA21A709F7000CF136E /* ZLPhotoPickerDatas.m */; };
 		48263EC01A709F7000CF136E /* ZLPhotoPickerGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 48263EA41A709F7000CF136E /* ZLPhotoPickerGroup.m */; };
@@ -88,6 +89,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4806BC7F1AB283ED004B8AB0 /* Example4ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Example4ViewController.h; sourceTree = "<group>"; };
+		4806BC801AB283ED004B8AB0 /* Example4ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Example4ViewController.m; sourceTree = "<group>"; };
 		48263E9F1A709F7000CF136E /* ZLPhotoAssets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLPhotoAssets.h; sourceTree = "<group>"; };
 		48263EA01A709F7000CF136E /* ZLPhotoAssets.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLPhotoAssets.m; sourceTree = "<group>"; };
 		48263EA11A709F7000CF136E /* ZLPhotoPickerDatas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLPhotoPickerDatas.h; sourceTree = "<group>"; };
@@ -581,6 +584,8 @@
 				48ED22081A6D098C0008E783 /* Example1ViewController.m */,
 				48ED220A1A6D0E370008E783 /* Example2ViewController.h */,
 				48ED220B1A6D0E370008E783 /* Example2ViewController.m */,
+				4806BC7F1AB283ED004B8AB0 /* Example4ViewController.h */,
+				4806BC801AB283ED004B8AB0 /* Example4ViewController.m */,
 			);
 			path = Example;
 			sourceTree = "<group>";
@@ -725,6 +730,7 @@
 				48263EC31A709F7000CF136E /* ZLPhotoPickerGroupViewController.m in Sources */,
 				48263F1D1A709FCD00CF136E /* SDWebImageDownloader.m in Sources */,
 				48ED22131A6D108C0008E783 /* Example2CollectionViewCell.m in Sources */,
+				4806BC811AB283ED004B8AB0 /* Example4ViewController.m in Sources */,
 				48263F1B1A709FCD00CF136E /* SDWebImageCompat.m in Sources */,
 				48B3E1791A11BABC0079F464 /* AppDelegate.m in Sources */,
 				48ED22091A6D098C0008E783 /* Example1ViewController.m in Sources */,
@@ -876,6 +882,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "LaunchImage-2";
+				CLANG_ENABLE_MODULES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/相册Demo",
@@ -884,6 +891,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -892,6 +900,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "LaunchImage-2";
+				CLANG_ENABLE_MODULES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/相册Demo",
