@@ -45,6 +45,10 @@
     self.view.backgroundColor = [UIColor whiteColor];
     
     // Custom View
+    [self setupPhotoView];
+}
+
+- (void)setupPhotoView{
     UIView *photoView = [[UIView alloc] init];
     photoView.frame = self.view.frame;
     [self.view addSubview:photoView];
@@ -63,7 +67,6 @@
         [photoView addSubview:btn];
         [btn addTarget:self action:@selector(tapBrowser:) forControlEvents:UIControlEventTouchUpInside];
     }
-    
     self.photoView = photoView;
 }
 
@@ -105,6 +108,15 @@
     
     photo.thumbImage = btn.imageView.image;
     return photo;
+}
+
+#pragma mark - <ZLPhotoPickerBrowserViewControllerDelegate>
+- (void)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser removePhotoAtIndexPath:(NSIndexPath *)indexPath{
+    if (indexPath.row > [self.assets count]) return;
+    [self.assets removeObjectAtIndex:indexPath.row];
+    [self.photoView removeFromSuperview];
+    
+    [self setupPhotoView];
 }
 /*
 #pragma mark - Navigation
