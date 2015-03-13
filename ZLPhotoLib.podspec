@@ -7,5 +7,6 @@ Pod::Spec.new do |spec|
   spec.summary      = "iOS photo album select and photoBrowser"
   spec.source       = { :git => 'https://github.com/MakeZL/ZLPhotoLib.git', :tag =>spec.version }
   spec.source_files = "ZLPhotoLib/ZLPhotoLib/ZLPhotoLib.{h,m}"
+  spec.frameworks   = "AVFoundation","AssetsLibrary"
   spec.requires_arc = true
 end
