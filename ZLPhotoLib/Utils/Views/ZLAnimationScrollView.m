@@ -83,8 +83,8 @@ static NSArray *_subViews = nil;
                 ops[UIViewAnimationAnimationStatusType] = @(UIViewAnimationAnimationStatusFade);
             }
             
-            for (NSInteger i = 0; i < [collectionView.dataSource collectionView:collectionView numberOfItemsInSection:[self currentIndexPath].section]; i++) {
-                UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:i inSection:[self currentIndexPath].section]];
+            for (NSInteger i = 0; i < [collectionView.dataSource collectionView:collectionView numberOfItemsInSection:[options[UIViewAnimationTypeViewWithIndexPath] section]]; i++) {
+                UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:i inSection:0]];
                 if (cell) {
                     [cells addObject:cell];
                 }
@@ -213,7 +213,9 @@ static NSArray *_subViews = nil;
                 CGFloat cellHeight = toView.height;
                 if ([tableView.delegate respondsToSelector:@selector(tableView:heightForRowAtIndexPath:)]) {
                     if (options[UIViewAnimationTypeViewWithIndexPath] != nil) {
-                        cellHeight = [tableView.delegate tableView:tableView heightForRowAtIndexPath:options[UIViewAnimationTypeViewWithIndexPath]];
+                        if ([options[UIViewAnimationTypeViewWithIndexPath] row] < [tableView.dataSource tableView:tableView numberOfRowsInSection:[options[UIViewAnimationTypeViewWithIndexPath] section]]){
+                            cellHeight = [tableView.delegate tableView:tableView heightForRowAtIndexPath:options[UIViewAnimationTypeViewWithIndexPath]];
+                        }
                     }else{
                         cellHeight = [tableView.delegate tableView:tableView heightForRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
                     }
@@ -254,8 +256,10 @@ static NSArray *_subViews = nil;
             startFrame = [_parsentView convertRect:startFrame toView:options[UIViewAnimationFromView]];
             startFrame.size.width = toView.width;
             
-            if (toView.superview == nil && _parsentView) {
-                startFrame.origin.y += 64;
+            if (
+                toView.superview == nil && _parsentView
+                ) {
+                startFrame.origin.y += [self getNavigaitionViewControllerWithView:_parsentView];
             }
             
             if ([options[UIViewAnimationAnimationStatusType] integerValue] == UIViewAnimationAnimationStatusZoom) {
@@ -381,7 +385,26 @@ static NSArray *_subViews = nil;
     return [self getParsentView:view.superview];
 }
 
+#pragma mark - 通过View获取控制器
++ (UIViewController *)getViewControllerWithView:(UIView *)view{
+    if ([view.nextResponder isKindOfClass:[UIViewController class]] || view == nil) {
+        return (UIViewController *)view.nextResponder;
+    }
+    return [self getViewControllerWithView:view.superview];
+}
 
-
++ (CGFloat)getNavigaitionViewControllerWithView:(UIView *)view{
+    // 1.判断View是否有导航控制器
+    if ([[self getViewControllerWithView:view] navigationController] == nil || [[[self getViewControllerWithView:view] navigationController] isNavigationBarHidden]){
+        return 0;
+    }
+    
+    // 2.判断是否是iOS6系统返回导航栏高度
+    if ([[UIDevice currentDevice].systemVersion floatValue] < 7.0){
+        return 44;
+    }
+    
+    return 64;
+}
 
 @end
