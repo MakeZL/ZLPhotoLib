@@ -137,9 +137,13 @@ static ZLAnimationBaseView *_singleBaseView;
     }
     
     __weak typeof(_baseView) weakBaseView = _baseView;
+    __weak typeof(self) weakSelf = self;
     
     // 隐藏状态栏
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
+    if ([UIDevice currentDevice].systemVersion.floatValue >= 7.0){
+        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
+    }
+    
     // 开始动画
     [UIView animateWithDuration:duration animations:^{
         if (animations) {
@@ -150,11 +154,11 @@ static ZLAnimationBaseView *_singleBaseView;
             weakBaseView.alpha = 1.0;
         }else{
             // 缩放/旋转
-            weakBaseView.frame = [self setMaxMinZoomScalesForCurrentBounds];
+            weakBaseView.frame = [weakSelf setMaxMinZoomScalesForCurrentBounds];
         }
         if (!iOS7gt) {
             // 在iOS6因为隐藏了状态栏。所以需要加上20的高度
-            weakBaseView.y += 20;
+//            weakBaseView.y += 20;
         }
     } completion:^(BOOL finished) {
         if (completion) {
@@ -207,14 +211,18 @@ static ZLAnimationBaseView *_singleBaseView;
         [myWindow addSubview:_baseView];
     }
     
-    _baseView.frame = [self setMaxMinZoomScalesForCurrentBounds];
+//    if ([UIDevice currentDevice].systemVersion.floatValue < 7.0){
+//        _baseView.frame = [_options[UIViewAnimationInView] frame];
+//    }else{
+        _baseView.frame = [self setMaxMinZoomScalesForCurrentBounds];
+//    }
     
     UIViewAnimationAnimationStatus status = [_options[UIViewAnimationAnimationStatusType] intValue];
     
     __weak typeof(self) weakSelf = self;
     __weak UIView *weakBaseView = _baseView;
     
-    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
+    
     [UIView animateWithDuration:duration animations:^{
         if (status == UIViewAnimationAnimationStatusRotate) {
             weakBaseView.transform = CGAffineTransformMakeScale(0.7, 0.7);
@@ -242,7 +250,7 @@ static ZLAnimationBaseView *_singleBaseView;
 #pragma mark -
 #pragma mark 准备开始动画前的操作
 + (void) willStartAnimationOperation{
-    [[UIApplication sharedApplication] setStatusBarHidden:YES];
+//    [[UIApplication sharedApplication] setStatusBarHidden:YES];
     //    [_options[UIViewAnimationFromView] setUserInteractionEnabled:NO];
 }
 
@@ -262,6 +270,9 @@ static ZLAnimationBaseView *_singleBaseView;
     // Sizes
     CGSize boundsSize = [UIScreen mainScreen].bounds.size;
     CGSize imageSize = imageView.image.size;
+    if (imageSize.width == 0 && imageSize.height == 0) {
+        return [_options[UIViewAnimationInView] frame];
+    }
     
     CGFloat xScale = boundsSize.width / imageSize.width;    // the scale needed to perfectly fit the image width-wise
     CGFloat yScale = boundsSize.height / imageSize.height;  // the scale needed to perfectly fit the image height-wise
@@ -301,6 +312,7 @@ static ZLAnimationBaseView *_singleBaseView;
 #pragma mark -
 #pragma mark 开始动画
 + (void) willUnLoadAnimationOperation{
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
     [[UIApplication sharedApplication] setStatusBarHidden:NO];
     [UIApplication sharedApplication].keyWindow.userInteractionEnabled = NO;
 }

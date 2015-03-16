@@ -227,8 +227,11 @@ static NSArray *_subViews = nil;
                 startFrame.size.width = toView.width;
                 startFrame.size.height = toView.height;
                 
-                CGFloat offsetValue = tableView.contentOffset.y + 64;
-                startFrame.origin.y = cellHeight * [self currentIndexPath].item + 64 + toView.y - offsetValue;
+                CGFloat offsetValue = tableView.contentOffset.y;
+                if (iOS7gt) {
+                    offsetValue += [self getNavigaitionViewControllerWithView:toView];
+                }
+                startFrame.origin.y = cellHeight * [self currentIndexPath].item + [self getNavigaitionViewControllerWithView:toView] + toView.y - offsetValue;
                 
                 if ([options[UIViewAnimationAnimationStatusType] integerValue] == UIViewAnimationAnimationStatusZoom) {
                     [subViews[val] setHidden:YES];
