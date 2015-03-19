@@ -282,7 +282,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         scrollView.sheet = self.sheet;
         scrollView.backgroundColor = [UIColor clearColor];
         // 为了监听单击photoView事件
-        scrollView.frame = cell.bounds;
+        scrollView.frame = [UIScreen mainScreen].bounds;
         scrollView.photoScrollViewDelegate = self;
         [cell.contentView addSubview:scrollView];
         scrollView.photo = photo;
@@ -300,7 +300,6 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 - (NSArray *) getPhotos{
     NSMutableArray *photos = [NSMutableArray array];
     NSInteger section = self.currentIndexPath.section;
-    
     NSInteger rows = [self.dataSource photoBrowser:self numberOfItemsInSection:section];
     for (NSInteger i = 0; i < rows; i++) {
         [photos addObject:[self.dataSource photoBrowser:self photoAtIndexPath:[NSIndexPath indexPathForItem:i inSection:section]]];
@@ -313,14 +312,15 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
     CGRect tempF = self.collectionView.frame;
     NSInteger currentPage = (NSInteger)((scrollView.contentOffset.x / scrollView.width) + 0.5);
+    if (tempF.size.width < [UIScreen mainScreen].bounds.size.width){
+        tempF.size.width = [UIScreen mainScreen].bounds.size.width;
+    }
     
     if ((currentPage < [self.dataSource photoBrowser:self numberOfItemsInSection:self.currentIndexPath.section] - 1) || self.photos.count == 1) {
         tempF.origin.x = 0;
     }else{
-        
         tempF.origin.x = -ZLPickerColletionViewPadding;
     }
-    
     self.collectionView.frame = tempF;
 }
 
