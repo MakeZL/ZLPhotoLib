@@ -83,8 +83,10 @@ static NSArray *_subViews = nil;
                 ops[UIViewAnimationAnimationStatusType] = @(UIViewAnimationAnimationStatusFade);
             }
             
-            for (NSInteger i = 0; i < [collectionView.dataSource collectionView:collectionView numberOfItemsInSection:[options[UIViewAnimationTypeViewWithIndexPath] section]]; i++) {
-                UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:i inSection:0]];
+            NSUInteger index = [collectionView.dataSource collectionView:collectionView numberOfItemsInSection:[options[UIViewAnimationTypeViewWithIndexPath] section]];
+            
+            for (NSInteger i = 0; i < index; i++) {
+                UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:i inSection:[options[UIViewAnimationTypeViewWithIndexPath] section]]];
                 if (cell) {
                     [cells addObject:cell];
                 }
@@ -242,7 +244,15 @@ static NSArray *_subViews = nil;
                 
                 if ([options[UIViewAnimationAnimationStatusType] integerValue] != UIViewAnimationAnimationStatusFade) {
                     // 竖屏 UICollectionView 九宫格
-                    startFrame = [subViews[[[self currentIndexPath] item]] frame];
+                    NSIndexPath *maxIndexPath = [collectionView indexPathForCell:[subViews lastObject]];
+                    
+                    NSInteger minRow = [[collectionView indexPathForCell:[subViews firstObject]] item];
+                    if(minRow == 0){
+                        startFrame = [subViews[[[self currentIndexPath] item]] frame];
+                    }else{
+                        NSInteger count = subViews.count - (maxIndexPath.item - [self currentIndexPath].item);
+                        startFrame = [subViews[count-1] frame];
+                    }
                     startFrame.origin.y -= collectionView.contentOffset.y;
                     startFrame.size.width = toView.width;
                     startFrame.size.height = toView.height;
