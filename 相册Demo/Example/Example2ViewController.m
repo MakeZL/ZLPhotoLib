@@ -29,12 +29,6 @@
                                                                     @"http://www.1tong.com/uploads/wallpaper/anime/124-2-1280x800.jpg",
                                                                     @"http://imgsrc.baidu.com/forum/pic/item/xc59ca2ef76c6a7ef603e17c7fcfaaf51f2de6640.jpg",
                                                                     @"http://imgsrc.baidu.com/forum/pic/item/3f7dacaf2edda3cc7d2289ab01e93901233f92c5.jpg",
-                                                                    
-                                                                    @"http://www.qqaiqin.com/uploads/allimg/130520/4-13052022531U60.gif",
-                                                                    @"http://www.1tong.com/uploads/wallpaper/anime/124-2-1280x800.jpg",
-                                                                    @"http://imgsrc.baidu.com/forum/pic/item/xc59ca2ef76c6a7ef603e17c7fcfaaf51f2de6640.jpg",
-                                                                    @"http://imgsrc.baidu.com/forum/pic/item/3f7dacaf2edda3cc7d2289ab01e93901233f92c5.jpg",
-                                                                    @"http://imgsrc.baidu.com/forum/pic/item/3f7dacaf2edda3cc7d2289ab01e93901233f92c5.jpg",
                                                                     ]];
         NSMutableArray *section2 = [NSMutableArray arrayWithArray:@[
                                                                     @"http://d.hiphotos.baidu.com/image/pic/item/5ab5c9ea15ce36d3e6ce923138f33a87e850b1ec.jpg",

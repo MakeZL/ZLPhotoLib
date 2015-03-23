@@ -275,8 +275,8 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
 
 - (void)pickerCollectionViewDidSelected:(ZLPhotoPickerCollectionView *)pickerCollectionView{
     
-    self.selectAssets = [NSMutableArray arrayWithArray:self.assets];
-    [self.selectAssets addObjectsFromArray:pickerCollectionView.lastDataArray];
+    self.selectAssets = [NSMutableArray arrayWithArray:pickerCollectionView.selectAsstes];
+//    [self.selectAssets addObjectsFromArray:pickerCollectionView.lastDataArray];
     
     NSInteger count = self.selectAssets.count;
     self.makeView.hidden = !count;
