@@ -4,11 +4,11 @@ This is a photo album multiple-choice / photo browser example
 
 ### Demo Show
 #### UICollectionView/UITableView/UIView
-![image](https://github.com/MakeZL/ZLAssetsPickerDemo/blob/master/screenshot1.gif)
-![image](https://github.com/MakeZL/ZLAssetsPickerDemo/blob/master/screenshot2.gif)
+![image](https://github.com/MakeZL/ZLAssetsPickerDemo/blob/master/demo1.gif)
+![image](https://github.com/MakeZL/ZLAssetsPickerDemo/blob/master/demo2.gif)
 
 #### Recoder SelectedAssets/Limit SelectedAssets (记录/限制功能)
-![image](https://github.com/MakeZL/ZLAssetsPickerDemo/blob/master/screenshot5.gif)
+![image](https://github.com/MakeZL/ZLAssetsPickerDemo/blob/master/demo3.gif)
 
 #### Custom ZLCamera (自定义相机连拍)
 ![image](https://github.com/MakeZL/ZLAssetsPickerDemo/blob/master/screenshot4.png)
