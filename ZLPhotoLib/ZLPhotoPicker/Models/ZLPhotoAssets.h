@@ -27,4 +27,5 @@
  */
 @property (assign,nonatomic) BOOL isVideoType;
 
+
 @end

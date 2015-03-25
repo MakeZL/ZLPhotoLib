@@ -142,8 +142,12 @@
     
     
     // 告诉代理现在被点击了!
-    if ([self.collectionViewDelegate respondsToSelector:@selector(pickerCollectionViewDidSelected:)]) {
-        [self.collectionViewDelegate pickerCollectionViewDidSelected:self];
+    if ([self.collectionViewDelegate respondsToSelector:@selector(pickerCollectionViewDidSelected: deleteAssets:)]) {
+        if (!pickerImageView.isMaskViewFlag){
+            [self.collectionViewDelegate pickerCollectionViewDidSelected:self deleteAssets:asset];
+        }else{
+            [self.collectionViewDelegate pickerCollectionViewDidSelected:self deleteAssets:nil];
+        }
     }
 }
 
