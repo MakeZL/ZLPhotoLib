@@ -223,7 +223,6 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 
 #pragma mark - 刷新表格
 - (void) reloadData{
-    
     self.collectionView.dataSource = self;
     [self.collectionView reloadData];
     

@@ -22,4 +22,9 @@
  */
 - (UIImage *)originImage;
 
+/**
+ *  获取是否是视频类型, Default = false
+ */
+@property (assign,nonatomic) BOOL isVideoType;
+
 @end

@@ -16,6 +16,7 @@ typedef NS_ENUM(NSInteger , PickerViewShowStatus) {
     PickerViewShowStatusCameraRoll ,
     PickerViewShowStatusSavePhotos ,
     PickerViewShowStatusPhotoStream ,
+    PickerViewShowStatusVideo,
 };
 
 @protocol ZLPhotoPickerViewControllerDelegate <NSObject>

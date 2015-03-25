@@ -72,6 +72,7 @@
 		48B3E1811A11BABC0079F464 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 48B3E1801A11BABC0079F464 /* Images.xcassets */; };
 		48B3E1841A11BABC0079F464 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48B3E1821A11BABC0079F464 /* LaunchScreen.xib */; };
 		48B3E1901A11BABC0079F464 /* __DemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B3E18F1A11BABC0079F464 /* __DemoTests.m */; };
+		48D0E4571AC261D20022C598 /* Example5ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D0E4561AC261D20022C598 /* Example5ViewController.m */; };
 		48ED22091A6D098C0008E783 /* Example1ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48ED22081A6D098C0008E783 /* Example1ViewController.m */; };
 		48ED220C1A6D0E370008E783 /* Example2ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48ED220B1A6D0E370008E783 /* Example2ViewController.m */; };
 		48ED22131A6D108C0008E783 /* Example2CollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 48ED22121A6D108C0008E783 /* Example2CollectionViewCell.m */; };
@@ -209,6 +210,8 @@
 		48B3E1891A11BABC0079F464 /* 相册DemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "相册DemoTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		48B3E18E1A11BABC0079F464 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		48B3E18F1A11BABC0079F464 /* __DemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = __DemoTests.m; sourceTree = "<group>"; };
+		48D0E4551AC261D20022C598 /* Example5ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Example5ViewController.h; sourceTree = "<group>"; };
+		48D0E4561AC261D20022C598 /* Example5ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Example5ViewController.m; sourceTree = "<group>"; };
 		48ED22071A6D098C0008E783 /* Example1ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Example1ViewController.h; sourceTree = "<group>"; };
 		48ED22081A6D098C0008E783 /* Example1ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Example1ViewController.m; sourceTree = "<group>"; };
 		48ED220A1A6D0E370008E783 /* Example2ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Example2ViewController.h; sourceTree = "<group>"; };
@@ -586,6 +589,8 @@
 				48ED220B1A6D0E370008E783 /* Example2ViewController.m */,
 				4806BC7F1AB283ED004B8AB0 /* Example4ViewController.h */,
 				4806BC801AB283ED004B8AB0 /* Example4ViewController.m */,
+				48D0E4551AC261D20022C598 /* Example5ViewController.h */,
+				48D0E4561AC261D20022C598 /* Example5ViewController.m */,
 			);
 			path = Example;
 			sourceTree = "<group>";
@@ -719,6 +724,7 @@
 				4806BE5A1AB29051004B8AB0 /* ZLPhotoPickerAssetsViewController.m in Sources */,
 				4806BE381AB29051004B8AB0 /* UIImage+GIF.m in Sources */,
 				4806BE2C1AB29051004B8AB0 /* UIView+Extension.m in Sources */,
+				48D0E4571AC261D20022C598 /* Example5ViewController.m in Sources */,
 				4806BE541AB29051004B8AB0 /* ZLPhotoPickerBrowserPhotoScrollView.m in Sources */,
 				4806BE361AB29051004B8AB0 /* SDWebImagePrefetcher.m in Sources */,
 				4806BE5E1AB29051004B8AB0 /* ZLPhotoPickerCollectionViewCell.m in Sources */,

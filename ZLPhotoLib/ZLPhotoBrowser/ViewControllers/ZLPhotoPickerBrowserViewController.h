@@ -85,20 +85,12 @@
 // @optional
 // 是否可以编辑（删除照片）
 @property (nonatomic , assign,getter=isEditing) BOOL editing;
-
 // 动画status (放大缩小/淡入淡出/旋转)
 @property (assign,nonatomic) UIViewAnimationAnimationStatus status;
-
-/**
- *  长按保存图片会调用sheet
- */
+// 长按保存图片会调用sheet
 @property (strong,nonatomic) UIActionSheet *sheet;
 
-/**
- *  刷新表格
- */
-- (void)reloadData;
-
+// function
 /**
  *  展示控制器
  */

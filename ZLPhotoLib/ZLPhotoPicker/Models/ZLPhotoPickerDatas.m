@@ -79,10 +79,18 @@ typedef ALAssetsLibraryAccessFailureBlock failureBlock;
 
 #pragma mark -获取所有组
 - (void) getAllGroupWithPhotos : (callBackBlock ) callBack{
-    
+    [self getAllGroupAllPhotos:YES withResource:callBack];
+}
+
+- (void) getAllGroupAllPhotos:(BOOL)allPhotos withResource : (callBackBlock ) callBack{
     NSMutableArray *groups = [NSMutableArray array];
     ALAssetsLibraryGroupsEnumerationResultsBlock resultBlock = ^(ALAssetsGroup *group, BOOL *stop){
         if (group) {
+            if (allPhotos){
+                [group setAssetsFilter:[ALAssetsFilter allPhotos]];
+            }else{
+                [group setAssetsFilter:[ALAssetsFilter allVideos]];
+            }
             // 包装一个模型来赋值
             ZLPhotoPickerGroup *pickerGroup = [[ZLPhotoPickerGroup alloc] init];
             pickerGroup.group = group;
@@ -95,9 +103,16 @@ typedef ALAssetsLibraryAccessFailureBlock failureBlock;
         }
     };
     
-    NSInteger type = ALAssetsGroupLibrary | ALAssetsGroupAlbum | ALAssetsGroupEvent | ALAssetsGroupFaces | ALAssetsGroupSavedPhotos | ALAssetsGroupPhotoStream;
+    NSInteger type = ALAssetsGroupAll;
     
     [self.library enumerateGroupsWithTypes:type usingBlock:resultBlock failureBlock:nil];
+}
+
+/**
+ * 获取所有组对应的图片
+ */
+- (void) getAllGroupWithVideos:(callBackBlock)callBack {    
+    [self getAllGroupAllPhotos:NO withResource:callBack];
 }
 
 #pragma mark -传入一个组获取组里面的Asset

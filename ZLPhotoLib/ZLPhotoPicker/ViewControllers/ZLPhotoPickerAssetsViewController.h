@@ -19,6 +19,7 @@ typedef void(^callBackBlock)(id obj);
 @interface ZLPhotoPickerAssetsViewController : UIViewController
 
 @property (strong,nonatomic) ZLPhotoPickerGroupViewController *groupVc;
+@property (nonatomic , assign) PickerViewShowStatus status;
 @property (nonatomic , strong) ZLPhotoPickerGroup *assetsGroup;
 @property (nonatomic , assign) NSInteger minCount;
 // 需要记录选中的值的数据

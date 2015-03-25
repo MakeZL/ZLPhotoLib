@@ -12,6 +12,7 @@
 
 @property (nonatomic , weak) UIView *maskView;
 @property (nonatomic , weak) UIImageView *tickImageView;
+@property (nonatomic , weak) UIImageView *videoView;
 
 @end
 
@@ -38,6 +39,17 @@
     return _maskView;
 }
 
+- (UIImageView *)videoView{
+    if (!_videoView) {
+        UIImageView *videoView = [[UIImageView alloc] initWithFrame:CGRectMake(10, self.bounds.size.height - 40, 30, 30)];
+        videoView.image = [UIImage imageNamed:@"video"];
+        videoView.contentMode = UIViewContentModeScaleAspectFit;
+        [self addSubview:videoView];
+        self.videoView = videoView;
+    }
+    return _videoView;
+}
+
 - (UIImageView *)tickImageView{
     if (!_tickImageView) {
         UIImageView *tickImageView = [[UIImageView alloc] init];
@@ -48,6 +60,12 @@
         self.tickImageView = tickImageView;
     }
     return _tickImageView;
+}
+
+- (void)setIsVideoType:(BOOL)isVideoType{
+    _isVideoType = isVideoType;
+    
+    self.videoView.hidden = !(isVideoType);
 }
 
 - (void)setMaskViewFlag:(BOOL)maskViewFlag{

@@ -18,4 +18,10 @@
     return [UIImage imageWithCGImage:[[self.asset defaultRepresentation] fullScreenImage]];
 }
 
+- (BOOL)isVideoType{
+    NSString *type = [self.asset valueForProperty:ALAssetPropertyType];
+    //媒体类型是视频
+    return [type isEqualToString:ALAssetTypeVideo];
+}
+
 @end

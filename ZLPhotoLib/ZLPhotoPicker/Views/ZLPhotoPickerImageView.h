@@ -26,5 +26,9 @@
  *  是否有右上角打钩的按钮
  */
 @property (nonatomic , assign) BOOL animationRightTick;
+/**
+ *  是否视频类型
+ */
+@property (assign,nonatomic) BOOL isVideoType;
 
 @end

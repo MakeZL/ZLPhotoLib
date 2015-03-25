@@ -25,6 +25,7 @@
              @"相片连拍/多选 + 图片游览器 >>> UICollectionView",
              @"相片多选/支持不重复选择照片 >>> UICollectionView",
              @"图片游览器 -> 自定义UIView >>> UIView",
+             @"视频选择 + 视频游览器 >>>",
             ];
 }
 

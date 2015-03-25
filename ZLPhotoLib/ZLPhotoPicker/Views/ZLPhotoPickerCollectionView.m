@@ -81,7 +81,7 @@
     
     ZLPhotoPickerImageView *cellImgView = [[ZLPhotoPickerImageView alloc] initWithFrame:cell.bounds];
     cellImgView.maskViewFlag = YES;
-
+    
     // 需要记录选中的值的数据
     if (self.isRecoderSelectPicker) {
         for (ZLPhotoAssets *asset in self.selectAsstes) {
@@ -96,6 +96,7 @@
     cellImgView.maskViewFlag = ([self.selectsIndexPath containsObject:@(indexPath.row)]);
     
     ZLPhotoAssets *asset = self.dataArray[indexPath.item];
+    cellImgView.isVideoType = asset.isVideoType;
     if ([asset isKindOfClass:[ZLPhotoAssets class]]) {
         cellImgView.image = asset.thumbImage;
     }
