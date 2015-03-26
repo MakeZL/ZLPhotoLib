@@ -11,6 +11,7 @@
 #import "ZLPhotoPickerBrowserPhotoImageView.h"
 #import "ZLPhotoPickerBrowserPhotoView.h"
 #import "ZLPhotoPickerBrowserPhoto.h"
+#import "ZLPhoto.h"
 
 @class ZLPhotoPickerBrowserPhotoScrollView;
 
@@ -32,6 +33,8 @@
  *  长按图片的操作，可以外接传入
  */
 @property (strong,nonatomic) UIActionSheet *sheet;
+
+@property (copy,nonatomic) callBackBlock callback;
 
 - (void)displayImage;
 - (void)setMaxMinZoomScalesForCurrentBounds;

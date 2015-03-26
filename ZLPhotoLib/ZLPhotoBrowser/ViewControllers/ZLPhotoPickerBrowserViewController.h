@@ -73,6 +73,7 @@
 @end
 
 @interface ZLPhotoPickerBrowserViewController : UIViewController
+
 // @require
 // 数据源/代理
 @property (nonatomic , weak) id<ZLPhotoPickerBrowserViewControllerDataSource> dataSource;
@@ -83,6 +84,8 @@
 @property (strong,nonatomic) NSIndexPath *currentIndexPath;
 
 // @optional
+// 放大缩小一张图片的情况下（查看头像）
+- (void)showHeadPortrait:(UIImageView *)toImageView;
 // 是否可以编辑（删除照片）
 @property (nonatomic , assign,getter=isEditing) BOOL editing;
 // 动画status (放大缩小/淡入淡出/旋转)

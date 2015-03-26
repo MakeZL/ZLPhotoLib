@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		48068AE61AC453D8009A65FB /* Example6ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48068AE51AC453D8009A65FB /* Example6ViewController.m */; };
 		4806BC811AB283ED004B8AB0 /* Example4ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4806BC801AB283ED004B8AB0 /* Example4ViewController.m */; };
 		4806BE2C1AB29051004B8AB0 /* UIView+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 4806BDB51AB29051004B8AB0 /* UIView+Extension.m */; };
 		4806BE2D1AB29051004B8AB0 /* DACircularProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4806BDB81AB29051004B8AB0 /* DACircularProgressView.m */; };
@@ -90,6 +91,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		48068AE41AC453D8009A65FB /* Example6ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Example6ViewController.h; sourceTree = "<group>"; };
+		48068AE51AC453D8009A65FB /* Example6ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Example6ViewController.m; sourceTree = "<group>"; };
 		4806BC7F1AB283ED004B8AB0 /* Example4ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Example4ViewController.h; sourceTree = "<group>"; };
 		4806BC801AB283ED004B8AB0 /* Example4ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Example4ViewController.m; sourceTree = "<group>"; };
 		4806BDB41AB29051004B8AB0 /* UIView+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Extension.h"; sourceTree = "<group>"; };
@@ -591,6 +594,8 @@
 				4806BC801AB283ED004B8AB0 /* Example4ViewController.m */,
 				48D0E4551AC261D20022C598 /* Example5ViewController.h */,
 				48D0E4561AC261D20022C598 /* Example5ViewController.m */,
+				48068AE41AC453D8009A65FB /* Example6ViewController.h */,
+				48068AE51AC453D8009A65FB /* Example6ViewController.m */,
 			);
 			path = Example;
 			sourceTree = "<group>";
@@ -725,6 +730,7 @@
 				4806BE381AB29051004B8AB0 /* UIImage+GIF.m in Sources */,
 				4806BE2C1AB29051004B8AB0 /* UIView+Extension.m in Sources */,
 				48D0E4571AC261D20022C598 /* Example5ViewController.m in Sources */,
+				48068AE61AC453D8009A65FB /* Example6ViewController.m in Sources */,
 				4806BE541AB29051004B8AB0 /* ZLPhotoPickerBrowserPhotoScrollView.m in Sources */,
 				4806BE361AB29051004B8AB0 /* SDWebImagePrefetcher.m in Sources */,
 				4806BE5E1AB29051004B8AB0 /* ZLPhotoPickerCollectionViewCell.m in Sources */,

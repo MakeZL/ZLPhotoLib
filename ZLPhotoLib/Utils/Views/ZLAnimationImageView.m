@@ -90,10 +90,14 @@ static NSDictionary *_options;
     UIButton *cView = _options[UIViewAnimationToView];
     UIImage *image = nil;
     
-    if (photo.photoImage) {
-        image = photo.photoImage;
-    }else if (photo.thumbImage){
-        image = photo.thumbImage;
+    if ([photo isKindOfClass:[ZLPhotoPickerBrowserPhoto class]]){
+        if (photo.photoImage) {
+            image = photo.photoImage;
+        }else if (photo.thumbImage){
+            image = photo.thumbImage;
+        }
+    }else if([photo isKindOfClass:[UIImage class]]){
+        image = photo;
     }
     
     if (!image) {

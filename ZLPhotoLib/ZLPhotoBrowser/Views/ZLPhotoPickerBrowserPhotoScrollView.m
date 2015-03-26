@@ -337,7 +337,9 @@
 
 #pragma mark - disMissTap
 - (void) disMissTap:(UITapGestureRecognizer *)tap{
-    if ([self.photoScrollViewDelegate respondsToSelector:@selector(pickerPhotoScrollViewDidSingleClick:)]) {
+    if (self.callback){
+        self.callback(nil);
+    }else if ([self.photoScrollViewDelegate respondsToSelector:@selector(pickerPhotoScrollViewDidSingleClick:)]) {
         [self.photoScrollViewDelegate pickerPhotoScrollViewDidSingleClick:self];
     }
 }

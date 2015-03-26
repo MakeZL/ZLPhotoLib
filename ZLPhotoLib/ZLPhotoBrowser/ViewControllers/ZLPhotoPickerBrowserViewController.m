@@ -37,6 +37,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 @property (assign,nonatomic) BOOL isScrollingEnd;
 // 当前提供的分页数
 @property (nonatomic , assign) NSInteger currentPage;
+
 @end
 
 
@@ -295,6 +296,10 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     return cell;
 }
 
+- (void)headPortrait:(UIImage *)image{
+    
+}
+
 #pragma mark - 获取所有的图片
 - (NSArray *) getPhotos{
     NSMutableArray *photos = [NSMutableArray array];
@@ -411,6 +416,53 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     }
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+// 放大缩小一张图片的情况下（查看头像）
+- (void)showHeadPortrait:(UIImageView *)toImageView{
+    
+    UIView *mainView = [[UIView alloc] init];
+    mainView.backgroundColor = [UIColor blackColor];
+    mainView.frame = [UIScreen mainScreen].bounds;
+    [[UIApplication sharedApplication].keyWindow addSubview:mainView];
+    
+    CGRect tempF = [toImageView.superview convertRect:toImageView.frame toView:[self getParsentView:toImageView]];
+    
+    UIImageView *imageView = [[UIImageView alloc] init];
+    imageView.userInteractionEnabled = YES;
+    imageView.frame = tempF;
+    imageView.image = toImageView.image;
+    imageView.contentMode = UIViewContentModeScaleAspectFit;
+    [mainView addSubview:imageView];
+    mainView.clipsToBounds = YES;
+    
+    [UIView animateWithDuration:.25 animations:^{
+        imageView.frame = [UIScreen mainScreen].bounds;
+    } completion:^(BOOL finished) {
+        imageView.hidden = YES;
+
+        ZLPhotoPickerBrowserPhoto *photo = [[ZLPhotoPickerBrowserPhoto alloc] init];
+        photo.photoImage = toImageView.image;
+        photo.thumbImage = toImageView.image;
+        
+        ZLPhotoPickerBrowserPhotoScrollView *scrollView = [[ZLPhotoPickerBrowserPhotoScrollView alloc] init];
+        
+        __weak typeof(ZLPhotoPickerBrowserPhotoScrollView *)weakScrollView = scrollView;
+        scrollView.callback = ^(id obj){
+            
+            [weakScrollView removeFromSuperview];
+            mainView.backgroundColor = [UIColor clearColor];
+            imageView.hidden = NO;
+            [UIView animateWithDuration:.25 animations:^{
+                imageView.frame = tempF;
+            } completion:^(BOOL finished) {
+                [mainView removeFromSuperview];
+            }];
+        };
+        scrollView.frame = [UIScreen mainScreen].bounds;
+        scrollView.photo = photo;
+        [mainView addSubview:scrollView];
+    }];
 }
 
 - (void)didReceiveMemoryWarning{
