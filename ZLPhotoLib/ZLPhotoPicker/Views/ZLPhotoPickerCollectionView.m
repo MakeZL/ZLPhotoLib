@@ -124,7 +124,7 @@
         // 1 判断图片数超过最大数或者小于0
         NSUInteger minCount = (self.minCount > MAX_COUNT || self.minCount < 0) ? MAX_COUNT :  self.minCount;
         
-        if (self.selectsIndexPath.count >= minCount) {
+        if (self.selectAsstes.count >= minCount) {
             NSString *format = [NSString stringWithFormat:@"最多只能选择%zd张图片",minCount];
             if (minCount == 0) {
                 format = [NSString stringWithFormat:@"您已经选满了图片呦."];
@@ -138,13 +138,19 @@
         [self.selectAsstes addObject:asset];
         [self.lastDataArray addObject:asset];
     }
+    // 告诉代理现在被点击了!
+    if ([self.collectionViewDelegate respondsToSelector:@selector(pickerCollectionViewDidSelected: deleteAsset:)]) {
+        if (pickerImageView.isMaskViewFlag) {
+            // 删除的情况下
+            [self.collectionViewDelegate pickerCollectionViewDidSelected:self deleteAsset:asset];
+        }else{
+            [self.collectionViewDelegate pickerCollectionViewDidSelected:self deleteAsset:nil];
+        }
+    }
+    
     pickerImageView.maskViewFlag = ([pickerImageView isKindOfClass:[ZLPhotoPickerImageView class]]) && !pickerImageView.isMaskViewFlag;
     
     
-    // 告诉代理现在被点击了!
-    if ([self.collectionViewDelegate respondsToSelector:@selector(pickerCollectionViewDidSelected:)]) {
-        [self.collectionViewDelegate pickerCollectionViewDidSelected:self];
-    }
 }
 
 #pragma mark 底部View

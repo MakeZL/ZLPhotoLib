@@ -255,7 +255,7 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
     if (self.assets.count > minCount) {
         minCount = 0;
     }else{
-        minCount = minCount - self.selectAssets.count;
+        minCount = minCount; // minCount - self.selectAssets.count;
     }
     self.collectionView.minCount = minCount;
 }
@@ -272,10 +272,18 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
 }
 
 
-- (void) pickerCollectionViewDidSelected:(ZLPhotoPickerCollectionView *) pickerCollectionView{
+- (void) pickerCollectionViewDidSelected:(ZLPhotoPickerCollectionView *) pickerCollectionView deleteAsset:(ZLPhotoAssets *)deleteAssets{
     
-    self.selectAssets = [NSMutableArray arrayWithArray:pickerCollectionView.selectAsstes];
+//    self.selectAssets = [NSMutableArray arrayWithArray:pickerCollectionView.selectAsstes];
     
+    if (self.selectPickerAssets.count == 0){
+        self.selectAssets = [NSMutableArray arrayWithArray:pickerCollectionView.selectAsstes];
+    }else if (deleteAssets == nil){
+        [self.selectAssets addObject:[pickerCollectionView.selectAsstes lastObject]];
+    }
+    
+    self.selectAssets = [NSMutableArray arrayWithArray:[[NSSet setWithArray:self.selectAssets] allObjects]];
+
     NSInteger count = self.selectAssets.count;
     self.makeView.hidden = !count;
     self.makeView.text = [NSString stringWithFormat:@"%ld",(long)count];
@@ -283,6 +291,34 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
     
     [self.toolBarThumbCollectionView reloadData];
     
+    if (self.selectPickerAssets.count || deleteAssets) {
+        ZLPhotoAssets *asset = [pickerCollectionView.lastDataArray lastObject];
+        if (deleteAssets){
+            asset = deleteAssets;
+        }
+        
+        NSInteger selectAssetsCurrentPage = -1;
+        for (NSInteger i = 0; i < self.selectAssets.count; i++) {
+            ZLPhotoAssets *photoAsset = self.selectAssets[i];
+            if([[[[asset.asset defaultRepresentation] url] absoluteString] isEqualToString:[[[photoAsset.asset defaultRepresentation] url] absoluteString]]){
+                selectAssetsCurrentPage = i;
+                break;
+            }
+        }
+        
+        if (
+            (self.selectAssets.count > selectAssetsCurrentPage)
+            &&
+            (selectAssetsCurrentPage >= 0)
+            ){
+            if (deleteAssets){
+                [self.selectAssets removeObjectAtIndex:selectAssetsCurrentPage];
+            }
+            [self.collectionView.selectsIndexPath removeObject:@(selectAssetsCurrentPage)];
+            [self.toolBarThumbCollectionView reloadData];
+            self.makeView.text = [NSString stringWithFormat:@"%ld",self.selectAssets.count];
+        }
+    }
 }
 
 #pragma mark -
