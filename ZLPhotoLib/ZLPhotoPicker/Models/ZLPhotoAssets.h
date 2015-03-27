@@ -16,12 +16,10 @@
  *  缩略图
  */
 - (UIImage *)thumbImage;
-
 /**
  *  原图
  */
 - (UIImage *)originImage;
-
 /**
  *  获取是否是视频类型, Default = false
  */

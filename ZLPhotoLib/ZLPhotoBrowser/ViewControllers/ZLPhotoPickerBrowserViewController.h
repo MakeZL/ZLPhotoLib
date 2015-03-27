@@ -12,9 +12,6 @@
 #import "ZLPhotoPickerCustomToolBarView.h"
 
 @class ZLPhotoPickerBrowserViewController;
-
-
-// ZLPhotoPickerBrowserViewControllerDataSource
 @protocol ZLPhotoPickerBrowserViewControllerDataSource <NSObject>
 
 @optional
@@ -35,7 +32,6 @@
 
 @end
 
-// ZLPhotoPickerBrowserViewControllerDelegate
 @protocol ZLPhotoPickerBrowserViewControllerDelegate <NSObject>
 @optional
 
@@ -84,19 +80,16 @@
 @property (strong,nonatomic) NSIndexPath *currentIndexPath;
 
 // @optional
-// 放大缩小一张图片的情况下（查看头像）
-- (void)showHeadPortrait:(UIImageView *)toImageView;
 // 是否可以编辑（删除照片）
 @property (nonatomic , assign,getter=isEditing) BOOL editing;
 // 动画status (放大缩小/淡入淡出/旋转)
 @property (assign,nonatomic) UIViewAnimationAnimationStatus status;
 // 长按保存图片会调用sheet
 @property (strong,nonatomic) UIActionSheet *sheet;
+// 放大缩小一张图片的情况下（查看头像）
+- (void)showHeadPortrait:(UIImageView *)toImageView;
 
-// function
-/**
- *  展示控制器
- */
+// @function
+// 展示控制器
 - (void)show;
-
 @end

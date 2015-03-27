@@ -6,29 +6,27 @@
 //  Copyright (c) 2014年 com.zixue101.www. All rights reserved.
 //
 
-
-#define PICKER_TAKE_DONE @"PICKER_TAKE_DONE"
-
 #import "ZLPhotoPickerViewController.h"
-#import "ZLPhotoPickerGroupViewController.h"
-#import "ZLPhotoPickerDatas.h"
+#import "ZLPhoto.h"
 
 @interface ZLPhotoPickerViewController ()
-
 @property (nonatomic , weak) ZLPhotoPickerGroupViewController *groupVc;
-
 @end
 
 @implementation ZLPhotoPickerViewController
 
-- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
-    if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
-        [self createNavigationController];
-    }
-    return self;
+#pragma mark - Life cycle
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.view.backgroundColor = [UIColor whiteColor];
+    [self addNotification];
 }
 
-#pragma mark 初始化导航控制器
+- (void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+#pragma mark - init Action
 - (void) createNavigationController{
     ZLPhotoPickerGroupViewController *groupVc = [[ZLPhotoPickerGroupViewController alloc] init];
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:groupVc];
@@ -36,7 +34,13 @@
     [self addChildViewController:nav];
     [self.view addSubview:nav.view];
     self.groupVc = groupVc;
-    
+}
+
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
+    if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
+        [self createNavigationController];
+    }
+    return self;
 }
 
 - (void)setSelectPickers:(NSArray *)selectPickers{
@@ -54,31 +58,6 @@
     _minCount = minCount;
     self.groupVc.minCount = minCount;
 }
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    
-    self.view.backgroundColor = [UIColor whiteColor];
-    
-    [self addNotification];
-}
-
-- (BOOL)shouldAutorotate{
-    return YES;
-}
-
-- (NSUInteger)supportedInterfaceOrientations{
-    return UIInterfaceOrientationMaskPortrait;
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation{
-    return YES;
-}
-
-- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation{
-    return UIInterfaceOrientationPortrait;
-}
-
 
 #pragma mark - 展示控制器
 - (void)show{
@@ -104,17 +83,8 @@
     });
 }
 
-- (void)dealloc{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
 - (void)setDelegate:(id<ZLPhotoPickerViewControllerDelegate>)delegate{
     _delegate = delegate;
     self.groupVc.delegate = delegate;
-}
-#pragma mark - 通过传入一个图片对象（ALAsset、URL）获取一张缩略图
-- (UIImage *) getImageWithImageObj:(id)imageObj{
-    
-    return [[ZLPhotoPickerDatas defaultPicker] getImageWithImageObj:imageObj];
 }
 @end

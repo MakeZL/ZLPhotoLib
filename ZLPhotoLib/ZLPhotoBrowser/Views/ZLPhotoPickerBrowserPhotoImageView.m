@@ -8,11 +8,6 @@
 
 #import "ZLPhotoPickerBrowserPhotoImageView.h"
 
-@interface ZLPhotoPickerBrowserPhotoImageView ()
-
-
-@end
-
 @implementation ZLPhotoPickerBrowserPhotoImageView
 
 - (id)initWithFrame:(CGRect)frame {
@@ -45,7 +40,6 @@
 
 #pragma mark -监听手势
 - (void) addGesture{
-    
     // 双击放大
     UITapGestureRecognizer *scaleBigTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
     scaleBigTap.numberOfTapsRequired = 2;

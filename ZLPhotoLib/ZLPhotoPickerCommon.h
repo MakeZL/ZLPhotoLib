@@ -38,4 +38,7 @@ static NSInteger const ZLPickerProgressViewH = 50;
 // 分页控制器的高度
 static NSInteger const ZLPickerPageCtrlH = 25;
 
+// NSNotification
+static NSString *PICKER_TAKE_DONE = @"PICKER_TAKE_DONE";
+
 #endif

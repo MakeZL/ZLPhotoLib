@@ -11,10 +11,12 @@
 
 #import "ZLCameraViewController.h"
 #import "ZLPhotoPickerBrowserViewController.h"
+#import "ZLPhotoPickerAssetsViewController.h"
 #import "ZLPhotoPickerViewController.h"
 #import "ZLPhotoPickerDatas.h"
 #import "ZLPhotoPickerCommon.h"
 #import "UIImageView+WebCache.h"
+#import "UIView+Extension.h"
 
 /**
  *

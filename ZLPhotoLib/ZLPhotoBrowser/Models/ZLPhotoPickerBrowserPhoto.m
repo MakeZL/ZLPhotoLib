@@ -28,7 +28,6 @@
     }else{
         NSAssert(true == true, @"您传入的类型有问题");
     }
-    
 }
 
 - (UIImage *)photoImage{
@@ -55,6 +54,5 @@
     [photo setPhotoObj:imageObj];
     return photo;
 }
-
 
 @end

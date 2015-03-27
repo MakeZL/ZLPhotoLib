@@ -17,10 +17,8 @@ typedef NS_ENUM(NSUInteger, ZLPickerCollectionViewShowOrderStatus){
 
 @class ZLPhotoPickerCollectionView;
 @protocol ZLPhotoPickerCollectionViewDelegate <NSObject>
-
 // 选择相片就会调用
 - (void) pickerCollectionViewDidSelected:(ZLPhotoPickerCollectionView *) pickerCollectionView deleteAsset:(ZLPhotoAssets *)deleteAssets;
-
 @end
 
 @interface ZLPhotoPickerCollectionView : UICollectionView

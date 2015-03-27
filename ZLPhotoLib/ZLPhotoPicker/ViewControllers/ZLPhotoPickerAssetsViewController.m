@@ -7,59 +7,54 @@
 //
 
 
-// CellFrame
-#define CELL_ROW 4
-#define CELL_MARGIN 2
-#define CELL_LINE_MARGIN CELL_MARGIN
-
-// 通知
-#define PICKER_TAKE_DONE @"PICKER_TAKE_DONE"
-// 间距
-#define TOOLBAR_IMG_MARGIN 2
-
-#define TOOLBAR_HEIGHT 44
-
-#import "ZLPhotoPickerAssetsViewController.h"
+#import <AssetsLibrary/AssetsLibrary.h>
+#import "ZLPhoto.h"
 #import "ZLPhotoPickerCollectionView.h"
 #import "ZLPhotoPickerGroup.h"
-#import "ZLPhotoPickerDatas.h"
 #import "ZLPhotoPickerCollectionViewCell.h"
 #import "ZLPhotoPickerFooterCollectionReusableView.h"
-#import "ZLPhotoPickerBrowserViewController.h"
-#import "UIView+Extension.h"
-#import "UIView+ZLAutoLayout.h"
-#import <AssetsLibrary/AssetsLibrary.h>
+
+static CGFloat CELL_ROW = 4;
+static CGFloat CELL_MARGIN = 2;
+static CGFloat CELL_LINE_MARGIN = 2;
+static CGFloat TOOLBAR_HEIGHT = 44;
 
 static NSString *const _cellIdentifier = @"cell";
 static NSString *const _footerIdentifier = @"FooterView";
 static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
 @interface ZLPhotoPickerAssetsViewController () <ZLPhotoPickerCollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,ZLPhotoPickerBrowserViewControllerDataSource,ZLPhotoPickerBrowserViewControllerDelegate>
 
-
+// View
 // 相片View
 @property (nonatomic , strong) ZLPhotoPickerCollectionView *collectionView;
 // 底部CollectionView
 @property (nonatomic , weak) UICollectionView *toolBarThumbCollectionView;
-
 // 标记View
 @property (nonatomic , weak) UILabel *makeView;
 @property (nonatomic , strong) UIButton *doneBtn;
 @property (nonatomic , weak) UIToolbar *toolBar;
 
+// Datas
 // 数据源
 @property (nonatomic , strong) NSMutableArray *assets;
 // 记录选中的assets
 @property (nonatomic , strong) NSMutableArray *selectAssets;
-
-
 @end
 
 @implementation ZLPhotoPickerAssetsViewController
 
 #pragma mark - getter
+#pragma mark Get Data
+- (NSMutableArray *)selectAssets{
+    if (!_selectAssets) {
+        _selectAssets = [NSMutableArray array];
+    }
+    return _selectAssets;
+}
+
+#pragma mark Get View
 - (UIButton *)doneBtn{
     if (!_doneBtn) {
-        
         UIButton *rightBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         [rightBtn setTitleColor:[UIColor colorWithRed:0/255.0 green:91/255.0 blue:255/255.0 alpha:1.0] forState:UIControlStateNormal];
         [rightBtn setTitleColor:[UIColor grayColor] forState:UIControlStateDisabled];
@@ -70,11 +65,10 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
         [rightBtn addTarget:self action:@selector(done) forControlEvents:UIControlEventTouchUpInside];
         [rightBtn addSubview:self.makeView];
         self.doneBtn = rightBtn;
-        
     }
-    
     return _doneBtn;
 }
+
 - (UICollectionView *)toolBarThumbCollectionView{
     if (!_toolBarThumbCollectionView) {
         
@@ -96,12 +90,6 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
         
     }
     return _toolBarThumbCollectionView;
-}
-- (NSMutableArray *)selectAssets{
-    if (!_selectAssets) {
-        _selectAssets = [NSMutableArray array];
-    }
-    return _selectAssets;
 }
 
 - (void)setSelectPickerAssets:(NSArray *)selectPickerAssets{
@@ -127,8 +115,6 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
     self.makeView.hidden = !count;
     self.makeView.text = [NSString stringWithFormat:@"%ld",(long)count];
     self.doneBtn.enabled = (count > 0);
-    
-    
 }
 
 #pragma mark collectionView
@@ -167,7 +153,7 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
     return _collectionView;
 }
 
-#pragma mark -红点标记View
+#pragma mark makeView 红点标记View
 - (UILabel *)makeView{
     if (!_makeView) {
         UILabel *makeView = [[UILabel alloc] init];
@@ -274,8 +260,6 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
 
 - (void) pickerCollectionViewDidSelected:(ZLPhotoPickerCollectionView *) pickerCollectionView deleteAsset:(ZLPhotoAssets *)deleteAssets{
     
-//    self.selectAssets = [NSMutableArray arrayWithArray:pickerCollectionView.selectAsstes];
-    
     if (self.selectPickerAssets.count == 0){
         self.selectAssets = [NSMutableArray arrayWithArray:pickerCollectionView.selectAsstes];
     }else if (deleteAssets == nil){
@@ -348,7 +332,6 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
         imageView.tag = indexPath.item;
         imageView.image = [self.selectAssets[indexPath.item] thumbImage];
     }
-    
     
     return cell;
 }

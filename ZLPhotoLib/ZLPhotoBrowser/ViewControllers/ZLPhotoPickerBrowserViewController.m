@@ -6,35 +6,31 @@
 //  Copyright (c) 2014年 com.zixue101.www. All rights reserved.
 //
 
+#import <AssetsLibrary/AssetsLibrary.h>
+#import <objc/runtime.h>
 #import "ZLPhotoPickerBrowserViewController.h"
 #import "ZLPhotoPickerBrowserPhoto.h"
 #import "ZLPhotoPickerDatas.h"
 #import "UIView+Extension.h"
-#import <AssetsLibrary/AssetsLibrary.h>
 #import "ZLPhotoPickerBrowserPhotoScrollView.h"
 #import "ZLPhotoPickerCommon.h"
 #import "ZLAnimationScrollView.h"
-#import <objc/runtime.h>
 
 static NSString *_cellIdentifier = @"collectionViewCell";
 
 @interface ZLPhotoPickerBrowserViewController () <UIScrollViewDelegate,ZLPhotoPickerPhotoScrollViewDelegate,UICollectionViewDelegateFlowLayout,UICollectionViewDataSource,UICollectionViewDelegate>
-// 自定义控件
-//@property (nonatomic , weak) UIPageControl *pageCtrl;
-@property (weak,nonatomic) UILabel *pageLabel;
-@property (nonatomic , weak) UIButton *deleleBtn;
-@property (weak,nonatomic) UIButton *backBtn;
-@property (nonatomic , weak) UICollectionView *collectionView;
+
+// 控件
+@property (weak,nonatomic) UILabel          *pageLabel;
+@property (weak,nonatomic) UIButton         *deleleBtn;
+@property (weak,nonatomic) UIButton         *backBtn;
+@property (weak,nonatomic) UICollectionView *collectionView;
+
+// 数据相关
 // 单击时执行销毁的block
 @property (nonatomic , copy) ZLPickerBrowserViewControllerTapDisMissBlock disMissBlock;
 // 装着所有的图片模型
 @property (nonatomic , strong) NSMutableArray *photos;
-
-@property (strong,nonatomic) UICollectionViewFlowLayout *flowLayout;
-
-@property (nonatomic , assign) UIDeviceOrientation orientation;
-@property (assign,nonatomic) BOOL isDelete;
-@property (assign,nonatomic) BOOL isScrollingEnd;
 // 当前提供的分页数
 @property (nonatomic , assign) NSInteger currentPage;
 
@@ -44,6 +40,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 @implementation ZLPhotoPickerBrowserViewController
 
 #pragma mark - getter
+#pragma mark photos
 - (NSMutableArray *)photos{
     if (!_photos) {
         _photos = [NSMutableArray array];
@@ -52,16 +49,14 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     return _photos;
 }
 
-
+#pragma mark collectionView
 - (UICollectionView *)collectionView{
     if (!_collectionView) {
-        
         UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
         flowLayout.minimumLineSpacing = ZLPickerColletionViewPadding;
         flowLayout.itemSize = self.view.size;
         flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-        self.flowLayout = flowLayout;
-        
+
         UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, self.view.width + ZLPickerColletionViewPadding,self.view.height) collectionViewLayout:flowLayout];
         collectionView.showsHorizontalScrollIndicator = NO;
         collectionView.showsVerticalScrollIndicator = NO;
@@ -84,7 +79,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     return _collectionView;
 }
 
-#pragma mark -删除按钮
+#pragma mark deleleBtn
 - (UIButton *)deleleBtn{
     if (!_deleleBtn) {
         UIButton *deleleBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -116,7 +111,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     return _deleleBtn;
 }
 
-#pragma mark - 分页控件
+#pragma mark pageLabel
 - (UILabel *)pageLabel{
     if (!_pageLabel) {
         UILabel *pageLabel = [[UILabel alloc] init];
@@ -141,18 +136,42 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     return _pageLabel;
 }
 
+#pragma mark - Life cycle
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-    
     NSAssert(self.dataSource, @"你没成为数据源代理");
-    
     [self collectionView];
     // 初始化动画
     [self startLogddingAnimation];
-    
 }
 
-#pragma mark - 获取父View
+- (void)didReceiveMemoryWarning{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self.photos removeAllObjects];
+}
+
+- (void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.view.backgroundColor = [UIColor blackColor];
+}
+
+#pragma mark - Get
+#pragma mark getPhotos
+- (NSArray *) getPhotos{
+    NSMutableArray *photos = [NSMutableArray array];
+    NSInteger section = self.currentIndexPath.section;
+    NSInteger rows = [self.dataSource photoBrowser:self numberOfItemsInSection:section];
+    for (NSInteger i = 0; i < rows; i++) {
+        [photos addObject:[self.dataSource photoBrowser:self photoAtIndexPath:[NSIndexPath indexPathForItem:i inSection:section]]];
+    }
+    return photos;
+}
+
+#pragma mark get Controller.view
 - (UIView *)getParsentView:(UIView *)view{
     if ([[view nextResponder] isKindOfClass:[UIViewController class]] || view == nil) {
         return view;
@@ -192,37 +211,22 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     
     __weak typeof(self) weakSelf = self;
     
-    [ZLAnimationScrollView animationViewWithOptions:options animations:^{
-        
-    } completion:^(ZLAnimationBaseView *baseView) {
+    [ZLAnimationScrollView animationViewWithOptions:options animations:nil completion:^(ZLAnimationBaseView *baseView) {
         // disMiss后调用
         weakSelf.disMissBlock = ^(NSInteger page){
-//            [ZLAnimationScrollView setCurrentPage:page];
             if (self.currentIndexPath) {
                 [ZLAnimationScrollView setCurrentIndexPath:[NSIndexPath indexPathForItem:page inSection:self.currentIndexPath.section]];
             }else{
                 [ZLAnimationScrollView setCurrentIndexPath:[NSIndexPath indexPathForItem:page inSection:0]];
             }
             [weakSelf dismissViewControllerAnimated:NO completion:nil];
-            [ZLAnimationScrollView restoreAnimation:^{
-                //                NSLog(@"动画执行完...");
-            }];
+            [ZLAnimationScrollView restoreAnimation:nil];
         };
         [weakSelf reloadData];
     }];
-    
-    
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    
-    self.view.backgroundColor = [UIColor blackColor];
-    
-}
-
-
-#pragma mark - 刷新表格
+#pragma mark - reloadData
 - (void) reloadData{
     self.collectionView.dataSource = self;
     [self.collectionView reloadData];
@@ -296,22 +300,6 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     return cell;
 }
 
-- (void)headPortrait:(UIImage *)image{
-    
-}
-
-#pragma mark - 获取所有的图片
-- (NSArray *) getPhotos{
-    NSMutableArray *photos = [NSMutableArray array];
-    NSInteger section = self.currentIndexPath.section;
-    NSInteger rows = [self.dataSource photoBrowser:self numberOfItemsInSection:section];
-    for (NSInteger i = 0; i < rows; i++) {
-        [photos addObject:[self.dataSource photoBrowser:self photoAtIndexPath:[NSIndexPath indexPathForItem:i inSection:section]]];
-    }
-    
-    return photos;
-}
-
 #pragma mark - <UIScrollViewDelegate>
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
     CGRect tempF = self.collectionView.frame;
@@ -349,7 +337,6 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     
 }
 
-
 #pragma mark - 展示控制器
 - (void)show{
     BOOL animation = !self.toView;
@@ -378,14 +365,11 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 #pragma mark - <UIAlertViewDelegate>
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if (buttonIndex == 1) {
-        
-        
         NSInteger page = self.currentPage;
         if ([self.delegate respondsToSelector:@selector(photoBrowser:removePhotoAtIndexPath:)]) {
             [self.delegate photoBrowser:self removePhotoAtIndexPath:[NSIndexPath indexPathForItem:page inSection:self.currentIndexPath.section]];
         }
         
-        self.isDelete = YES;
         [self.photos removeObjectAtIndex:self.currentPage];
         
         if (self.currentPage >= self.photos.count) {
@@ -418,7 +402,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-// 放大缩小一张图片的情况下（查看头像）
+#pragma mark - showHeadPortrait 放大缩小一张图片的情况下（查看头像）
 - (void)showHeadPortrait:(UIImageView *)toImageView{
     
     UIView *mainView = [[UIView alloc] init];
@@ -427,7 +411,6 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     [[UIApplication sharedApplication].keyWindow addSubview:mainView];
     
     CGRect tempF = [toImageView.superview convertRect:toImageView.frame toView:[self getParsentView:toImageView]];
-    
     UIImageView *imageView = [[UIImageView alloc] init];
     imageView.userInteractionEnabled = YES;
     imageView.frame = tempF;
@@ -449,7 +432,6 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         
         __weak typeof(ZLPhotoPickerBrowserPhotoScrollView *)weakScrollView = scrollView;
         scrollView.callback = ^(id obj){
-            
             [weakScrollView removeFromSuperview];
             mainView.backgroundColor = [UIColor clearColor];
             imageView.hidden = NO;
@@ -463,16 +445,6 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         scrollView.photo = photo;
         [mainView addSubview:scrollView];
     }];
-}
-
-- (void)didReceiveMemoryWarning{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [self.photos removeAllObjects];
-    
-}
-
-- (void)dealloc{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 @end

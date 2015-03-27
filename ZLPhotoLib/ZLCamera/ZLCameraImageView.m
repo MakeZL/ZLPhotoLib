@@ -10,17 +10,7 @@
 #import "UIView+Extension.h"
 
 @interface ZLCameraImageView ()
-
-@property (assign, nonatomic) CGPoint point;
-
 @property (strong, nonatomic) UIImageView *deleBjView;
-
-@property (weak, nonatomic) UIView *mView;
-/**
- *  记录所有的图片显示标记
- */
-@property (strong, nonatomic) NSMutableArray *images;
-
 @end
 
 @implementation ZLCameraImageView
@@ -46,12 +36,6 @@
     self.deleBjView.hidden = NO;
 }
 
-- (void)dealloc{
-    [self.layer removeAllAnimations];
-    
-}
-
-
 - (id)initWithFrame:(CGRect)frame{
     if (self = [super initWithFrame:frame]) {
         self.userInteractionEnabled = YES;
@@ -64,10 +48,6 @@
     if ([self.delegatge respondsToSelector:@selector(deleteImageView:)]) {
         [self.delegatge deleteImageView:self];
     }
-}
-
-- (void)drawRect:(CGRect)rect{
-    
 }
 
 @end

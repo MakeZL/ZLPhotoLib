@@ -50,8 +50,6 @@
     if ((self = [super init])) {
         
         // Setup
-        _index = NSUIntegerMax;
-        
         // Tap view for background
         _tapView = [[ZLPhotoPickerBrowserPhotoView alloc] initWithFrame:self.bounds];
         _tapView.tapDelegate = self;
@@ -102,20 +100,10 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)prepareForReuse {
-    self.photo = nil;
-    _photoImageView.image = nil;
-    _index = NSUIntegerMax;
-}
-
 - (void)setPhoto:(ZLPhotoPickerBrowserPhoto *)photo{
     _photo = photo;
     
-    // 避免cell重复创建控件，删除再添加
-    //    [[self.subviews lastObject] removeFromSuperview];
-    
     __weak typeof(self) weakSelf = self;
-    
     if (photo.photoURL.absoluteString.length) {
         // 本地相册
         NSRange photoRange = [photo.photoURL.absoluteString rangeOfString:@"assets-library"];
@@ -125,7 +113,6 @@
                 [weakSelf displayImage];
             }];
         }else{
-            
             // 网络URL
             [_photoImageView sd_setImageWithURL:photo.photoURL placeholderImage:photo.thumbImage options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize) {
                 _photoImageView.progress = (double)receivedSize / expectedSize;
@@ -150,7 +137,6 @@
     _progress = progress;
     
     if (progress == 0) return ;
-    
     if (progress / 1.0 != 1.0) {
         [self.progressView setProgress:progress animated:YES];
     }else{
@@ -201,14 +187,10 @@
         CGSize imageSize = _photoImageView.image.size;
         CGFloat boundsAR = boundsSize.width / boundsSize.height;
         CGFloat imageAR = imageSize.width / imageSize.height;
-        CGFloat xScale = boundsSize.width / imageSize.width;    // the scale needed to perfectly fit the image width-wise
-        //        CGFloat yScale = boundsSize.height / imageSize.height;  // the scale needed to perfectly fit the image height-wise
-        // Zooms standard portrait images on a 3.5in screen but not on a 4in screen.
+        CGFloat xScale = boundsSize.width / imageSize.width;
+
         if (ABS(boundsAR - imageAR) < 0.17) {
             zoomScale = xScale;
-            //            zoomScale = MAX(xScale, yScale);
-            // Ensure we don't zoom in or out too far, just in case
-            //            zoomScale = MIN(MAX(self.minimumZoomScale, zoomScale), self.maximumZoomScale);
         }
     }
     return zoomScale;

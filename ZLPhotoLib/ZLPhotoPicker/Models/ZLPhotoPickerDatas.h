@@ -46,6 +46,4 @@ typedef void(^callBackBlock)(id obj);
  *  @return 返回图片
  */
 - (UIImage *) getImageWithImageObj:(id)imageObj;
-
-
 @end

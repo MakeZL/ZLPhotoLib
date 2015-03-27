@@ -6,18 +6,13 @@
 //  Copyright (c) 2014年 beiqing. All rights reserved.
 //
 
-#define isPad (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-#define CAMERA_TRANSFORM_X 1.2
-#define CAMERA_TRANSFORM_Y 1.2
-
-#import "ZLCameraViewController.h"
-#import "ZLCameraImageView.h"
 #import <AVFoundation/AVFoundation.h>
 #import <ImageIO/ImageIO.h>
-#import "ZLCameraView.h"
-#import "UIView+Extension.h"
-#import "ZLPhoto.h"
 #import <objc/message.h>
+#import "ZLCameraViewController.h"
+#import "ZLCameraImageView.h"
+#import "ZLCameraView.h"
+#import "ZLPhoto.h"
 
 static CGFloat ZLCameraColletionViewW = 80;
 static CGFloat ZLCameraColletionViewPadding = 20;
@@ -25,36 +20,69 @@ static CGFloat BOTTOM_HEIGHT = 60;
 
 @interface ZLCameraViewController () <UIActionSheetDelegate,UICollectionViewDataSource,UICollectionViewDelegate,AVCaptureMetadataOutputObjectsDelegate,ZLCameraImageViewDelegate,ZLCameraViewDelegate,ZLPhotoPickerViewControllerDelegate,ZLPhotoPickerBrowserViewControllerDataSource,ZLPhotoPickerBrowserViewControllerDelegate>
 
+// View
+@property (weak, nonatomic) UIView *topView;
 @property (weak, nonatomic) UIView *controlView;
-
-// 代码块
-@property (copy, nonatomic) codeBlock codeBlock;
-
-@property (strong, nonatomic) UIViewController *currentViewController;
-@property (strong, nonatomic) NSMutableArray *images;
+@property (weak,nonatomic) ZLCameraView *caramView;
 @property (strong, nonatomic) UICollectionView *collectionView;
-@property (strong, nonatomic) NSMutableDictionary *dictM;
+@property (strong, nonatomic) UIViewController *currentViewController;
 
+// Datas
+@property (strong, nonatomic) NSMutableArray *images;
+@property (strong, nonatomic) NSMutableDictionary *dictM;
+// 完成后回调
+@property (copy, nonatomic) ZLComplate complate;
+
+// AVFoundation
 @property (strong, nonatomic) AVCaptureSession *session;
 @property (strong, nonatomic) AVCaptureStillImageOutput *captureOutput;
 @property (strong, nonatomic) AVCaptureDevice *device;
 
-@property (weak, nonatomic) UIView *topView;
-
 @property (strong,nonatomic)AVCaptureDeviceInput * input;
 @property (strong,nonatomic)AVCaptureMetadataOutput * output;
 @property (strong,nonatomic)AVCaptureVideoPreviewLayer * preview;
-
-@property (weak,nonatomic) ZLCameraView *caramView;
 @end
 
 @implementation ZLCameraViewController
 
+#pragma mark - Getter
+#pragma mark Data
 - (NSMutableArray *)images{
     if (!_images) {
         _images = [NSMutableArray array];
     }
     return _images;
+}
+
+- (NSMutableDictionary *)dictM{
+    if (!_dictM) {
+        _dictM = [NSMutableDictionary dictionary];
+    }
+    return _dictM;
+}
+
+#pragma mark View
+- (UICollectionView *)collectionView{
+    if (!_collectionView) {
+        
+        UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+        layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+        layout.itemSize = CGSizeMake(ZLCameraColletionViewW, ZLCameraColletionViewW);
+        layout.minimumLineSpacing = ZLCameraColletionViewPadding;
+        
+        CGFloat collectionViewH = ZLCameraColletionViewW;
+        CGFloat collectionViewY = self.caramView.height - collectionViewH - 10;
+        
+        UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(ZLCameraColletionViewPadding, collectionViewY, self.view.width, collectionViewH)
+                                                              collectionViewLayout:layout];
+        collectionView.backgroundColor = [UIColor clearColor];
+        [collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"cell"];
+        collectionView.delegate = self;
+        collectionView.dataSource = self;
+        [self.caramView addSubview:collectionView];
+        self.collectionView = collectionView;
+    }
+    return _collectionView;
 }
 
 - (void) initialize
@@ -94,11 +122,9 @@ static CGFloat BOTTOM_HEIGHT = 60;
     [self.view addSubview:caramView];
     [self.view.layer insertSublayer:self.preview atIndex:0];
     self.caramView = caramView;
-    
 }
 
 - (void)cameraDidSelected:(ZLCameraView *)camera{
-    
     [self.device lockForConfiguration:nil];
     [self.device setFocusMode:AVCaptureFocusModeAutoFocus];
     [self.device setFocusPointOfInterest:CGPointMake(50,50)];
@@ -108,59 +134,17 @@ static CGFloat BOTTOM_HEIGHT = 60;
 
 //对焦回调
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if( [keyPath isEqualToString:@"adjustingFocus"] ){
-        BOOL adjustingFocus = [ [change objectForKey:NSKeyValueChangeNewKey] isEqualToNumber:[NSNumber numberWithInt:1] ];
-        NSLog(@"Is adjusting focus? %@", adjustingFocus ? @"YES" : @"NO" );
-        NSLog(@"Change dictionary: %@", change);
-        //        if (delegate) {
-        //            [delegate foucusStatus:adjustingFocus];
-        //        }
-    }
-}
-
-
-- (NSMutableDictionary *)dictM{
-    if (!_dictM) {
-        _dictM = [NSMutableDictionary dictionary];
-    }
-    return _dictM;
-}
-
-- (UICollectionView *)collectionView{
-    if (!_collectionView) {
-        
-        UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-        layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-        layout.itemSize = CGSizeMake(ZLCameraColletionViewW, ZLCameraColletionViewW);
-        layout.minimumLineSpacing = ZLCameraColletionViewPadding;
-        
-        CGFloat collectionViewH = ZLCameraColletionViewW;
-        CGFloat collectionViewY = self.caramView.height - collectionViewH - 10;
-        
-        UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(ZLCameraColletionViewPadding, collectionViewY, self.view.width, collectionViewH)
-                                                              collectionViewLayout:layout];
-        collectionView.backgroundColor = [UIColor clearColor];
-        [collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"cell"];
-        collectionView.delegate = self;
-        collectionView.dataSource = self;
-        [self.caramView addSubview:collectionView];
-        self.collectionView = collectionView;
-    }
-    return _collectionView;
+    if( [keyPath isEqualToString:@"adjustingFocus"] ){}
 }
 
 - (void)viewDidLoad{
-    
     [super viewDidLoad];
     
     [self initialize];
-    
     [self setup];
-    
     if (self.session) {
         [self.session startRunning];
     }
-    
 }
 
 #pragma mark 初始化按钮
@@ -284,7 +268,6 @@ static CGFloat BOTTOM_HEIGHT = 60;
 
 
 #pragma mark - <ZLPhotoPickerBrowserViewControllerDataSource>
-
 - (NSInteger)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser numberOfItemsInSection:(NSUInteger)section{
     return self.images.count;
 }

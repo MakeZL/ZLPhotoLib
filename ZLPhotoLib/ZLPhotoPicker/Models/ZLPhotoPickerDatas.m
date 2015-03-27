@@ -10,22 +10,8 @@
 #import "ZLPhotoPickerGroup.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 
-typedef ALAssetsLibraryAccessFailureBlock failureBlock;
-
 @interface ZLPhotoPickerDatas ()
-
-/**
- *  是否是URLs，默认传图片
- */
-@property (nonatomic , assign , getter=isResourceURLs) BOOL resourceURLs;
-@property (nonatomic , strong) NSMutableArray *groups;
-
-@property (nonatomic , strong) ZLPhotoPickerGroup *currentGroupModel;
-@property (nonatomic , strong) ZLPhotoPickerGroup *backGroup;
-
-@property (nonatomic , copy) failureBlock failureBlock;
 @property (nonatomic , strong) ALAssetsLibrary *library;
-
 @end
 
 @implementation ZLPhotoPickerDatas
@@ -51,28 +37,7 @@ typedef ALAssetsLibraryAccessFailureBlock failureBlock;
     return _library;
 }
 
-#pragma mark -getter
-- (ZLPhotoPickerGroup *)backGroup{
-    if (!_backGroup) {
-        _backGroup = [[ZLPhotoPickerGroup alloc] init];
-    }
-    return _backGroup;
-}
-
-- (failureBlock)failureBlock{
-    if (!_failureBlock) {
-        _failureBlock = ^(NSError *myerror){
-            NSLog(@"相册访问失败 =%@", [myerror localizedDescription]);
-            if ([myerror.localizedDescription rangeOfString:@"Global denied access"].location!=NSNotFound) {
-                NSLog(@"无法访问相册.请在'设置->定位服务'设置为打开状态.");
-            }else{
-                NSLog(@"相册访问失败.");
-            }
-        };
-    }
-    return _failureBlock;
-}
-
+#pragma mark - getter
 + (instancetype) defaultPicker{
     return [[self alloc] init];
 }

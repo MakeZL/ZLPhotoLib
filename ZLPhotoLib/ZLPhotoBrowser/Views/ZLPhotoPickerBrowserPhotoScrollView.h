@@ -19,24 +19,15 @@
 @optional
 // 单击调用
 - (void) pickerPhotoScrollViewDidSingleClick:(ZLPhotoPickerBrowserPhotoScrollView *)photoScrollView;
-
 @end
 
-@interface ZLPhotoPickerBrowserPhotoScrollView : UIScrollView <UIScrollViewDelegate, ZLPhotoPickerBrowserPhotoImageViewDelegate,ZLPhotoPickerBrowserPhotoViewDelegate> {
+@interface ZLPhotoPickerBrowserPhotoScrollView : UIScrollView <UIScrollViewDelegate, ZLPhotoPickerBrowserPhotoImageViewDelegate,ZLPhotoPickerBrowserPhotoViewDelegate>
 
-}
-
-@property (nonatomic,assign) NSUInteger index;
 @property (nonatomic,strong) ZLPhotoPickerBrowserPhoto *photo;
 @property (nonatomic, weak) id <ZLPhotoPickerPhotoScrollViewDelegate> photoScrollViewDelegate;
-/**
- *  长按图片的操作，可以外接传入
- */
+// 长按图片的操作，可以外面传入
 @property (strong,nonatomic) UIActionSheet *sheet;
-
+// 单击销毁的block
 @property (copy,nonatomic) callBackBlock callback;
-
-- (void)displayImage;
-- (void)setMaxMinZoomScalesForCurrentBounds;
 
 @end

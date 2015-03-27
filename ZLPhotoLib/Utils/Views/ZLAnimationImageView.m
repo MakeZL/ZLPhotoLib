@@ -69,9 +69,7 @@ static NSDictionary *_options;
 }
 
 + (void)restoreWithOptions:(NSDictionary *)options animation:(void (^)())completion{
-    
     [self setingPhotoImageAtIndex:[[self currentIndexPath] item]];
-
     [super restoreWithOptions:options animation:completion];
 }
 
@@ -89,15 +87,10 @@ static NSDictionary *_options;
     ZLPhotoPickerBrowserPhoto *photo = _photos[index];//[self photoWithAtIndex:self.currentPage];
     UIButton *cView = _options[UIViewAnimationToView];
     UIImage *image = nil;
-    
-    if ([photo isKindOfClass:[ZLPhotoPickerBrowserPhoto class]]){
-        if (photo.photoImage) {
-            image = photo.photoImage;
-        }else if (photo.thumbImage){
-            image = photo.thumbImage;
-        }
-    }else if([photo isKindOfClass:[UIImage class]]){
-        image = photo;
+    if (photo.photoImage) {
+        image = photo.photoImage;
+    }else if (photo.thumbImage){
+        image = photo.thumbImage;
     }
     
     if (!image) {

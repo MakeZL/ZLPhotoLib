@@ -12,10 +12,13 @@
 
 @interface ZLPhotoPickerBrowserPhoto : NSObject
 
-// 自动适配是不是以下几种数据
+/**
+ *  自动适配是不是以下几种数据
+ */
 @property (nonatomic , strong) id photoObj;
-
-// 保存相册模型
+/**
+ *  保存相册模型
+ */
 @property (nonatomic , strong) ZLPhotoAssets *asset;
 /**
  *  URL地址
@@ -29,7 +32,6 @@
  *  缩略图
  */
 @property (nonatomic , strong) UIImage *thumbImage;
-
 /**
  *  传入一个图片对象，可以是URL/UIImage/NSString，返回一个实例
  */

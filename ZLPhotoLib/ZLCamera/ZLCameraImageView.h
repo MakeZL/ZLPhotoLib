@@ -15,19 +15,14 @@
 @optional
 /**
  *  根据index来删除照片
- *
  */
-- (void ) deleteImageView : (ZLCameraImageView *) imageView;
+- (void) deleteImageView : (ZLCameraImageView *) imageView;
 
 @end
 
 @interface ZLCameraImageView : UIImageView
 
-@property (strong, nonatomic) UIImage *originalImageView;
-
 @property (weak, nonatomic) id <ZLCameraImageViewDelegate> delegatge;
-
-@property (assign, nonatomic) NSInteger index;
 /**
  *  是否是编辑模式 , YES 代表是
  */
