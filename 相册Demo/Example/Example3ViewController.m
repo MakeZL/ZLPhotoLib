@@ -151,17 +151,18 @@
     return self.assets.count;
 }
 
+#pragma mark - 每个组展示什么图片,需要包装下ZLPhotoPickerBrowserPhoto
 - (ZLPhotoPickerBrowserPhoto *) photoBrowser:(ZLPhotoPickerBrowserViewController *)pickerBrowser photoAtIndexPath:(NSIndexPath *)indexPath{
-    
     ZLPhotoAssets *imageObj = [self.assets objectAtIndex:indexPath.row];
+    // 包装下imageObj 成 ZLPhotoPickerBrowserPhoto 传给数据源
     ZLPhotoPickerBrowserPhoto *photo = [ZLPhotoPickerBrowserPhoto photoAnyImageObjWith:imageObj];
-    
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
     photo.thumbImage = cell.imageView.image;
     return photo;
 }
 
 #pragma mark - <ZLPhotoPickerBrowserViewControllerDelegate>
+#pragma mark 删除照片调用
 - (void)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser removePhotoAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.row > [self.assets count]) return;
     [self.assets removeObjectAtIndex:indexPath.row];

@@ -19,6 +19,8 @@
 
 @implementation Example1ViewController
 
+#pragma mark - Getter
+#pragma mark Get data
 - (NSMutableArray *)assets{
     if (!_assets) {
         _assets = [NSMutableArray arrayWithArray:@[
@@ -32,7 +34,7 @@
     return _assets;
 }
 
-
+#pragma mark Get View
 - (UITableView *)tableView{
     if (!_tableView) {
         UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
@@ -59,7 +61,7 @@
     [super viewDidLoad];
     
     self.view.backgroundColor = [UIColor whiteColor];
-    
+    // 初始化UI
     [self setupButtons];
     [self tableView];
 }
@@ -68,7 +70,7 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"选择照片" style:UIBarButtonItemStyleDone target:self action:@selector(selectPhotos)];
 }
 
-#pragma mark - select Photo Library
+#pragma mark - 选择相册
 - (void)selectPhotos {
      // 创建控制器
      ZLPhotoPickerViewController *pickerVc = [[ZLPhotoPickerViewController alloc] init];
@@ -89,6 +91,7 @@
      */
 }
 
+#pragma mark - 相册回调
 - (void)pickerViewControllerDoneAsstes:(NSArray *)assets{
     [self.assets addObjectsFromArray:assets];
     [self.tableView reloadData];
@@ -100,10 +103,10 @@
 }
 
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
     static NSString *ID = @"cell";
     Example1TableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ID];
     
+    // 判断类型来获取Image
     ZLPhotoAssets *asset = self.assets[indexPath.row];
     if ([asset isKindOfClass:[ZLPhotoAssets class]]) {
         cell.imageview1.image = asset.thumbImage;
@@ -116,11 +119,10 @@
     return cell;
 }
 
-
 #pragma mark - <UITableViewDelegate>
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-
+    // 点击cell 放大缩小图片
     Example1TableViewCell *cell = (Example1TableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
     [self setupPhotoBrowser:cell];
 }
@@ -156,18 +158,21 @@
     return self.assets.count;
 }
 
+#pragma mark - 每个组展示什么图片,需要包装下ZLPhotoPickerBrowserPhoto
 - (ZLPhotoPickerBrowserPhoto *) photoBrowser:(ZLPhotoPickerBrowserViewController *)pickerBrowser photoAtIndexPath:(NSIndexPath *)indexPath{
-
     ZLPhotoAssets *imageObj = [self.assets objectAtIndex:indexPath.row];
+    // 包装下imageObj 成 ZLPhotoPickerBrowserPhoto 传给数据源
     ZLPhotoPickerBrowserPhoto *photo = [ZLPhotoPickerBrowserPhoto photoAnyImageObjWith:imageObj];
-    
     Example1TableViewCell *cell = (Example1TableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+    // 缩略图
     photo.thumbImage = cell.imageview1.image;
     return photo;
 }
 
 #pragma mark - <ZLPhotoPickerBrowserViewControllerDelegate>
+#pragma mark 删除调用
 - (void)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser removePhotoAtIndexPath:(NSIndexPath *)indexPath{
+    // 删除照片时调用
     if (indexPath.row > [self.assets count]) return;
     [self.assets removeObjectAtIndex:indexPath.row];
     [self.tableView reloadData];

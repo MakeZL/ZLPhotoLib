@@ -48,6 +48,7 @@
     [self setupPhotoView];
 }
 
+#pragma mark 创建九宫格的View
 - (void)setupPhotoView{
     UIView *photoView = [[UIView alloc] init];
     photoView.frame = self.view.frame;
@@ -74,8 +75,8 @@
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:btn.tag inSection:0];
     // 图片游览器
     ZLPhotoPickerBrowserViewController *pickerBrowser = [[ZLPhotoPickerBrowserViewController alloc] init];
-    // 淡入淡出
-//    pickerBrowser.status = UIViewAnimationAnimationStatusFade;
+    // 淡入淡出效果
+    // pickerBrowser.status = UIViewAnimationAnimationStatusFade;
     // 传入点击图片View的话，会有微信朋友圈照片的风格
     pickerBrowser.toView = btn;
     // 数据源/delegate
@@ -99,33 +100,26 @@
     return self.assets.count;
 }
 
+#pragma mark - 每个组展示什么图片,需要包装下ZLPhotoPickerBrowserPhoto
 - (ZLPhotoPickerBrowserPhoto *) photoBrowser:(ZLPhotoPickerBrowserViewController *)pickerBrowser photoAtIndexPath:(NSIndexPath *)indexPath{
-    
     ZLPhotoAssets *imageObj = [self.assets objectAtIndex:indexPath.row];
+    // 包装下imageObj 成 ZLPhotoPickerBrowserPhoto 传给数据源
     ZLPhotoPickerBrowserPhoto *photo = [ZLPhotoPickerBrowserPhoto photoAnyImageObjWith:imageObj];
     
     UIButton *btn = self.photoView.subviews[indexPath.row];
-    
+    // 缩略图
     photo.thumbImage = btn.imageView.image;
     return photo;
 }
 
 #pragma mark - <ZLPhotoPickerBrowserViewControllerDelegate>
+#pragma mark - 删除照片调用
 - (void)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser removePhotoAtIndexPath:(NSIndexPath *)indexPath{
+    // 删除照片，重新刷新View
     if (indexPath.row > [self.assets count]) return;
     [self.assets removeObjectAtIndex:indexPath.row];
     [self.photoView removeFromSuperview];
-    
     [self setupPhotoView];
 }
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

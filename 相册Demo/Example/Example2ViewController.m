@@ -20,10 +20,11 @@
 
 @implementation Example2ViewController
 
+#pragma mark - Getter
+#pragma mark Get Data
 - (NSMutableArray *)assets{
     if (!_assets) {
-        // 分组
-        
+        // CollctionView 可以分组。
         NSMutableArray *section1 = [NSMutableArray arrayWithArray:@[
                                                                     @"http://www.qqaiqin.com/uploads/allimg/130520/4-13052022531U60.gif",
                                                                     @"http://www.1tong.com/uploads/wallpaper/anime/124-2-1280x800.jpg",
@@ -53,8 +54,8 @@
     [self setupButtons];
 }
 
+#pragma mark setup UI
 - (void)setupCollectionView{
-    
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
     flowLayout.itemSize = CGSizeMake(130, 130);
     flowLayout.minimumInteritemSpacing = 0;
@@ -88,7 +89,8 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     
     Example2CollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"Example2CollectionViewCell" forIndexPath:indexPath];
-
+    
+    // 判断类型来获取Image
     ZLPhotoAssets *asset = self.assets[indexPath.section][indexPath.item];
     if ([asset isKindOfClass:[ZLPhotoAssets class]]) {
         cell.imageView.image = asset.thumbImage;
@@ -144,13 +146,12 @@
 }
 
 - (ZLPhotoPickerBrowserPhoto *)photoBrowser:(ZLPhotoPickerBrowserViewController *)pickerBrowser photoAtIndexPath:(NSIndexPath *)indexPath{
-    
     id imageObj = [self.assets[indexPath.section] objectAtIndex:indexPath.item];
     ZLPhotoPickerBrowserPhoto *photo = [ZLPhotoPickerBrowserPhoto photoAnyImageObjWith:imageObj];
-    
+    // 包装下imageObj 成 ZLPhotoPickerBrowserPhoto 传给数据源
     Example2CollectionViewCell *cell = (Example2CollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
+    // 缩略图
     photo.thumbImage = cell.imageView.image;
-    
     return photo;
 }
 
@@ -169,12 +170,13 @@
     [self.collectionView reloadData];
 }
 
-#pragma mark - select Photo Library
+#pragma mark - 选择照片
 - (void)selectPhotos {
     ZLCameraViewController *cameraVc = [[ZLCameraViewController alloc] init];
     __weak typeof(self) weakSelf = self;
+    // 多选相册+相机多拍 回调
     [cameraVc startCameraOrPhotoFileWithViewController:self complate:^(NSArray *object) {
-        // 回调 ,
+        // 选择完照片、拍照完回调
         [object enumerateObjectsUsingBlock:^(id asset, NSUInteger idx, BOOL *stop) {
             if ([asset isKindOfClass:[ZLCamera class]]) {
                 [[weakSelf.assets firstObject] addObject:asset];

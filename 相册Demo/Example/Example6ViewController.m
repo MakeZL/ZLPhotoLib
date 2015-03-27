@@ -31,6 +31,7 @@
     [self.view addSubview:headerView];
 }
 
+#pragma mark 传入imageView放大
 - (void)showHeadPortrait:(UIButton *)btn{
     ZLPhotoPickerBrowserViewController *browserVc = [[ZLPhotoPickerBrowserViewController alloc] init];
     [browserVc showHeadPortrait:btn.imageView];
