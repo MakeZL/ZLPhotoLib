@@ -266,7 +266,7 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
         [self.selectAssets addObject:[pickerCollectionView.selectAsstes lastObject]];
     }
     
-    self.selectAssets = [NSMutableArray arrayWithArray:[[NSSet setWithArray:self.selectAssets] allObjects]];
+//    self.selectAssets = [NSMutableArray arrayWithArray:[[NSSet setWithArray:self.selectAssets] allObjects]];
 
     NSInteger count = self.selectAssets.count;
     self.makeView.hidden = !count;
