@@ -297,7 +297,12 @@ static NSArray *_subViews = nil;
     }
 //    startFrame.origin.y += [[self getParsentView:options[UIViewAnimationToView]] frame].origin.y;
     
-    ops[UIViewAnimationEndFrame] = [NSValue valueWithCGRect:startFrame];
+    if (subViews.count < [options[UIViewAnimationImages] count]){
+        ops[UIViewAnimationEndFrame] = options[UIViewAnimationStartFrame];
+    }else{
+        ops[UIViewAnimationEndFrame] = [NSValue valueWithCGRect:startFrame];
+    }
+    
     [super restoreWithOptions:ops animation:^{
         
 //        if (collectionView && flowLayout.scrollDirection == UICollectionViewScrollDirectionHorizontal) {
