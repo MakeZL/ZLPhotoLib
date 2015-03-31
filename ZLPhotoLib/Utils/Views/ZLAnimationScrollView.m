@@ -39,7 +39,6 @@ static NSArray *_subViews = nil;
     
     options = [self updateOptions:options statusStart:YES];
     
-    
     UIView *toView = options[UIViewAnimationToView];
     
     if ([_attachParams[UIViewAnimationAnimationStatusType] integerValue] == UIViewAnimationAnimationStatusZoom && (![self getCollectionViewWithView:toView])) {
@@ -237,7 +236,8 @@ static NSArray *_subViews = nil;
                 
                 if ([options[UIViewAnimationAnimationStatusType] integerValue] == UIViewAnimationAnimationStatusZoom) {
 //                    [subViews[val] setHidden:YES];
-                    toView.hidden = YES;
+//                    toView.hidden = YES;
+                    toView.hidden = NO;
                 }else{
                     toView.hidden = NO;
                 }
@@ -298,7 +298,7 @@ static NSArray *_subViews = nil;
     }
 //    startFrame.origin.y += [[self getParsentView:options[UIViewAnimationToView]] frame].origin.y;
     
-    if (subViews.count < [options[UIViewAnimationImages] count]){
+    if (subViews.count == 1 && subViews.count < [options[UIViewAnimationImages] count]){
         ops[UIViewAnimationEndFrame] = options[UIViewAnimationStartFrame];
     }else{
         ops[UIViewAnimationEndFrame] = [NSValue valueWithCGRect:startFrame];

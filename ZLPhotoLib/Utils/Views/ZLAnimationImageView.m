@@ -91,6 +91,9 @@ static NSDictionary *_options;
         image = photo.photoImage;
     }else if (photo.thumbImage){
         image = photo.thumbImage;
+    }else if (photo.photoURL){
+        [[self imageView] sd_setImageWithURL:photo.photoURL placeholderImage:nil];
+        return;
     }
     
     if (!image) {
