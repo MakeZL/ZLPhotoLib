@@ -27,7 +27,6 @@
 		4806BE3B1AB29051004B8AB0 /* UIImageView+HighlightedWebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 4806BDD61AB29051004B8AB0 /* UIImageView+HighlightedWebCache.m */; };
 		4806BE3C1AB29051004B8AB0 /* UIImageView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 4806BDD81AB29051004B8AB0 /* UIImageView+WebCache.m */; };
 		4806BE3D1AB29051004B8AB0 /* UIView+WebCacheOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4806BDDA1AB29051004B8AB0 /* UIView+WebCacheOperation.m */; };
-		4806BE3E1AB29051004B8AB0 /* UIView+ZLAutoLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 4806BDDD1AB29051004B8AB0 /* UIView+ZLAutoLayout.m */; };
 		4806BE3F1AB29051004B8AB0 /* AssetsPickerChecked.png in Resources */ = {isa = PBXBuildFile; fileRef = 4806BDE01AB29051004B8AB0 /* AssetsPickerChecked.png */; };
 		4806BE401AB29051004B8AB0 /* AssetsPickerChecked@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4806BDE11AB29051004B8AB0 /* AssetsPickerChecked@2x.png */; };
 		4806BE411AB29051004B8AB0 /* AssetsPickerChecked@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4806BDE21AB29051004B8AB0 /* AssetsPickerChecked@3x.png */; };
@@ -740,7 +739,6 @@
 				4806BE5E1AB29051004B8AB0 /* ZLPhotoPickerCollectionViewCell.m in Sources */,
 				48B3E17C1A11BABC0079F464 /* ViewController.m in Sources */,
 				48ED22131A6D108C0008E783 /* Example2CollectionViewCell.m in Sources */,
-				4806BE3E1AB29051004B8AB0 /* UIView+ZLAutoLayout.m in Sources */,
 				4806BE571AB29051004B8AB0 /* ZLPhotoAssets.m in Sources */,
 				4806BE2F1AB29051004B8AB0 /* NSData+ImageContentType.m in Sources */,
 				4806BC811AB283ED004B8AB0 /* Example4ViewController.m in Sources */,

@@ -236,7 +236,8 @@ static NSArray *_subViews = nil;
                 startFrame.origin.y = cellHeight * [self currentIndexPath].item + [self getNavigaitionViewControllerWithView:toView] + toView.y - offsetValue;
                 
                 if ([options[UIViewAnimationAnimationStatusType] integerValue] == UIViewAnimationAnimationStatusZoom) {
-                    [subViews[val] setHidden:YES];
+//                    [subViews[val] setHidden:YES];
+                    toView.hidden = YES;
                 }else{
                     toView.hidden = NO;
                 }
