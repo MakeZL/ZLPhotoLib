@@ -379,7 +379,17 @@ static NSString *_cellIdentifier = @"collectionViewCell";
             self.currentPage--;
         }
         
-        [self reloadData];
+        UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:page inSection:self.currentIndexPath.section]];
+        if (cell) {
+            if([[[cell.contentView subviews] lastObject] isKindOfClass:[ZLPhotoPickerBrowserPhotoScrollView class]]){
+                
+                [UIView animateWithDuration:.35 animations:^{
+                    [[[cell.contentView subviews] lastObject] setAlpha:0.0];
+                } completion:^(BOOL finished) {
+                    [self reloadData];
+                }];
+            }
+        }
         
         if (self.photos.count < 1)
         {

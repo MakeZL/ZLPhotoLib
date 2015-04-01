@@ -10,6 +10,5 @@
 
 @interface Example1TableViewCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UIImageView *imageview1;
-@property (weak, nonatomic) IBOutlet UIImageView *imageview2;
 
 @end

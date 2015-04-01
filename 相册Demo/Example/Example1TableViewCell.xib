@@ -21,24 +21,14 @@
                             <constraint firstAttribute="height" constant="70" id="uwb-Gm-ILz"/>
                         </constraints>
                     </imageView>
-                    <imageView userInteractionEnabled="NO" tag="101" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="dIy-rY-g6W">
-                        <rect key="frame" x="237" y="13" width="70" height="70"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="70" id="agU-lW-uYI"/>
-                            <constraint firstAttribute="height" constant="70" id="vYl-Ir-6xs"/>
-                        </constraints>
-                    </imageView>
                 </subviews>
                 <constraints>
                     <constraint firstItem="Md9-wE-oHT" firstAttribute="leading" secondItem="jpv-lL-fWg" secondAttribute="leadingMargin" constant="5" id="0Oi-N1-c1r"/>
                     <constraint firstItem="Md9-wE-oHT" firstAttribute="top" secondItem="jpv-lL-fWg" secondAttribute="topMargin" constant="5" id="X4B-Fw-Stb"/>
-                    <constraint firstItem="dIy-rY-g6W" firstAttribute="top" secondItem="jpv-lL-fWg" secondAttribute="topMargin" constant="5" id="j2I-16-l0X"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="dIy-rY-g6W" secondAttribute="trailing" constant="5" id="uks-Bd-r2l"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="imageview1" destination="Md9-wE-oHT" id="ko0-i1-wfA"/>
-                <outlet property="imageview2" destination="dIy-rY-g6W" id="cFf-3V-Zfc"/>
             </connections>
             <point key="canvasLocation" x="137" y="215.5"/>
         </tableViewCell>
