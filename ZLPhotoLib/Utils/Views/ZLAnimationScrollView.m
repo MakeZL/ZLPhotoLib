@@ -71,7 +71,11 @@ static NSArray *_subViews = nil;
     // 如果是TableView子控件的话
     if (tableView || collectionView) {
         if (tableView) {
-            subViews = [tableView visibleCells];
+            if ([[toView.superview subviews] count] == [options[UIViewAnimationImages] count]){
+                subViews = [toView.superview subviews];
+            }else{
+                subViews = [tableView visibleCells];
+            }
         }else{
             // note:collectionView visibleCells 里面的元素并不是按frame来排序的
             // 进行frame来排序
@@ -91,12 +95,12 @@ static NSArray *_subViews = nil;
                 }
             }
             
-//            subViews = [collectionView.dataSource collectionView:<#(UICollectionView *)#> cellForItemAtIndexPath:<#(NSIndexPath *)#>];
-//            if ([[collectionView visibleCells] count]) {
-//                subViews = [collectionView visibleCells];
-//            }else{
-//                subViews = [[self getCollectionViewWithCell:_parsentView] subviews];
-//            }
+            //            subViews = [collectionView.dataSource collectionView:<#(UICollectionView *)#> cellForItemAtIndexPath:<#(NSIndexPath *)#>];
+            //            if ([[collectionView visibleCells] count]) {
+            //                subViews = [collectionView visibleCells];
+            //            }else{
+            //                subViews = [[self getCollectionViewWithCell:_parsentView] subviews];
+            //            }
             
             for (UICollectionViewCell *cell in cells) {
                 if (![cell isKindOfClass:[UICollectionViewCell class]]) {
@@ -182,12 +186,11 @@ static NSArray *_subViews = nil;
             }
         }];
     }else if(tableView){
-        val = [self currentIndexPath].item;
-        if (subViews.count && val >= subViews.count) {
-            val = val - ((val % subViews.count == 0 ? val - subViews.count  : val % subViews.count)) - 1;
-            if (val < 0) {
-                val = 0;
-            }
+        NSIndexPath *minIndexPath = [tableView indexPathForCell: [subViews firstObject]];
+        val = ([self currentIndexPath].item - minIndexPath.row) % subViews.count;
+        
+        if (val == 0 || [self currentIndexPath].item > subViews.count){
+            val = subViews.count - 1;
         }
     }
     
@@ -211,36 +214,49 @@ static NSArray *_subViews = nil;
                 
             } else if(tableView){
                 
-                CGFloat cellHeight = toView.height;
-                if ([tableView.delegate respondsToSelector:@selector(tableView:heightForRowAtIndexPath:)]) {
-                    if (options[UIViewAnimationTypeViewWithIndexPath] != nil) {
-                        if ([options[UIViewAnimationTypeViewWithIndexPath] row] < [tableView.dataSource tableView:tableView numberOfRowsInSection:[options[UIViewAnimationTypeViewWithIndexPath] section]]){
-                            cellHeight = [tableView.delegate tableView:tableView heightForRowAtIndexPath:options[UIViewAnimationTypeViewWithIndexPath]];
+                //                CGFloat cellHeight = toView.height;
+                //                CGFloat cellHeight = [toView.superview convertRect:toView.frame toView:[self getParsentView:toView]].size.height;
+                //                if ([tableView.delegate respondsToSelector:@selector(tableView:heightForRowAtIndexPath:)]) {
+                //                    if (options[UIViewAnimationTypeViewWithIndexPath] != nil) {
+                //                        if ([options[UIViewAnimationTypeViewWithIndexPath] row] < [tableView.dataSource tableView:tableView numberOfRowsInSection:[options[UIViewAnimationTypeViewWithIndexPath] section]]){
+                //                            cellHeight = [tableView.delegate tableView:tableView heightForRowAtIndexPath:options[UIViewAnimationTypeViewWithIndexPath]];
+                //                        }
+                //                    }else{
+                //                        cellHeight = [tableView.delegate tableView:tableView heightForRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
+                //                    }
+                //                }
+                
+                UIView *superView = toView;
+                if ([subViews[val] respondsToSelector:@selector(contentView)]){
+                    for (UIView *view in [[subViews[val] contentView] subviews]) {
+                        if (view.width == toView.width && view.height == toView.height) {
+                            superView = view;
+                            break;
                         }
-                    }else{
-                        cellHeight = [tableView.delegate tableView:tableView heightForRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
                     }
+                }else{
+                    superView = subViews[val];
                 }
                 
-                // 竖屏
-                startFrame = [subViews[val] frame];
-                startFrame.origin.x = [toView.superview convertRect:toView.frame toView:options[UIViewAnimationFromView]].origin.x;
+                
+                startFrame.origin.y = [superView.superview convertRect:superView.frame toView:[self getParsentView:toView]].origin.y;
+                startFrame.origin.x = [superView.superview convertRect:superView.frame toView:options[UIViewAnimationFromView]].origin.x;
                 startFrame.size.width = toView.width;
                 startFrame.size.height = toView.height;
                 
-                CGFloat offsetValue = tableView.contentOffset.y;
-                if (iOS7gt) {
-                    offsetValue += [self getNavigaitionViewControllerWithView:toView];
-                }
-                startFrame.origin.y = cellHeight * [self currentIndexPath].item + [self getNavigaitionViewControllerWithView:toView] + toView.y - offsetValue;
+                //                if (tableView.contentOffset.y > 0){
+                //                    NSIndexPath *indexPath = [tableView indexPathForCell:[subViews lastObject]];
+                //
+                //                    startFrame.origin.y -= (indexPath.row - [self currentIndexPath].item) * toView.superview.height;
+                ////                    startFrame.origin.y -= tableView.contentOffset.y;
+                //                }
+                //                CGFloat offsetValue = tableView.contentOffset.y;
+                //                if (iOS7gt) {
+                //                    offsetValue += [self getNavigaitionViewControllerWithView:toView];
+                //                }
+                //                startFrame.origin.y = cellHeight * i + [self getNavigaitionViewControllerWithView:toView] + toView.y - offsetValue;
                 
-                if ([options[UIViewAnimationAnimationStatusType] integerValue] == UIViewAnimationAnimationStatusZoom) {
-//                    [subViews[val] setHidden:YES];
-//                    toView.hidden = YES;
-                    toView.hidden = NO;
-                }else{
-                    toView.hidden = NO;
-                }
+                toView.hidden = NO;
             }else{
                 
                 if ([options[UIViewAnimationAnimationStatusType] integerValue] != UIViewAnimationAnimationStatusFade) {
@@ -296,7 +312,7 @@ static NSArray *_subViews = nil;
     if (subViews.count == 1) {
         startFrame.origin.x = [_parsentView convertRect:toView.frame toView:[self getParsentView:options[UIViewAnimationToView]]].origin.x;
     }
-//    startFrame.origin.y += [[self getParsentView:options[UIViewAnimationToView]] frame].origin.y;
+    //    startFrame.origin.y += [[self getParsentView:options[UIViewAnimationToView]] frame].origin.y;
     
     if (subViews.count == 1 && subViews.count < [options[UIViewAnimationImages] count]){
         ops[UIViewAnimationEndFrame] = options[UIViewAnimationStartFrame];
@@ -306,12 +322,12 @@ static NSArray *_subViews = nil;
     
     [super restoreWithOptions:ops animation:^{
         
-//        if (collectionView && flowLayout.scrollDirection == UICollectionViewScrollDirectionHorizontal) {
-//            UIView *cell = [[self getParsentView:_parsentView] hitTest:CGPointMake(startFrame.origin.x, startFrame.origin.y) withEvent:nil];
-//            if ([options[UIViewAnimationAnimationStatusType] integerValue] == UIViewAnimationAnimationStatusZoom) {
-//                [cell setHidden:NO];
-//            }
-//        }
+        //        if (collectionView && flowLayout.scrollDirection == UICollectionViewScrollDirectionHorizontal) {
+        //            UIView *cell = [[self getParsentView:_parsentView] hitTest:CGPointMake(startFrame.origin.x, startFrame.origin.y) withEvent:nil];
+        //            if ([options[UIViewAnimationAnimationStatusType] integerValue] == UIViewAnimationAnimationStatusZoom) {
+        //                [cell setHidden:NO];
+        //            }
+        //        }
         
         if ([ops[UIViewAnimationAnimationStatusType] integerValue] != UIViewAnimationAnimationStatusFade) {
             if (subViews.count > val) {

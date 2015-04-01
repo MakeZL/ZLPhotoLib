@@ -28,7 +28,7 @@
                                                    @"http://www.1tong.com/uploads/wallpaper/anime/124-2-1280x800.jpg",
                                                    @"http://imgsrc.baidu.com/forum/pic/item/c59ca2ef76c6a7ef603e17c7fcfaaf51f2de6640.jpg",
                                                    @"http://imgsrc.baidu.com/forum/pic/item/3f7dacaf2edda3cc7d2289ab01e93901233f92c5.jpg",
-                                                   @"http://123.57.17.222:8000/school/web/upload/20150316093117407_6246_9.jpg"
+                                                   @"http://123.57.17.222:8000/school/web/upload/20150316093117407_6246_9.jpg",
                                                    ]];
     }
     return _assets;

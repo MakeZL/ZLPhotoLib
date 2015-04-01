@@ -92,4 +92,6 @@
 // @function
 // 展示控制器
 - (void)show;
+// 刷新数据
+- (void)reloadData;
 @end
