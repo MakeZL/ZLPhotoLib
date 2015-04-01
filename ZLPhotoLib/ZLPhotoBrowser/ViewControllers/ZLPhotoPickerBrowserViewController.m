@@ -273,9 +273,14 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         cell.backgroundColor = [UIColor clearColor];
         ZLPhotoPickerBrowserPhoto *photo = self.photos[indexPath.item]; //[self.dataSource photoBrowser:self photoAtIndex:indexPath.item];
         
-        if([[cell.contentView.subviews lastObject] isKindOfClass:[ZLPhotoPickerBrowserPhotoScrollView class]]){
+        if([[cell.contentView.subviews lastObject] isKindOfClass:[UIView class]]){
             [[cell.contentView.subviews lastObject] removeFromSuperview];
         }
+        
+        UIView *scrollBoxView = [[UIView alloc] init];
+        scrollBoxView.frame = [UIScreen mainScreen].bounds;
+        scrollBoxView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+        [cell.contentView addSubview:scrollBoxView];
         
         ZLPhotoPickerBrowserPhotoScrollView *scrollView =  [[ZLPhotoPickerBrowserPhotoScrollView alloc] init];
         scrollView.sheet = self.sheet;
@@ -283,13 +288,13 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         // 为了监听单击photoView事件
         scrollView.frame = [UIScreen mainScreen].bounds;
         scrollView.photoScrollViewDelegate = self;
-        [cell.contentView addSubview:scrollView];
+        [scrollBoxView addSubview:scrollView];
         scrollView.photo = photo;
-        __weak typeof(scrollView)weakScrollView = scrollView;
+        __weak typeof(scrollBoxView)weakScrollBoxView = scrollBoxView;
         __weak typeof(self)weakSelf = self;
         if ([self.delegate respondsToSelector:@selector(photoBrowser:photoDidSelectView:atIndexPath:)]) {
             scrollView.callback = ^(id obj){
-                [weakSelf.delegate photoBrowser:weakSelf photoDidSelectView:weakScrollView atIndexPath:indexPath];
+                [weakSelf.delegate photoBrowser:weakSelf photoDidSelectView:weakScrollBoxView atIndexPath:indexPath];
             };
         }
 
@@ -381,7 +386,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         
         UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:page inSection:self.currentIndexPath.section]];
         if (cell) {
-            if([[[cell.contentView subviews] lastObject] isKindOfClass:[ZLPhotoPickerBrowserPhotoScrollView class]]){
+            if([[[cell.contentView subviews] lastObject] isKindOfClass:[UIView class]]){
                 
                 [UIView animateWithDuration:.35 animations:^{
                     [[[cell.contentView subviews] lastObject] setAlpha:0.0];

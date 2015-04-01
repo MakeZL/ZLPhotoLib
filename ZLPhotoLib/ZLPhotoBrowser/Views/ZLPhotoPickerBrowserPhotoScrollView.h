@@ -13,6 +13,7 @@
 #import "ZLPhotoPickerBrowserPhoto.h"
 #import "ZLPhoto.h"
 
+typedef void(^callBackBlock)(id obj);
 @class ZLPhotoPickerBrowserPhotoScrollView;
 
 @protocol ZLPhotoPickerPhotoScrollViewDelegate <NSObject>

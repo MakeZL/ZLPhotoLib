@@ -11,7 +11,7 @@
 #import "ZLPhotoPickerCommon.h"
 #import "ZLPhotoPickerCustomToolBarView.h"
 
-@class ZLPhotoPickerBrowserViewController,ZLPhotoPickerBrowserPhotoScrollView;
+@class ZLPhotoPickerBrowserViewController;
 @protocol ZLPhotoPickerBrowserViewControllerDataSource <NSObject>
 
 @optional
@@ -39,7 +39,7 @@
 /**
  *  点击每个Item时候调用
  */
-- (void)photoBrowser:(ZLPhotoPickerBrowserViewController *)pickerBrowser photoDidSelectView:(ZLPhotoPickerBrowserPhotoScrollView *)scrollView atIndexPath:(NSIndexPath *)indexPath;
+- (void)photoBrowser:(ZLPhotoPickerBrowserViewController *)pickerBrowser photoDidSelectView:(UIView *)scrollBoxView atIndexPath:(NSIndexPath *)indexPath;
 
 /**
  *  返回用户自定义的toolBarView(类似tableView FooterView)
