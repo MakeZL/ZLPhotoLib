@@ -6,10 +6,6 @@
 //  Copyright (c) 2014年 com.zixue101.www. All rights reserved.
 //
 
-
-// 回调
-typedef void(^callBackBlock)(id obj);
-
 #import <UIKit/UIKit.h>
 #import "ZLPhotoPickerCommon.h"
 #import "ZLPhotoPickerGroupViewController.h"

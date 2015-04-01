@@ -285,11 +285,14 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         scrollView.photoScrollViewDelegate = self;
         [cell.contentView addSubview:scrollView];
         scrollView.photo = photo;
-        scrollView.callback = ^(id obj){
-            if ([self.delegate respondsToSelector:@selector(photoBrowser:photoDidSelectAtIndexPath:)]) {
-                [self.delegate photoBrowser:self photoDidSelectAtIndexPath:indexPath];
-            }
-        };
+        __weak typeof(scrollView)weakScrollView = scrollView;
+        __weak typeof(self)weakSelf = self;
+        if ([self.delegate respondsToSelector:@selector(photoBrowser:photoDidSelectView:atIndexPath:)]) {
+            scrollView.callback = ^(id obj){
+                [weakSelf.delegate photoBrowser:weakSelf photoDidSelectView:weakScrollView atIndexPath:indexPath];
+            };
+        }
+
         scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         if (self.currentPage == self.photos.count - 1 && scrollView.x >= 0 && !collectionView.isDragging) {
             scrollView.x = 0;
