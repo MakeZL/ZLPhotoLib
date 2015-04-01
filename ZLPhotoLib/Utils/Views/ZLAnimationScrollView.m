@@ -189,7 +189,7 @@ static NSArray *_subViews = nil;
         NSIndexPath *minIndexPath = [tableView indexPathForCell: [subViews firstObject]];
         val = ([self currentIndexPath].item - minIndexPath.row) % subViews.count;
         
-        if (val == 0 || [self currentIndexPath].item > subViews.count){
+        if ((val == 0 && [self currentIndexPath].item > 0) || [self currentIndexPath].item > subViews.count){
             val = subViews.count - 1;
         }
     }
