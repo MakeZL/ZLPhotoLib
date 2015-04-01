@@ -145,11 +145,6 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     [self startLogddingAnimation];
 }
 
-- (void)didReceiveMemoryWarning{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [self.photos removeAllObjects];
-}
-
 - (void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
