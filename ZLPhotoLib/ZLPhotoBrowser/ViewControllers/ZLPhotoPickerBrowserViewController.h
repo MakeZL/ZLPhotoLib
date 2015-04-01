@@ -30,10 +30,16 @@
  */
 - (ZLPhotoPickerBrowserPhoto *)photoBrowser:(ZLPhotoPickerBrowserViewController *)pickerBrowser photoAtIndexPath:(NSIndexPath *)indexPath;
 
+
 @end
 
 @protocol ZLPhotoPickerBrowserViewControllerDelegate <NSObject>
 @optional
+
+/**
+ *  点击每个Item时候调用
+ */
+- (ZLPhotoPickerBrowserPhoto *)photoBrowser:(ZLPhotoPickerBrowserViewController *)pickerBrowser photoDidSelectAtIndexPath:(NSIndexPath *)indexPath;
 
 /**
  *  返回用户自定义的toolBarView(类似tableView FooterView)
