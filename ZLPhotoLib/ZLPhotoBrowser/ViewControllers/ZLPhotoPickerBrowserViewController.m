@@ -288,16 +288,17 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         // 为了监听单击photoView事件
         scrollView.frame = [UIScreen mainScreen].bounds;
         scrollView.photoScrollViewDelegate = self;
-        [scrollBoxView addSubview:scrollView];
         scrollView.photo = photo;
         __weak typeof(scrollBoxView)weakScrollBoxView = scrollBoxView;
         __weak typeof(self)weakSelf = self;
         if ([self.delegate respondsToSelector:@selector(photoBrowser:photoDidSelectView:atIndexPath:)]) {
+            [[scrollBoxView subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
             scrollView.callback = ^(id obj){
                 [weakSelf.delegate photoBrowser:weakSelf photoDidSelectView:weakScrollBoxView atIndexPath:indexPath];
             };
         }
-
+        
+        [scrollBoxView addSubview:scrollView];
         scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         if (self.currentPage == self.photos.count - 1 && scrollView.x >= 0 && !collectionView.isDragging) {
             scrollView.x = 0;
