@@ -142,38 +142,36 @@ static NSArray *_subViews = nil;
         
         compareView = [self traversalViewWithCell:toView];
     }else{
-        
-        NSMutableArray *subViewsM = [NSMutableArray array];
-        
         // scrollView
         if (toView.superview == nil) {
             subViews = _parsentView.subviews;
-        } else {
+        } else if ([[toView.superview subviews] count] >= [ops[UIViewAnimationImages] count]) {
+            subViews = [toView.superview subviews];
+        }else{
+            NSMutableArray *subViewsM = [NSMutableArray array];
             subViews = [[self getParsentView:toView maxCount:_photos.count] subviews];
-        }
-        
-        for (UIView *view in subViews) {
-            if (view.tag >= 1) {
-                [subViewsM addObject:view];
-            }
-        }
-        
-        for (int i = 0; i < subViews.count; i++) {
-            if ([(UIView *)subViews[i] tag] == 0) {
-                if([subViews[i] width] == [[subViewsM firstObject] width] && [subViews[i] isKindOfClass:[[subViewsM firstObject] class]]){
-                    [subViewsM insertObject:subViews[i] atIndex:0];
+            for (UIView *view in subViews) {
+                if (view.tag >= 1) {
+                    [subViewsM addObject:view];
                 }
             }
-        }
-        
-        for (UIView *view in subViews) {
-            if (view.tag < 1) {
-                [subViewsM addObject:view];
+            
+            for (int i = 0; i < subViews.count; i++) {
+                if ([(UIView *)subViews[i] tag] == 0) {
+                    if([subViews[i] width] == [[subViewsM firstObject] width] && [subViews[i] isKindOfClass:[[subViewsM firstObject] class]]){
+                        [subViewsM insertObject:subViews[i] atIndex:0];
+                    }
+                }
             }
+            
+            for (UIView *view in subViews) {
+                if (view.tag < 1) {
+                    [subViewsM addObject:view];
+                }
+            }
+            subViews = subViewsM;
         }
         
-        subViews = subViewsM;
-        compareView = toView;
     }
     
     __block NSInteger val = [self currentIndexPath].item;

@@ -16,6 +16,7 @@
 #import "ZLPhotoPickerDatas.h"
 #import "ZLPhotoPickerCommon.h"
 #import "UIImageView+WebCache.h"
+#import "UIButton+WebCache.h"
 #import "UIView+Extension.h"
 
 /**
