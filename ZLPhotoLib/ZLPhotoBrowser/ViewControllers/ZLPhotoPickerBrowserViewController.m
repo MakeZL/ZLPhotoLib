@@ -423,7 +423,10 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 
 #pragma mark - showHeadPortrait 放大缩小一张图片的情况下（查看头像）
 - (void)showHeadPortrait:(UIImageView *)toImageView{
-    
+    [self showHeadPortrait:toImageView originUrl:nil];
+}
+
+- (void)showHeadPortrait:(UIImageView *)toImageView originUrl:(NSString *)originUrl{
     UIView *mainView = [[UIView alloc] init];
     mainView.backgroundColor = [UIColor blackColor];
     mainView.frame = [UIScreen mainScreen].bounds;
@@ -442,8 +445,9 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         imageView.frame = [UIScreen mainScreen].bounds;
     } completion:^(BOOL finished) {
         imageView.hidden = YES;
-
+        
         ZLPhotoPickerBrowserPhoto *photo = [[ZLPhotoPickerBrowserPhoto alloc] init];
+        photo.photoURL = [NSURL URLWithString:originUrl];
         photo.photoImage = toImageView.image;
         photo.thumbImage = toImageView.image;
         

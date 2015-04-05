@@ -34,6 +34,6 @@
 #pragma mark 传入imageView放大
 - (void)showHeadPortrait:(UIButton *)btn{
     ZLPhotoPickerBrowserViewController *browserVc = [[ZLPhotoPickerBrowserViewController alloc] init];
-    [browserVc showHeadPortrait:btn.imageView];
+    [browserVc showHeadPortrait:btn.imageView originUrl:@"https://avatars0.githubusercontent.com/u/7121927?v=3&s=460"];
 }
 @end

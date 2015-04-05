@@ -113,8 +113,18 @@
                 [weakSelf displayImage];
             }];
         }else{
+            UIImage *thumbImage = photo.thumbImage;
+            if (thumbImage == nil) {
+                thumbImage = _photoImageView.image;
+            }else{
+                _photoImageView.image = thumbImage;
+            }
+            
+            _photoImageView.contentMode = UIViewContentModeScaleAspectFit;
+            _photoImageView.frame = [self setMaxMinZoomScalesForCurrentBounds:_photoImageView];
+            
             // 网络URL
-            [_photoImageView sd_setImageWithURL:photo.photoURL placeholderImage:photo.thumbImage options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+            [_photoImageView sd_setImageWithURL:photo.photoURL placeholderImage:thumbImage options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize) {
                 _photoImageView.progress = (double)receivedSize / expectedSize;
             } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
                 _photoImageView.image = image;
@@ -129,6 +139,41 @@
         [self displayImage];
     }
     
+}
+
+- (CGRect )setMaxMinZoomScalesForCurrentBounds:(UIImageView *)imageView {
+    // Sizes
+    CGSize boundsSize = [UIScreen mainScreen].bounds.size;
+    CGSize imageSize = imageView.image.size;
+    if (imageSize.width == 0 && imageSize.height == 0) {
+        return imageView.frame;
+    }
+    
+    CGFloat xScale = boundsSize.width / imageSize.width;    // the scale needed to perfectly fit the image width-wise
+    CGFloat yScale = boundsSize.height / imageSize.height;  // the scale needed to perfectly fit the image height-wise
+    CGFloat minScale = MIN(xScale, yScale);                 // use minimum of these to allow the image to become fully visible
+    // Image is smaller than screen so no zooming!
+    if (xScale >= 1 && yScale >= 1) {
+        minScale = MIN(xScale, yScale);
+    }
+    
+    CGRect frameToCenter = CGRectMake(0, 0, imageSize.width * minScale, imageSize.height * minScale);
+    
+    // Horizontally
+    if (frameToCenter.size.width < boundsSize.width) {
+        frameToCenter.origin.x = floorf((boundsSize.width - frameToCenter.size.width) / 2.0);
+    } else {
+        frameToCenter.origin.x = 0;
+    }
+    
+    // Vertically
+    if (frameToCenter.size.height < boundsSize.height) {
+        frameToCenter.origin.y = floorf((boundsSize.height - frameToCenter.size.height) / 2.0);
+    } else {
+        frameToCenter.origin.y = 0;
+    }
+    
+    return frameToCenter;
 }
 
 

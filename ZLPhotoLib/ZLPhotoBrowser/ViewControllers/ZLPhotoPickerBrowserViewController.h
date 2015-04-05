@@ -94,6 +94,8 @@
 @property (strong,nonatomic) UIActionSheet *sheet;
 // 放大缩小一张图片的情况下（查看头像）
 - (void)showHeadPortrait:(UIImageView *)toImageView;
+// 放大缩小一张图片的情况下（查看头像）/ 缩略图是toImageView.image 原图URL
+- (void)showHeadPortrait:(UIImageView *)toImageView originUrl:(NSString *)originUrl;
 
 // @function
 // 展示控制器
