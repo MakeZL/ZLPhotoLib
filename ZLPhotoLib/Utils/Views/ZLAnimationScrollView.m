@@ -185,6 +185,7 @@ static NSArray *_subViews = nil;
         }];
     }else if(tableView){
         NSIndexPath *minIndexPath = [tableView indexPathForCell: [subViews firstObject]];
+        
         val = ([self currentIndexPath].item - minIndexPath.row) % subViews.count;
         
         if ((val == 0 && [self currentIndexPath].item > 0) || [self currentIndexPath].item > subViews.count){
@@ -236,8 +237,18 @@ static NSArray *_subViews = nil;
                     superView = subViews[val];
                 }
                 
+                NSIndexPath *minIndexPath = [tableView indexPathForCell: [subViews firstObject]];
+                NSIndexPath *maxIndexPath = [tableView indexPathForCell: [subViews lastObject]];
                 
-                startFrame.origin.y = [superView.superview convertRect:superView.frame toView:[self getParsentView:toView]].origin.y;
+                if (([self currentIndexPath].row <= minIndexPath.row) && minIndexPath.row > 0){
+                    startFrame.origin.y = [subViews[0] convertRect:superView.frame toView:[self getParsentView:toView]].origin.y - toView.superview.height;
+                }else if([self currentIndexPath].row > maxIndexPath.row){
+                    startFrame.origin.y = [subViews[maxIndexPath.row] convertRect:superView.frame toView:[self getParsentView:toView]].origin.y + toView.superview.height;
+                }else{
+                    startFrame.origin.y = [superView.superview convertRect:superView.frame toView:[self getParsentView:toView]].origin.y;
+                }
+
+
                 startFrame.origin.x = [superView.superview convertRect:superView.frame toView:options[UIViewAnimationFromView]].origin.x;
                 startFrame.size.width = toView.width;
                 startFrame.size.height = toView.height;
