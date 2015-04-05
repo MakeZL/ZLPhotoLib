@@ -350,19 +350,6 @@ static CGFloat BOTTOM_HEIGHT = 60;
          NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageSampleBuffer];
          UIImage *t_image = [UIImage imageWithData:imageData];
          
-         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-             NSData *data;
-             if (UIImagePNGRepresentation(t_image) == nil)
-             {
-                 data = UIImageJPEGRepresentation(t_image, 1.0);
-             }
-             else
-             {
-                 data = UIImagePNGRepresentation(t_image);
-             }
-         });
-         
-         
          NSDateFormatter *formater = [[NSDateFormatter alloc] init];
          formater.dateFormat = @"yyyyMMddHHmmss";
          NSString *currentTimeStr = [[formater stringFromDate:[NSDate date]] stringByAppendingFormat:@"_%d" ,arc4random_uniform(10000)];

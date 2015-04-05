@@ -67,7 +67,6 @@ static NSArray *_subViews = nil;
     }
     
     __block NSArray *subViews = nil;
-    UIView *compareView = nil;
     // 如果是TableView子控件的话
     if (tableView || collectionView) {
         if (tableView) {
@@ -139,8 +138,6 @@ static NSArray *_subViews = nil;
             
             subViews = cells;
         }
-        
-        compareView = [self traversalViewWithCell:toView];
     }else{
         // scrollView
         if (toView.superview == nil) {
