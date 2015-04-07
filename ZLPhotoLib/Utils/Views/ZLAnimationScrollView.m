@@ -182,11 +182,17 @@ static NSArray *_subViews = nil;
         }];
     }else if(tableView){
         NSIndexPath *minIndexPath = [tableView indexPathForCell: [subViews firstObject]];
+        NSIndexPath *maxIndexPath = [tableView indexPathForCell: [subViews lastObject]];
         
         val = ([self currentIndexPath].item - minIndexPath.row) % subViews.count;
         
         if ((val == 0 && [self currentIndexPath].item > 0) || [self currentIndexPath].item > subViews.count){
             val = subViews.count - 1;
+        }
+        
+        if ([self currentIndexPath].item <= minIndexPath.row || [self currentIndexPath].item > maxIndexPath.row) {
+            // 改变动画模式
+            val = subViews.count + 1;
         }
     }
     
@@ -265,6 +271,8 @@ static NSArray *_subViews = nil;
                 [subViews[val] setHidden:YES];
             }
         }
+    }else{
+        ops[UIViewAnimationAnimationStatusType] = @(UIViewAnimationAnimationStatusFade);
     }
     
     if (!iOS7gt) {
