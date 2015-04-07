@@ -139,37 +139,36 @@ static NSArray *_subViews = nil;
             subViews = cells;
         }
     }else{
-        
-        NSMutableArray *subViewsM = [NSMutableArray array];
-        
         // scrollView
         if (toView.superview == nil) {
             subViews = _parsentView.subviews;
-        } else {
+        } else if ([[toView.superview subviews] count] >= [ops[UIViewAnimationImages] count]) {
+            subViews = [toView.superview subviews];
+        }else{
+            NSMutableArray *subViewsM = [NSMutableArray array];
             subViews = [[self getParsentView:toView maxCount:_photos.count] subviews];
-        }
-        
-        for (UIView *view in subViews) {
-            if (view.tag >= 1) {
-                [subViewsM addObject:view];
-            }
-        }
-        
-        for (int i = 0; i < subViews.count; i++) {
-            if ([(UIView *)subViews[i] tag] == 0) {
-                if([subViews[i] width] == [[subViewsM firstObject] width] && [subViews[i] isKindOfClass:[[subViewsM firstObject] class]]){
-                    [subViewsM insertObject:subViews[i] atIndex:0];
+            for (UIView *view in subViews) {
+                if (view.tag >= 1) {
+                    [subViewsM addObject:view];
                 }
             }
-        }
-        
-        for (UIView *view in subViews) {
-            if (view.tag < 1) {
-                [subViewsM addObject:view];
+            
+            for (int i = 0; i < subViews.count; i++) {
+                if ([(UIView *)subViews[i] tag] == 0) {
+                    if([subViews[i] width] == [[subViewsM firstObject] width] && [subViews[i] isKindOfClass:[[subViewsM firstObject] class]]){
+                        [subViewsM insertObject:subViews[i] atIndex:0];
+                    }
+                }
             }
+            
+            for (UIView *view in subViews) {
+                if (view.tag < 1) {
+                    [subViewsM addObject:view];
+                }
+            }
+            subViews = subViewsM;
         }
         
-        subViews = subViewsM;
     }
     
     __block NSInteger val = [self currentIndexPath].item;
@@ -183,6 +182,7 @@ static NSArray *_subViews = nil;
         }];
     }else if(tableView){
         NSIndexPath *minIndexPath = [tableView indexPathForCell: [subViews firstObject]];
+        
         val = ([self currentIndexPath].item - minIndexPath.row) % subViews.count;
         
         if ((val == 0 && [self currentIndexPath].item > 0) || [self currentIndexPath].item > subViews.count){
@@ -209,19 +209,6 @@ static NSArray *_subViews = nil;
                 startFrame.origin.x = [self currentIndexPath].item * (toView.width + flowLayout.minimumLineSpacing) + collectionView.x - collectionView.contentOffset.x;
                 
             } else if(tableView){
-                
-                //                CGFloat cellHeight = toView.height;
-                //                CGFloat cellHeight = [toView.superview convertRect:toView.frame toView:[self getParsentView:toView]].size.height;
-                //                if ([tableView.delegate respondsToSelector:@selector(tableView:heightForRowAtIndexPath:)]) {
-                //                    if (options[UIViewAnimationTypeViewWithIndexPath] != nil) {
-                //                        if ([options[UIViewAnimationTypeViewWithIndexPath] row] < [tableView.dataSource tableView:tableView numberOfRowsInSection:[options[UIViewAnimationTypeViewWithIndexPath] section]]){
-                //                            cellHeight = [tableView.delegate tableView:tableView heightForRowAtIndexPath:options[UIViewAnimationTypeViewWithIndexPath]];
-                //                        }
-                //                    }else{
-                //                        cellHeight = [tableView.delegate tableView:tableView heightForRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
-                //                    }
-                //                }
-                
                 UIView *superView = toView;
                 if ([subViews[val] respondsToSelector:@selector(contentView)]){
                     for (UIView *view in [[subViews[val] contentView] subviews]) {
@@ -234,24 +221,10 @@ static NSArray *_subViews = nil;
                     superView = subViews[val];
                 }
                 
-                
                 startFrame.origin.y = [superView.superview convertRect:superView.frame toView:[self getParsentView:toView]].origin.y;
                 startFrame.origin.x = [superView.superview convertRect:superView.frame toView:options[UIViewAnimationFromView]].origin.x;
                 startFrame.size.width = toView.width;
                 startFrame.size.height = toView.height;
-                
-                //                if (tableView.contentOffset.y > 0){
-                //                    NSIndexPath *indexPath = [tableView indexPathForCell:[subViews lastObject]];
-                //
-                //                    startFrame.origin.y -= (indexPath.row - [self currentIndexPath].item) * toView.superview.height;
-                ////                    startFrame.origin.y -= tableView.contentOffset.y;
-                //                }
-                //                CGFloat offsetValue = tableView.contentOffset.y;
-                //                if (iOS7gt) {
-                //                    offsetValue += [self getNavigaitionViewControllerWithView:toView];
-                //                }
-                //                startFrame.origin.y = cellHeight * i + [self getNavigaitionViewControllerWithView:toView] + toView.y - offsetValue;
-                
                 toView.hidden = NO;
             }else{
                 
