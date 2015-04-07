@@ -34,6 +34,7 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
 @property (nonatomic , strong) UIButton *doneBtn;
 @property (nonatomic , weak) UIToolbar *toolBar;
 
+@property (assign,nonatomic) NSUInteger privateTempMinCount;
 // Datas
 // 数据源
 @property (nonatomic , strong) NSMutableArray *assets;
@@ -238,11 +239,17 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
 #pragma mark - setter
 -(void)setMinCount:(NSInteger)minCount{
     _minCount = minCount;
-    if (self.assets.count > minCount) {
-        minCount = 0;
-    }else{
-        minCount = minCount; // minCount - self.selectAssets.count;
+    
+    if (!_privateTempMinCount) {
+        _privateTempMinCount = minCount;
     }
+
+    if (self.selectAssets.count == minCount){
+        minCount = 0;
+    }else if (self.selectPickerAssets.count - self.selectAssets.count > 0) {
+        minCount = _privateTempMinCount;
+    }
+    
     self.collectionView.minCount = minCount;
 }
 
@@ -302,6 +309,8 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
             [self.toolBarThumbCollectionView reloadData];
             self.makeView.text = [NSString stringWithFormat:@"%ld",self.selectAssets.count];
         }
+        // 刷新下最小的页数
+        self.minCount = self.selectAssets.count + (_privateTempMinCount - self.selectAssets.count);
     }
 }
 
