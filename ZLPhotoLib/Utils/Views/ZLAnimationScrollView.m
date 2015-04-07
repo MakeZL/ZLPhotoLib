@@ -190,7 +190,7 @@ static NSArray *_subViews = nil;
             val = subViews.count - 1;
         }
         
-        if ([self currentIndexPath].item <= minIndexPath.row || [self currentIndexPath].item > maxIndexPath.row) {
+        if (maxIndexPath != nil && ([self currentIndexPath].item <= minIndexPath.row || [self currentIndexPath].item > maxIndexPath.row)) {
             // 改变动画模式
             val = subViews.count + 1;
         }
