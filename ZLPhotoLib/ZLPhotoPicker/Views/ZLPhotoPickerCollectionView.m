@@ -6,14 +6,13 @@
 //  Copyright (c) 2014年 com.zixue101.www. All rights reserved.
 //
 
-#define MAX_COUNT 9 // 选择图片最大数默认是9
-
 #import "ZLPhotoPickerCollectionView.h"
 #import "ZLPhotoPickerCollectionViewCell.h"
 #import "ZLPhotoPickerImageView.h"
 #import "ZLPhotoPickerFooterCollectionReusableView.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "ZLPhotoAssets.h"
+#import "ZLPhoto.h"
 
 @interface ZLPhotoPickerCollectionView () <UICollectionViewDataSource,UICollectionViewDelegate>
 
@@ -122,7 +121,7 @@
         [self.lastDataArray removeObject:asset];
     }else{
         // 1 判断图片数超过最大数或者小于0
-        NSUInteger minCount = (self.minCount > MAX_COUNT || self.minCount < 0) ? MAX_COUNT :  self.minCount;
+        NSUInteger minCount = (self.minCount < 0) ? KPhotoShowMaxCount :  self.minCount;
         
         if (self.selectAsstes.count >= minCount) {
             NSString *format = [NSString stringWithFormat:@"最多只能选择%zd张图片",minCount];
