@@ -20,9 +20,6 @@ static CGFloat BOTTOM_HEIGHT = 60;
 
 @interface ZLCameraViewController () <UIActionSheetDelegate,UICollectionViewDataSource,UICollectionViewDelegate,AVCaptureMetadataOutputObjectsDelegate,ZLCameraImageViewDelegate,ZLCameraViewDelegate,ZLPhotoPickerViewControllerDelegate,ZLPhotoPickerBrowserViewControllerDataSource,ZLPhotoPickerBrowserViewControllerDelegate>
 
-// View
-@property (weak, nonatomic) UIView *topView;
-@property (weak, nonatomic) UIView *controlView;
 @property (weak,nonatomic) ZLCameraView *caramView;
 @property (strong, nonatomic) UICollectionView *collectionView;
 @property (strong, nonatomic) UIViewController *currentViewController;

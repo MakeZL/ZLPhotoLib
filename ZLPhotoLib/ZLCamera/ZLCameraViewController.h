@@ -14,6 +14,10 @@ typedef void(^ZLComplate)(id object);
 
 @interface ZLCameraViewController : UIViewController
 
+// 顶部View
+@property (weak, nonatomic) UIView *topView;
+// 底部View
+@property (weak, nonatomic) UIView *controlView;
 /**
  *  打开相机
  *
