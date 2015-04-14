@@ -26,7 +26,7 @@
     if (!_assets) {
         // CollctionView 可以分组。
         NSMutableArray *section1 = [NSMutableArray arrayWithArray:@[
-                                                                    @"http://www.qqaiqin.com/uploads/allimg/130520/4-13052022531U60.gif",
+                                                                    @"http://106.2.174.5:23501/MiningStock/stockimage/scale2/2015/04/14/1162AA0D8EF30BB5B6.jpg",
                                                                     @"http://www.1tong.com/uploads/wallpaper/anime/124-2-1280x800.jpg",
                                                                     @"http://imgsrc.baidu.com/forum/pic/item/xc59ca2ef76c6a7ef603e17c7fcfaaf51f2de6640.jpg",
                                                                     @"http://imgsrc.baidu.com/forum/pic/item/3f7dacaf2edda3cc7d2289ab01e93901233f92c5.jpg",
@@ -148,6 +148,7 @@
 - (ZLPhotoPickerBrowserPhoto *)photoBrowser:(ZLPhotoPickerBrowserViewController *)pickerBrowser photoAtIndexPath:(NSIndexPath *)indexPath{
     id imageObj = [self.assets[indexPath.section] objectAtIndex:indexPath.item];
     ZLPhotoPickerBrowserPhoto *photo = [ZLPhotoPickerBrowserPhoto photoAnyImageObjWith:imageObj];
+    photo.photoURL = [NSURL URLWithString:@"http://106.2.174.5:23501/MiningStock/stockimage/scale1/2015/04/14/1162AA0D8EF30BB5B6.jpg"];
     // 包装下imageObj 成 ZLPhotoPickerBrowserPhoto 传给数据源
     Example2CollectionViewCell *cell = (Example2CollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
     // 缩略图
