@@ -97,11 +97,14 @@ static ZLAnimationBaseView *_singleBaseView;
     
     [ops addEntriesFromDictionary:_attachParams];
     
-    
     _options = [NSMutableDictionary dictionaryWithDictionary:ops];
     
     // 起始位置、结束位置、动画时间
-    CGRect  startFrame   =                 [_options[UIViewAnimationStartFrame] CGRectValue];
+    CGRect startFrame = [_options[UIViewAnimationStartFrame] CGRectValue];
+    
+    if ([_options[UIViewAnimationFromView] isMemberOfClass:[UIScrollView class]]) {
+        startFrame.origin.y -= [_options[UIViewAnimationFromView] contentOffset].y;
+    }
     CGFloat duration     =                 [_options[UIViewAnimationDuration] floatValue];
     ZLAnimationBaseView *selfView    =      _options[UIViewAnimationSelfView];
     UIView *inView       =                  _options[UIViewAnimationInView];
@@ -199,7 +202,10 @@ static ZLAnimationBaseView *_singleBaseView;
     
     _options = [NSMutableDictionary dictionaryWithDictionary:ops];
     
-    CGRect endFrame      =  [_options[UIViewAnimationEndFrame] CGRectValue];;
+    CGRect endFrame      =  [_options[UIViewAnimationEndFrame] CGRectValue];
+    if ([_options[UIViewAnimationFromView] isMemberOfClass:[UIScrollView class]]) {
+        endFrame.origin.y -= [_options[UIViewAnimationFromView] contentOffset].y;
+    }
     CGFloat duration     =                 [_options[UIViewAnimationDuration] floatValue];
     
     // 把_baseView添加到Window上
@@ -262,8 +268,6 @@ static ZLAnimationBaseView *_singleBaseView;
     if (!([imageView isKindOfClass:[UIImageView class]]) || imageView.image == nil) {
         if (!([imageView isKindOfClass:[UIImageView class]])) {
             return [_options[UIViewAnimationInView] frame];
-        }else{
-            return CGRectZero;
         }
     }
     
