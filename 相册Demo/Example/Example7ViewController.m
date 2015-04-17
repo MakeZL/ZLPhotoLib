@@ -102,6 +102,7 @@
         [self.assets addObjectsFromArray:status];
         [self reloadScrollView];
     };
+    
     [pickerVc show];
 }
 
