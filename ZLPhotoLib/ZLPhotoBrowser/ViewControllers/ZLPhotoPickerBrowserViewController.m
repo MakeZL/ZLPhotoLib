@@ -174,6 +174,13 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     return [self getParsentView:view.superview];
 }
 
+- (id)getParsentViewController:(UIView *)view{
+    if ([[view nextResponder] isKindOfClass:[UIViewController class]] || view == nil) {
+        return [view nextResponder];
+    }
+    return [self getParsentViewController:view.superview];
+}
+
 #pragma makr - init Animation
 - (void)startLogddingAnimation{
     if (!(self.toView) ) {
@@ -349,7 +356,11 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 #pragma mark - 展示控制器
 - (void)show{
     BOOL animation = !self.toView;
-    [[[[[UIApplication sharedApplication] windows] firstObject] rootViewController] presentViewController:self animated:animation completion:nil];
+    if (animation) {
+        [[[[UIApplication sharedApplication] windows] lastObject] presentViewController:self animated:animation completion:nil];
+    }else{
+        [[self getParsentViewController:self.toView] presentViewController:self animated:animation completion:nil];
+    }
 }
 
 #pragma mark - 删除照片
