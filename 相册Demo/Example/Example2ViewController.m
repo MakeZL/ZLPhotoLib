@@ -148,7 +148,6 @@
 - (ZLPhotoPickerBrowserPhoto *)photoBrowser:(ZLPhotoPickerBrowserViewController *)pickerBrowser photoAtIndexPath:(NSIndexPath *)indexPath{
     id imageObj = [self.assets[indexPath.section] objectAtIndex:indexPath.item];
     ZLPhotoPickerBrowserPhoto *photo = [ZLPhotoPickerBrowserPhoto photoAnyImageObjWith:imageObj];
-    photo.photoURL = [NSURL URLWithString:@"http://106.2.174.5:23501/MiningStock/stockimage/scale1/2015/04/14/1162AA0D8EF30BB5B6.jpg"];
     // 包装下imageObj 成 ZLPhotoPickerBrowserPhoto 传给数据源
     Example2CollectionViewCell *cell = (Example2CollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
     // 缩略图

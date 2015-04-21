@@ -261,18 +261,18 @@ static NSArray *_subViews = nil;
             startFrame = [_parsentView convertRect:startFrame toView:options[UIViewAnimationFromView]];
             startFrame.size.width = toView.width;
             
-            if (
-                toView.superview == nil && _parsentView
-                ) {
-                startFrame.origin.y += [self getNavigaitionViewControllerWithView:_parsentView];
-            }
-            
             if ([options[UIViewAnimationAnimationStatusType] integerValue] == UIViewAnimationAnimationStatusZoom) {
                 [subViews[val] setHidden:YES];
             }
         }
     }else{
         ops[UIViewAnimationAnimationStatusType] = @(UIViewAnimationAnimationStatusFade);
+    }
+    
+    if (
+        toView.superview == nil && _parsentView
+        ) {
+        startFrame.origin.y += [self getNavigaitionViewControllerWithView:_parsentView];
     }
     
     if (!iOS7gt) {

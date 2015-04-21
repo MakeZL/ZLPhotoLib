@@ -46,6 +46,7 @@
     scrollView.showsVerticalScrollIndicator = NO;
     scrollView.frame = CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height - 64);
     [self.view addSubview:scrollView];
+    scrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.scrollView = scrollView;
     
     // 属性scrollView
@@ -96,7 +97,7 @@
 #pragma mark - 选择图片
 - (void)photoSelecte{
     ZLPhotoPickerViewController *pickerVc = [[ZLPhotoPickerViewController alloc] init];
-    pickerVc.minCount = 9;
+    pickerVc.minCount = 9 - self.assets.count;
     pickerVc.status = PickerViewShowStatusCameraRoll;
     pickerVc.callBack = ^(NSArray *status){
         [self.assets addObjectsFromArray:status];

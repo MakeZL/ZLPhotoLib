@@ -133,8 +133,6 @@
 		4806BDD81AB29051004B8AB0 /* UIImageView+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+WebCache.m"; sourceTree = "<group>"; };
 		4806BDD91AB29051004B8AB0 /* UIView+WebCacheOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+WebCacheOperation.h"; sourceTree = "<group>"; };
 		4806BDDA1AB29051004B8AB0 /* UIView+WebCacheOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+WebCacheOperation.m"; sourceTree = "<group>"; };
-		4806BDDC1AB29051004B8AB0 /* UIView+ZLAutoLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+ZLAutoLayout.h"; sourceTree = "<group>"; };
-		4806BDDD1AB29051004B8AB0 /* UIView+ZLAutoLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+ZLAutoLayout.m"; sourceTree = "<group>"; };
 		4806BDE01AB29051004B8AB0 /* AssetsPickerChecked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AssetsPickerChecked.png; sourceTree = "<group>"; };
 		4806BDE11AB29051004B8AB0 /* AssetsPickerChecked@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AssetsPickerChecked@2x.png"; sourceTree = "<group>"; };
 		4806BDE21AB29051004B8AB0 /* AssetsPickerChecked@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AssetsPickerChecked@3x.png"; sourceTree = "<group>"; };
@@ -285,7 +283,6 @@
 				4806BDB71AB29051004B8AB0 /* DACircularProgressView.h */,
 				4806BDB81AB29051004B8AB0 /* DACircularProgressView.m */,
 				4806BDB91AB29051004B8AB0 /* SDWebImage */,
-				4806BDDB1AB29051004B8AB0 /* ZLAutoLayout */,
 			);
 			path = Lib;
 			sourceTree = "<group>";
@@ -328,15 +325,6 @@
 				4806BDDA1AB29051004B8AB0 /* UIView+WebCacheOperation.m */,
 			);
 			path = SDWebImage;
-			sourceTree = "<group>";
-		};
-		4806BDDB1AB29051004B8AB0 /* ZLAutoLayout */ = {
-			isa = PBXGroup;
-			children = (
-				4806BDDC1AB29051004B8AB0 /* UIView+ZLAutoLayout.h */,
-				4806BDDD1AB29051004B8AB0 /* UIView+ZLAutoLayout.m */,
-			);
-			path = ZLAutoLayout;
 			sourceTree = "<group>";
 		};
 		4806BDDE1AB29051004B8AB0 /* Resource */ = {
