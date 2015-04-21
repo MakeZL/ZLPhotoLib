@@ -26,10 +26,10 @@
     if (!_assets) {
         // CollctionView 可以分组。
         NSMutableArray *section1 = [NSMutableArray arrayWithArray:@[
-                                                                    @"http://106.2.174.5:23501/MiningStock/stockimage/scale2/2015/04/14/1162AA0D8EF30BB5B6.jpg",
+                                                                    @"http://www.qqaiqin.com/uploads/allimg/130520/4-13052022531U60.gif",
                                                                     @"http://www.1tong.com/uploads/wallpaper/anime/124-2-1280x800.jpg",
                                                                     @"http://imgsrc.baidu.com/forum/pic/item/xc59ca2ef76c6a7ef603e17c7fcfaaf51f2de6640.jpg",
-                                                                    @"http://imgsrc.baidu.com/forum/pic/item/3f7dacaf2edda3cc7d2289ab01e93901233f92c5.jpg",
+                                                                    @"http://imgsrc.baidu.com/forum/pic/item/3f7dacaf2edda3cc7d2289ab01e93901233f92c5.jpg"
                                                                     ]];
         NSMutableArray *section2 = [NSMutableArray arrayWithArray:@[
                                                                     @"http://d.hiphotos.baidu.com/image/pic/item/5ab5c9ea15ce36d3e6ce923138f33a87e850b1ec.jpg",
@@ -118,11 +118,11 @@
     // 数据源/delegate
     // 动画方式
     /*
-     * 
-         UIViewAnimationAnimationStatusZoom = 0, // 放大缩小
-         UIViewAnimationAnimationStatusFade , // 淡入淡出
-         UIViewAnimationAnimationStatusRotate // 旋转
-         pickerBrowser.status = UIViewAnimationAnimationStatusFade;
+     *
+     UIViewAnimationAnimationStatusZoom = 0, // 放大缩小
+     UIViewAnimationAnimationStatusFade , // 淡入淡出
+     UIViewAnimationAnimationStatusRotate // 旋转
+     pickerBrowser.status = UIViewAnimationAnimationStatusFade;
      */
     pickerBrowser.delegate = self;
     pickerBrowser.dataSource = self;
@@ -187,7 +187,7 @@
         [weakSelf.collectionView reloadData];
     }];
     self.cameraVc = cameraVc;
-
+    
 }
 
 @end

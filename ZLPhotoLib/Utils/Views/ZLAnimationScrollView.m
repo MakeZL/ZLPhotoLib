@@ -261,6 +261,12 @@ static NSArray *_subViews = nil;
             startFrame = [_parsentView convertRect:startFrame toView:options[UIViewAnimationFromView]];
             startFrame.size.width = toView.width;
             
+            if (
+                toView.superview == nil && _parsentView
+                && [options[UIViewAnimationNavigationHeight] isEqual:@(0)]) {
+                startFrame.origin.y += [self getNavigaitionViewControllerWithView:_parsentView];
+            }
+            
             if ([options[UIViewAnimationAnimationStatusType] integerValue] == UIViewAnimationAnimationStatusZoom) {
                 [subViews[val] setHidden:YES];
             }
@@ -269,10 +275,8 @@ static NSArray *_subViews = nil;
         ops[UIViewAnimationAnimationStatusType] = @(UIViewAnimationAnimationStatusFade);
     }
     
-    if (
-        toView.superview == nil && _parsentView
-        ) {
-        startFrame.origin.y += [self getNavigaitionViewControllerWithView:_parsentView];
+    if ([options[UIViewAnimationNavigationHeight] integerValue] > 0) {
+        startFrame.origin.y += [options[UIViewAnimationNavigationHeight] integerValue];
     }
     
     if (!iOS7gt) {
@@ -340,7 +344,7 @@ static NSArray *_subViews = nil;
     return [self getParsentView:view.superview maxCount:maxCount];
 }
 
-#pragma mark - 获取ScrollView
+#pragma mark - 获取CollectionView
 + (UIView *) getCollectionViewWithCell:(UIView *)view{
     
     for (int i = 0; i < view.subviews.count; i++) {

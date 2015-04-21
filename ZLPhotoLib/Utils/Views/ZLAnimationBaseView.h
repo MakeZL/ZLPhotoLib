@@ -28,6 +28,7 @@ static NSString *const UIViewAnimationSelfView = @"UIViewAnimationSelfView";
 static NSString *const UIViewAnimationToView = @"UIViewAnimationToView";
 // 来自那个根视图点击的View
 static NSString *const UIViewAnimationFromView = @"UIViewAnimationFromView";
+static NSString *const UIViewAnimationNavigationHeight = @"UIViewAnimationNavigationHeight";
 
 /** 类型参数配置 */
 // indexPath

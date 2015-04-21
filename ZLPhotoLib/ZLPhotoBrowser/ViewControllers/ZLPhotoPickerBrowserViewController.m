@@ -205,6 +205,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
                               UIViewAnimationInView:self.view,
                               UIViewAnimationFromView:fromView,
                               UIViewAnimationAnimationStatusType:@(self.status),
+                              UIViewAnimationNavigationHeight : @(self.navigationHeight),
                               UIViewAnimationToView:self.toView,
                               UIViewAnimationFromView:self.dataSource,
                               UIViewAnimationImages:self.photos,
@@ -308,12 +309,27 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         [scrollBoxView addSubview:scrollView];
         scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         if (self.currentPage == self.photos.count - 1 && scrollView.x >= 0 && !collectionView.isDragging) {
-            scrollView.x = 0;
+            if ([[self getScrollViewBaseViewWithCell:self.toView] isMemberOfClass:[UICollectionView class]]) {
+                scrollView.x = -ZLPickerColletionViewPadding;
+            }else{
+                scrollView.x = 0;
+            }
         }
         
     }
     
     return cell;
+}
+
+#pragma mark - 获取CollectionView
+- (UIView *) getScrollViewBaseViewWithCell:(UIView *)view{
+    for (int i = 0; i < view.subviews.count; i++) {
+        UICollectionViewCell *cell = view.subviews[i];
+        if ([cell isKindOfClass:[UICollectionView class]] || [cell isKindOfClass:[UITableView class]]  || [cell isKindOfClass:[UIScrollView class]] || view == nil) {
+            return cell;
+        }
+    }
+    return [self getScrollViewBaseViewWithCell:view.superview];
 }
 
 #pragma mark - <UIScrollViewDelegate>

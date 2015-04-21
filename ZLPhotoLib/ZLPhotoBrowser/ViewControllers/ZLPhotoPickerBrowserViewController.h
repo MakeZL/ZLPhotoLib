@@ -97,6 +97,8 @@
 // 放大缩小一张图片的情况下（查看头像）/ 缩略图是toImageView.image 原图URL
 - (void)showHeadPortrait:(UIImageView *)toImageView originUrl:(NSString *)originUrl;
 
+// 导航高度
+@property (assign,nonatomic) CGFloat navigationHeight;
 // @function
 // 展示控制器
 - (void)show;
