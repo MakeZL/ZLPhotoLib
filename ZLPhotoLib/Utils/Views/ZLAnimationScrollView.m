@@ -303,12 +303,12 @@ static NSArray *_subViews = nil;
     
     [super restoreWithOptions:ops animation:^{
         
-        //        if (collectionView && flowLayout.scrollDirection == UICollectionViewScrollDirectionHorizontal) {
-        //            UIView *cell = [[self getParsentView:_parsentView] hitTest:CGPointMake(startFrame.origin.x, startFrame.origin.y) withEvent:nil];
-        //            if ([options[UIViewAnimationAnimationStatusType] integerValue] == UIViewAnimationAnimationStatusZoom) {
-        //                [cell setHidden:NO];
-        //            }
-        //        }
+        if (collectionView && flowLayout.scrollDirection == UICollectionViewScrollDirectionHorizontal) {
+            UIView *cell = [[self getParsentView:_parsentView] hitTest:CGPointMake(startFrame.origin.x, startFrame.origin.y) withEvent:nil];
+            if ([options[UIViewAnimationAnimationStatusType] integerValue] == UIViewAnimationAnimationStatusZoom) {
+                [cell setHidden:NO];
+            }
+        }
         
         if ([ops[UIViewAnimationAnimationStatusType] integerValue] != UIViewAnimationAnimationStatusFade) {
             if (subViews.count > val) {

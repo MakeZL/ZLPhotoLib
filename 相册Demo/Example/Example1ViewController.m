@@ -60,6 +60,9 @@
 - (void)viewDidLoad{
     [super viewDidLoad];
     
+    [[SDImageCache sharedImageCache] clearDisk];
+    [[SDImageCache sharedImageCache] clearMemory];
+    
     self.view.backgroundColor = [UIColor whiteColor];
     // 初始化UI
     [self setupButtons];

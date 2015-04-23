@@ -56,7 +56,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         flowLayout.minimumLineSpacing = ZLPickerColletionViewPadding;
         flowLayout.itemSize = self.view.size;
         flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-
+        
         UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, self.view.width + ZLPickerColletionViewPadding,self.view.height) collectionViewLayout:flowLayout];
         collectionView.showsHorizontalScrollIndicator = NO;
         collectionView.showsVerticalScrollIndicator = NO;
@@ -309,8 +309,13 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         [scrollBoxView addSubview:scrollView];
         scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         if (self.currentPage == self.photos.count - 1 && scrollView.x >= 0 && !collectionView.isDragging) {
-            if ([[self getScrollViewBaseViewWithCell:self.toView] isMemberOfClass:[UICollectionView class]]) {
-                scrollView.x = -ZLPickerColletionViewPadding;
+            UICollectionView *collecitonView2 = (UICollectionView *)[self getScrollViewBaseViewWithCell:self.toView] ;
+            if ([collecitonView2 isMemberOfClass:[UICollectionView class]]) {
+                UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout *)collecitonView2.collectionViewLayout;
+                if (layout.scrollDirection == UICollectionViewScrollDirectionVertical) {
+                    scrollView.x = -ZLPickerColletionViewPadding;
+                }else{
+                }
             }else{
                 scrollView.x = 0;
             }
