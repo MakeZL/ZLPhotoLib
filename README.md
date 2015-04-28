@@ -4,9 +4,11 @@ This is a photo album multiple-choice / photo browser example
 
 
 ### About Detached in PhotoLib (抽离PhotoLib)
-`Custom MLCamera`[MLCamera](https://github.com/MakeZL/MLCamera)
+`MLCamera 自定义相机连拍`[MLCamera](https://github.com/MakeZL/MLCamera)
 
-`MLSelectPhoto` [MLSelectPhoto](https://github.com/MakeZL/MLSelectPhoto)
+`MLSelectPhoto 相册多选库` [MLSelectPhoto](https://github.com/MakeZL/MLSelectPhoto)
+
+`MLPhotoBrowser 图片浏览器` [MLPhotoBrowser](https://github.com/MakeZL/MLPhotoBrowser)
 
 Browser Continued in ...
 
