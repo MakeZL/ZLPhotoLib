@@ -18,6 +18,9 @@ typedef void(^ZLComplate)(id object);
 @property (weak, nonatomic) UIView *topView;
 // 底部View
 @property (weak, nonatomic) UIView *controlView;
+// 拍照的个数限制
+@property (assign,nonatomic) NSUInteger maxCount;
+
 /**
  *  打开相机
  *

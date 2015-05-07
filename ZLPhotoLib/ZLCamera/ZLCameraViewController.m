@@ -501,6 +501,13 @@ static CGFloat BOTTOM_HEIGHT = 60;
 //拍照
 - (void)stillImage:(id)sender
 {
+    // 判断图片的限制个数
+    if (self.maxCount > 0 && self.images.count < self.maxCount) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:[NSString stringWithFormat:@"拍照的个数不能超过%ld",self.maxCount]delegate:nil cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
+        [alertView show];
+        return ;
+    }
+    
     [self Captureimage];
     UIView *maskView = [[UIView alloc] init];
     maskView.frame = self.view.bounds;
