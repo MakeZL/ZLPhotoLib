@@ -396,7 +396,11 @@ static CGFloat BOTTOM_HEIGHT = 60;
 {
     ZLPhotoPickerViewController *pickerVc = [[ZLPhotoPickerViewController alloc] init];
     // 最多能选9张图片
-    pickerVc.minCount = 9;
+    if (self.images.count > self.maxCount) {
+        pickerVc.minCount = 0;
+    }else{
+        pickerVc.minCount = self.maxCount - self.images.count;
+    }
     pickerVc.status = PickerViewShowStatusCameraRoll;
     pickerVc.delegate = self;
     [pickerVc show];
