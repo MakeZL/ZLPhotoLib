@@ -70,7 +70,7 @@ static CGFloat BOTTOM_HEIGHT = 60;
         CGFloat collectionViewH = ZLCameraColletionViewW;
         CGFloat collectionViewY = self.caramView.height - collectionViewH - 10;
         
-        UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(ZLCameraColletionViewPadding, collectionViewY, self.view.width, collectionViewH)
+        UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, collectionViewY, self.view.width, collectionViewH)
                                                               collectionViewLayout:layout];
         collectionView.backgroundColor = [UIColor clearColor];
         [collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"cell"];
@@ -381,6 +381,7 @@ static CGFloat BOTTOM_HEIGHT = 60;
     if ([UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypeCamera])
     {
         ZLCameraViewController *camreaVc = [[ZLCameraViewController alloc] init];
+        camreaVc.maxCount = self.maxCount;
         camreaVc.complate = self.complate;
         [self.currentViewController presentViewController:camreaVc animated:YES completion:nil];
         
@@ -506,7 +507,7 @@ static CGFloat BOTTOM_HEIGHT = 60;
 - (void)stillImage:(id)sender
 {
     // 判断图片的限制个数
-    if (self.maxCount > 0 && self.images.count < self.maxCount) {
+    if (self.maxCount > 0 && self.images.count >= self.maxCount) {
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:[NSString stringWithFormat:@"拍照的个数不能超过%ld",self.maxCount]delegate:nil cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
         [alertView show];
         return ;

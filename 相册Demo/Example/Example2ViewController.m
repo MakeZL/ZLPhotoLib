@@ -173,6 +173,7 @@
 #pragma mark - 选择照片
 - (void)selectPhotos {
     ZLCameraViewController *cameraVc = [[ZLCameraViewController alloc] init];
+    cameraVc.maxCount = 6;
     __weak typeof(self) weakSelf = self;
     // 多选相册+相机多拍 回调
     [cameraVc startCameraOrPhotoFileWithViewController:self complate:^(NSArray *object) {
