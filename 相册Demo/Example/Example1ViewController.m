@@ -139,8 +139,8 @@
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     // 图片游览器
     ZLPhotoPickerBrowserViewController *pickerBrowser = [[ZLPhotoPickerBrowserViewController alloc] init];
-    // 传入点击图片View的话，会有微信朋友圈照片的风格
-//    pickerBrowser.toView = cell.imageview1;
+    // 动画方式
+    // pickerBrowser.status = UIViewAnimationAnimationStatusZoom;
     // 数据源/delegate
     pickerBrowser.delegate = self;
     pickerBrowser.dataSource = self;

@@ -16,7 +16,6 @@ typedef void(^ZLPickerBrowserViewControllerTapDisMissBlock)(NSInteger);
 typedef NS_ENUM(NSUInteger, UIViewAnimationAnimationStatus) {
     UIViewAnimationAnimationStatusZoom = 0, // 放大缩小
     UIViewAnimationAnimationStatusFade , // 淡入淡出
-    UIViewAnimationAnimationStatusRotate // 旋转
 };
 
 // 图片最多显示9张，超过9张取消单击事件
