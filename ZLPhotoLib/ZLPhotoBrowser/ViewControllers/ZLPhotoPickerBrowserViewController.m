@@ -259,6 +259,10 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         minScale = MIN(xScale, yScale);
     }
     
+    if (minScale >= 3) {
+        minScale = 3;
+    }
+    
     CGRect frameToCenter = CGRectMake(0, 0, imageSize.width * minScale, imageSize.height * minScale);
     
     // Horizontally

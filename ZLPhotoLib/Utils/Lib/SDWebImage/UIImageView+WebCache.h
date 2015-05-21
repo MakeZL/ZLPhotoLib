@@ -34,7 +34,7 @@
     // Here we use the provided sd_setImageWithURL: method to load the web image
     // Ensure you use a placeholder image otherwise cells will be initialized with no image
     [cell.imageView sd_setImageWithURL:[NSURL URLWithString:@"http://example.com/image.jpg"]
-                      placeholderImage:[UIImage imageNamed:@"placeholder"]];
+                      placeholderImage:[UIImage imageNamed:@"pc_circle_placeholder"]];
  
     cell.textLabel.text = @"My Text";
     return cell;

@@ -95,7 +95,7 @@
     if ([asset isKindOfClass:[ZLPhotoAssets class]]) {
         cell.imageView.image = asset.originImage;
     }else if ([asset isKindOfClass:[NSString class]]){
-        [cell.imageView sd_setImageWithURL:[NSURL URLWithString:(NSString *)asset] placeholderImage:[UIImage imageNamed:@"wallpaper_placeholder"]];
+        [cell.imageView sd_setImageWithURL:[NSURL URLWithString:(NSString *)asset] placeholderImage:[UIImage imageNamed:@"pc_circle_placeholder"]];
     }else if([asset isKindOfClass:[UIImage class]]){
         cell.imageView.image = (UIImage *)asset;
     }else if ([asset isKindOfClass:[ZLCamera class]]){

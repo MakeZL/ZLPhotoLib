@@ -114,7 +114,7 @@
     if ([asset isKindOfClass:[ZLPhotoAssets class]]) {
         cell.imageview1.image = asset.originImage;
     }else if ([asset isKindOfClass:[NSString class]]){
-        [cell.imageview1 sd_setImageWithURL:[NSURL URLWithString:(NSString *)asset] placeholderImage:[UIImage imageNamed:@"wallpaper_placeholder"]];
+        [cell.imageview1 sd_setImageWithURL:[NSURL URLWithString:(NSString *)asset] placeholderImage:[UIImage imageNamed:@"pc_circle_placeholder"]];
     }else if([asset isKindOfClass:[UIImage class]]){
         cell.imageview1.image = (UIImage *)asset;
     }

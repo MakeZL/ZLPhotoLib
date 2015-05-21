@@ -20,6 +20,7 @@
 
 @property (assign,nonatomic) CGFloat progress;
 @property (strong,nonatomic) DACircularProgressView *progressView;
+@property (assign,nonatomic) BOOL isLoadingDone;
 
 @end
 
@@ -110,6 +111,7 @@
         if (photoRange.location != NSNotFound){
             [[ZLPhotoPickerDatas defaultPicker] getAssetsPhotoWithURLs:photo.photoURL callBack:^(UIImage *obj) {
                 _photoImageView.image = obj;
+                self.isLoadingDone = YES;
                 [weakSelf displayImage];
             }];
         }else{
@@ -123,21 +125,25 @@
             _photoImageView.contentMode = UIViewContentModeScaleAspectFit;
             _photoImageView.frame = [self setMaxMinZoomScalesForCurrentBounds:_photoImageView];
             
-            [self setProgress:0.01];
+            if (_photoImageView.image == nil) {
+                [self setProgress:0.01];
+            }
+
             // 网络URL
             [_photoImageView sd_setImageWithURL:photo.photoURL placeholderImage:thumbImage options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize) {
                 [self setProgress:(double)receivedSize / expectedSize];
             } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
                 [self setProgress:1.0];
+                self.isLoadingDone = YES;
                 _photoImageView.image = image;
                 [weakSelf displayImage];
             }];
             
         }
         
-        
     }  else if (photo.photoImage){
         _photoImageView.image = photo.photoImage;
+        self.isLoadingDone = YES;
         [self displayImage];
     }
     
@@ -157,6 +163,10 @@
     // Image is smaller than screen so no zooming!
     if (xScale >= 1 && yScale >= 1) {
         minScale = MIN(xScale, yScale);
+    }
+    
+    if (minScale >= 3) {
+        minScale = 3;
     }
     
     CGRect frameToCenter = CGRectMake(0, 0, imageSize.width * minScale, imageSize.height * minScale);
@@ -349,13 +359,13 @@
         [self setZoomScale:self.minimumZoomScale animated:YES];
         self.contentSize = CGSizeMake(self.frame.size.width, 0);
     } else {
-        
-        // Zoom in to twice the size
-        CGFloat newZoomScale = ((self.maximumZoomScale + self.minimumZoomScale) / 2);
-        CGFloat xsize = self.bounds.size.width / newZoomScale;
-        CGFloat ysize = self.bounds.size.height / newZoomScale;
-        [self zoomToRect:CGRectMake(touchPoint.x - xsize/2, touchPoint.y - ysize/2, xsize, ysize) animated:YES];
-        
+        if (self.isLoadingDone) {
+            // Zoom in to twice the size
+            CGFloat newZoomScale = ((self.maximumZoomScale + self.minimumZoomScale) / 2);
+            CGFloat xsize = self.bounds.size.width / newZoomScale;
+            CGFloat ysize = self.bounds.size.height / newZoomScale;
+            [self zoomToRect:CGRectMake(touchPoint.x - xsize/2, touchPoint.y - ysize/2, xsize, ysize) animated:YES];
+        }
     }
     
 }
