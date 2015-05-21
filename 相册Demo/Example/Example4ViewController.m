@@ -106,7 +106,7 @@
     ZLPhotoPickerBrowserPhoto *photo = [ZLPhotoPickerBrowserPhoto photoAnyImageObjWith:imageObj];
     
     UIButton *btn = self.photoView.subviews[indexPath.row];
-    photo.toView = btn;
+    photo.toView = btn.imageView;
     // 缩略图
     photo.thumbImage = btn.imageView.image;
     return photo;

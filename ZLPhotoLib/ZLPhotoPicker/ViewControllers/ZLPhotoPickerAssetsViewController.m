@@ -365,8 +365,13 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
 
 -  (ZLPhotoPickerBrowserPhoto *)photoBrowser:(ZLPhotoPickerBrowserViewController *)pickerBrowser photoAtIndexPath:(NSIndexPath *)indexPath{
     ZLPhotoPickerBrowserPhoto *photo = [[ZLPhotoPickerBrowserPhoto alloc] init];
-    UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath:indexPath];
-    photo.toView = [cell.contentView.subviews lastObject];
+    UICollectionViewCell *cell = [self.toolBarThumbCollectionView cellForItemAtIndexPath:indexPath];
+    UIImageView *imageView = [cell.contentView.subviews lastObject];
+    ZLPhotoAssets *asset = self.selectAssets[indexPath.row];
+//    imageView.image = asset.originImage;
+    
+    photo.thumbImage = asset.originImage;
+    photo.toView = imageView;
     photo.asset = self.selectAssets[indexPath.row];
     return photo;
 }

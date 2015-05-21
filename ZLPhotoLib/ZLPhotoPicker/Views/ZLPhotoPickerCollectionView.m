@@ -97,7 +97,7 @@
     ZLPhotoAssets *asset = self.dataArray[indexPath.item];
     cellImgView.isVideoType = asset.isVideoType;
     if ([asset isKindOfClass:[ZLPhotoAssets class]]) {
-        cellImgView.image = asset.thumbImage;
+        cellImgView.image= asset.thumbImage;
     }
     
     return cell;

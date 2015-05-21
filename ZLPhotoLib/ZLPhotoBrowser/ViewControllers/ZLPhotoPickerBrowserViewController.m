@@ -165,15 +165,21 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     [mainView addSubview:imageView];
     mainView.clipsToBounds = YES;
     
+    UIImage *thumbImage = [[self.dataSource photoBrowser:self photoAtIndexPath:self.currentIndexPath] thumbImage];
+    
     if (self.status == UIViewAnimationAnimationStatusFade){
-        imageView.image = [[self.dataSource photoBrowser:self photoAtIndexPath:self.currentIndexPath] thumbImage];
+        imageView.image = thumbImage;
     }else{
-        imageView.image = toImageView.image;
+        if (thumbImage == nil) {
+            imageView.image = toImageView.image;
+        }else{
+            imageView.image = thumbImage;
+        }
     }
     
     if (self.status == UIViewAnimationAnimationStatusFade){
         imageView.alpha = 0.0;
-        imageView.frame = [self setMaxMinZoomScalesForCurrentBounds:imageView];
+        imageView.frame = [self setMaxMinZoomScalesForCurrentBounds:imageView.image];
     }else if(self.status == UIViewAnimationAnimationStatusZoom){
         CGRect tempF = [toImageView.superview convertRect:toImageView.frame toView:[self getParsentView:toImageView]];
         imageView.frame = tempF;
@@ -188,8 +194,15 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         
         // 不是淡入淡出
         if(self.status == UIViewAnimationAnimationStatusZoom){
-            imageView.image = [(UIImageView *)[[weakSelf.dataSource photoBrowser:weakSelf photoAtIndexPath:[NSIndexPath indexPathForItem:page inSection:weakSelf.currentIndexPath.section]] toView] image];
-            imageView.frame = [weakSelf setMaxMinZoomScalesForCurrentBounds:imageView];
+            
+            UIImage *thumbImage = [[weakSelf.dataSource photoBrowser:weakSelf photoAtIndexPath:[NSIndexPath indexPathForItem:page inSection:weakSelf.currentIndexPath.section]] thumbImage];
+
+            if (thumbImage == nil) {
+                thumbImage = [(UIImageView *)[[weakSelf.dataSource photoBrowser:weakSelf photoAtIndexPath:[NSIndexPath indexPathForItem:page inSection:weakSelf.currentIndexPath.section]] toView] image];
+            }
+            
+            imageView.image = thumbImage;
+            imageView.frame = [weakSelf setMaxMinZoomScalesForCurrentBounds:imageView.image];
             
             UIImageView *toImageView2 = (UIImageView *)[[weakSelf.dataSource photoBrowser:weakSelf photoAtIndexPath:[NSIndexPath indexPathForItem:page inSection:weakSelf.currentIndexPath.section]] toView];
             originalFrame = [toImageView2.superview convertRect:toImageView2.frame toView:[weakSelf getParsentView:toImageView2]];
@@ -211,30 +224,31 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         }];
     };
     
+    [weakSelf reloadData];
     [UIView animateWithDuration:0.25 animations:^{
         if (self.status == UIViewAnimationAnimationStatusFade){
             // 淡入淡出
             imageView.alpha = 1.0;
         }else if(self.status == UIViewAnimationAnimationStatusZoom){
-            imageView.frame = [self setMaxMinZoomScalesForCurrentBounds:imageView];
+            imageView.frame = [self setMaxMinZoomScalesForCurrentBounds:imageView.image];
         }
     } completion:^(BOOL finished) {
         mainView.hidden = YES;
     }];
 }
 
-- (CGRect)setMaxMinZoomScalesForCurrentBounds:(UIImageView *)imageView{
-    if (!([imageView isKindOfClass:[UIImageView class]]) || imageView.image == nil) {
-        if (!([imageView isKindOfClass:[UIImageView class]])) {
-            return imageView.frame;
+- (CGRect)setMaxMinZoomScalesForCurrentBounds:(UIImage *)image{
+    if (!([image isKindOfClass:[UIImage class]]) || image == nil) {
+        if (!([image isKindOfClass:[UIImage class]])) {
+            return CGRectZero;
         }
     }
     
     // Sizes
     CGSize boundsSize = [UIScreen mainScreen].bounds.size;
-    CGSize imageSize = imageView.image.size;
+    CGSize imageSize = image.size;
     if (imageSize.width == 0 && imageSize.height == 0) {
-        return imageView.frame;
+        return CGRectZero;
     }
     
     CGFloat xScale = boundsSize.width / imageSize.width;    // the scale needed to perfectly fit the image width-wise
@@ -271,7 +285,6 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self reloadData];
     self.view.backgroundColor = [UIColor blackColor];
 }
 

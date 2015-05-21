@@ -123,10 +123,12 @@
             _photoImageView.contentMode = UIViewContentModeScaleAspectFit;
             _photoImageView.frame = [self setMaxMinZoomScalesForCurrentBounds:_photoImageView];
             
+            [self setProgress:0.01];
             // 网络URL
             [_photoImageView sd_setImageWithURL:photo.photoURL placeholderImage:thumbImage options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-                _photoImageView.progress = (double)receivedSize / expectedSize;
+                [self setProgress:(double)receivedSize / expectedSize];
             } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                [self setProgress:1.0];
                 _photoImageView.image = image;
                 [weakSelf displayImage];
             }];

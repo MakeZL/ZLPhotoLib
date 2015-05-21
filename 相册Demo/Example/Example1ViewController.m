@@ -112,7 +112,7 @@
     // 判断类型来获取Image
     ZLPhotoAssets *asset = self.assets[indexPath.row];
     if ([asset isKindOfClass:[ZLPhotoAssets class]]) {
-        cell.imageview1.image = asset.thumbImage;
+        cell.imageview1.image = asset.originImage;
     }else if ([asset isKindOfClass:[NSString class]]){
         [cell.imageview1 sd_setImageWithURL:[NSURL URLWithString:(NSString *)asset] placeholderImage:[UIImage imageNamed:@"wallpaper_placeholder"]];
     }else if([asset isKindOfClass:[UIImage class]]){
