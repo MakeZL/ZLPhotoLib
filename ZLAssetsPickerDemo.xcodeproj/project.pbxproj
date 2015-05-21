@@ -38,9 +38,6 @@
 		4806BE471AB29051004B8AB0 /* shanguangdeng2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4806BDEB1AB29051004B8AB0 /* shanguangdeng2@2x.png */; };
 		4806BE481AB29051004B8AB0 /* xiang.png in Resources */ = {isa = PBXBuildFile; fileRef = 4806BDED1AB29051004B8AB0 /* xiang.png */; };
 		4806BE491AB29051004B8AB0 /* xiang@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4806BDEE1AB29051004B8AB0 /* xiang@2x.png */; };
-		4806BE4A1AB29051004B8AB0 /* ZLAnimationBaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4806BDF11AB29051004B8AB0 /* ZLAnimationBaseView.m */; };
-		4806BE4B1AB29051004B8AB0 /* ZLAnimationImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4806BDF31AB29051004B8AB0 /* ZLAnimationImageView.m */; };
-		4806BE4C1AB29051004B8AB0 /* ZLAnimationScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4806BDF51AB29051004B8AB0 /* ZLAnimationScrollView.m */; };
 		4806BE4D1AB29051004B8AB0 /* ZLCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = 4806BDF81AB29051004B8AB0 /* ZLCamera.m */; };
 		4806BE4E1AB29051004B8AB0 /* ZLCameraImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4806BDFA1AB29051004B8AB0 /* ZLCameraImageView.m */; };
 		4806BE4F1AB29051004B8AB0 /* ZLCameraView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4806BDFC1AB29051004B8AB0 /* ZLCameraView.m */; };
@@ -144,12 +141,6 @@
 		4806BDEB1AB29051004B8AB0 /* shanguangdeng2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "shanguangdeng2@2x.png"; sourceTree = "<group>"; };
 		4806BDED1AB29051004B8AB0 /* xiang.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = xiang.png; sourceTree = "<group>"; };
 		4806BDEE1AB29051004B8AB0 /* xiang@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "xiang@2x.png"; sourceTree = "<group>"; };
-		4806BDF01AB29051004B8AB0 /* ZLAnimationBaseView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLAnimationBaseView.h; sourceTree = "<group>"; };
-		4806BDF11AB29051004B8AB0 /* ZLAnimationBaseView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLAnimationBaseView.m; sourceTree = "<group>"; };
-		4806BDF21AB29051004B8AB0 /* ZLAnimationImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLAnimationImageView.h; sourceTree = "<group>"; };
-		4806BDF31AB29051004B8AB0 /* ZLAnimationImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLAnimationImageView.m; sourceTree = "<group>"; };
-		4806BDF41AB29051004B8AB0 /* ZLAnimationScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLAnimationScrollView.h; sourceTree = "<group>"; };
-		4806BDF51AB29051004B8AB0 /* ZLAnimationScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLAnimationScrollView.m; sourceTree = "<group>"; };
 		4806BDF71AB29051004B8AB0 /* ZLCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLCamera.h; sourceTree = "<group>"; };
 		4806BDF81AB29051004B8AB0 /* ZLCamera.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLCamera.m; sourceTree = "<group>"; };
 		4806BDF91AB29051004B8AB0 /* ZLCameraImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLCameraImageView.h; sourceTree = "<group>"; };
@@ -264,7 +255,6 @@
 				4806BDB31AB29051004B8AB0 /* Category */,
 				4806BDB61AB29051004B8AB0 /* Lib */,
 				4806BDDE1AB29051004B8AB0 /* Resource */,
-				4806BDEF1AB29051004B8AB0 /* Views */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -384,19 +374,6 @@
 				4806BDEE1AB29051004B8AB0 /* xiang@2x.png */,
 			);
 			path = xiang.imageset;
-			sourceTree = "<group>";
-		};
-		4806BDEF1AB29051004B8AB0 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				4806BDF01AB29051004B8AB0 /* ZLAnimationBaseView.h */,
-				4806BDF11AB29051004B8AB0 /* ZLAnimationBaseView.m */,
-				4806BDF21AB29051004B8AB0 /* ZLAnimationImageView.h */,
-				4806BDF31AB29051004B8AB0 /* ZLAnimationImageView.m */,
-				4806BDF41AB29051004B8AB0 /* ZLAnimationScrollView.h */,
-				4806BDF51AB29051004B8AB0 /* ZLAnimationScrollView.m */,
-			);
-			path = Views;
 			sourceTree = "<group>";
 		};
 		4806BDF61AB29051004B8AB0 /* ZLCamera */ = {
@@ -742,7 +719,6 @@
 				4806BE4E1AB29051004B8AB0 /* ZLCameraImageView.m in Sources */,
 				4806BE531AB29051004B8AB0 /* ZLPhotoPickerBrowserPhotoImageView.m in Sources */,
 				4806BE341AB29051004B8AB0 /* SDWebImageDownloaderOperation.m in Sources */,
-				4806BE4C1AB29051004B8AB0 /* ZLAnimationScrollView.m in Sources */,
 				4806BE2E1AB29051004B8AB0 /* MKAnnotationView+WebCache.m in Sources */,
 				4806BE501AB29051004B8AB0 /* ZLCameraViewController.m in Sources */,
 				4806BE601AB29051004B8AB0 /* ZLPhotoPickerGroupTableViewCell.m in Sources */,
@@ -757,10 +733,8 @@
 				4806BE511AB29051004B8AB0 /* ZLPhotoPickerBrowserPhoto.m in Sources */,
 				48BB24501ACE734B00B6592D /* Example7ViewController.m in Sources */,
 				4806BE4D1AB29051004B8AB0 /* ZLCamera.m in Sources */,
-				4806BE4A1AB29051004B8AB0 /* ZLAnimationBaseView.m in Sources */,
 				4806BE5F1AB29051004B8AB0 /* ZLPhotoPickerFooterCollectionReusableView.m in Sources */,
 				485F4E8C1A83182E00B6D448 /* Example3ViewController.m in Sources */,
-				4806BE4B1AB29051004B8AB0 /* ZLAnimationImageView.m in Sources */,
 				4806BE331AB29051004B8AB0 /* SDWebImageDownloader.m in Sources */,
 				4806BE521AB29051004B8AB0 /* ZLPhotoPickerBrowserViewController.m in Sources */,
 				4806BE621AB29051004B8AB0 /* ZLPhotoPickerImageView.m in Sources */,

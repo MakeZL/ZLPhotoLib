@@ -140,7 +140,7 @@
     // 图片游览器
     ZLPhotoPickerBrowserViewController *pickerBrowser = [[ZLPhotoPickerBrowserViewController alloc] init];
     // 传入点击图片View的话，会有微信朋友圈照片的风格
-    pickerBrowser.toView = cell.imageview1;
+//    pickerBrowser.toView = cell.imageview1;
     // 数据源/delegate
     pickerBrowser.delegate = self;
     pickerBrowser.dataSource = self;
@@ -149,7 +149,8 @@
     // 当前选中的值
     pickerBrowser.currentIndexPath = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
     // 展示控制器
-    [pickerBrowser show];
+//    [pickerBrowser show];
+    [self presentViewController:pickerBrowser animated:NO completion:nil];
 }
 
 #pragma mark - <ZLPhotoPickerBrowserViewControllerDataSource>
@@ -168,6 +169,7 @@
     ZLPhotoPickerBrowserPhoto *photo = [ZLPhotoPickerBrowserPhoto photoAnyImageObjWith:imageObj];
     Example1TableViewCell *cell = (Example1TableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
     // 缩略图
+    photo.toView = cell.imageview1;
     photo.thumbImage = cell.imageview1.image;
     return photo;
 }

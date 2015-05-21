@@ -349,10 +349,10 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
 #pragma makr UICollectionViewDelegate
 - (void) collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     
-    UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
+//    UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
     
     ZLPhotoPickerBrowserViewController *browserVc = [[ZLPhotoPickerBrowserViewController alloc] init];
-    browserVc.toView = [cell.contentView.subviews lastObject];
+//    browserVc.toView = [cell.contentView.subviews lastObject];
     browserVc.currentIndexPath = [NSIndexPath indexPathForItem:indexPath.item inSection:0];
     browserVc.delegate = self;
     browserVc.dataSource = self;
@@ -365,6 +365,8 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
 
 -  (ZLPhotoPickerBrowserPhoto *)photoBrowser:(ZLPhotoPickerBrowserViewController *)pickerBrowser photoAtIndexPath:(NSIndexPath *)indexPath{
     ZLPhotoPickerBrowserPhoto *photo = [[ZLPhotoPickerBrowserPhoto alloc] init];
+    UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath:indexPath];
+    photo.toView = [cell.contentView.subviews lastObject];
     photo.asset = self.selectAssets[indexPath.row];
     return photo;
 }

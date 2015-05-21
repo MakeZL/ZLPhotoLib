@@ -14,7 +14,6 @@
 #import "UIView+Extension.h"
 #import "ZLPhotoPickerBrowserPhotoScrollView.h"
 #import "ZLPhotoPickerCommon.h"
-#import "ZLAnimationScrollView.h"
 
 static NSString *_cellIdentifier = @"collectionViewCell";
 
@@ -33,7 +32,6 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 @property (nonatomic , strong) NSMutableArray *photos;
 // 当前提供的分页数
 @property (nonatomic , assign) NSInteger currentPage;
-
 @end
 
 
@@ -64,6 +62,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         collectionView.backgroundColor = [UIColor clearColor];
         collectionView.bounces = YES;
         collectionView.delegate = self;
+        collectionView.dataSource = self;
         [collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:_cellIdentifier];
         
         [self.view addSubview:collectionView];
@@ -140,10 +139,131 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     NSAssert(self.dataSource, @"你没成为数据源代理");
-    [self collectionView];
     // 初始化动画
-    [self startLogddingAnimation];
+    [self showToView];
 }
+
+- (void)showToView{
+    UIView *mainView = [[UIView alloc] init];
+    mainView.backgroundColor = [UIColor blackColor];
+    mainView.frame = [UIScreen mainScreen].bounds;
+    [[UIApplication sharedApplication].keyWindow addSubview:mainView];
+    
+    UIImageView *toImageView = nil;
+    if(self.status == UIViewAnimationAnimationStatusZoom){
+        toImageView = (UIImageView *)[[self.dataSource photoBrowser:self photoAtIndexPath:self.currentIndexPath] toView];
+    }
+    
+    if (![toImageView isKindOfClass:[UIImageView class]] && self.status != UIViewAnimationAnimationStatusFade) {
+        assert(@"error: need toView `UIImageView` class.");
+        return;
+    }
+    
+    UIImageView *imageView = [[UIImageView alloc] init];
+    imageView.userInteractionEnabled = YES;
+    imageView.contentMode = UIViewContentModeScaleAspectFill;
+    [mainView addSubview:imageView];
+    mainView.clipsToBounds = YES;
+    
+    if (self.status == UIViewAnimationAnimationStatusFade){
+        imageView.image = [[self.dataSource photoBrowser:self photoAtIndexPath:self.currentIndexPath] thumbImage];
+    }else{
+        imageView.image = toImageView.image;
+    }
+    
+    if (self.status == UIViewAnimationAnimationStatusFade){
+        imageView.alpha = 0.0;
+        imageView.frame = [self setMaxMinZoomScalesForCurrentBounds:imageView];
+    }else if(self.status == UIViewAnimationAnimationStatusZoom){
+        CGRect tempF = [toImageView.superview convertRect:toImageView.frame toView:[self getParsentView:toImageView]];
+        imageView.frame = tempF;
+    }
+    
+    __weak typeof(self)weakSelf = self;
+    self.disMissBlock = ^(NSInteger page){
+        mainView.hidden = NO;
+        mainView.alpha = 1.0;
+        CGRect originalFrame = CGRectZero;
+        [weakSelf dismissViewControllerAnimated:NO completion:nil];
+        
+        // 不是淡入淡出
+        if(self.status == UIViewAnimationAnimationStatusZoom){
+            imageView.image = [(UIImageView *)[[weakSelf.dataSource photoBrowser:weakSelf photoAtIndexPath:[NSIndexPath indexPathForItem:page inSection:weakSelf.currentIndexPath.section]] toView] image];
+            imageView.frame = [weakSelf setMaxMinZoomScalesForCurrentBounds:imageView];
+            
+            UIImageView *toImageView2 = (UIImageView *)[[weakSelf.dataSource photoBrowser:weakSelf photoAtIndexPath:[NSIndexPath indexPathForItem:page inSection:weakSelf.currentIndexPath.section]] toView];
+            originalFrame = [toImageView2.superview convertRect:toImageView2.frame toView:[weakSelf getParsentView:toImageView2]];
+        }
+        
+        [UIView animateWithDuration:0.25 animations:^{
+            if (weakSelf.status == UIViewAnimationAnimationStatusFade){
+                imageView.alpha = 0.0;
+                mainView.alpha = 0.0;
+            }else if(weakSelf.status == UIViewAnimationAnimationStatusZoom){
+                mainView.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
+                imageView.frame = originalFrame;
+            }
+        } completion:^(BOOL finished) {
+            imageView.alpha = 1.0;
+            mainView.alpha = 1.0;
+            [mainView removeFromSuperview];
+            [imageView removeFromSuperview];
+        }];
+    };
+    
+    [UIView animateWithDuration:0.25 animations:^{
+        if (self.status == UIViewAnimationAnimationStatusFade){
+            // 淡入淡出
+            imageView.alpha = 1.0;
+        }else if(self.status == UIViewAnimationAnimationStatusZoom){
+            imageView.frame = [self setMaxMinZoomScalesForCurrentBounds:imageView];
+        }
+    } completion:^(BOOL finished) {
+        mainView.hidden = YES;
+    }];
+}
+
+- (CGRect)setMaxMinZoomScalesForCurrentBounds:(UIImageView *)imageView{
+    if (!([imageView isKindOfClass:[UIImageView class]]) || imageView.image == nil) {
+        if (!([imageView isKindOfClass:[UIImageView class]])) {
+            return imageView.frame;
+        }
+    }
+    
+    // Sizes
+    CGSize boundsSize = [UIScreen mainScreen].bounds.size;
+    CGSize imageSize = imageView.image.size;
+    if (imageSize.width == 0 && imageSize.height == 0) {
+        return imageView.frame;
+    }
+    
+    CGFloat xScale = boundsSize.width / imageSize.width;    // the scale needed to perfectly fit the image width-wise
+    CGFloat yScale = boundsSize.height / imageSize.height;  // the scale needed to perfectly fit the image height-wise
+    CGFloat minScale = MIN(xScale, yScale);                 // use minimum of these to allow the image to become fully visible
+    // Image is smaller than screen so no zooming!
+    if (xScale >= 1 && yScale >= 1) {
+        minScale = MIN(xScale, yScale);
+    }
+    
+    CGRect frameToCenter = CGRectMake(0, 0, imageSize.width * minScale, imageSize.height * minScale);
+    
+    // Horizontally
+    if (frameToCenter.size.width < boundsSize.width) {
+        frameToCenter.origin.x = floorf((boundsSize.width - frameToCenter.size.width) / 2.0);
+    } else {
+        frameToCenter.origin.x = 0;
+    }
+    
+    // Vertically
+    if (frameToCenter.size.height < boundsSize.height) {
+        frameToCenter.origin.y = floorf((boundsSize.height - frameToCenter.size.height) / 2.0);
+    } else {
+        frameToCenter.origin.y = 0;
+    }
+    
+    return frameToCenter;
+}
+
 
 - (void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -151,6 +271,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self reloadData];
     self.view.backgroundColor = [UIColor blackColor];
 }
 
@@ -181,57 +302,13 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     return [self getParsentViewController:view.superview];
 }
 
-#pragma makr - init Animation
-- (void)startLogddingAnimation{
-    if (!(self.toView) ) {
-        [self reloadData];
-        return;
-    }
-    
-    // 判断是否是控制器
-    UIView *fromView = object_getIvar(self.dataSource, class_getInstanceVariable([self.dataSource class],"_view"));
-    // 如果是自定义View
-    if (fromView == nil) {
-        fromView = [self getParsentView:self.toView];
-    }
-    
-    if (!self.currentIndexPath) {
-        self.currentIndexPath = [NSIndexPath indexPathForItem:self.currentPage inSection:0];
-    }else{
-        self.currentPage = self.currentIndexPath.row;
-    }
-    
-    NSDictionary *options = @{
-                              UIViewAnimationInView:self.view,
-                              UIViewAnimationFromView:fromView,
-                              UIViewAnimationAnimationStatusType:@(self.status),
-                              UIViewAnimationNavigationHeight : @(self.navigationHeight),
-                              UIViewAnimationToView:self.toView,
-                              UIViewAnimationFromView:self.dataSource,
-                              UIViewAnimationImages:self.photos,
-                              UIViewAnimationTypeViewWithIndexPath:self.currentIndexPath
-                              };
-    
-    __weak typeof(self) weakSelf = self;
-    
-    [ZLAnimationScrollView animationViewWithOptions:options animations:nil completion:^(ZLAnimationBaseView *baseView) {
-        // disMiss后调用
-        weakSelf.disMissBlock = ^(NSInteger page){
-            if (self.currentIndexPath) {
-                [ZLAnimationScrollView setCurrentIndexPath:[NSIndexPath indexPathForItem:page inSection:self.currentIndexPath.section]];
-            }else{
-                [ZLAnimationScrollView setCurrentIndexPath:[NSIndexPath indexPathForItem:page inSection:0]];
-            }
-            [weakSelf dismissViewControllerAnimated:NO completion:nil];
-            [ZLAnimationScrollView restoreAnimation:nil];
-        };
-        [weakSelf reloadData];
-    }];
-}
-
 #pragma mark - reloadData
-- (void) reloadData{
-    self.collectionView.dataSource = self;
+- (void)reloadData{
+    if (self.currentPage <= 0){
+        self.currentPage = self.currentIndexPath.item;
+    }else{
+        self.currentPage--;
+    }
     [self.collectionView reloadData];
     
     // 添加自定义View
@@ -258,10 +335,14 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         }
         
         self.collectionView.x = -attachVal;
-        self.collectionView.contentOffset = CGPointMake(self.currentPage * self.collectionView.width, 0);
+//        [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:self.currentPage inSection:self.currentIndexPath.section] atScrollPosition:UICollectionViewScrollPositionNone animated:YES];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(00.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            self.collectionView.contentOffset = CGPointMake(self.currentPage * self.collectionView.width, 0);
+        });
     }
     
 }
+
 
 
 #pragma mark - <UICollectionViewDataSource>
@@ -304,23 +385,11 @@ static NSString *_cellIdentifier = @"collectionViewCell";
             scrollView.callback = ^(id obj){
                 [weakSelf.delegate photoBrowser:weakSelf photoDidSelectView:weakScrollBoxView atIndexPath:indexPath];
             };
+            
         }
         
         [scrollBoxView addSubview:scrollView];
         scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-        if (self.currentPage == self.photos.count - 1 && scrollView.x >= 0 && !collectionView.isDragging) {
-            UICollectionView *collecitonView2 = (UICollectionView *)[self getScrollViewBaseViewWithCell:self.toView] ;
-            if ([collecitonView2 isMemberOfClass:[UICollectionView class]]) {
-                UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout *)collecitonView2.collectionViewLayout;
-                if (layout.scrollDirection == UICollectionViewScrollDirectionVertical) {
-                    scrollView.x = -ZLPickerColletionViewPadding;
-                }else{
-                }
-            }else{
-                scrollView.x = 0;
-            }
-        }
-        
     }
     
     return cell;
@@ -340,7 +409,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 #pragma mark - <UIScrollViewDelegate>
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
     CGRect tempF = self.collectionView.frame;
-    NSInteger currentPage = (NSInteger)((scrollView.contentOffset.x / scrollView.width) + 0.5);
+    NSInteger currentPage = (NSInteger)((scrollView.contentOffset.x / scrollView.frame.size.width) + 0.5);
     if (tempF.size.width < [UIScreen mainScreen].bounds.size.width){
         tempF.size.width = [UIScreen mainScreen].bounds.size.width;
     }
@@ -350,6 +419,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     }else{
         tempF.origin.x = -ZLPickerColletionViewPadding;
     }
+    
     self.collectionView.frame = tempF;
 }
 
@@ -359,7 +429,11 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
     
-    NSInteger currentPage = (NSInteger)scrollView.contentOffset.x / (scrollView.width - ZLPickerColletionViewPadding);
+    NSInteger currentPage = (NSInteger)(scrollView.contentOffset.x / (scrollView.frame.size.width));
+    
+    if (currentPage == self.photos.count - 2) {
+        currentPage = roundf((scrollView.contentOffset.x) / (scrollView.frame.size.width));
+    }
     
     if (currentPage == self.photos.count - 1 && currentPage != self.currentPage && [[[UIDevice currentDevice] systemVersion] doubleValue] >= 8.0) {
         self.collectionView.contentOffset = CGPointMake(self.collectionView.contentOffset.x + ZLPickerColletionViewPadding, 0);
@@ -376,12 +450,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 
 #pragma mark - 展示控制器
 - (void)show{
-    BOOL animation = !self.toView;
-    if (animation) {
-        [[[[UIApplication sharedApplication] windows] lastObject] presentViewController:self animated:animation completion:nil];
-    }else{
-        [[self getParsentViewController:self.toView] presentViewController:self animated:animation completion:nil];
-    }
+    [[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:self animated:NO completion:nil];
 }
 
 #pragma mark - 删除照片

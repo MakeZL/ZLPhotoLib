@@ -54,8 +54,6 @@
  Note : (图片游览器)
  创建控制器
  ZLPhotoBrowserViewController *pickerBrowser = [[ZLPhotoBrowserViewController alloc] init];
- // 传入点击imageView的话，会有微信朋友圈照片的风格
- pickerBrowser.toView = cell.imageView;
  // 数据源/delegate
  pickerBrowser.delegate = self;
  pickerBrowser.dataSource = self;

@@ -254,7 +254,7 @@ static CGFloat BOTTOM_HEIGHT = 60;
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     
     ZLPhotoPickerBrowserViewController *browserVc = [[ZLPhotoPickerBrowserViewController alloc] init];
-    browserVc.toView = [[[[collectionView cellForItemAtIndexPath:indexPath] contentView] subviews] lastObject];
+//    browserVc.toView = [[[[collectionView cellForItemAtIndexPath:indexPath] contentView] subviews] lastObject];
     browserVc.dataSource = self;
     browserVc.delegate = self;
     browserVc.currentIndexPath = [NSIndexPath indexPathForItem:indexPath.item inSection:0];
@@ -381,6 +381,9 @@ static CGFloat BOTTOM_HEIGHT = 60;
     if ([UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypeCamera])
     {
         ZLCameraViewController *camreaVc = [[ZLCameraViewController alloc] init];
+        if (self.maxCount == 0) {
+            self.maxCount = 9;
+        }
         camreaVc.maxCount = self.maxCount;
         camreaVc.complate = self.complate;
         [self.currentViewController presentViewController:camreaVc animated:YES completion:nil];

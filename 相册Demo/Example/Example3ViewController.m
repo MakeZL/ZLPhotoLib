@@ -130,7 +130,6 @@
     // 图片游览器
     ZLPhotoPickerBrowserViewController *pickerBrowser = [[ZLPhotoPickerBrowserViewController alloc] init];
     // 传入点击图片View的话，会有微信朋友圈照片的风格
-    pickerBrowser.toView = cell.imageview1;
     // 数据源/delegate
     pickerBrowser.delegate = self;
     pickerBrowser.dataSource = self;
@@ -157,6 +156,7 @@
     // 包装下imageObj 成 ZLPhotoPickerBrowserPhoto 传给数据源
     ZLPhotoPickerBrowserPhoto *photo = [ZLPhotoPickerBrowserPhoto photoAnyImageObjWith:imageObj];
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    photo.toView = cell.imageView;
     photo.thumbImage = cell.imageView.image;
     return photo;
 }

@@ -17,6 +17,10 @@
  */
 @property (nonatomic , strong) id photoObj;
 /**
+ *  传入对应的View,记录坐标
+ */
+@property (strong,nonatomic) UIView *toView;
+/**
  *  保存相册模型
  */
 @property (nonatomic , strong) ZLPhotoAssets *asset;

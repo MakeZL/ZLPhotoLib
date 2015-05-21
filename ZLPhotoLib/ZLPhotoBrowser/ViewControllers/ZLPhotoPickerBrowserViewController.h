@@ -81,7 +81,7 @@
 @property (nonatomic , weak) id<ZLPhotoPickerBrowserViewControllerDataSource> dataSource;
 @property (nonatomic , weak) id<ZLPhotoPickerBrowserViewControllerDelegate> delegate;
 // 点击的View
-@property (nonatomic , strong) UIView *toView;
+//@property (nonatomic , strong) UIView *toView;
 // 当前提供的组
 @property (strong,nonatomic) NSIndexPath *currentIndexPath;
 

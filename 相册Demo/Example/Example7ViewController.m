@@ -114,7 +114,7 @@
     // 淡入淡出效果
     // pickerBrowser.status = UIViewAnimationAnimationStatusFade;
     // 传入点击图片View的话，会有微信朋友圈照片的风格
-    pickerBrowser.toView = btn;
+//    pickerBrowser.toView = btn;
     // 数据源/delegate
     pickerBrowser.delegate = self;
     pickerBrowser.dataSource = self;
@@ -141,6 +141,7 @@
     ZLPhotoPickerBrowserPhoto *photo = [ZLPhotoPickerBrowserPhoto photoAnyImageObjWith:imageObj];
     
     UIButton *btn = self.scrollView.subviews[indexPath.row];
+    photo.toView = btn.imageView;
     // 缩略图
     photo.thumbImage = btn.imageView.image;
     return photo;
