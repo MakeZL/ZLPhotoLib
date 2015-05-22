@@ -287,12 +287,16 @@
         minScale = MIN(xScale, yScale);
     }
     
+    if (minScale >= 3) {
+        minScale = 3;
+    }
+    
     // Set min/max zoom
     self.maximumZoomScale = maxScale;
     self.minimumZoomScale = minScale;
     
     // Initial zoom
-    self.zoomScale = [self initialZoomScaleWithMinScale];
+    self.zoomScale = self.minimumZoomScale;
     
     // If we're zooming to fill then centralise
     if (self.zoomScale != minScale) {

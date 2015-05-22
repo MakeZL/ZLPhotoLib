@@ -76,6 +76,8 @@
 		48ED220C1A6D0E370008E783 /* Example2ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48ED220B1A6D0E370008E783 /* Example2ViewController.m */; };
 		48ED22131A6D108C0008E783 /* Example2CollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 48ED22121A6D108C0008E783 /* Example2CollectionViewCell.m */; };
 		48ED22151A6D10960008E783 /* Example2CollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48ED22141A6D10960008E783 /* Example2CollectionViewCell.xib */; };
+		48F528AB1B0ED594001C2E5E /* PublishCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F528A81B0ED594001C2E5E /* PublishCell.m */; };
+		48F528AC1B0ED594001C2E5E /* PublishViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F528AA1B0ED594001C2E5E /* PublishViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -215,6 +217,10 @@
 		48ED22111A6D108C0008E783 /* Example2CollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Example2CollectionViewCell.h; sourceTree = "<group>"; };
 		48ED22121A6D108C0008E783 /* Example2CollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Example2CollectionViewCell.m; sourceTree = "<group>"; };
 		48ED22141A6D10960008E783 /* Example2CollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Example2CollectionViewCell.xib; sourceTree = "<group>"; };
+		48F528A71B0ED594001C2E5E /* PublishCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublishCell.h; sourceTree = "<group>"; };
+		48F528A81B0ED594001C2E5E /* PublishCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublishCell.m; sourceTree = "<group>"; };
+		48F528A91B0ED594001C2E5E /* PublishViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublishViewController.h; sourceTree = "<group>"; };
+		48F528AA1B0ED594001C2E5E /* PublishViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublishViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -553,6 +559,10 @@
 		48ED22061A6D080C0008E783 /* Example */ = {
 			isa = PBXGroup;
 			children = (
+				48F528A71B0ED594001C2E5E /* PublishCell.h */,
+				48F528A81B0ED594001C2E5E /* PublishCell.m */,
+				48F528A91B0ED594001C2E5E /* PublishViewController.h */,
+				48F528AA1B0ED594001C2E5E /* PublishViewController.m */,
 				48ED22101A6D10720008E783 /* Views */,
 				485F4E8A1A83182E00B6D448 /* Example3ViewController.h */,
 				485F4E8B1A83182E00B6D448 /* Example3ViewController.m */,
@@ -712,6 +722,7 @@
 				4806BE571AB29051004B8AB0 /* ZLPhotoAssets.m in Sources */,
 				4806BE2F1AB29051004B8AB0 /* NSData+ImageContentType.m in Sources */,
 				4806BC811AB283ED004B8AB0 /* Example4ViewController.m in Sources */,
+				48F528AC1B0ED594001C2E5E /* PublishViewController.m in Sources */,
 				4806BE551AB29051004B8AB0 /* ZLPhotoPickerBrowserPhotoView.m in Sources */,
 				48B3E1791A11BABC0079F464 /* AppDelegate.m in Sources */,
 				4806BE5D1AB29051004B8AB0 /* ZLPhotoPickerCollectionView.m in Sources */,
@@ -722,6 +733,7 @@
 				4806BE2E1AB29051004B8AB0 /* MKAnnotationView+WebCache.m in Sources */,
 				4806BE501AB29051004B8AB0 /* ZLCameraViewController.m in Sources */,
 				4806BE601AB29051004B8AB0 /* ZLPhotoPickerGroupTableViewCell.m in Sources */,
+				48F528AB1B0ED594001C2E5E /* PublishCell.m in Sources */,
 				4806BE311AB29051004B8AB0 /* SDWebImageCompat.m in Sources */,
 				48ED22091A6D098C0008E783 /* Example1ViewController.m in Sources */,
 				4806BE391AB29051004B8AB0 /* UIImage+MultiFormat.m in Sources */,

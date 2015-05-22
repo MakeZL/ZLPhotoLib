@@ -80,7 +80,8 @@
 #pragma mark - <UITableViewDelegate>
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    NSString *exampleVc = [NSString stringWithFormat:@"Example%ldViewController",indexPath.row + 1];
+//    NSString *exampleVc = [NSString stringWithFormat:@"Example%ldViewController",indexPath.row + 1];
+    NSString *exampleVc = [NSString stringWithFormat:@"PublishViewController"];
     UIViewController *vc = [[NSClassFromString(exampleVc) alloc] init];
     vc.title = self.examples[indexPath.row];
     [self.navigationController pushViewController:vc animated:YES];

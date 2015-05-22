@@ -208,6 +208,10 @@ static NSString *_cellIdentifier = @"collectionViewCell";
             originalFrame = [toImageView2.superview convertRect:toImageView2.frame toView:[weakSelf getParsentView:toImageView2]];
         }
         
+        if (weakSelf.navigationHeight) {
+            originalFrame.origin.y += weakSelf.navigationHeight;
+        }
+        
         [UIView animateWithDuration:0.25 animations:^{
             if (weakSelf.status == UIViewAnimationAnimationStatusFade){
                 imageView.alpha = 0.0;
