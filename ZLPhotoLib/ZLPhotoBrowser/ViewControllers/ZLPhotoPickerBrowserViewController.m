@@ -182,6 +182,9 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         imageView.frame = [self setMaxMinZoomScalesForCurrentBounds:imageView.image];
     }else if(self.status == UIViewAnimationAnimationStatusZoom){
         CGRect tempF = [toImageView.superview convertRect:toImageView.frame toView:[self getParsentView:toImageView]];
+        if (self.navigationHeight) {
+            tempF.origin.y += self.navigationHeight;
+        }
         imageView.frame = tempF;
     }
     
