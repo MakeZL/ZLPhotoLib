@@ -16,5 +16,7 @@
 @property (nonatomic , assign) NSInteger minCount;
 // 记录选中的值
 @property (strong,nonatomic) NSArray *selectAsstes;
+// 置顶展示图片
+@property (assign,nonatomic) BOOL topShowPhotoPicker;
 
 @end

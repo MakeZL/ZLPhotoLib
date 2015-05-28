@@ -59,6 +59,11 @@
     self.groupVc.minCount = minCount;
 }
 
+- (void)setTopShowPhotoPicker:(BOOL)topShowPhotoPicker{
+    _topShowPhotoPicker = topShowPhotoPicker;
+    self.groupVc.topShowPhotoPicker = topShowPhotoPicker;
+}
+
 #pragma mark - 展示控制器
 - (void)show{
     [[[[UIApplication sharedApplication].windows firstObject] rootViewController] presentViewController:self animated:YES completion:nil];

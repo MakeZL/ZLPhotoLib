@@ -118,6 +118,20 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
     self.doneBtn.enabled = (count > 0);
 }
 
+- (void)setTopShowPhotoPicker:(BOOL)topShowPhotoPicker{
+    _topShowPhotoPicker = topShowPhotoPicker;
+
+    if (self.topShowPhotoPicker == YES) {
+        NSMutableArray *reSortArray= [[NSMutableArray alloc] init];
+        for (id obj in [self.collectionView.dataArray reverseObjectEnumerator]) {
+            [reSortArray addObject:obj];
+        }
+        
+        self.collectionView.dataArray = reSortArray;
+        [self.collectionView reloadData];
+    }
+}
+
 #pragma mark collectionView
 - (ZLPhotoPickerCollectionView *)collectionView{
     if (!_collectionView) {
@@ -203,6 +217,10 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
     __weak typeof(self) weakSelf = self;
     
     [[ZLPhotoPickerDatas defaultPicker] getGroupPhotosWithGroup:self.assetsGroup finished:^(NSArray *assets) {
+        
+        ZLPhotoAssets *zlAsset = [[ZLPhotoAssets alloc] init];
+        [assetsM addObject:zlAsset];
+        
         [assets enumerateObjectsUsingBlock:^(ALAsset *asset, NSUInteger idx, BOOL *stop) {
             ZLPhotoAssets *zlAsset = [[ZLPhotoAssets alloc] init];
             zlAsset.asset = asset;
@@ -382,9 +400,38 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
     NSInteger currentPage = 0;
     for (NSInteger i = 0; i < self.collectionView.dataArray.count; i++) {
         ALAsset *photoAsset = self.collectionView.dataArray[i];
-        if([[[[asset defaultRepresentation] url] absoluteString] isEqualToString:[[[photoAsset defaultRepresentation] url] absoluteString]]){
-            currentPage = i;
-            break;
+        if ([photoAsset isKindOfClass:[ZLPhotoAssets class]] || [asset isKindOfClass:[ZLPhotoAssets class]]) {
+            
+            if ([photoAsset isKindOfClass:[ZLPhotoAssets class]] && !([asset isKindOfClass:[ZLPhotoAssets class]])) {
+                
+                ZLPhotoAssets *photoAssets = (ZLPhotoAssets *)photoAsset;
+                if([[[[asset defaultRepresentation] url] absoluteString] isEqualToString:[[[photoAssets.asset defaultRepresentation] url] absoluteString]]){
+                    currentPage = i;
+                    break;
+                }
+            }else if (!([photoAsset isKindOfClass:[ZLPhotoAssets class]]) && ([asset isKindOfClass:[ZLPhotoAssets class]])){
+                
+                ZLPhotoAssets *assets = (ZLPhotoAssets *)asset;
+                if([[[[assets.asset defaultRepresentation] url] absoluteString] isEqualToString:[[[photoAsset defaultRepresentation] url] absoluteString]]){
+                    currentPage = i;
+                    break;
+                }
+                
+            }else{
+                
+                ZLPhotoAssets *photoAssets = (ZLPhotoAssets *)photoAsset;
+                ZLPhotoAssets *assets = (ZLPhotoAssets *)asset;
+                if([[[[assets.asset defaultRepresentation] url] absoluteString] isEqualToString:[[[photoAssets.asset defaultRepresentation] url] absoluteString]]){
+                    currentPage = i;
+                    break;
+                }
+            }
+            
+        }else{
+            if([[[[asset defaultRepresentation] url] absoluteString] isEqualToString:[[[photoAsset defaultRepresentation] url] absoluteString]]){
+                currentPage = i;
+                break;
+            }
         }
     }
     

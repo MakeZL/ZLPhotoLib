@@ -38,6 +38,8 @@ typedef NS_ENUM(NSInteger , PickerViewShowStatus) {
 @property (nonatomic , assign) NSInteger minCount;
 // 记录选中的值
 @property (strong,nonatomic) NSArray *selectPickers;
+// 置顶展示图片
+@property (assign,nonatomic) BOOL topShowPhotoPicker;
 
 // @function
 // 展示控制器
