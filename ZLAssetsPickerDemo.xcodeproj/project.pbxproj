@@ -70,6 +70,10 @@
 		48B3E1811A11BABC0079F464 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 48B3E1801A11BABC0079F464 /* Images.xcassets */; };
 		48B3E1841A11BABC0079F464 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48B3E1821A11BABC0079F464 /* LaunchScreen.xib */; };
 		48B3E1901A11BABC0079F464 /* __DemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B3E18F1A11BABC0079F464 /* __DemoTests.m */; };
+		48B86C461B16BD3D00FA272A /* Example8ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B86C451B16BD3D00FA272A /* Example8ViewController.m */; };
+		48B86C4B1B16C50C00FA272A /* camera@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48B86C481B16C50C00FA272A /* camera@2x.png */; };
+		48B86C4C1B16C50C00FA272A /* paizhao.png in Resources */ = {isa = PBXBuildFile; fileRef = 48B86C491B16C50C00FA272A /* paizhao.png */; };
+		48B86C4D1B16C50C00FA272A /* paizhao@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48B86C4A1B16C50C00FA272A /* paizhao@2x.png */; };
 		48BB24501ACE734B00B6592D /* Example7ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48BB244F1ACE734B00B6592D /* Example7ViewController.m */; };
 		48D0E4571AC261D20022C598 /* Example5ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D0E4561AC261D20022C598 /* Example5ViewController.m */; };
 		48ED22091A6D098C0008E783 /* Example1ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48ED22081A6D098C0008E783 /* Example1ViewController.m */; };
@@ -206,6 +210,11 @@
 		48B3E1891A11BABC0079F464 /* 相册DemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "相册DemoTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		48B3E18E1A11BABC0079F464 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		48B3E18F1A11BABC0079F464 /* __DemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = __DemoTests.m; sourceTree = "<group>"; };
+		48B86C441B16BD3D00FA272A /* Example8ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Example8ViewController.h; sourceTree = "<group>"; };
+		48B86C451B16BD3D00FA272A /* Example8ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Example8ViewController.m; sourceTree = "<group>"; };
+		48B86C481B16C50C00FA272A /* camera@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "camera@2x.png"; sourceTree = "<group>"; };
+		48B86C491B16C50C00FA272A /* paizhao.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = paizhao.png; sourceTree = "<group>"; };
+		48B86C4A1B16C50C00FA272A /* paizhao@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "paizhao@2x.png"; sourceTree = "<group>"; };
 		48BB244E1ACE734B00B6592D /* Example7ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Example7ViewController.h; sourceTree = "<group>"; };
 		48BB244F1ACE734B00B6592D /* Example7ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Example7ViewController.m; sourceTree = "<group>"; };
 		48D0E4551AC261D20022C598 /* Example5ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Example5ViewController.h; sourceTree = "<group>"; };
@@ -327,6 +336,7 @@
 		4806BDDE1AB29051004B8AB0 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				48B86C471B16C50C00FA272A /* camera.imageset */,
 				4806BDDF1AB29051004B8AB0 /* AssetsPickerChecked.imageset */,
 				4806BDE31AB29051004B8AB0 /* paizhao.imageset */,
 				4806BDE61AB29051004B8AB0 /* shanguangdeng.imageset */,
@@ -556,6 +566,16 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		48B86C471B16C50C00FA272A /* camera.imageset */ = {
+			isa = PBXGroup;
+			children = (
+				48B86C481B16C50C00FA272A /* camera@2x.png */,
+				48B86C491B16C50C00FA272A /* paizhao.png */,
+				48B86C4A1B16C50C00FA272A /* paizhao@2x.png */,
+			);
+			path = camera.imageset;
+			sourceTree = "<group>";
+		};
 		48ED22061A6D080C0008E783 /* Example */ = {
 			isa = PBXGroup;
 			children = (
@@ -578,6 +598,8 @@
 				48068AE51AC453D8009A65FB /* Example6ViewController.m */,
 				48BB244E1ACE734B00B6592D /* Example7ViewController.h */,
 				48BB244F1ACE734B00B6592D /* Example7ViewController.m */,
+				48B86C441B16BD3D00FA272A /* Example8ViewController.h */,
+				48B86C451B16BD3D00FA272A /* Example8ViewController.m */,
 			);
 			path = Example;
 			sourceTree = "<group>";
@@ -686,12 +708,15 @@
 				48B3E1841A11BABC0079F464 /* LaunchScreen.xib in Resources */,
 				4806BE461AB29051004B8AB0 /* shanguangdeng2.png in Resources */,
 				4806BE441AB29051004B8AB0 /* shanguangdeng.png in Resources */,
+				48B86C4C1B16C50C00FA272A /* paizhao.png in Resources */,
+				48B86C4B1B16C50C00FA272A /* camera@2x.png in Resources */,
 				48B3E1811A11BABC0079F464 /* Images.xcassets in Resources */,
 				4806BE411AB29051004B8AB0 /* AssetsPickerChecked@3x.png in Resources */,
 				48B338A61AA469EB00650D81 /* Example1TableViewCell.xib in Resources */,
 				4806BE431AB29051004B8AB0 /* paizhao@2x.png in Resources */,
 				4806BE491AB29051004B8AB0 /* xiang@2x.png in Resources */,
 				48ED22151A6D10960008E783 /* Example2CollectionViewCell.xib in Resources */,
+				48B86C4D1B16C50C00FA272A /* paizhao@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -719,6 +744,7 @@
 				4806BE5E1AB29051004B8AB0 /* ZLPhotoPickerCollectionViewCell.m in Sources */,
 				48B3E17C1A11BABC0079F464 /* ViewController.m in Sources */,
 				48ED22131A6D108C0008E783 /* Example2CollectionViewCell.m in Sources */,
+				48B86C461B16BD3D00FA272A /* Example8ViewController.m in Sources */,
 				4806BE571AB29051004B8AB0 /* ZLPhotoAssets.m in Sources */,
 				4806BE2F1AB29051004B8AB0 /* NSData+ImageContentType.m in Sources */,
 				4806BC811AB283ED004B8AB0 /* Example4ViewController.m in Sources */,

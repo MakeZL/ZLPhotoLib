@@ -22,7 +22,7 @@ static CGFloat TOOLBAR_HEIGHT = 44;
 static NSString *const _cellIdentifier = @"cell";
 static NSString *const _footerIdentifier = @"FooterView";
 static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
-@interface ZLPhotoPickerAssetsViewController () <ZLPhotoPickerCollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,ZLPhotoPickerBrowserViewControllerDataSource,ZLPhotoPickerBrowserViewControllerDelegate>
+@interface ZLPhotoPickerAssetsViewController () <ZLPhotoPickerCollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,ZLPhotoPickerBrowserViewControllerDataSource,ZLPhotoPickerBrowserViewControllerDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate>
 
 // View
 // 相片View
@@ -40,6 +40,8 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
 @property (nonatomic , strong) NSMutableArray *assets;
 // 记录选中的assets
 @property (nonatomic , strong) NSMutableArray *selectAssets;
+// 拍照后的图片数组
+@property (strong,nonatomic) NSMutableArray *takePhotoImages;
 @end
 
 @implementation ZLPhotoPickerAssetsViewController
@@ -51,6 +53,13 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
         _selectAssets = [NSMutableArray array];
     }
     return _selectAssets;
+}
+
+- (NSMutableArray *)takePhotoImages{
+    if (!_takePhotoImages) {
+        _takePhotoImages = [NSMutableArray array];
+    }
+    return _takePhotoImages;
 }
 
 #pragma mark Get View
@@ -104,7 +113,7 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
     }
     
     for (ZLPhotoAssets *assets in selectPickerAssets) {
-        if ([assets isKindOfClass:[ZLPhotoAssets class]]) {
+        if ([assets isKindOfClass:[ZLPhotoAssets class]] || [assets isKindOfClass:[UIImage class]]) {
             [self.selectAssets addObject:assets];
         }
     }
@@ -127,6 +136,11 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
             [reSortArray addObject:obj];
         }
         
+        ZLPhotoAssets *zlAsset = [[ZLPhotoAssets alloc] init];
+        [reSortArray insertObject:zlAsset atIndex:0];
+        
+        self.collectionView.status = ZLPickerCollectionViewShowOrderStatusTimeAsc;
+        self.collectionView.topShowPhotoPicker = topShowPhotoPicker;
         self.collectionView.dataArray = reSortArray;
         [self.collectionView reloadData];
     }
@@ -153,8 +167,7 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
         
         collectionView.contentInset = UIEdgeInsetsMake(5, 0,TOOLBAR_HEIGHT, 0);
         collectionView.collectionViewDelegate = self;
-        [self.view insertSubview:collectionView belowSubview:self.toolBar];
-        self.collectionView = collectionView;
+        [self.view insertSubview:_collectionView = collectionView belowSubview:self.toolBar];
         
         NSDictionary *views = NSDictionaryOfVariableBindings(collectionView);
         
@@ -200,7 +213,6 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
     [self setupToorBar];
 }
 
-
 #pragma mark - setter
 #pragma mark 初始化按钮
 - (void) setupButtons{
@@ -218,9 +230,6 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
     
     [[ZLPhotoPickerDatas defaultPicker] getGroupPhotosWithGroup:self.assetsGroup finished:^(NSArray *assets) {
         
-        ZLPhotoAssets *zlAsset = [[ZLPhotoAssets alloc] init];
-        [assetsM addObject:zlAsset];
-        
         [assets enumerateObjectsUsingBlock:^(ALAsset *asset, NSUInteger idx, BOOL *stop) {
             ZLPhotoAssets *zlAsset = [[ZLPhotoAssets alloc] init];
             zlAsset.asset = asset;
@@ -230,6 +239,37 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
         weakSelf.collectionView.dataArray = assetsM;
     }];
     
+}
+
+- (void)pickerCollectionViewDidCameraSelect:(ZLPhotoPickerCollectionView *)pickerCollectionView{
+    
+    
+    UIImagePickerController *ctrl = [[UIImagePickerController alloc] init];
+    ctrl.delegate = self;
+    ctrl.sourceType = UIImagePickerControllerSourceTypeCamera;
+    [self presentViewController:ctrl animated:YES completion:nil];
+    
+    
+//    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+//        [[NSNotificationCenter defaultCenter] postNotificationName:PICKER_TAKE_PHOTO object:nil];
+//    });
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
+    
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        // 处理
+        UIImage *image = info[@"UIImagePickerControllerOriginalImage"];
+        
+        [self.assets addObject:image];
+        [self.selectAssets addObject:image];
+        [self.toolBarThumbCollectionView reloadData];
+        [self.takePhotoImages addObject:image];
+        
+        [picker dismissViewControllerAnimated:YES completion:nil];
+    }else{
+        NSLog(@"请在真机使用!");
+    }
 }
 
 #pragma mark -初始化底部ToorBar
@@ -291,6 +331,8 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
         [self.selectAssets addObject:[pickerCollectionView.selectAsstes lastObject]];
     }
     
+    [self.selectAssets addObjectsFromArray:self.takePhotoImages];
+    
 //    self.selectAssets = [NSMutableArray arrayWithArray:[[NSSet setWithArray:self.selectAssets] allObjects]];
 
     NSInteger count = self.selectAssets.count;
@@ -309,6 +351,9 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
         NSInteger selectAssetsCurrentPage = -1;
         for (NSInteger i = 0; i < self.selectAssets.count; i++) {
             ZLPhotoAssets *photoAsset = self.selectAssets[i];
+            if ([photoAsset isKindOfClass:[UIImage class]]) {
+                continue;
+            }
             if([[[[asset.asset defaultRepresentation] url] absoluteString] isEqualToString:[[[photoAsset.asset defaultRepresentation] url] absoluteString]]){
                 selectAssetsCurrentPage = i;
                 break;
@@ -323,7 +368,9 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
             if (deleteAssets){
                 [self.selectAssets removeObjectAtIndex:selectAssetsCurrentPage];
             }
-            [self.collectionView.selectsIndexPath removeObject:@(selectAssetsCurrentPage)];
+            [self.collectionView.selectsIndexPath removeObjectAtIndex:selectAssetsCurrentPage];
+            self.collectionView.selectAsstes = self.selectAssets;
+
             [self.toolBarThumbCollectionView reloadData];
             self.makeView.text = [NSString stringWithFormat:@"%ld",self.selectAssets.count];
         }
@@ -355,19 +402,20 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
             imageView.clipsToBounds = YES;
             [cell.contentView addSubview:imageView];
         }
-        
         imageView.tag = indexPath.item;
-        imageView.image = [self.selectAssets[indexPath.item] thumbImage];
+        if ([self.selectAssets[indexPath.item] isKindOfClass:[ZLPhotoAssets class]]) {
+            imageView.image = [self.selectAssets[indexPath.item] thumbImage];
+        }else if ([self.selectAssets[indexPath.item] isKindOfClass:[UIImage class]]){
+            imageView.image = (UIImage *)self.selectAssets[indexPath.item];
+        }
     }
-    
+
     return cell;
 }
 
 #pragma mark -
 #pragma makr UICollectionViewDelegate
 - (void) collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-    
-//    UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
     
     ZLPhotoPickerBrowserViewController *browserVc = [[ZLPhotoPickerBrowserViewController alloc] init];
 //    browserVc.toView = [cell.contentView.subviews lastObject];
@@ -385,12 +433,18 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
     ZLPhotoPickerBrowserPhoto *photo = [[ZLPhotoPickerBrowserPhoto alloc] init];
     UICollectionViewCell *cell = [self.toolBarThumbCollectionView cellForItemAtIndexPath:indexPath];
     UIImageView *imageView = [cell.contentView.subviews lastObject];
-    ZLPhotoAssets *asset = self.selectAssets[indexPath.row];
-//    imageView.image = asset.originImage;
-    
-    photo.thumbImage = asset.originImage;
-    photo.toView = imageView;
-    photo.asset = self.selectAssets[indexPath.row];
+    if (self.selectAssets.count && self.selectAssets.count - 1 >= indexPath.item) {
+        ZLPhotoAssets *asset = self.selectAssets[indexPath.row];
+        //    imageView.image = asset.originImage;
+        if ([asset isKindOfClass:[ZLPhotoAssets class]]) {
+            photo.thumbImage = asset.originImage;
+            photo.asset = self.selectAssets[indexPath.row];
+        }else if ([asset isKindOfClass:[UIImage class]]){
+            photo.thumbImage = (UIImage *)asset;
+            photo.photoImage = (UIImage *)asset;
+        }
+        photo.toView = imageView;
+    }
     return photo;
 }
 - (void)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser removePhotoAtIndexPath:(NSIndexPath *)indexPath{

@@ -30,6 +30,11 @@
     if (!_selectsIndexPath) {
         _selectsIndexPath = [NSMutableArray array];
     }
+    
+    if (_selectsIndexPath) {
+        NSSet *set = [NSSet setWithArray:_selectsIndexPath];
+        _selectsIndexPath = [NSMutableArray arrayWithArray:[set allObjects]];
+    }
     return _selectsIndexPath;
 }
 
@@ -42,6 +47,10 @@
         NSMutableArray *selectAssets = [NSMutableArray array];
         for (ZLPhotoAssets *asset in self.selectAsstes) {
             for (ZLPhotoAssets *asset2 in self.dataArray) {
+                
+                if ([asset isKindOfClass:[UIImage class]] || [asset2 isKindOfClass:[UIImage class]]) {
+                    continue;
+                }
                 if ([asset.asset.defaultRepresentation.url isEqual:asset2.asset.defaultRepresentation.url]) {
                     [selectAssets addObject:asset2];
                     break;
@@ -78,26 +87,40 @@
     
     ZLPhotoPickerCollectionViewCell *cell = [ZLPhotoPickerCollectionViewCell cellWithCollectionView:collectionView cellForItemAtIndexPath:indexPath];
     
-    ZLPhotoPickerImageView *cellImgView = [[ZLPhotoPickerImageView alloc] initWithFrame:cell.bounds];
-    cellImgView.maskViewFlag = YES;
     
-    // 需要记录选中的值的数据
-    if (self.isRecoderSelectPicker) {
-        for (ZLPhotoAssets *asset in self.selectAsstes) {
-            if ([asset.asset.defaultRepresentation.url isEqual:[self.dataArray[indexPath.item] asset].defaultRepresentation.url]) {
-                [self.selectsIndexPath addObject:@(indexPath.row)];
+    if(indexPath.item == 0 && self.topShowPhotoPicker){
+        UIImageView *imageView = [[cell.contentView subviews] lastObject];
+        // 判断真实类型
+        if (![imageView isKindOfClass:[UIImageView class]]) {
+            imageView = [[UIImageView alloc] initWithFrame:cell.bounds];
+            imageView.contentMode = UIViewContentModeScaleAspectFit;
+            imageView.clipsToBounds = YES;
+            [cell.contentView addSubview:imageView];
+        }
+        imageView.tag = indexPath.item;
+        imageView.image = [UIImage imageNamed:@"camera"];
+    }else{
+        ZLPhotoPickerImageView *cellImgView = [[ZLPhotoPickerImageView alloc] initWithFrame:cell.bounds];
+        cellImgView.maskViewFlag = YES;
+        
+        // 需要记录选中的值的数据
+        if (self.isRecoderSelectPicker) {
+            for (ZLPhotoAssets *asset in self.selectAsstes) {
+                if ([asset.asset.defaultRepresentation.url isEqual:[self.dataArray[indexPath.item] asset].defaultRepresentation.url]) {
+                    [self.selectsIndexPath addObject:@(indexPath.row)];
+                }
             }
         }
-    }
-    
-    [cell.contentView addSubview:cellImgView];
-    
-    cellImgView.maskViewFlag = ([self.selectsIndexPath containsObject:@(indexPath.row)]);
-    
-    ZLPhotoAssets *asset = self.dataArray[indexPath.item];
-    cellImgView.isVideoType = asset.isVideoType;
-    if ([asset isKindOfClass:[ZLPhotoAssets class]]) {
-        cellImgView.image= asset.thumbImage;
+        
+        [cell.contentView addSubview:cellImgView];
+        
+        cellImgView.maskViewFlag = ([self.selectsIndexPath containsObject:@(indexPath.row)]);
+        
+        ZLPhotoAssets *asset = self.dataArray[indexPath.item];
+        cellImgView.isVideoType = asset.isVideoType;
+        if ([asset isKindOfClass:[ZLPhotoAssets class]]) {
+            cellImgView.image= asset.thumbImage;
+        }
     }
     
     return cell;
@@ -106,6 +129,13 @@
 #pragma mark - <UICollectionViewDelegate>
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
 
+    if (self.topShowPhotoPicker && indexPath.item == 0) {
+        if ([self.collectionViewDelegate respondsToSelector:@selector(pickerCollectionViewDidCameraSelect:)]) {
+            [self.collectionViewDelegate pickerCollectionViewDidCameraSelect:self];
+        }
+        return ;
+    }
+    
     if (!self.lastDataArray) {
         self.lastDataArray = [NSMutableArray array];
     }
@@ -178,6 +208,14 @@
             [self scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:self.dataArray.count - 1 inSection:0] atScrollPosition:UICollectionViewScrollPositionBottom animated:NO];
             // 展示图片数
             self.contentOffset = CGPointMake(self.contentOffset.x, self.contentOffset.y + 100);
+            self.firstLoadding = YES;
+        }
+    }else if (self.status == ZLPickerCollectionViewShowOrderStatusTimeAsc){
+        // 滚动到最底部（最新的）
+        if (!self.firstLoadding && self.contentSize.height > [[UIScreen mainScreen] bounds].size.height) {
+            [self scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0] atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
+            // 展示图片数
+            self.contentOffset = CGPointMake(self.contentOffset.x, -self.contentInset.top);
             self.firstLoadding = YES;
         }
     }

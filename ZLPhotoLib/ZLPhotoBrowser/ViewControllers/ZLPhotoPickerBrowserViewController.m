@@ -150,6 +150,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     [[UIApplication sharedApplication].keyWindow addSubview:mainView];
     
     UIImageView *toImageView = nil;
+    
     if(self.status == UIViewAnimationAnimationStatusZoom){
         toImageView = (UIImageView *)[[self.dataSource photoBrowser:self photoAtIndexPath:self.currentIndexPath] toView];
     }

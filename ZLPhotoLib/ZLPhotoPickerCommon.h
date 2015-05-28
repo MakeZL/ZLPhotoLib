@@ -39,5 +39,6 @@ static NSInteger const ZLPickerPageCtrlH = 25;
 
 // NSNotification
 static NSString *PICKER_TAKE_DONE = @"PICKER_TAKE_DONE";
+static NSString *PICKER_TAKE_PHOTO = @"PICKER_TAKE_PHOTO";
 
 #endif

@@ -19,10 +19,14 @@ typedef NS_ENUM(NSUInteger, ZLPickerCollectionViewShowOrderStatus){
 @protocol ZLPhotoPickerCollectionViewDelegate <NSObject>
 // 选择相片就会调用
 - (void) pickerCollectionViewDidSelected:(ZLPhotoPickerCollectionView *) pickerCollectionView deleteAsset:(ZLPhotoAssets *)deleteAssets;
+
+// 点击拍照就会调用
+- (void)pickerCollectionViewDidCameraSelect:(ZLPhotoPickerCollectionView *) pickerCollectionView;
 @end
 
-@interface ZLPhotoPickerCollectionView : UICollectionView
+@interface ZLPhotoPickerCollectionView : UICollectionView<UICollectionViewDelegate>
 
+// scrollView滚动的升序降序
 @property (nonatomic , assign) ZLPickerCollectionViewShowOrderStatus status;
 // 保存所有的数据
 @property (nonatomic , strong) NSArray *dataArray;
@@ -34,7 +38,8 @@ typedef NS_ENUM(NSUInteger, ZLPickerCollectionViewShowOrderStatus){
 @property (nonatomic , weak) id <ZLPhotoPickerCollectionViewDelegate> collectionViewDelegate;
 // 限制最大数
 @property (nonatomic , assign) NSInteger minCount;
-
+// 置顶展示图片
+@property (assign,nonatomic) BOOL topShowPhotoPicker;
 // 选中的索引值，为了防止重用
 @property (nonatomic , strong) NSMutableArray *selectsIndexPath;
 // 记录选中的值

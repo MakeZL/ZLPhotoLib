@@ -28,6 +28,7 @@
              @"视频选择 + 视频游览器 >>>",
              @"查看当个图片（头像） >>>",
              @"添加图片的情况下 >>> UIScrollView",
+             @"多选图片(Weibo模式)New!",
             ];
 }
 
@@ -80,8 +81,7 @@
 #pragma mark - <UITableViewDelegate>
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-//    NSString *exampleVc = [NSString stringWithFormat:@"Example%ldViewController",indexPath.row + 1];
-    NSString *exampleVc = [NSString stringWithFormat:@"PublishViewController"];
+    NSString *exampleVc = [NSString stringWithFormat:@"Example%ldViewController",indexPath.row + 1];
     UIViewController *vc = [[NSClassFromString(exampleVc) alloc] init];
     vc.title = self.examples[indexPath.row];
     [self.navigationController pushViewController:vc animated:YES];

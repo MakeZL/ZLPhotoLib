@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 // 回调
 typedef void(^callBackBlock)(id obj);
-
+@class ZLPhotoPickerViewController;
 // 状态组
 typedef NS_ENUM(NSInteger , PickerViewShowStatus) {
     PickerViewShowStatusGroup = 0, // default groups .
@@ -23,7 +23,11 @@ typedef NS_ENUM(NSInteger , PickerViewShowStatus) {
 /**
  *  返回所有的Asstes对象
  */
-- (void) pickerViewControllerDoneAsstes : (NSArray *) assets;
+- (void)pickerViewControllerDoneAsstes:(NSArray *)assets;
+/**
+ *  点击拍照
+ */
+- (void)pickerCollectionViewSelectCamera:(ZLPhotoPickerViewController *)pickerVc;
 @end
 
 @interface ZLPhotoPickerViewController : UIViewController
