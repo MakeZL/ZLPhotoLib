@@ -332,8 +332,13 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     if (self.currentPage <= 0){
         self.currentPage = self.currentIndexPath.item;
     }else{
-        self.currentPage--;
+        --self.currentPage;
     }
+    
+    if (self.currentPage >= self.photos.count) {
+        self.currentPage = self.photos.count - 1;
+    }
+    
     [self.collectionView reloadData];
     
     // 添加自定义View
@@ -360,7 +365,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         }
         
         self.collectionView.x = -attachVal;
-//        [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:self.currentPage inSection:self.currentIndexPath.section] atScrollPosition:UICollectionViewScrollPositionNone animated:YES];
+        self.collectionView.contentOffset = CGPointMake(self.currentPage * self.collectionView.width, 0);
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(00.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             self.collectionView.contentOffset = CGPointMake(self.currentPage * self.collectionView.width, 0);
         });
@@ -505,9 +510,9 @@ static NSString *_cellIdentifier = @"collectionViewCell";
             [self.delegate photoBrowser:self removePhotoAtIndexPath:[NSIndexPath indexPathForItem:page inSection:self.currentIndexPath.section]];
         }
         
-        [self.photos removeObjectAtIndex:self.currentPage];
+        [self.photos removeObjectAtIndex:page];
         
-        if (self.currentPage >= self.photos.count) {
+        if (page >= self.photos.count) {
             self.currentPage--;
         }
         
