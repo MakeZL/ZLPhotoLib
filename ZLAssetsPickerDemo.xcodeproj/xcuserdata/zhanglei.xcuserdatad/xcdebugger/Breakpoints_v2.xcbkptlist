@@ -68,11 +68,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ZLPhotoLib/ZLPhotoPicker/ViewControllers/ZLPhotoPickerAssetsViewController.m"
-            timestampString = "454529135.920001"
+            timestampString = "454562258.896062"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "246"
-            endingLineNumber = "246"
+            startingLineNumber = "247"
+            endingLineNumber = "247"
             landmarkName = "-pickerCollectionViewDidCameraSelect:"
             landmarkType = "5">
          </BreakpointContent>
@@ -84,44 +84,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ZLPhotoLib/ZLPhotoPicker/ViewControllers/ZLPhotoPickerAssetsViewController.m"
-            timestampString = "454529135.920001"
+            timestampString = "454737723.589231"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "429"
-            endingLineNumber = "429"
-            landmarkName = "-photoBrowser:numberOfItemsInSection:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ZLPhotoLib/ZLPhotoPicker/ViewControllers/ZLPhotoPickerAssetsViewController.m"
-            timestampString = "454529135.920001"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "358"
-            endingLineNumber = "358"
-            landmarkName = "-pickerCollectionViewDidSelected:deleteAsset:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ZLPhotoLib/ZLPhotoPicker/ViewControllers/ZLPhotoPickerAssetsViewController.m"
-            timestampString = "454529135.920001"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "371"
-            endingLineNumber = "371"
-            landmarkName = "-pickerCollectionViewDidSelected:deleteAsset:"
+            startingLineNumber = "477"
+            endingLineNumber = "477"
+            landmarkName = "-photoBrowser:removePhotoAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

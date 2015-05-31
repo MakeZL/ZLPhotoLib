@@ -17,11 +17,6 @@
 @property (nonatomic , copy) NSString *groupName;
 
 /**
- *  组的真实名
- */
-@property (nonatomic , copy) NSString *realGroupName;
-
-/**
  *  缩略图
  */
 @property (nonatomic , strong) UIImage *thumbImage;

@@ -368,9 +368,13 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
             if (deleteAssets){
                 [self.selectAssets removeObjectAtIndex:selectAssetsCurrentPage];
             }
-            [self.collectionView.selectsIndexPath removeObjectAtIndex:selectAssetsCurrentPage];
-            self.collectionView.selectAsstes = self.selectAssets;
-
+            
+            [self.collectionView.selectsIndexPath removeObject:@(selectAssetsCurrentPage)];
+            if (selectAssetsCurrentPage < self.collectionView.selectsIndexPath.count - 1) {
+                [self.collectionView.selectsIndexPath removeObjectAtIndex:selectAssetsCurrentPage];
+            }
+            
+            [self.collectionView.selectsIndexPath removeObject:@(selectAssetsCurrentPage)];
             [self.toolBarThumbCollectionView reloadData];
             self.makeView.text = [NSString stringWithFormat:@"%ld",self.selectAssets.count];
         }
@@ -420,6 +424,7 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
     ZLPhotoPickerBrowserViewController *browserVc = [[ZLPhotoPickerBrowserViewController alloc] init];
 //    browserVc.toView = [cell.contentView.subviews lastObject];
     browserVc.currentIndexPath = [NSIndexPath indexPathForItem:indexPath.item inSection:0];
+    browserVc.editing = YES;
     browserVc.delegate = self;
     browserVc.dataSource = self;
     [self presentViewController:browserVc animated:NO completion:nil];
@@ -443,8 +448,8 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
             photo.thumbImage = (UIImage *)asset;
             photo.photoImage = (UIImage *)asset;
         }
-        photo.toView = imageView;
     }
+    photo.toView = imageView;
     return photo;
 }
 - (void)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser removePhotoAtIndexPath:(NSIndexPath *)indexPath{
