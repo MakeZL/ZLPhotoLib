@@ -145,8 +145,6 @@
     // 数据源/delegate
     pickerBrowser.delegate = self;
     pickerBrowser.dataSource = self;
-    // 是否可以删除照片
-    pickerBrowser.editing = YES;
     // 当前选中的值
     pickerBrowser.currentIndexPath = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
     // 展示控制器

@@ -266,6 +266,11 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
         [self.toolBarThumbCollectionView reloadData];
         [self.takePhotoImages addObject:image];
         
+        NSInteger count = self.selectAssets.count;
+        self.makeView.hidden = !count;
+        self.makeView.text = [NSString stringWithFormat:@"%ld",(long)count];
+        self.doneBtn.enabled = (count > 0);
+        
         [picker dismissViewControllerAnimated:YES completion:nil];
     }else{
         NSLog(@"请在真机使用!");
@@ -370,11 +375,7 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
             }
             
             [self.collectionView.selectsIndexPath removeObject:@(selectAssetsCurrentPage)];
-            if (selectAssetsCurrentPage < self.collectionView.selectsIndexPath.count - 1) {
-                [self.collectionView.selectsIndexPath removeObjectAtIndex:selectAssetsCurrentPage];
-            }
-            
-            [self.collectionView.selectsIndexPath removeObject:@(selectAssetsCurrentPage)];
+
             [self.toolBarThumbCollectionView reloadData];
             self.makeView.text = [NSString stringWithFormat:@"%ld",self.selectAssets.count];
         }
@@ -456,28 +457,10 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
     
     // 删除选中的照片
     ALAsset *asset = self.selectAssets[indexPath.row];
-    NSInteger currentPage = 0;
+    NSInteger currentPage = indexPath.row;
     for (NSInteger i = 0; i < self.collectionView.dataArray.count; i++) {
         ALAsset *photoAsset = self.collectionView.dataArray[i];
-        if ([photoAsset isKindOfClass:[ZLPhotoAssets class]] || [asset isKindOfClass:[ZLPhotoAssets class]]) {
-            
-            if ([photoAsset isKindOfClass:[ZLPhotoAssets class]] && !([asset isKindOfClass:[ZLPhotoAssets class]])) {
-                
-                ZLPhotoAssets *photoAssets = (ZLPhotoAssets *)photoAsset;
-                if([[[[asset defaultRepresentation] url] absoluteString] isEqualToString:[[[photoAssets.asset defaultRepresentation] url] absoluteString]]){
-                    currentPage = i;
-                    break;
-                }
-            }else if (!([photoAsset isKindOfClass:[ZLPhotoAssets class]]) && ([asset isKindOfClass:[ZLPhotoAssets class]])){
-                
-                ZLPhotoAssets *assets = (ZLPhotoAssets *)asset;
-                if([[[[assets.asset defaultRepresentation] url] absoluteString] isEqualToString:[[[photoAsset defaultRepresentation] url] absoluteString]]){
-                    currentPage = i;
-                    break;
-                }
-                
-            }else{
-                
+        if ([photoAsset isKindOfClass:[ZLPhotoAssets class]] && [asset isKindOfClass:[ZLPhotoAssets class]]) {
                 ZLPhotoAssets *photoAssets = (ZLPhotoAssets *)photoAsset;
                 ZLPhotoAssets *assets = (ZLPhotoAssets *)asset;
                 if([[[[assets.asset defaultRepresentation] url] absoluteString] isEqualToString:[[[photoAssets.asset defaultRepresentation] url] absoluteString]]){
@@ -485,15 +468,12 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
                     break;
                 }
             }
-            
-        }else{
-            if([[[[asset defaultRepresentation] url] absoluteString] isEqualToString:[[[photoAsset defaultRepresentation] url] absoluteString]]){
-                currentPage = i;
-                break;
-            }
+        else{
+            continue;
+            break;
         }
     }
-    
+
     [self.selectAssets removeObjectAtIndex:indexPath.row];
     [self.collectionView.selectsIndexPath removeObject:@(currentPage)];
     [self.toolBarThumbCollectionView reloadData];
