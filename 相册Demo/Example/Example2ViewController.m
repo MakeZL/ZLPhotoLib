@@ -186,7 +186,6 @@
         [weakSelf.collectionView reloadData];
     }];
     self.cameraVc = cameraVc;
-    
 }
 
 @end

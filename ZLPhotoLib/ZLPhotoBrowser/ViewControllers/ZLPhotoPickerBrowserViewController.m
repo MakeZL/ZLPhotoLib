@@ -216,7 +216,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
             originalFrame.origin.y += weakSelf.navigationHeight;
         }
         
-        [UIView animateWithDuration:0.25 animations:^{
+        [UIView animateWithDuration:0.35 animations:^{
             if (weakSelf.status == UIViewAnimationAnimationStatusFade){
                 imageView.alpha = 0.0;
                 mainView.alpha = 0.0;
@@ -233,7 +233,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     };
     
     [weakSelf reloadData];
-    [UIView animateWithDuration:0.25 animations:^{
+    [UIView animateWithDuration:0.35 animations:^{
         if (self.status == UIViewAnimationAnimationStatusFade){
             // 淡入淡出
             imageView.alpha = 1.0;
@@ -367,16 +367,13 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         self.collectionView.x = -attachVal;
         self.collectionView.contentOffset = CGPointMake(self.currentPage * self.collectionView.width, 0);
         
-        if (self.currentPage == self.photos.count - 1) {            
+        if (self.currentPage == self.photos.count - 1) {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(00.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 self.collectionView.contentOffset = CGPointMake(self.currentPage * self.collectionView.width - 20, 0);
             });
         }
     }
-    
 }
-
-
 
 #pragma mark - <UICollectionViewDataSource>
 - (NSInteger) numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
