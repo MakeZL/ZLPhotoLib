@@ -367,7 +367,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         self.collectionView.x = -attachVal;
         self.collectionView.contentOffset = CGPointMake(self.currentPage * self.collectionView.width, 0);
         
-        if (self.currentPage == self.photos.count - 1) {
+        if (self.currentPage == self.photos.count - 1 && self.photos.count > 1) {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(00.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 self.collectionView.contentOffset = CGPointMake(self.currentPage * self.collectionView.width - 20, 0);
             });
