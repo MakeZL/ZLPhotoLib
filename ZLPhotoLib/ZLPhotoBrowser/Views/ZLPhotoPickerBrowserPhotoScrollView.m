@@ -26,27 +26,6 @@
 
 @implementation ZLPhotoPickerBrowserPhotoScrollView
 
-- (DACircularProgressView *)progressView{
-    if (!_progressView) {
-        DACircularProgressView *progressView = [[DACircularProgressView alloc] init];
-        
-        progressView.frame = CGRectMake(0, 0, ZLPickerProgressViewW, ZLPickerProgressViewH);
-        progressView.center = CGPointMake([UIScreen mainScreen].bounds.size.width * 0.5, [UIScreen mainScreen].bounds.size.height * 0.5);
-        progressView.roundedCorners = YES;
-        if (iOS7gt) {
-            progressView.thicknessRatio = 0.1;
-            progressView.roundedCorners = NO;
-        } else {
-            progressView.thicknessRatio = 0.2;
-            progressView.roundedCorners = YES;
-        }
-        
-        [self addSubview:progressView];
-        self.progressView = progressView;
-    }
-    return _progressView;
-}
-
 - (id)init{
     if ((self = [super init])) {
         
@@ -76,6 +55,22 @@
         UILongPressGestureRecognizer *longGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longGesture:)];
         [self addGestureRecognizer:longGesture];
         
+        DACircularProgressView *progressView = [[DACircularProgressView alloc] init];
+        
+        progressView.frame = CGRectMake(0, 0, ZLPickerProgressViewW, ZLPickerProgressViewH);
+        progressView.center = CGPointMake([UIScreen mainScreen].bounds.size.width * 0.5, [UIScreen mainScreen].bounds.size.height * 0.5);
+        progressView.roundedCorners = YES;
+        if (iOS7gt) {
+            progressView.thicknessRatio = 0.1;
+            progressView.roundedCorners = NO;
+        } else {
+            progressView.thicknessRatio = 0.2;
+            progressView.roundedCorners = YES;
+        }
+        progressView.hidden = YES;
+        
+        [self addSubview:progressView];
+        self.progressView = progressView;
     }
     return self;
 }
@@ -135,8 +130,12 @@
             } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
                 [self setProgress:1.0];
                 self.isLoadingDone = YES;
-                _photoImageView.image = image;
-                [weakSelf displayImage];
+                if (image) {
+                    _photoImageView.image = image;
+                    [weakSelf displayImage];
+                }else{
+                    [_photoImageView removeScaleBigTap];
+                }
             }];
             
         }
@@ -193,6 +192,7 @@
 - (void)setProgress:(CGFloat)progress{
     _progress = progress;
     
+    self.progressView.hidden = NO;
     if (progress == 0) return ;
     if (progress / 1.0 != 1.0) {
         [self.progressView setProgress:progress animated:YES];

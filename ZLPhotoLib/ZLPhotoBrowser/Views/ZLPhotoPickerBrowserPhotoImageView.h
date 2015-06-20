@@ -16,12 +16,13 @@
 @property (nonatomic, weak) id <ZLPhotoPickerBrowserPhotoImageViewDelegate> tapDelegate;
 @property (assign,nonatomic) CGFloat progress;
 
+- (void)addScaleBigTap;
+- (void)removeScaleBigTap;
 @end
 
 @protocol ZLPhotoPickerBrowserPhotoImageViewDelegate <NSObject>
 
 @optional
-
 - (void)imageView:(UIImageView *)imageView singleTapDetected:(UITouch *)touch;
 - (void)imageView:(UIImageView *)imageView doubleTapDetected:(UITouch *)touch;
 

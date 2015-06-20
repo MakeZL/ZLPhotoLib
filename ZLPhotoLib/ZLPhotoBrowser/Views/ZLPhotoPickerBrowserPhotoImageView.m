@@ -8,6 +8,10 @@
 
 #import "ZLPhotoPickerBrowserPhotoImageView.h"
 
+@interface ZLPhotoPickerBrowserPhotoImageView ()
+@property (strong,nonatomic) UITapGestureRecognizer *scaleBigTap;
+@end
+
 @implementation ZLPhotoPickerBrowserPhotoImageView
 
 - (id)initWithFrame:(CGRect)frame {
@@ -45,7 +49,7 @@
     UITapGestureRecognizer *scaleBigTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
     scaleBigTap.numberOfTapsRequired = 2;
     scaleBigTap.numberOfTouchesRequired = 1;
-    [self addGestureRecognizer:scaleBigTap];
+    [self addGestureRecognizer:_scaleBigTap = scaleBigTap];
 
     // 单击缩小
     UITapGestureRecognizer *disMissTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)];
@@ -54,6 +58,14 @@
     [self addGestureRecognizer:disMissTap];
     // 只能有一个手势存在
     [disMissTap requireGestureRecognizerToFail:scaleBigTap];
+}
+
+- (void)addScaleBigTap{
+    [self.scaleBigTap addTarget:self action:@selector(handleDoubleTap:)];
+}
+
+- (void)removeScaleBigTap{
+    [self.scaleBigTap removeTarget:self action:@selector(handleDoubleTap:)];
 }
 
 - (void)handleSingleTap:(UITouch *)touch {

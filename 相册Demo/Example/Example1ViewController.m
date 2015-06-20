@@ -140,7 +140,6 @@
     // 图片游览器
     ZLPhotoPickerBrowserViewController *pickerBrowser = [[ZLPhotoPickerBrowserViewController alloc] init];
     // 动画方式
-    // pickerBrowser.status = UIViewAnimationAnimationStatusZoom;
     // 数据源/delegate
     pickerBrowser.delegate = self;
     pickerBrowser.dataSource = self;
@@ -149,7 +148,6 @@
     // 当前选中的值
     pickerBrowser.currentIndexPath = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
     // 展示控制器
-//    [pickerBrowser show];
     [self presentViewController:pickerBrowser animated:NO completion:nil];
 }
 
