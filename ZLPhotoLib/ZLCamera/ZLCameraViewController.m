@@ -407,7 +407,7 @@ static CGFloat BOTTOM_HEIGHT = 60;
     }
     pickerVc.status = PickerViewShowStatusCameraRoll;
     pickerVc.delegate = self;
-    [pickerVc show];
+    [[[[UIApplication sharedApplication].windows lastObject] rootViewController] presentViewController:pickerVc animated:NO completion:nil];
 }
 
 - (void)pickerViewControllerDoneAsstes:(NSArray *)assets{
