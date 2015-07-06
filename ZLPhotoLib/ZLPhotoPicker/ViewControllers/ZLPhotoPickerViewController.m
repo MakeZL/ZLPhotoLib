@@ -66,7 +66,14 @@
 
 #pragma mark - 展示控制器
 - (void)show{
-    [[[[UIApplication sharedApplication].windows firstObject] rootViewController] presentViewController:self animated:YES completion:nil];
+    @try {
+        [[[[UIApplication sharedApplication].windows firstObject] rootViewController] presentViewController:self animated:YES completion:nil];
+    }
+    @catch (NSException *exception) {
+        [[[[UIApplication sharedApplication].windows lastObject] rootViewController] presentViewController:self animated:YES completion:nil];
+    }
+    @finally {
+    }
 }
 
 - (void) addNotification{

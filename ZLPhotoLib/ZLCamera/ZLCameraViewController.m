@@ -258,7 +258,7 @@ static CGFloat BOTTOM_HEIGHT = 60;
     browserVc.dataSource = self;
     browserVc.delegate = self;
     browserVc.currentIndexPath = [NSIndexPath indexPathForItem:indexPath.item inSection:0];
-    browserVc.editing = YES;
+//    browserVc.editing = YES;
     [self presentViewController:browserVc animated:NO completion:nil];
     
 }
@@ -277,6 +277,7 @@ static CGFloat BOTTOM_HEIGHT = 60;
     UICollectionViewCell *cell = (UICollectionViewCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:0]];
     
     UIImageView *imageView = [[cell.contentView subviews] lastObject];
+    photo.toView = imageView;
     photo.thumbImage = imageView.image;
     
     return photo;
@@ -407,7 +408,7 @@ static CGFloat BOTTOM_HEIGHT = 60;
     }
     pickerVc.status = PickerViewShowStatusCameraRoll;
     pickerVc.delegate = self;
-    [[[[UIApplication sharedApplication].windows lastObject] rootViewController] presentViewController:pickerVc animated:NO completion:nil];
+    [pickerVc show];
 }
 
 - (void)pickerViewControllerDoneAsstes:(NSArray *)assets{

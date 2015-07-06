@@ -424,9 +424,9 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
     
     ZLPhotoPickerBrowserViewController *browserVc = [[ZLPhotoPickerBrowserViewController alloc] init];
 //    browserVc.toView = [cell.contentView.subviews lastObject];
-    browserVc.currentIndexPath = [NSIndexPath indexPathForItem:indexPath.item inSection:0];
     browserVc.delegate = self;
     browserVc.dataSource = self;
+    browserVc.currentIndexPath = [NSIndexPath indexPathForItem:indexPath.item inSection:0];
     [self presentViewController:browserVc animated:NO completion:nil];
 }
 
