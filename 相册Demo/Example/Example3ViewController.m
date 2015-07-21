@@ -10,7 +10,7 @@
 #import "Example1TableViewCell.h"
 #import "ZLPhoto.h"
 
-@interface Example3ViewController() <ZLPhotoPickerViewControllerDelegate,UITableViewDataSource,UITableViewDelegate,ZLPhotoPickerBrowserViewControllerDataSource,ZLPhotoPickerBrowserViewControllerDelegate>
+@interface Example3ViewController() <UITableViewDataSource,UITableViewDelegate,ZLPhotoPickerBrowserViewControllerDataSource,ZLPhotoPickerBrowserViewControllerDelegate,ZLPhotoPickerViewControllerDelegate>
 
 @property (weak,nonatomic) UITableView *tableView;
 @property (nonatomic , strong) NSMutableArray *assets;
@@ -71,7 +71,7 @@
     // 最多能选9张图片
     pickerVc.minCount = 9;
     pickerVc.delegate = self;
-    [pickerVc show];
+    [pickerVc showPickerVc:self];
     /**
      *
      传值可以用代理，或者用block来接收，以下是block的传值

@@ -10,7 +10,7 @@
 #import "Example1TableViewCell.h"
 #import "ZLPhoto.h"
 
-@interface Example1ViewController() <ZLPhotoPickerViewControllerDelegate,UITableViewDataSource,UITableViewDelegate,ZLPhotoPickerBrowserViewControllerDataSource,ZLPhotoPickerBrowserViewControllerDelegate>
+@interface Example1ViewController() <UITableViewDataSource,UITableViewDelegate,ZLPhotoPickerBrowserViewControllerDataSource,ZLPhotoPickerBrowserViewControllerDelegate,ZLPhotoPickerViewControllerDelegate>
 
 @property (weak,nonatomic) UITableView *tableView;
 @property (nonatomic , strong) NSMutableArray *assets;
@@ -82,7 +82,7 @@
      pickerVc.minCount = 20;
      pickerVc.status = PickerViewShowStatusCameraRoll;
      pickerVc.delegate = self;
-     [pickerVc show];
+     [pickerVc showPickerVc:self];
     /**
      *
      传值可以用代理，或者用block来接收，以下是block的传值

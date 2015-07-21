@@ -104,7 +104,7 @@
         [self reloadScrollView];
     };
     
-    [pickerVc show];
+    [pickerVc showPickerVc:self];
 }
 
 - (void)tapBrowser:(UIButton *)btn{

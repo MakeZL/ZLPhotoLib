@@ -408,7 +408,7 @@ static CGFloat BOTTOM_HEIGHT = 60;
     }
     pickerVc.status = PickerViewShowStatusCameraRoll;
     pickerVc.delegate = self;
-    [pickerVc show];
+    [pickerVc showPickerVc:self];
 }
 
 - (void)pickerViewControllerDoneAsstes:(NSArray *)assets{

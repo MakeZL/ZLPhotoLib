@@ -27,13 +27,14 @@ typedef NS_ENUM(NSInteger , PickerViewShowStatus) {
 /**
  *  点击拍照
  */
+@optional
 - (void)pickerCollectionViewSelectCamera:(ZLPhotoPickerViewController *)pickerVc;
 @end
 
 @interface ZLPhotoPickerViewController : UIViewController
 
 // @optional
-@property (nonatomic , weak) id<ZLPhotoPickerViewControllerDelegate> delegate;
+@property (nonatomic , weak) id<ZLPhotoPickerViewControllerDelegate>delegate;
 // 决定你是否需要push到内容控制器, 默认显示组
 @property (nonatomic , assign) PickerViewShowStatus status;
 // 可以用代理来返回值或者用block来返回值
@@ -47,6 +48,6 @@ typedef NS_ENUM(NSInteger , PickerViewShowStatus) {
 
 // @function
 // 展示控制器
-- (void)show;
+- (void)showPickerVc:(UIViewController *)vc;
 
 @end
