@@ -28,5 +28,7 @@ typedef void(^ZLComplate)(id object);
  *  @param complate       成功后的回调
  */
 - (void)startCameraOrPhotoFileWithViewController:(UIViewController*)viewController complate : (ZLComplate ) complate;
+// 完成后回调
+@property (copy, nonatomic) ZLComplate complate;
 
 @end

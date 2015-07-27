@@ -27,8 +27,6 @@ static CGFloat BOTTOM_HEIGHT = 60;
 // Datas
 @property (strong, nonatomic) NSMutableArray *images;
 @property (strong, nonatomic) NSMutableDictionary *dictM;
-// 完成后回调
-@property (copy, nonatomic) ZLComplate complate;
 
 // AVFoundation
 @property (strong, nonatomic) AVCaptureSession *session;
