@@ -66,9 +66,9 @@
 
 #pragma mark - 展示控制器
 - (void)showPickerVc:(UIViewController *)vc{
-    __weak typeof(self)weakSelf = self;
-    if (vc != nil) {
-        [vc presentViewController:weakSelf animated:YES completion:nil];
+    __weak typeof(vc)weakVc = vc;
+    if (weakVc != nil) {
+        [weakVc presentViewController:self animated:YES completion:nil];
     }
 }
 
