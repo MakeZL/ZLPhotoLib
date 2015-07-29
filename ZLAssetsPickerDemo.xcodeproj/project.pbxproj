@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		48068AE61AC453D8009A65FB /* Example6ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48068AE51AC453D8009A65FB /* Example6ViewController.m */; };
 		4806BC811AB283ED004B8AB0 /* Example4ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4806BC801AB283ED004B8AB0 /* Example4ViewController.m */; };
-		4806BE2C1AB29051004B8AB0 /* UIView+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 4806BDB51AB29051004B8AB0 /* UIView+Extension.m */; };
+		4806BE2C1AB29051004B8AB0 /* UIView+ZLExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 4806BDB51AB29051004B8AB0 /* UIView+ZLExtension.m */; };
 		4806BE2D1AB29051004B8AB0 /* DACircularProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4806BDB81AB29051004B8AB0 /* DACircularProgressView.m */; };
 		4806BE2E1AB29051004B8AB0 /* MKAnnotationView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 4806BDBB1AB29051004B8AB0 /* MKAnnotationView+WebCache.m */; };
 		4806BE2F1AB29051004B8AB0 /* NSData+ImageContentType.m in Sources */ = {isa = PBXBuildFile; fileRef = 4806BDBD1AB29051004B8AB0 /* NSData+ImageContentType.m */; };
@@ -99,8 +99,8 @@
 		48068AE51AC453D8009A65FB /* Example6ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Example6ViewController.m; sourceTree = "<group>"; };
 		4806BC7F1AB283ED004B8AB0 /* Example4ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Example4ViewController.h; sourceTree = "<group>"; };
 		4806BC801AB283ED004B8AB0 /* Example4ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Example4ViewController.m; sourceTree = "<group>"; };
-		4806BDB41AB29051004B8AB0 /* UIView+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Extension.h"; sourceTree = "<group>"; };
-		4806BDB51AB29051004B8AB0 /* UIView+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Extension.m"; sourceTree = "<group>"; };
+		4806BDB41AB29051004B8AB0 /* UIView+ZLExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+ZLExtension.h"; sourceTree = "<group>"; };
+		4806BDB51AB29051004B8AB0 /* UIView+ZLExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+ZLExtension.m"; sourceTree = "<group>"; };
 		4806BDB71AB29051004B8AB0 /* DACircularProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DACircularProgressView.h; sourceTree = "<group>"; };
 		4806BDB81AB29051004B8AB0 /* DACircularProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DACircularProgressView.m; sourceTree = "<group>"; };
 		4806BDBA1AB29051004B8AB0 /* MKAnnotationView+WebCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MKAnnotationView+WebCache.h"; sourceTree = "<group>"; };
@@ -277,8 +277,8 @@
 		4806BDB31AB29051004B8AB0 /* Category */ = {
 			isa = PBXGroup;
 			children = (
-				4806BDB41AB29051004B8AB0 /* UIView+Extension.h */,
-				4806BDB51AB29051004B8AB0 /* UIView+Extension.m */,
+				4806BDB41AB29051004B8AB0 /* UIView+ZLExtension.h */,
+				4806BDB51AB29051004B8AB0 /* UIView+ZLExtension.m */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -736,7 +736,7 @@
 			files = (
 				4806BE5A1AB29051004B8AB0 /* ZLPhotoPickerAssetsViewController.m in Sources */,
 				4806BE381AB29051004B8AB0 /* UIImage+GIF.m in Sources */,
-				4806BE2C1AB29051004B8AB0 /* UIView+Extension.m in Sources */,
+				4806BE2C1AB29051004B8AB0 /* UIView+ZLExtension.m in Sources */,
 				48D0E4571AC261D20022C598 /* Example5ViewController.m in Sources */,
 				48068AE61AC453D8009A65FB /* Example6ViewController.m in Sources */,
 				4806BE541AB29051004B8AB0 /* ZLPhotoPickerBrowserPhotoScrollView.m in Sources */,

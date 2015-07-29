@@ -45,7 +45,7 @@
     // 需要记录选中的值的数据
     if (self.isRecoderSelectPicker){
         NSMutableArray *selectAssets = [NSMutableArray array];
-        for (ZLPhotoAssets *asset in self.selectAsstes) {
+        for (ZLPhotoAssets *asset in self.selectAssets) {
             for (ZLPhotoAssets *asset2 in self.dataArray) {
                 
                 if ([asset isKindOfClass:[UIImage class]] || [asset2 isKindOfClass:[UIImage class]]) {
@@ -57,7 +57,7 @@
                 }
             }
         }
-        _selectAsstes = selectAssets;
+        _selectAssets = selectAssets;
     }
     
     [self reloadData];
@@ -69,7 +69,7 @@
         self.backgroundColor = [UIColor clearColor];
         self.dataSource = self;
         self.delegate = self;
-        _selectAsstes = [NSMutableArray array];
+        _selectAssets = [NSMutableArray array];
     }
     return self;
 }
@@ -105,7 +105,7 @@
         
         // 需要记录选中的值的数据
         if (self.isRecoderSelectPicker) {
-            for (ZLPhotoAssets *asset in self.selectAsstes) {
+            for (ZLPhotoAssets *asset in self.selectAssets) {
                 if ([asset.asset.defaultRepresentation.url isEqual:[self.dataArray[indexPath.item] asset].defaultRepresentation.url]) {
                     [self.selectsIndexPath addObject:@(indexPath.row)];
                 }
@@ -147,13 +147,13 @@
     // 如果没有就添加到数组里面，存在就移除
     if (pickerImageView.isMaskViewFlag) {
         [self.selectsIndexPath removeObject:@(indexPath.row)];
-        [self.selectAsstes removeObject:asset];
+        [self.selectAssets removeObject:asset];
         [self.lastDataArray removeObject:asset];
     }else{
         // 1 判断图片数超过最大数或者小于0
         NSUInteger minCount = (self.minCount < 0) ? KPhotoShowMaxCount :  self.minCount;
         
-        if (self.selectAsstes.count >= minCount) {
+        if (self.selectAssets.count >= minCount) {
             NSString *format = [NSString stringWithFormat:@"最多只能选择%zd张图片",minCount];
             if (minCount == 0) {
                 format = [NSString stringWithFormat:@"您已经选满了图片呦."];
@@ -164,7 +164,7 @@
         }
         
         [self.selectsIndexPath addObject:@(indexPath.row)];
-        [self.selectAsstes addObject:asset];
+        [self.selectAssets addObject:asset];
         [self.lastDataArray addObject:asset];
     }
     // 告诉代理现在被点击了!

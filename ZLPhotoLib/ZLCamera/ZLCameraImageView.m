@@ -7,7 +7,7 @@
 //
 
 #import "ZLCameraImageView.h"
-#import "UIView+Extension.h"
+#import "UIView+ZLExtension.h"
 
 @interface ZLCameraImageView ()
 @property (strong, nonatomic) UIImageView *deleBjView;

@@ -158,17 +158,24 @@
     
     CGFloat xScale = boundsSize.width / imageSize.width;    // the scale needed to perfectly fit the image width-wise
     CGFloat yScale = boundsSize.height / imageSize.height;  // the scale needed to perfectly fit the image height-wise
-    CGFloat minScale = MIN(xScale, yScale);                 // use minimum of these to allow the image to become fully visible
+    CGFloat minScale = MIN(xScale, yScale);
+    CGFloat maxScale = MAX(xScale, yScale);
+    // use minimum of these to allow the image to become fully visible
     // Image is smaller than screen so no zooming!
     if (xScale >= 1 && yScale >= 1) {
         minScale = MIN(xScale, yScale);
     }
     
-    if (minScale >= 3) {
-        minScale = 3;
+    CGRect frameToCenter = CGRectZero;
+    if (xScale >= yScale) {
+        frameToCenter = CGRectMake(0, 0, imageSize.width * maxScale, imageSize.height * maxScale);
+        
+    }else {
+        if (minScale >= 3) {
+            minScale = 3;
+        }
+        frameToCenter = CGRectMake(0, 0, imageSize.width * minScale, imageSize.height * minScale);
     }
-    
-    CGRect frameToCenter = CGRectMake(0, 0, imageSize.width * minScale, imageSize.height * minScale);
     
     // Horizontally
     if (frameToCenter.size.width < boundsSize.width) {
@@ -273,38 +280,30 @@
     // Calculate Min
     CGFloat xScale = boundsSize.width / imageSize.width;    // the scale needed to perfectly fit the image width-wise
     CGFloat yScale = boundsSize.height / imageSize.height;  // the scale needed to perfectly fit the image height-wise
-    CGFloat minScale = MIN(xScale, yScale);                 // use minimum of these to allow the image to become fully visible
     
-    // Calculate Max
-    CGFloat maxScale = 3;
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        // Let them go a bit bigger on a bigger screen!
-        maxScale = 4;
-    }
-    
+    CGFloat minScale = MIN(xScale, yScale);
+    CGFloat maxScale = MAX(xScale, yScale);
+    // use minimum of these to allow the image to become fully visible
     // Image is smaller than screen so no zooming!
     if (xScale >= 1 && yScale >= 1) {
         minScale = MIN(xScale, yScale);
     }
     
-    if (minScale >= 3) {
-        minScale = 3;
+    if (xScale >= yScale * 2) {
+        // Initial zoom
+        self.maximumZoomScale = 1.0;
+        self.minimumZoomScale = maxScale;
+    }else {
+        self.maximumZoomScale = yScale;
+        self.minimumZoomScale = xScale;
     }
-    
-    // Set min/max zoom
-    self.maximumZoomScale = maxScale;
-    self.minimumZoomScale = minScale;
-    
-    // Initial zoom
     self.zoomScale = self.minimumZoomScale;
     
     // If we're zooming to fill then centralise
     if (self.zoomScale != minScale) {
-        // Centralise
-        self.contentOffset = CGPointMake((imageSize.width * self.zoomScale - boundsSize.width) / 2.0,
-                                         (imageSize.height * self.zoomScale - boundsSize.height) / 2.0);
-        // Disable scrolling initially until the first pinch to fix issues with swiping on an initally zoomed in photo
-        self.scrollEnabled = NO;
+        if (yScale >= xScale) {
+            self.scrollEnabled = NO;
+        }
     }
     
     // Layout

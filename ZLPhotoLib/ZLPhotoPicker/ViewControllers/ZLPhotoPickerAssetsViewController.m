@@ -120,7 +120,7 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
 
     self.collectionView.lastDataArray = nil;
     self.collectionView.isRecoderSelectPicker = YES;
-    self.collectionView.selectAsstes = self.selectAssets;
+    self.collectionView.selectAssets = self.selectAssets;
     NSInteger count = self.selectAssets.count;
     self.makeView.hidden = !count;
     self.makeView.text = [NSString stringWithFormat:@"%ld",(long)count];
@@ -331,9 +331,9 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
 - (void) pickerCollectionViewDidSelected:(ZLPhotoPickerCollectionView *) pickerCollectionView deleteAsset:(ZLPhotoAssets *)deleteAssets{
     
     if (self.selectPickerAssets.count == 0){
-        self.selectAssets = [NSMutableArray arrayWithArray:pickerCollectionView.selectAsstes];
+        self.selectAssets = [NSMutableArray arrayWithArray:pickerCollectionView.selectAssets];
     }else if (deleteAssets == nil){
-        [self.selectAssets addObject:[pickerCollectionView.selectAsstes lastObject]];
+        [self.selectAssets addObject:[pickerCollectionView.selectAssets lastObject]];
     }
     
     [self.selectAssets addObjectsFromArray:self.takePhotoImages];

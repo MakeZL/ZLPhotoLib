@@ -26,7 +26,7 @@
     if (!_assets) {
         // CollctionView 可以分组。
         NSMutableArray *section1 = [NSMutableArray arrayWithArray:@[
-                                                                    @"http://www.qqaiqin.com/uploads/allimg/130520/4-13052022531U60.gif",
+                                                                    @"http://ww2.sinaimg.cn/bmiddle/64a0164fjw1eudtv13ycej20c81q5432.jpg",
                                                                     @"http://www.1tong.com/uploads/wallpaper/anime/124-2-1280x800.jpg",
                                                                     @"http://imgsrc.baidu.com/forum/pic/item/xc59ca2ef76c6a7ef603e17c7fcfaaf51f2de6640.jpg",
                                                                     @"http://imgsrc.baidu.com/forum/pic/item/3f7dacaf2edda3cc7d2289ab01e93901233f92c5.jpg"

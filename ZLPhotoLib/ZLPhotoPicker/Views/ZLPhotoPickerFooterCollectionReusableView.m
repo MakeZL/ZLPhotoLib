@@ -7,7 +7,7 @@
 //
 
 #import "ZLPhotoPickerFooterCollectionReusableView.h"
-#import "UIView+Extension.h"
+#import "UIView+ZLExtension.h"
 
 @interface ZLPhotoPickerFooterCollectionReusableView ()
 @property (weak, nonatomic) UILabel *footerLabel;
