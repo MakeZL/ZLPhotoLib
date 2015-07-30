@@ -106,8 +106,7 @@
         // 需要记录选中的值的数据
         if (self.isRecoderSelectPicker) {
             for (ZLPhotoAssets *asset in self.selectAssets) {
-                ALAsset *currentAsset = [self.dataArray[indexPath.item] asset];
-                if ([asset.asset.defaultRepresentation.url isEqual:currentAsset.defaultRepresentation.url]) {
+                if ([asset.asset.defaultRepresentation.url isEqual:[(ZLPhotoAssets *)self.dataArray[indexPath.item] asset].defaultRepresentation.url]) {
                     [self.selectsIndexPath addObject:@(indexPath.row)];
                 }
             }

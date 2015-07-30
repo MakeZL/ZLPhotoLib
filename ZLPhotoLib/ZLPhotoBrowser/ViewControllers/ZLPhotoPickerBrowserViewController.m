@@ -366,12 +366,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     
     [self setPageLabelPage:self.currentPage];
     if (self.currentPage >= 0) {
-        CGFloat attachVal = 0;
-        if (self.currentPage == [self.dataSource photoBrowser:self numberOfItemsInSection:self.currentIndexPath.section] - 1 && self.currentPage > 0) {
-            attachVal = ZLPickerColletionViewPadding;
-        }
-        
-        self.collectionView.x = -attachVal;
+
         self.collectionView.contentOffset = CGPointMake(self.currentPage * self.collectionView.width, 0);
         
         if (self.currentPage == self.photos.count - 1 && self.photos.count > 1) {
