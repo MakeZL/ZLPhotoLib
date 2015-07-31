@@ -88,8 +88,37 @@
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
     if (buttonIndex == 0){
-        UIImageWriteToSavedPhotosAlbum(_photoImageView.image, nil, nil, nil);
+        if([UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypeSavedPhotosAlbum]) {
+            UIImageWriteToSavedPhotosAlbum(_photoImageView.image, nil, nil, nil);
+            if (_photoImageView.image) {
+                [self showMessageWithText:@"保存成功"];
+            }
+        }else{
+            if (_photoImageView.image) {
+                [self showMessageWithText:@"没有用户权限,保存失败"];
+            }
+        }
     }
+}
+
+- (void)showMessageWithText:(NSString *)text{
+    UILabel *alertLabel = [[UILabel alloc] init];
+    alertLabel.font = [UIFont systemFontOfSize:15];
+    alertLabel.text = text;
+    alertLabel.textAlignment = NSTextAlignmentCenter;
+    alertLabel.layer.masksToBounds = YES;
+    alertLabel.textColor = [UIColor whiteColor];
+    alertLabel.bounds = CGRectMake(0, 0, 100, 80);
+    alertLabel.center = CGPointMake(self.frame.size.width * 0.5, self.frame.size.height * 0.5);
+    alertLabel.backgroundColor = [UIColor colorWithRed:25/255.0 green:25/255.0 blue:25/255.0 alpha:1.0];
+    alertLabel.layer.cornerRadius = 10.0f;
+    [[UIApplication sharedApplication].keyWindow addSubview:alertLabel];
+    
+    [UIView animateWithDuration:.5 animations:^{
+        alertLabel.alpha = 0.0;
+    } completion:^(BOOL finished) {
+        [alertLabel removeFromSuperview];
+    }];
 }
 
 - (void)dealloc {
