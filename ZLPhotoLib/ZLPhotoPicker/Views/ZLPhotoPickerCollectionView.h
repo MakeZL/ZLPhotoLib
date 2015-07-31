@@ -37,7 +37,7 @@ typedef NS_ENUM(NSUInteger, ZLPickerCollectionViewShowOrderStatus){
 // delegate
 @property (nonatomic , weak) id <ZLPhotoPickerCollectionViewDelegate> collectionViewDelegate;
 // 限制最大数
-@property (nonatomic , assign) NSInteger minCount;
+@property (nonatomic , assign) NSInteger maxCount;
 // 置顶展示图片
 @property (assign,nonatomic) BOOL topShowPhotoPicker;
 // 选中的索引值，为了防止重用

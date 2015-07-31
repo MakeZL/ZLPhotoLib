@@ -69,7 +69,7 @@
     pickerVc.status = PickerViewShowStatusCameraRoll;
     pickerVc.selectPickers = self.assets;
     // 最多能选9张图片
-    pickerVc.minCount = 9;
+    pickerVc.maxCount = 9;
     pickerVc.delegate = self;
     [pickerVc showPickerVc:self];
     /**

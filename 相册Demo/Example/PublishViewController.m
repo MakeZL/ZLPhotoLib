@@ -254,7 +254,7 @@ static NSString *const PublishIdentifierCell = @"Cell";
 {
     NSLog(@"photoSelectedImage");
     ZLPhotoPickerViewController *pickerVc = [[ZLPhotoPickerViewController alloc] init];
-    pickerVc.minCount = 6 - self.dataArray.count;
+    pickerVc.maxCount = 6 - self.dataArray.count;
     pickerVc.status = PickerViewShowStatusCameraRoll;
     pickerVc.callBack = ^(NSArray *status){
         [self.dataArray addObjectsFromArray:status];

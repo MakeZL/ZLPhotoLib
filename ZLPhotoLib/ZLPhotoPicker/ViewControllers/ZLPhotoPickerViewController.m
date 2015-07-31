@@ -53,10 +53,10 @@
     self.groupVc.status = status;
 }
 
-- (void)setMinCount:(NSInteger)minCount{
-    if (minCount <= 0) return;
-    _minCount = minCount;
-    self.groupVc.minCount = minCount;
+- (void)setMaxCount:(NSInteger)maxCount{
+    if (maxCount <= 0) return;
+    _maxCount = maxCount;
+    self.groupVc.maxCount = maxCount;
 }
 
 - (void)setTopShowPhotoPicker:(BOOL)topShowPhotoPicker{

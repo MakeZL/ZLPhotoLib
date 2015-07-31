@@ -14,11 +14,12 @@
 #import "ZLCameraView.h"
 #import "ZLPhoto.h"
 
+typedef void(^codeBlock)();
 static CGFloat ZLCameraColletionViewW = 80;
 static CGFloat ZLCameraColletionViewPadding = 20;
 static CGFloat BOTTOM_HEIGHT = 60;
 
-@interface ZLCameraViewController () <UIActionSheetDelegate,UICollectionViewDataSource,UICollectionViewDelegate,AVCaptureMetadataOutputObjectsDelegate,ZLCameraImageViewDelegate,ZLCameraViewDelegate,ZLPhotoPickerViewControllerDelegate,ZLPhotoPickerBrowserViewControllerDataSource,ZLPhotoPickerBrowserViewControllerDelegate>
+@interface ZLCameraViewController () <UIActionSheetDelegate,UICollectionViewDataSource,UICollectionViewDelegate,AVCaptureMetadataOutputObjectsDelegate,ZLCameraImageViewDelegate,ZLCameraViewDelegate,ZLPhotoPickerBrowserViewControllerDataSource,ZLPhotoPickerBrowserViewControllerDelegate>
 
 @property (weak,nonatomic) ZLCameraView *caramView;
 @property (strong, nonatomic) UICollectionView *collectionView;
@@ -252,13 +253,10 @@ static CGFloat BOTTOM_HEIGHT = 60;
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     
     ZLPhotoPickerBrowserViewController *browserVc = [[ZLPhotoPickerBrowserViewController alloc] init];
-//    browserVc.toView = [[[[collectionView cellForItemAtIndexPath:indexPath] contentView] subviews] lastObject];
     browserVc.dataSource = self;
     browserVc.delegate = self;
     browserVc.currentIndexPath = [NSIndexPath indexPathForItem:indexPath.item inSection:0];
-//    browserVc.editing = YES;
     [self presentViewController:browserVc animated:NO completion:nil];
-    
 }
 
 
@@ -293,29 +291,10 @@ static CGFloat BOTTOM_HEIGHT = 60;
     [self.collectionView reloadData];
 }
 
-- (void)startCameraOrPhotoFileWithViewController:(UIViewController *)viewController complate:(ZLComplate)complate{
-    self.currentViewController = viewController;
-    UIActionSheet *myActionSheet = [[UIActionSheet alloc]initWithTitle:nil
-                                                              delegate:self
-                                                     cancelButtonTitle:@"取消"
-                                                destructiveButtonTitle:nil
-                                                     otherButtonTitles:@"打开照相机",@"从手机相册获取",nil];
-    
-    [myActionSheet showInView:[UIApplication sharedApplication].keyWindow];
-    self.complate = complate;
-}
-
-#pragma mark - ActionSheet Delegate
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    switch (buttonIndex)
-    {
-        case 0:  //打开照相机拍照
-            [self takePhoto];
-            break;
-        case 1:  //打开本地相册
-            [self LocalPhoto];
-            break;
+- (void)showPickerVc:(UIViewController *)vc{
+    __weak typeof(vc)weakVc = vc;
+    if (weakVc != nil) {
+        [weakVc presentViewController:self animated:YES completion:nil];
     }
 }
 
@@ -372,54 +351,6 @@ static CGFloat BOTTOM_HEIGHT = 60;
 -(void)CaptureStillImage
 {
     [self  Captureimage];
-}
-
-//开始拍照
--(void)takePhoto
-{
-    if ([UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypeCamera])
-    {
-        ZLCameraViewController *camreaVc = [[ZLCameraViewController alloc] init];
-        if (self.maxCount == 0) {
-            self.maxCount = 9;
-        }
-        camreaVc.maxCount = self.maxCount;
-        camreaVc.complate = self.complate;
-        [self.currentViewController presentViewController:camreaVc animated:YES completion:nil];
-        
-    }else
-    {
-        NSLog(@"模拟其中无法打开照相机,请在真机中使用");
-    }
-}
-
-
-//打开本地相册
--(void)LocalPhoto
-{
-    ZLPhotoPickerViewController *pickerVc = [[ZLPhotoPickerViewController alloc] init];
-    // 最多能选9张图片
-    if (self.images.count > self.maxCount) {
-        pickerVc.minCount = 0;
-    }else{
-        pickerVc.minCount = self.maxCount - self.images.count;
-    }
-    pickerVc.status = PickerViewShowStatusCameraRoll;
-    pickerVc.delegate = self;
-    [pickerVc showPickerVc:self];
-}
-
-- (void)pickerViewControllerDoneAsstes:(NSArray *)assets{
-    if (self.complate) {
-        self.complate(assets);
-    }
-    
-    if ([self.currentViewController respondsToSelector:@selector(pickerViewControllerDoneAsstes:)]) {
-        
-        [self.currentViewController performSelectorInBackground:@selector(pickerViewControllerDoneAsstes:) withObject:assets];
-    }
-    
-    
 }
 
 - (AVCaptureDevice *)cameraWithPosition:(AVCaptureDevicePosition)position
@@ -499,8 +430,8 @@ static CGFloat BOTTOM_HEIGHT = 60;
 - (void)doneAction
 {
     //关闭相册界面
-    if(self.complate){
-        self.complate(self.images);
+    if(self.callback){
+        self.callback(self.images);
     }
     [self cancel:nil];
 }

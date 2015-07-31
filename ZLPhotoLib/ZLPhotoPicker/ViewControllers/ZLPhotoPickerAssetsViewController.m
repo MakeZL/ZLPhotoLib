@@ -34,7 +34,7 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
 @property (nonatomic , strong) UIButton *doneBtn;
 @property (nonatomic , weak) UIToolbar *toolBar;
 
-@property (assign,nonatomic) NSUInteger privateTempMinCount;
+@property (assign,nonatomic) NSUInteger privateTempMaxCount;
 // Datas
 // 数据源
 @property (nonatomic , strong) NSMutableArray *assets;
@@ -300,20 +300,20 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
 }
 
 #pragma mark - setter
--(void)setMinCount:(NSInteger)minCount{
-    _minCount = minCount;
+-(void)setMaxCount:(NSInteger)maxCount{
+    _maxCount = maxCount;
     
-    if (!_privateTempMinCount) {
-        _privateTempMinCount = minCount;
+    if (!_privateTempMaxCount) {
+        _privateTempMaxCount = maxCount;
     }
 
-    if (self.selectAssets.count == minCount){
-        minCount = 0;
+    if (self.selectAssets.count == maxCount){
+        maxCount = 0;
     }else if (self.selectPickerAssets.count - self.selectAssets.count > 0) {
-        minCount = _privateTempMinCount;
+        maxCount = _privateTempMaxCount;
     }
     
-    self.collectionView.minCount = minCount;
+    self.collectionView.maxCount = maxCount;
 }
 
 - (void)setAssetsGroup:(ZLPhotoPickerGroup *)assetsGroup{
@@ -380,7 +380,7 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
             self.makeView.text = [NSString stringWithFormat:@"%ld",self.selectAssets.count];
         }
         // 刷新下最小的页数
-        self.minCount = self.selectAssets.count + (_privateTempMinCount - self.selectAssets.count);
+        self.maxCount = self.selectAssets.count + (_privateTempMaxCount - self.selectAssets.count);
     }
 }
 

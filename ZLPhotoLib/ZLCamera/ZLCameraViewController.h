@@ -9,8 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "ZLCamera.h"
 
-typedef void(^codeBlock)();
-typedef void(^ZLComplate)(id object);
+typedef void(^ZLCameraCallBack)(id object);
 
 @interface ZLCameraViewController : UIViewController
 
@@ -20,15 +19,8 @@ typedef void(^ZLComplate)(id object);
 @property (weak, nonatomic) UIView *controlView;
 // 拍照的个数限制
 @property (assign,nonatomic) NSUInteger maxCount;
-
-/**
- *  打开相机
- *
- *  @param viewController 控制器
- *  @param complate       成功后的回调
- */
-- (void)startCameraOrPhotoFileWithViewController:(UIViewController*)viewController complate : (ZLComplate ) complate;
 // 完成后回调
-@property (copy, nonatomic) ZLComplate complate;
+@property (copy, nonatomic) ZLCameraCallBack callback;
 
+- (void)showPickerVc:(UIViewController *)vc;
 @end

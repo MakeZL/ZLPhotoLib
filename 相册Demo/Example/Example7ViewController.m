@@ -97,7 +97,7 @@
 #pragma mark - 选择图片
 - (void)photoSelecte{
     ZLPhotoPickerViewController *pickerVc = [[ZLPhotoPickerViewController alloc] init];
-    pickerVc.minCount = 9 - self.assets.count;
+    pickerVc.maxCount = 9 - self.assets.count;
     pickerVc.status = PickerViewShowStatusCameraRoll;
     pickerVc.callBack = ^(NSArray *status){
         [self.assets addObjectsFromArray:status];

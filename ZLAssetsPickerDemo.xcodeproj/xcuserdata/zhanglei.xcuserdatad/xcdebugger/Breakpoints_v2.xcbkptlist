@@ -84,11 +84,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ZLPhotoLib/ZLCamera/ZLCameraViewController.m"
-            timestampString = "457838972.286845"
+            timestampString = "460029448.371907"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "367"
-            endingLineNumber = "367"
+            startingLineNumber = "346"
+            endingLineNumber = "346"
             landmarkName = "-Captureimage"
             landmarkType = "5">
          </BreakpointContent>

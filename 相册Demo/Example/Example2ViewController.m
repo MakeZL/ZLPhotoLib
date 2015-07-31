@@ -10,7 +10,7 @@
 #import "Example2CollectionViewCell.h"
 #import "ZLPhoto.h"
 
-@interface Example2ViewController () <UICollectionViewDataSource,UICollectionViewDelegate,ZLPhotoPickerBrowserViewControllerDataSource,ZLPhotoPickerBrowserViewControllerDelegate>
+@interface Example2ViewController () <UICollectionViewDataSource,UICollectionViewDelegate,ZLPhotoPickerBrowserViewControllerDataSource,ZLPhotoPickerBrowserViewControllerDelegate,UIActionSheetDelegate>
 
 @property (nonatomic , strong) NSMutableArray *assets;
 @property (weak,nonatomic) UICollectionView *collectionView;
@@ -168,24 +168,59 @@
     [self.collectionView reloadData];
 }
 
-#pragma mark - 选择照片
-- (void)selectPhotos {
+#pragma mark - ActionSheet Delegate
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    switch (buttonIndex)
+    {
+        case 0:  //打开照相机拍照
+            [self openCamera];
+            break;
+        case 1:  //打开本地相册
+            [self openLocalPhoto];
+            break;
+    }
+}
+
+- (void)openCamera{
     ZLCameraViewController *cameraVc = [[ZLCameraViewController alloc] init];
+    // 拍照最多个数
     cameraVc.maxCount = 6;
     __weak typeof(self) weakSelf = self;
-    // 多选相册+相机多拍 回调
-    [cameraVc startCameraOrPhotoFileWithViewController:self complate:^(NSArray *object) {
-        // 选择完照片、拍照完回调
-        [object enumerateObjectsUsingBlock:^(id asset, NSUInteger idx, BOOL *stop) {
-            if ([asset isKindOfClass:[ZLCamera class]]) {
-                [[weakSelf.assets firstObject] addObject:asset];
-            }else{
-                [[weakSelf.assets firstObject] addObject:asset];
-            }
-        }];
+    cameraVc.callback = ^(NSArray *cameras){
+        [[weakSelf.assets firstObject] addObjectsFromArray:cameras];
         [weakSelf.collectionView reloadData];
-    }];
-    self.cameraVc = cameraVc;
+    };
+    [cameraVc showPickerVc:self];
+}
+
+- (void)openLocalPhoto{
+    ZLPhotoPickerViewController *pickerVc = [[ZLPhotoPickerViewController alloc] init];
+    // 最多能选9张图片
+    if (self.assets.count > 9) {
+        pickerVc.maxCount = 0;
+    }else{
+        pickerVc.maxCount = 9 - self.assets.count;
+    }
+    pickerVc.status = PickerViewShowStatusCameraRoll;
+    [pickerVc showPickerVc:self];
+    
+    __weak typeof(self) weakSelf = self;
+    pickerVc.callBack = ^(NSArray *assets){
+        [[weakSelf.assets firstObject] addObjectsFromArray:assets];
+        [weakSelf.collectionView reloadData];
+    };
+}
+
+#pragma mark - 选择照片
+- (void)selectPhotos {
+    UIActionSheet *myActionSheet = [[UIActionSheet alloc]initWithTitle:nil
+                                                              delegate:self
+                                                     cancelButtonTitle:@"取消"
+                                                destructiveButtonTitle:nil
+                                                     otherButtonTitles:@"打开照相机",@"从手机相册获取",nil];
+    
+    [myActionSheet showInView:[UIApplication sharedApplication].keyWindow];
 }
 
 @end
