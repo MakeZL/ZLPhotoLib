@@ -28,8 +28,6 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 // 数据相关
 // 单击时执行销毁的block
 @property (nonatomic , copy) ZLPickerBrowserViewControllerTapDisMissBlock disMissBlock;
-// 装着所有的图片模型
-@property (nonatomic , strong) NSMutableArray *photos;
 // 当前提供的分页数
 @property (nonatomic , assign) NSInteger currentPage;
 @end
@@ -39,10 +37,9 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 
 #pragma mark - getter
 #pragma mark photos
-- (NSMutableArray *)photos{
+- (NSArray *)photos{
     if (!_photos) {
-        _photos = [NSMutableArray array];
-        [_photos addObjectsFromArray:[self getPhotos]];
+        _photos = [self getPhotos];
     }
     return _photos;
 }
@@ -138,7 +135,9 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 #pragma mark - Life cycle
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-    NSAssert(self.dataSource, @"你没成为数据源代理");
+    if (self.photos.count == 0) {
+        NSAssert(self.dataSource, @"你没成为数据源代理");
+    }
     // 初始化动画
     [self showToView];
 }
@@ -150,9 +149,14 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     [[UIApplication sharedApplication].keyWindow addSubview:mainView];
     
     UIImageView *toImageView = nil;
-    
     if(self.status == UIViewAnimationAnimationStatusZoom){
-        toImageView = (UIImageView *)[[self.dataSource photoBrowser:self photoAtIndexPath:self.currentIndexPath] toView];
+        
+        if ([self isDataSourceElsePhotos]) {
+            toImageView = (UIImageView *)[[self.dataSource photoBrowser:self photoAtIndexPath:self.currentIndexPath] toView];
+        }else{
+            toImageView = (UIImageView *)[self.photos[self.currentIndexPath.row] toView];
+        }
+        
     }
     
     if (![toImageView isKindOfClass:[UIImageView class]] && self.status != UIViewAnimationAnimationStatusFade) {
@@ -166,7 +170,12 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     [mainView addSubview:imageView];
     mainView.clipsToBounds = YES;
     
-    UIImage *thumbImage = [[self.dataSource photoBrowser:self photoAtIndexPath:self.currentIndexPath] thumbImage];
+    UIImage *thumbImage = nil;
+    if ([self isDataSourceElsePhotos]) {
+        thumbImage = [[self.dataSource photoBrowser:self photoAtIndexPath:self.currentIndexPath] thumbImage];
+    }else{
+        thumbImage = toImageView.image;
+    }
     
     if (self.status == UIViewAnimationAnimationStatusFade){
         imageView.image = thumbImage;
@@ -199,16 +208,24 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         // 不是淡入淡出
         if(self.status == UIViewAnimationAnimationStatusZoom){
             
-            UIImage *thumbImage = [[weakSelf.dataSource photoBrowser:weakSelf photoAtIndexPath:[NSIndexPath indexPathForItem:page inSection:weakSelf.currentIndexPath.section]] thumbImage];
+            UIImage *thumbImage = nil;
 
-            if (thumbImage == nil) {
+            if ([weakSelf isDataSourceElsePhotos]) {
                 thumbImage = [(UIImageView *)[[weakSelf.dataSource photoBrowser:weakSelf photoAtIndexPath:[NSIndexPath indexPathForItem:page inSection:weakSelf.currentIndexPath.section]] toView] image];
+            }else{
+                thumbImage = [(UIImageView *)[weakSelf.photos[page] toView] image];
             }
             
             imageView.image = thumbImage;
             imageView.frame = [weakSelf setMaxMinZoomScalesForCurrentBounds:imageView.image];
             
-            UIImageView *toImageView2 = (UIImageView *)[[weakSelf.dataSource photoBrowser:weakSelf photoAtIndexPath:[NSIndexPath indexPathForItem:page inSection:weakSelf.currentIndexPath.section]] toView];
+            UIImageView *toImageView2 = nil;
+            if ([weakSelf isDataSourceElsePhotos]) {
+                toImageView2 = (UIImageView *)[[weakSelf.dataSource photoBrowser:weakSelf photoAtIndexPath:[NSIndexPath indexPathForItem:page inSection:weakSelf.currentIndexPath.section]] toView];
+            }else{
+                toImageView2 = (UIImageView *)[weakSelf.photos[page] toView];
+            }
+            
             originalFrame = [toImageView2.superview convertRect:toImageView2.frame toView:[weakSelf getParsentView:toImageView2]];
         }
         
@@ -383,7 +400,10 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 }
 
 - (NSInteger) collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
-    return [self.dataSource photoBrowser:self numberOfItemsInSection:self.currentIndexPath.section];
+    if ([self isDataSourceElsePhotos]) {
+        return [self.dataSource photoBrowser:self numberOfItemsInSection:self.currentIndexPath.section];
+    }
+    return self.photos.count;
 }
 
 - (UICollectionViewCell *) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
@@ -392,7 +412,14 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     
     if (self.photos.count) {
         cell.backgroundColor = [UIColor clearColor];
-        ZLPhotoPickerBrowserPhoto *photo = self.photos[indexPath.item]; //[self.dataSource photoBrowser:self photoAtIndex:indexPath.item];
+        
+        ZLPhotoPickerBrowserPhoto *photo = nil;
+        
+        if ([self isDataSourceElsePhotos]) {
+            photo = [self.dataSource photoBrowser:self photoAtIndexPath:indexPath];
+        }else{
+            photo = self.photos[indexPath.item];
+        }
         
         if([[cell.contentView.subviews lastObject] isKindOfClass:[UIView class]]){
             [[cell.contentView.subviews lastObject] removeFromSuperview];
@@ -446,10 +473,18 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         tempF.size.width = [UIScreen mainScreen].bounds.size.width;
     }
     
-    if ((currentPage < [self.dataSource photoBrowser:self numberOfItemsInSection:self.currentIndexPath.section] - 1) || self.photos.count == 1) {
-        tempF.origin.x = 0;
+    if ([self isDataSourceElsePhotos]) {
+        if ((currentPage < [self.dataSource photoBrowser:self numberOfItemsInSection:self.currentIndexPath.section] - 1) || self.photos.count == 1) {
+            tempF.origin.x = 0;
+        }else{
+            tempF.origin.x = -ZLPickerColletionViewPadding;
+        }
     }else{
-        tempF.origin.x = -ZLPickerColletionViewPadding;
+        if ((currentPage < self.photos.count - 1) || self.photos.count == 1) {
+            tempF.origin.x = 0;
+        }else{
+            tempF.origin.x = -ZLPickerColletionViewPadding;
+        }
     }
     
     self.collectionView.frame = tempF;
@@ -504,6 +539,10 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     [removeAlert show];
 }
 
+- (BOOL)isDataSourceElsePhotos{
+    return self.dataSource != nil;
+}
+
 #pragma mark - <UIAlertViewDelegate>
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if (buttonIndex == 1) {
@@ -512,7 +551,11 @@ static NSString *_cellIdentifier = @"collectionViewCell";
             [self.delegate photoBrowser:self removePhotoAtIndexPath:[NSIndexPath indexPathForItem:page inSection:self.currentIndexPath.section]];
         }
         
-        [self.photos removeObjectAtIndex:page];
+        if (self.photos.count > self.currentPage && self.dataSource != nil) {
+            NSMutableArray *photos = [NSMutableArray arrayWithArray:self.photos];
+            [photos removeObjectAtIndex:self.currentPage];
+            self.photos = photos;
+        }
         
         if (page >= self.photos.count) {
             self.currentPage--;

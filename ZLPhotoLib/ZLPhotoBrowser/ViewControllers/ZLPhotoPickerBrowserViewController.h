@@ -80,8 +80,9 @@
 // 数据源/代理
 @property (nonatomic , weak) id<ZLPhotoPickerBrowserViewControllerDataSource> dataSource;
 @property (nonatomic , weak) id<ZLPhotoPickerBrowserViewControllerDelegate> delegate;
-// 点击的View
-//@property (nonatomic , strong) UIView *toView;
+
+// 展示的图片数组<ZLPhotoPickerBrowserPhoto> == [self.dataSource photoBrowser:photoAtIndexPath:]
+@property (strong,nonatomic) NSArray *photos;
 // 当前提供的组
 @property (strong,nonatomic) NSIndexPath *currentIndexPath;
 

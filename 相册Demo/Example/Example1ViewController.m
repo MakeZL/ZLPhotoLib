@@ -10,10 +10,10 @@
 #import "Example1TableViewCell.h"
 #import "ZLPhoto.h"
 
-@interface Example1ViewController() <UITableViewDataSource,UITableViewDelegate,ZLPhotoPickerBrowserViewControllerDataSource,ZLPhotoPickerBrowserViewControllerDelegate,ZLPhotoPickerViewControllerDelegate>
+@interface Example1ViewController() <UITableViewDataSource,UITableViewDelegate,ZLPhotoPickerBrowserViewControllerDelegate>
 
 @property (weak,nonatomic) UITableView *tableView;
-@property (nonatomic , strong) NSMutableArray *assets;
+@property (nonatomic , strong) NSMutableArray *photos;
 
 @end
 
@@ -21,18 +21,30 @@
 
 #pragma mark - Getter
 #pragma mark Get data
-- (NSMutableArray *)assets{
-    if (!_assets) {
-        _assets = [NSMutableArray arrayWithArray:@[
-                                                    @"http://ww2.sinaimg.cn/bmiddle/64a0164fjw1eudtv13ycej20c81q5432.jpg",
-                                                   @"http://www.qqaiqin.com/uploads/allimg/130520/4-13052022531U60.gif",
-                                                   @"http://www.1tong.com/uploads/wallpaper/anime/124-2-1280x800.jpg",
-                                                   @"http://imgsrc.baidu.com/forum/pic/item/c59ca2ef76c6a7ef603e17c7fcfaaf51f2de6640.jpg",
-                                                   @"http://imgsrc.baidu.com/forum/pic/item/3f7dacaf2edda3cc7d2289ab01e93901233f92c5.jpg",
-//                                                   @"http://123.57.17.222:8000/school/web/upload/20150316093117407_6246_9.jpg",
-                                                   ]];
+- (NSMutableArray *)photos{
+    if (!_photos) {
+        
+        _photos = [NSMutableArray array];
+        
+        // 测试数据啦
+        ZLPhotoPickerBrowserPhoto *photo1 = [[ZLPhotoPickerBrowserPhoto alloc] init];
+        photo1.photoURL = [NSURL URLWithString:@"http://ww2.sinaimg.cn/bmiddle/64a0164fjw1eudtv13ycej20c81q5432.jpg"];
+        [_photos addObject:photo1];
+        
+        ZLPhotoPickerBrowserPhoto *photo2 = [[ZLPhotoPickerBrowserPhoto alloc] init];
+        photo2.photoURL = [NSURL URLWithString:@"http://www.qqaiqin.com/uploads/allimg/130520/4-13052022531U60.gif"];
+        [_photos addObject:photo2];
+        
+        ZLPhotoPickerBrowserPhoto *photo3 = [[ZLPhotoPickerBrowserPhoto alloc] init];
+        photo3.photoURL = [NSURL URLWithString:@"http://www.1tong.com/uploads/wallpaper/anime/124-2-1280x800.jpg"];
+        [_photos addObject:photo3];
+        
+        ZLPhotoPickerBrowserPhoto *photo4 = [[ZLPhotoPickerBrowserPhoto alloc] init];
+        photo4.photoURL = [NSURL URLWithString:@"http://imgsrc.baidu.com/forum/pic/item/3f7dacaf2edda3cc7d2289ab01e93901233f92c5.jpg"];
+        [_photos addObject:photo4];
+        
     }
-    return _assets;
+    return _photos;
 }
 
 #pragma mark Get View
@@ -66,44 +78,12 @@
     
     self.view.backgroundColor = [UIColor whiteColor];
     // 初始化UI
-    [self setupButtons];
     [self tableView];
-}
-
-- (void) setupButtons{
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"选择照片" style:UIBarButtonItemStyleDone target:self action:@selector(selectPhotos)];
-}
-
-#pragma mark - 选择相册
-- (void)selectPhotos {
-     // 创建控制器
-     ZLPhotoPickerViewController *pickerVc = [[ZLPhotoPickerViewController alloc] init];
-     // 默认显示相册里面的内容SavePhotos
-     // 最多能选9张图片
-     pickerVc.maxCount = 20;
-     pickerVc.status = PickerViewShowStatusCameraRoll;
-     pickerVc.delegate = self;
-     [pickerVc showPickerVc:self];
-    /**
-     *
-     传值可以用代理，或者用block来接收，以下是block的传值
-     __weak typeof(self) weakSelf = self;
-     pickerVc.callBack = ^(NSArray *assets){
-     weakSelf.assets = assets;
-     [weakSelf.tableView reloadData];
-     };
-     */
-}
-
-#pragma mark - 相册回调
-- (void)pickerViewControllerDoneAsstes:(NSArray *)assets{
-    [self.assets addObjectsFromArray:assets];
-    [self.tableView reloadData];
 }
 
 #pragma mark - <UITableViewDataSource>
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return self.assets.count;
+    return self.photos.count;
 }
 
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -111,14 +91,9 @@
     Example1TableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ID];
     
     // 判断类型来获取Image
-    ZLPhotoAssets *asset = self.assets[indexPath.row];
-    if ([asset isKindOfClass:[ZLPhotoAssets class]]) {
-        cell.imageview1.image = asset.originImage;
-    }else if ([asset isKindOfClass:[NSString class]]){
-        [cell.imageview1 sd_setImageWithURL:[NSURL URLWithString:(NSString *)asset] placeholderImage:[UIImage imageNamed:@"pc_circle_placeholder"]];
-    }else if([asset isKindOfClass:[UIImage class]]){
-        cell.imageview1.image = (UIImage *)asset;
-    }
+    ZLPhotoPickerBrowserPhoto *photo = self.photos[indexPath.row];
+    [cell.imageview1 sd_setImageWithURL:photo.photoURL];
+    photo.toView = cell.imageview1;
     
     return cell;
 }
@@ -128,6 +103,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     // 点击cell 放大缩小图片
     Example1TableViewCell *cell = (Example1TableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+    
     [self setupPhotoBrowser:cell];
 }
 
@@ -143,7 +119,8 @@
     // 动画方式
     // 数据源/delegate
     pickerBrowser.delegate = self;
-    pickerBrowser.dataSource = self;
+    // 数据源可以不传，传photos数组 photos<里面是ZLPhotoPickerBrowserPhoto>
+    pickerBrowser.photos = self.photos;
     // 是否可以删除照片
     pickerBrowser.editing = YES;
     // 当前选中的值
@@ -153,32 +130,32 @@
 }
 
 #pragma mark - <ZLPhotoPickerBrowserViewControllerDataSource>
-- (NSInteger)numberOfSectionInPhotosInPickerBrowser:(ZLPhotoPickerBrowserViewController *)pickerBrowser{
-    return 1;
-}
-
-- (NSInteger)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser numberOfItemsInSection:(NSUInteger)section{
-    return self.assets.count;
-}
-
-#pragma mark - 每个组展示什么图片,需要包装下ZLPhotoPickerBrowserPhoto
-- (ZLPhotoPickerBrowserPhoto *) photoBrowser:(ZLPhotoPickerBrowserViewController *)pickerBrowser photoAtIndexPath:(NSIndexPath *)indexPath{
-    ZLPhotoAssets *imageObj = [self.assets objectAtIndex:indexPath.row];
-    // 包装下imageObj 成 ZLPhotoPickerBrowserPhoto 传给数据源
-    ZLPhotoPickerBrowserPhoto *photo = [ZLPhotoPickerBrowserPhoto photoAnyImageObjWith:imageObj];
-    Example1TableViewCell *cell = (Example1TableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-    // 缩略图
-    photo.toView = cell.imageview1;
-    photo.thumbImage = cell.imageview1.image;
-    return photo;
-}
+//- (NSInteger)numberOfSectionInPhotosInPickerBrowser:(ZLPhotoPickerBrowserViewController *)pickerBrowser{
+//    return 1;
+//}
+//
+//- (NSInteger)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser numberOfItemsInSection:(NSUInteger)section{
+//    return self.assets.count;
+//}
+//
+//#pragma mark - 每个组展示什么图片,需要包装下ZLPhotoPickerBrowserPhoto
+//- (ZLPhotoPickerBrowserPhoto *) photoBrowser:(ZLPhotoPickerBrowserViewController *)pickerBrowser photoAtIndexPath:(NSIndexPath *)indexPath{
+//    ZLPhotoAssets *imageObj = [self.assets objectAtIndex:indexPath.row];
+//    // 包装下imageObj 成 ZLPhotoPickerBrowserPhoto 传给数据源
+//    ZLPhotoPickerBrowserPhoto *photo = [ZLPhotoPickerBrowserPhoto photoAnyImageObjWith:imageObj];
+//    Example1TableViewCell *cell = (Example1TableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+//    // 缩略图
+//    photo.toView = cell.imageview1;
+//    photo.thumbImage = cell.imageview1.image;
+//    return photo;
+//}
 
 #pragma mark - <ZLPhotoPickerBrowserViewControllerDelegate>
 #pragma mark 删除调用
 - (void)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser removePhotoAtIndexPath:(NSIndexPath *)indexPath{
     // 删除照片时调用
-    if (indexPath.row > [self.assets count]) return;
-    [self.assets removeObjectAtIndex:indexPath.row];
+    if (indexPath.row > [self.photos count]) return;
+    [self.photos removeObjectAtIndex:indexPath.row];
     [self.tableView reloadData];
 }
 

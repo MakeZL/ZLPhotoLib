@@ -21,14 +21,15 @@
 #pragma mark - getter
 - (NSArray *)examples{
     return @[
-             @"相片多选 + 图片游览器 >>> TableView",
-             @"相片连拍/多选 + 图片游览器 >>> UICollectionView",
-             @"相片多选/支持不重复选择照片 >>> UICollectionView",
-             @"图片游览器 -> 自定义UIView >>> UIView",
-             @"视频选择 + 视频游览器 >>>",
-             @"查看当个图片（头像） >>>",
-             @"添加图片的情况下 >>> UIScrollView",
-             @"多选图片(Weibo模式)New!",
+             @"Demo0 相册多选",
+             @"Demo1 图片游览器",
+             @"Demo3 连拍+多选+游览器",
+             @"Demo4 多选(不重复选择照片)",
+             @"Demo4 游览器(自定义UIView)",
+             @"Demo5 多选(选择视频)",
+             @"Demo6 浏览器(查看头像)",
+             @"Demo7 添加图片的情况下",
+             @"Demo8 多选(倒序,类似新浪微博)",
             ];
 }
 
@@ -71,8 +72,10 @@
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
+    
     cell.backgroundColor = [UIColor clearColor];
     cell.textLabel.text = self.examples[indexPath.row];
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
     return cell;
     
@@ -81,7 +84,7 @@
 #pragma mark - <UITableViewDelegate>
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    NSString *exampleVc = [NSString stringWithFormat:@"Example%ldViewController",indexPath.row + 1];
+    NSString *exampleVc = [NSString stringWithFormat:@"Example%ldViewController",indexPath.row];
     UIViewController *vc = [[NSClassFromString(exampleVc) alloc] init];
     vc.title = self.examples[indexPath.row];
     [self.navigationController pushViewController:vc animated:YES];

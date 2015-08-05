@@ -75,6 +75,7 @@
 		48B86C4C1B16C50C00FA272A /* paizhao.png in Resources */ = {isa = PBXBuildFile; fileRef = 48B86C491B16C50C00FA272A /* paizhao.png */; };
 		48B86C4D1B16C50C00FA272A /* paizhao@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48B86C4A1B16C50C00FA272A /* paizhao@2x.png */; };
 		48BB24501ACE734B00B6592D /* Example7ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48BB244F1ACE734B00B6592D /* Example7ViewController.m */; };
+		48CF6E831B7267A40094DEC4 /* Example0ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CF6E821B7267A40094DEC4 /* Example0ViewController.m */; };
 		48D0E4571AC261D20022C598 /* Example5ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D0E4561AC261D20022C598 /* Example5ViewController.m */; };
 		48ED22091A6D098C0008E783 /* Example1ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48ED22081A6D098C0008E783 /* Example1ViewController.m */; };
 		48ED220C1A6D0E370008E783 /* Example2ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48ED220B1A6D0E370008E783 /* Example2ViewController.m */; };
@@ -217,6 +218,8 @@
 		48B86C4A1B16C50C00FA272A /* paizhao@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "paizhao@2x.png"; sourceTree = "<group>"; };
 		48BB244E1ACE734B00B6592D /* Example7ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Example7ViewController.h; sourceTree = "<group>"; };
 		48BB244F1ACE734B00B6592D /* Example7ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Example7ViewController.m; sourceTree = "<group>"; };
+		48CF6E811B7267A40094DEC4 /* Example0ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Example0ViewController.h; sourceTree = "<group>"; };
+		48CF6E821B7267A40094DEC4 /* Example0ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Example0ViewController.m; sourceTree = "<group>"; };
 		48D0E4551AC261D20022C598 /* Example5ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Example5ViewController.h; sourceTree = "<group>"; };
 		48D0E4561AC261D20022C598 /* Example5ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Example5ViewController.m; sourceTree = "<group>"; };
 		48ED22071A6D098C0008E783 /* Example1ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Example1ViewController.h; sourceTree = "<group>"; };
@@ -600,6 +603,8 @@
 				48BB244F1ACE734B00B6592D /* Example7ViewController.m */,
 				48B86C441B16BD3D00FA272A /* Example8ViewController.h */,
 				48B86C451B16BD3D00FA272A /* Example8ViewController.m */,
+				48CF6E811B7267A40094DEC4 /* Example0ViewController.h */,
+				48CF6E821B7267A40094DEC4 /* Example0ViewController.m */,
 			);
 			path = Example;
 			sourceTree = "<group>";
@@ -771,6 +776,7 @@
 				4806BE511AB29051004B8AB0 /* ZLPhotoPickerBrowserPhoto.m in Sources */,
 				48BB24501ACE734B00B6592D /* Example7ViewController.m in Sources */,
 				4806BE4D1AB29051004B8AB0 /* ZLCamera.m in Sources */,
+				48CF6E831B7267A40094DEC4 /* Example0ViewController.m in Sources */,
 				4806BE5F1AB29051004B8AB0 /* ZLPhotoPickerFooterCollectionReusableView.m in Sources */,
 				485F4E8C1A83182E00B6D448 /* Example3ViewController.m in Sources */,
 				4806BE331AB29051004B8AB0 /* SDWebImageDownloader.m in Sources */,
@@ -911,6 +917,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -929,6 +936,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};
