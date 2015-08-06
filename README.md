@@ -16,17 +16,17 @@ Browser Continued in ...
 
 ### Demo Show
 #### UICollectionView/UITableView/UIView
-![image](https://github.com/MakeZL/ZLAssetsPickerDemo/blob/master/Demo1.gif)
-![image](https://github.com/MakeZL/ZLAssetsPickerDemo/blob/master/Demo2.gif)
+![image](https://github.com/MakeZL/ZLAssetsPickerDemo/blob/master/Demo_1.gif)
+![image](https://github.com/MakeZL/ZLAssetsPickerDemo/blob/master/Demo_2.gif)
 
 #### Recoder SelectedAssets/Limit SelectedAssets (记录/限制功能)
-![image](https://github.com/MakeZL/ZLAssetsPickerDemo/blob/master/Demo3.gif)
+![image](https://github.com/MakeZL/ZLAssetsPickerDemo/blob/master/Demo_3.gif)
 
 #### Custom ZLCamera (自定义相机连拍)
-![image](https://github.com/MakeZL/ZLAssetsPickerDemo/blob/master/screenshot4.png)
+<img src="https://github.com/MakeZL/MLCamera/blob/master/screenshot.png" height="500" />
 
 #### Not Power没权限
-![image](https://github.com/MakeZL/ZLAssetsPickerDemo/blob/master/DemoLock.png)
+<img src="https://github.com/MakeZL/ZLAssetsPickerDemo/blob/master/DemoLock.png" height="500" />
 
 相册多选
 --------
