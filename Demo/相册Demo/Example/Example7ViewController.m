@@ -63,10 +63,10 @@
     NSUInteger assetCount = self.assets.count + 1;
     
     CGFloat width = self.view.frame.size.width / column;
-    for (NSInteger i = 0; i < assetCount; i++) {
+    for (long i = 0; i < assetCount; i++) {
         
-        NSInteger row = i / column;
-        NSInteger col = i % column;
+        long row = i / column;
+        long col = i % column;
         
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
         btn.imageView.contentMode = UIViewContentModeScaleAspectFill;
@@ -125,11 +125,11 @@
 
 
 #pragma mark - <ZLPhotoPickerBrowserViewControllerDataSource>
-- (NSInteger)numberOfSectionInPhotosInPickerBrowser:(ZLPhotoPickerBrowserViewController *)pickerBrowser{
+- (long)numberOfSectionInPhotosInPickerBrowser:(ZLPhotoPickerBrowserViewController *)pickerBrowser{
     return 1;
 }
 
-- (NSInteger)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser numberOfItemsInSection:(NSUInteger)section{
+- (long)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser numberOfItemsInSection:(NSUInteger)section{
     return self.assets.count;
 }
 

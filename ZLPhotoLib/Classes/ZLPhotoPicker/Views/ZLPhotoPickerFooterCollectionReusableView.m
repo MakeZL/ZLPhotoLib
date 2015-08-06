@@ -28,7 +28,7 @@
     return _footerLabel;
 }
 
-- (void)setCount:(NSInteger)count{
+- (void)setCount:(long)count{
     _count = count;
     
     if (count > 0) {

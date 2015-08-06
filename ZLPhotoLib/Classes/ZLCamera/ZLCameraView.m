@@ -12,7 +12,7 @@
 @interface ZLCameraView ()
 
 @property (strong, nonatomic) CADisplayLink *link;
-@property (assign, nonatomic) NSInteger time;
+@property (assign, nonatomic) long time;
 @property (assign, nonatomic) CGPoint point;
 @property (assign, nonatomic) BOOL isPlayerEnd;
 

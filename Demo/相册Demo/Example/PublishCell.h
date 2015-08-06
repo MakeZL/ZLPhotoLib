@@ -14,7 +14,7 @@
 
 - (void) photoSelectedImage;
 
-- (void) tapBrowser:(NSInteger )index IndexPath:(NSIndexPath *)indexPath imagws:(NSArray*)imgs;
+- (void) tapBrowser:(long )index IndexPath:(NSIndexPath *)indexPath imagws:(NSArray*)imgs;
 
 @end
 @interface PublishCell : UITableViewCell

@@ -8,7 +8,7 @@
 
 #import "ZLPhotoPickerBrowserPhotoScrollView.h"
 #import "ZLPhotoPickerDatas.h"
-#import "UIImageView+WebCache.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 #import "DACircularProgressView.h"
 #import "ZLPhotoPickerCommon.h"
 
@@ -86,7 +86,7 @@
     }
 }
 
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(long)buttonIndex{
     if (buttonIndex == 0){
         if([UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypeSavedPhotosAlbum]) {
             UIImageWriteToSavedPhotosAlbum(_photoImageView.image, nil, nil, nil);
@@ -154,7 +154,7 @@
             }
 
             // 网络URL
-            [_photoImageView sd_setImageWithURL:photo.photoURL placeholderImage:thumbImage options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+            [_photoImageView sd_setImageWithURL:photo.photoURL placeholderImage:thumbImage options:SDWebImageRetryFailed progress:^(long receivedSize, long expectedSize) {
                 [self setProgress:(double)receivedSize / expectedSize];
             } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
                 [self setProgress:1.0];

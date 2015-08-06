@@ -17,6 +17,4 @@
  */
 @property (nonatomic , strong) ZLPhotoPickerGroup *group;
 
-+ (instancetype) instanceCell;
-
 @end

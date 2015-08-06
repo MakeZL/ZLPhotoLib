@@ -36,6 +36,7 @@
         UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
         tableView.translatesAutoresizingMaskIntoConstraints = NO;
         tableView.delegate = self;
+        [tableView registerClass:[ZLPhotoPickerGroupTableViewCell class] forCellReuseIdentifier:NSStringFromClass([ZLPhotoPickerGroupTableViewCell class])];
         [self.view addSubview:tableView];
         self.tableView = tableView;
         
@@ -86,14 +87,17 @@
 }
 
 #pragma mark - <UITableViewDataSource>
-- (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+- (long) tableView:(UITableView *)tableView numberOfRowsInSection:(long)section{
     return self.groups.count;
 }
 
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    ZLPhotoPickerGroupTableViewCell *cell = [ZLPhotoPickerGroupTableViewCell instanceCell];
+    ZLPhotoPickerGroupTableViewCell *cell = (ZLPhotoPickerGroupTableViewCell *)[tableView dequeueReusableCellWithIdentifier:NSStringFromClass([ZLPhotoPickerGroupTableViewCell class])];
     
+    if (cell == nil){
+        cell = [[ZLPhotoPickerGroupTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"ZLPhotoPickerGroupTableViewCell"];
+    }
     cell.group = self.groups[indexPath.row];
     return cell;
     

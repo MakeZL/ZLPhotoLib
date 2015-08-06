@@ -8,6 +8,7 @@
 
 #import "Example6ViewController.h"
 #import "Example1TableViewCell.h"
+#import "UIImage+ZLPhotoLib.h"
 #import "ZLPhoto.h"
 
 @interface Example6ViewController()
@@ -26,7 +27,7 @@
     
     UIButton *headerView = [[UIButton alloc] init];
     headerView.frame = CGRectMake(100, 100, 50, 50);
-    [headerView setImage:[UIImage imageNamed:@"example6.jpeg"] forState:UIControlStateNormal];
+    [headerView setImage:[UIImage ml_imageFromBundleNamed:@"example6.jpeg"] forState:UIControlStateNormal];
     [headerView addTarget:self action:@selector(showHeadPortrait:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:headerView];
 }

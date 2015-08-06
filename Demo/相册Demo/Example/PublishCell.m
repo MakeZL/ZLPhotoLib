@@ -50,10 +50,10 @@
         assetCount = 6;
     }
     
-    for (NSInteger i = 0; i < assetCount; i ++)
+    for (long i = 0; i < assetCount; i ++)
     {
-        NSInteger row = i / column;
-        NSInteger col = i % column;
+        long row = i / column;
+        long col = i % column;
         
         _image = [[UIImageView alloc]init];
         [_image setFrame:CGRectMake(55 + (15 * col), 10 + row * 15,15, 15)];

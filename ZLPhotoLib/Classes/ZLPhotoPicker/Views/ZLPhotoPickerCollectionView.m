@@ -76,11 +76,11 @@
 }
 
 #pragma mark -<UICollectionViewDataSource>
-- (NSInteger) numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
+- (long) numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
     return 1;
 }
 
-- (NSInteger) collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
+- (long) collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(long)section{
     return self.dataArray.count;
 }
 

@@ -53,7 +53,7 @@
     self.groupVc.status = status;
 }
 
-- (void)setMaxCount:(NSInteger)maxCount{
+- (void)setMaxCount:(long)maxCount{
     if (maxCount <= 0) return;
     _maxCount = maxCount;
     self.groupVc.maxCount = maxCount;

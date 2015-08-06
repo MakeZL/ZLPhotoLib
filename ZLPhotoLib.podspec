@@ -16,8 +16,8 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "ZLPhotoLib"
-  s.version      = "1.0.0
-  s.summary      = "UI and animation of the basic framework of swift!"
+  s.version      = "1.0.0"
+  s.summary      = "This is a photo album multiple-choice / photo browser example"
   s.homepage     = "https://github.com/MakeZL/ZLPhotoLib"
 
 
@@ -54,10 +54,10 @@ Pod::Spec.new do |s|
   #
 
   # s.platform     = :ios
-  # s.platform     = :ios, "5.0"
+  s.platform     = :ios, "6.0"
 
   #  When using multiple platforms
-  s.ios.deployment_target = "8.0"
+  # s.ios.deployment_target = "6.0"
   # s.osx.deployment_target = "10.7"
 
 
@@ -104,8 +104,8 @@ Pod::Spec.new do |s|
   #  the lib prefix of their name.
   #
 
-  s.framework  = "UIKit"
-  # s.frameworks = "SomeFramework", "AnotherFramework"
+  
+  s.frameworks = 'ImageIO', 'QuartzCore', 'AssetsLibrary', 'MediaPlayer'
 
   # s.library   = "iconv"
   # s.libraries = "iconv", "xml2"
@@ -120,6 +120,13 @@ Pod::Spec.new do |s|
   s.requires_arc = true
 
   # s.xcconfig = { "HEADER_SEARCH_PATHS" => "$(SDKROOT)/usr/include/libxml2" }
-  # s.dependency "JSONKit", "~> 1.4"
+  
+  s.dependency 'DACircularProgress', '~> 2.3'
+
+  # SDWebImage
+  # 3.7.2 contains bugs downloading local files
+  # https://github.com/rs/SDWebImage/issues/1109
+  s.dependency 'SDWebImage', '~> 3.7', '!= 3.7.2'
+
 
 end

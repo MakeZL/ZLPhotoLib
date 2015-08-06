@@ -30,7 +30,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 // 单击时执行销毁的block
 @property (nonatomic , copy) ZLPickerBrowserViewControllerTapDisMissBlock disMissBlock;
 // 当前提供的分页数
-@property (nonatomic , assign) NSInteger currentPage;
+@property (nonatomic , assign) long currentPage;
 @end
 
 
@@ -200,7 +200,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     }
     
     __weak typeof(self)weakSelf = self;
-    self.disMissBlock = ^(NSInteger page){
+    self.disMissBlock = ^(long page){
         mainView.hidden = NO;
         mainView.alpha = 1.0;
         CGRect originalFrame = CGRectZero;
@@ -329,9 +329,9 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 #pragma mark getPhotos
 - (NSArray *) getPhotos{
     NSMutableArray *photos = [NSMutableArray array];
-    NSInteger section = self.currentIndexPath.section;
-    NSInteger rows = [self.dataSource photoBrowser:self numberOfItemsInSection:section];
-    for (NSInteger i = 0; i < rows; i++) {
+    long section = self.currentIndexPath.section;
+    long rows = [self.dataSource photoBrowser:self numberOfItemsInSection:section];
+    for (long i = 0; i < rows; i++) {
         [photos addObject:[self.dataSource photoBrowser:self photoAtIndexPath:[NSIndexPath indexPathForItem:i inSection:section]]];
     }
     return photos;
@@ -396,11 +396,11 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 }
 
 #pragma mark - <UICollectionViewDataSource>
-- (NSInteger) numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
+- (long) numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
     return 1;
 }
 
-- (NSInteger) collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
+- (long) collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(long)section{
     if ([self isDataSourceElsePhotos]) {
         return [self.dataSource photoBrowser:self numberOfItemsInSection:self.currentIndexPath.section];
     }
@@ -469,7 +469,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 #pragma mark - <UIScrollViewDelegate>
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
     CGRect tempF = self.collectionView.frame;
-    NSInteger currentPage = (NSInteger)((scrollView.contentOffset.x / scrollView.frame.size.width) + 0.5);
+    long currentPage = (long)((scrollView.contentOffset.x / scrollView.frame.size.width) + 0.5);
     if (tempF.size.width < [UIScreen mainScreen].bounds.size.width){
         tempF.size.width = [UIScreen mainScreen].bounds.size.width;
     }
@@ -491,13 +491,13 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     self.collectionView.frame = tempF;
 }
 
--(void)setPageLabelPage:(NSInteger)page{
+-(void)setPageLabelPage:(long)page{
     self.pageLabel.text = [NSString stringWithFormat:@"%ld / %ld",page + 1, self.photos.count];
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
     
-    NSInteger currentPage = (NSInteger)(scrollView.contentOffset.x / (scrollView.frame.size.width));
+    long currentPage = (long)(scrollView.contentOffset.x / (scrollView.frame.size.width));
     
     if (currentPage == self.photos.count - 2) {
         currentPage = roundf((scrollView.contentOffset.x) / (scrollView.frame.size.width));
@@ -545,9 +545,9 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 }
 
 #pragma mark - <UIAlertViewDelegate>
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(long)buttonIndex{
     if (buttonIndex == 1) {
-        NSInteger page = self.currentPage;
+        long page = self.currentPage;
         if ([self.delegate respondsToSelector:@selector(photoBrowser:removePhotoAtIndexPath:)]) {
             [self.delegate photoBrowser:self removePhotoAtIndexPath:[NSIndexPath indexPathForItem:page inSection:self.currentIndexPath.section]];
         }

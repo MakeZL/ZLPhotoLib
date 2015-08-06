@@ -17,7 +17,7 @@
 @property (strong,nonatomic) ZLPhotoPickerGroupViewController *groupVc;
 @property (nonatomic , assign) PickerViewShowStatus status;
 @property (nonatomic , strong) ZLPhotoPickerGroup *assetsGroup;
-@property (nonatomic , assign) NSInteger maxCount;
+@property (nonatomic , assign) long maxCount;
 // 需要记录选中的值的数据
 @property (strong,nonatomic) NSArray *selectPickerAssets;
 // 置顶展示图片

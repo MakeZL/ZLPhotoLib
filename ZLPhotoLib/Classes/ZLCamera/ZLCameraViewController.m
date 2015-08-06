@@ -219,11 +219,11 @@ static CGFloat BOTTOM_HEIGHT = 60;
     [self.view addSubview:controlView];
 }
 
-- (NSInteger ) numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
+- (long ) numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
     return 1;
 }
 
-- (NSInteger ) collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
+- (long ) collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(long)section{
     return self.images.count;
 }
 
@@ -262,7 +262,7 @@ static CGFloat BOTTOM_HEIGHT = 60;
 
 
 #pragma mark - <ZLPhotoPickerBrowserViewControllerDataSource>
-- (NSInteger)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser numberOfItemsInSection:(NSUInteger)section{
+- (long)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser numberOfItemsInSection:(NSUInteger)section{
     return self.images.count;
 }
 

@@ -24,7 +24,7 @@
 /**
  *  组里面的图片个数
  */
-@property (nonatomic , assign) NSInteger assetsCount;
+@property (nonatomic , assign) long assetsCount;
 
 /**
  *  类型 : Saved Photos...

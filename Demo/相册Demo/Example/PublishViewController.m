@@ -91,13 +91,13 @@ static NSString *const PublishIdentifierCell = @"Cell";
     }
 }
 
-- (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView
+- (long) numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 1;
 //    return 2;
 }
 
-- (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+- (long) tableView:(UITableView *)tableView numberOfRowsInSection:(long)section
 {
 //    return self.dataArray.count;
     if (section == 0) {
@@ -135,7 +135,7 @@ static NSString *const PublishIdentifierCell = @"Cell";
 //    return 60 * autoHeight;
 }
 
-- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(long)section
 {
     if (section == 0) {
         return 0;
@@ -143,7 +143,7 @@ static NSString *const PublishIdentifierCell = @"Cell";
     return 30 * autoHeight;
 }
 
-- (UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+- (UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(long)section
 {
 //    if (section == 1) {
 //        
@@ -267,7 +267,7 @@ static NSString *const PublishIdentifierCell = @"Cell";
     
 }
 
-- (void)tapBrowser:(NSInteger)index IndexPath:(NSIndexPath *)indexPath imagws:(NSArray *)imgs
+- (void)tapBrowser:(long)index IndexPath:(NSIndexPath *)indexPath imagws:(NSArray *)imgs
 {
     self.indexShow = indexPath;
     NSLog(@"index__%ld",index);
@@ -291,10 +291,10 @@ static NSString *const PublishIdentifierCell = @"Cell";
     }];
 }
 #pragma mark - <ZLPhotoPickerBrowserViewControllerDataSource>
-- (NSInteger)numberOfSectionInPhotosInPickerBrowser:(ZLPhotoPickerBrowserViewController *)pickerBrowser{
+- (long)numberOfSectionInPhotosInPickerBrowser:(ZLPhotoPickerBrowserViewController *)pickerBrowser{
     return 1;
 }
-- (NSInteger)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser numberOfItemsInSection:(NSUInteger)section{
+- (long)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser numberOfItemsInSection:(NSUInteger)section{
     return self.dataArray.count;
 }
 

@@ -98,7 +98,7 @@
 
 
 #pragma mark - <UITableViewDataSource>
-- (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+- (long) tableView:(UITableView *)tableView numberOfRowsInSection:(long)section{
     return self.assets.count;
 }
 
