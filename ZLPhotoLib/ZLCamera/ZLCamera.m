@@ -10,7 +10,7 @@
 
 @implementation ZLCamera
 
-- (UIImage *)fullScreenImage{
+- (UIImage *)photoImage{
     return [UIImage imageWithContentsOfFile:self.imagePath];
 }
 

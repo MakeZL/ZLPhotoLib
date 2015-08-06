@@ -13,6 +13,6 @@
 
 @property (copy,nonatomic) NSString *imagePath;
 @property (strong,nonatomic) UIImage *thumbImage;
-@property (strong,nonatomic) UIImage *fullScreenImage;
+@property (strong,nonatomic) UIImage *photoImage;
 
 @end

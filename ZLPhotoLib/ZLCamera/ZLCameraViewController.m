@@ -267,7 +267,7 @@ static CGFloat BOTTOM_HEIGHT = 60;
 
 - (ZLPhotoPickerBrowserPhoto *) photoBrowser:(ZLPhotoPickerBrowserViewController *)pickerBrowser photoAtIndexPath:(NSIndexPath *)indexPath{
     
-    id imageObj = [[self.images objectAtIndex:indexPath.row] fullScreenImage];
+    id imageObj = [[self.images objectAtIndex:indexPath.row] photoImage];
     ZLPhotoPickerBrowserPhoto *photo = [ZLPhotoPickerBrowserPhoto photoAnyImageObjWith:imageObj];
     
     UICollectionViewCell *cell = (UICollectionViewCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:0]];
