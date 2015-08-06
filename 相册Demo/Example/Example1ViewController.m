@@ -28,19 +28,19 @@
         
         // 测试数据啦
         ZLPhotoPickerBrowserPhoto *photo1 = [[ZLPhotoPickerBrowserPhoto alloc] init];
-        photo1.photoURL = [NSURL URLWithString:@"http://ww2.sinaimg.cn/bmiddle/64a0164fjw1eudtv13ycej20c81q5432.jpg"];
+        photo1.photoURL = [NSURL URLWithString:@"http://imgsrc.baidu.com/forum/w%3D580/sign=445a261ef01fbe091c5ec31c5b610c30/23064a90f603738d96e6154ab11bb051f819ec35.jpg"];
         [_photos addObject:photo1];
         
         ZLPhotoPickerBrowserPhoto *photo2 = [[ZLPhotoPickerBrowserPhoto alloc] init];
-        photo2.photoURL = [NSURL URLWithString:@"http://www.qqaiqin.com/uploads/allimg/130520/4-13052022531U60.gif"];
+        photo2.photoURL = [NSURL URLWithString:@"http://imgsrc.baidu.com/forum/w%3D580/sign=14e206601d30e924cfa49c397c096e66/1bcc39dbb6fd5266c3fc277ca918972bd507368d.jpg"];
         [_photos addObject:photo2];
         
         ZLPhotoPickerBrowserPhoto *photo3 = [[ZLPhotoPickerBrowserPhoto alloc] init];
-        photo3.photoURL = [NSURL URLWithString:@"http://www.1tong.com/uploads/wallpaper/anime/124-2-1280x800.jpg"];
+        photo3.photoURL = [NSURL URLWithString:@"http://imgsrc.baidu.com/forum/pic/item/4753564e9258d1095d4280dad358ccbf6c814d38.jpg"];
         [_photos addObject:photo3];
         
         ZLPhotoPickerBrowserPhoto *photo4 = [[ZLPhotoPickerBrowserPhoto alloc] init];
-        photo4.photoURL = [NSURL URLWithString:@"http://imgsrc.baidu.com/forum/pic/item/3f7dacaf2edda3cc7d2289ab01e93901233f92c5.jpg"];
+        photo4.photoURL = [NSURL URLWithString:@"http://imgsrc.baidu.com/forum/pic/item/6c04738da9773912fcb7ae09fa198618377ae2c8.jpg"];
         [_photos addObject:photo4];
         
     }

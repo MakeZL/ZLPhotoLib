@@ -26,16 +26,16 @@
     if (!_assets) {
         // CollctionView 可以分组。
         NSMutableArray *section1 = [NSMutableArray arrayWithArray:@[
-                                                                    @"http://ww2.sinaimg.cn/bmiddle/64a0164fjw1eudtv13ycej20c81q5432.jpg",
-                                                                    @"http://www.1tong.com/uploads/wallpaper/anime/124-2-1280x800.jpg",
-                                                                    @"http://imgsrc.baidu.com/forum/pic/item/xc59ca2ef76c6a7ef603e17c7fcfaaf51f2de6640.jpg",
-                                                                    @"http://imgsrc.baidu.com/forum/pic/item/3f7dacaf2edda3cc7d2289ab01e93901233f92c5.jpg"
+                                                                    @"http://imgsrc.baidu.com/forum/w%3D580/sign=4bbc9d7ecdfc1e17fdbf8c397a90f67c/eac83bc79f3df8dcd915a5f9cf11728b471028b0.jpg",
+                                                                    @"http://imgsrc.baidu.com/forum/w%3D580/sign=a68da75679ec54e741ec1a1689399bfd/0225720e0cf3d7cafc79151ef01fbe096a63a9d6.jpg",
+                                                                    @"http://imgsrc.baidu.com/forum/w%3D580/sign=7f1993869e82d158bb8259b9b00a19d5/2a79ca8065380cd73f33b785a344ad34598281b4.jpg",
+                                                                    @"http://imgsrc.baidu.com/forum/w%3D580/sign=3c94ce51b1de9c82a665f9875c8080d2/0914b07eca806538a21b8e7b95dda144ac3482e8.jpg"
                                                                     ]];
         NSMutableArray *section2 = [NSMutableArray arrayWithArray:@[
-                                                                    @"http://d.hiphotos.baidu.com/image/pic/item/5ab5c9ea15ce36d3e6ce923138f33a87e850b1ec.jpg",
-                                                                    @"http://b.hiphotos.baidu.com/image/pic/item/810a19d8bc3eb135eae45086a51ea8d3fd1f44e8.jpg",
-                                                                    @"http://c.hiphotos.baidu.com/image/pic/item/b3b7d0a20cf431ade14e30214936acaf2edd980d.jpg",
-                                                                    @"http://c.hiphotos.baidu.com/image/pic/item/0df3d7ca7bcb0a46202bd1386963f6246b60afa2.jpg",
+                                                                    @"http://imgsrc.baidu.com/forum/pic/item/db33970a304e251f6940f190a586c9177f3e532e.jpg",
+                                                                    @"http://imgsrc.baidu.com/forum/w%3D580/sign=975a92499113b07ebdbd50003cd69113/90d662d9f2d3572c7d7789b48813632763d0c3cc.jpg",
+                                                                    @"http://imgsrc.baidu.com/forum/w%3D580/sign=5d2a6aa3f9edab6474724dc8c736af81/32d4fd1f4134970ac96b044797cad1c8a7865d41.jpg",
+                                                                    @"http://imgsrc.baidu.com/forum/w%3D580/sign=cab899c1ab014c08193b28ad3a7a025b/c861d0160924ab18b4b7f55f37fae6cd7b890b3f.jpg",
                                                                     ]];
         
         _assets = [NSMutableArray arrayWithObjects:section1,section2, nil];

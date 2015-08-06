@@ -59,7 +59,7 @@
     
     self.view.backgroundColor = [UIColor whiteColor];
     
-    self.title = @"ZLPickerLib";
+    self.title = @"MakeZL";
     [self tableView];
     
 }

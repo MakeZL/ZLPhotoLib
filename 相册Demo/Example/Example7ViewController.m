@@ -22,11 +22,11 @@
 - (NSMutableArray *)assets{
     if (!_assets) {
         _assets = [NSMutableArray arrayWithArray:@[
-                                                   @"http://ww2.sinaimg.cn/bmiddle/64a0164fjw1eudtv13ycej20c81q5432.jpg",
-                                                   @"http://www.1tong.com/uploads/wallpaper/anime/124-2-1280x800.jpg",
-                                                   @"http://imgsrc.baidu.com/forum/pic/item/c59ca2ef76c6a7ef603e17c7fcfaaf51f2de6640.jpg",
-                                                   @"http://www.qqaiqin.com/uploads/allimg/130520/4-13052022531U60.gif",
-                                                   @"http://www.1tong.com/uploads/wallpaper/anime/124-2-1280x800.jpg",
+                                                   @"http://imgsrc.baidu.com/forum/w%3D580/sign=515dae6de7dde711e7d243fe97eecef4/6c236b600c3387446fc73114530fd9f9d72aa05b.jpg",
+                                                   @"http://imgsrc.baidu.com/forum/w%3D580/sign=1875d6474334970a47731027a5cbd1c0/51e876094b36acaf9e7b88947ed98d1000e99cc2.jpg",
+                                                   @"http://imgsrc.baidu.com/forum/w%3D580/sign=67ef9ea341166d223877159c76230945/e2f7f736afc3793138419f41e9c4b74543a911b7.jpg",
+                                                   @"http://imgsrc.baidu.com/forum/w%3D580/sign=a18485594e086e066aa83f4332087b5a/4a110924ab18972bcd1a19a2e4cd7b899e510ab8.jpg",
+                                                   @"http://imgsrc.baidu.com/forum/w%3D580/sign=42d17a169058d109c4e3a9bae159ccd0/61f5b2119313b07e550549600ed7912397dd8c21.jpg",
                                                    ]];
     }
     return _assets;

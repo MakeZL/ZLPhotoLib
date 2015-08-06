@@ -20,21 +20,6 @@
 @implementation Example0ViewController
 
 #pragma mark - Getter
-#pragma mark Get data
-- (NSMutableArray *)assets{
-    if (!_assets) {
-        _assets = [NSMutableArray arrayWithArray:@[
-                                                   @"http://ww2.sinaimg.cn/bmiddle/64a0164fjw1eudtv13ycej20c81q5432.jpg",
-                                                   @"http://www.qqaiqin.com/uploads/allimg/130520/4-13052022531U60.gif",
-                                                   @"http://www.1tong.com/uploads/wallpaper/anime/124-2-1280x800.jpg",
-                                                   @"http://imgsrc.baidu.com/forum/pic/item/c59ca2ef76c6a7ef603e17c7fcfaaf51f2de6640.jpg",
-                                                   @"http://imgsrc.baidu.com/forum/pic/item/3f7dacaf2edda3cc7d2289ab01e93901233f92c5.jpg",
-                                                   //                                                   @"http://123.57.17.222:8000/school/web/upload/20150316093117407_6246_9.jpg",
-                                                   ]];
-    }
-    return _assets;
-}
-
 #pragma mark Get View
 - (UITableView *)tableView{
     if (!_tableView) {
@@ -60,9 +45,6 @@
 
 - (void)viewDidLoad{
     [super viewDidLoad];
-    
-    [[SDImageCache sharedImageCache] clearDisk];
-    [[SDImageCache sharedImageCache] clearMemory];
     
     self.view.backgroundColor = [UIColor whiteColor];
     // 初始化UI
@@ -110,15 +92,8 @@
     static NSString *ID = @"cell";
     Example1TableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ID];
     
-    // 判断类型来获取Image
     ZLPhotoAssets *asset = self.assets[indexPath.row];
-    if ([asset isKindOfClass:[ZLPhotoAssets class]]) {
-        cell.imageview1.image = asset.originImage;
-    }else if ([asset isKindOfClass:[NSString class]]){
-        [cell.imageview1 sd_setImageWithURL:[NSURL URLWithString:(NSString *)asset] placeholderImage:[UIImage imageNamed:@"pc_circle_placeholder"]];
-    }else if([asset isKindOfClass:[UIImage class]]){
-        cell.imageview1.image = (UIImage *)asset;
-    }
+    cell.imageview1.image = asset.originImage;
     
     return cell;
 }
