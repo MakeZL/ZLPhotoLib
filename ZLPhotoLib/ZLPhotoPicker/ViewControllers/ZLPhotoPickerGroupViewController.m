@@ -52,16 +52,30 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self tableView];
-    
+    self.title = @"选择相册";
+
     // 设置按钮
     [self setupButtons];
     
-    // 获取图片
-    [self getImgs];
-    
-    self.title = @"选择相册";
-    
+    if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
+        // 判断没有权限获取用户相册的话，就提示个View
+        UIImageView *lockView = [[UIImageView alloc] init];
+        lockView.image = [UIImage imageNamed:@"lock"];
+        lockView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 200);
+        lockView.contentMode = UIViewContentModeCenter;
+        [self.view addSubview:lockView];
+        
+        UILabel *lockLbl = [[UILabel alloc] init];
+        lockLbl.text = PICKER_PowerBrowserPhotoLibirayText;
+        lockLbl.numberOfLines = 0;
+        lockLbl.textAlignment = NSTextAlignmentCenter;
+        lockLbl.frame = CGRectMake(20, 0, self.view.frame.size.width - 40, self.view.frame.size.height);
+        [self.view addSubview:lockLbl];
+    }else{
+        [self tableView];
+        // 获取图片
+        [self getImgs];
+    }
 }
 
 - (void) setupButtons{
