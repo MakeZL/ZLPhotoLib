@@ -59,7 +59,8 @@
     // 设置按钮
     [self setupButtons];
     
-    if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
+    ALAuthorizationStatus author = [ALAssetsLibrary authorizationStatus];
+    if (author == ALAuthorizationStatusRestricted || author ==ALAuthorizationStatusDenied) {
         // 判断没有权限获取用户相册的话，就提示个View
         UIImageView *lockView = [[UIImageView alloc] init];
         lockView.image = [UIImage ml_imageFromBundleNamed:@"lock"];
