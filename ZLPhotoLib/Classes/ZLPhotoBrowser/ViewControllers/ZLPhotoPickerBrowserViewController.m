@@ -249,7 +249,35 @@ static NSString *_cellIdentifier = @"collectionViewCell";
             }
             
             originalFrame = [toImageView2.superview convertRect:toImageView2.frame toView:[weakSelf getParsentView:toImageView2]];
+        }else{
+            UIImage *thumbImage = nil;
+            
+            if ([weakSelf isDataSourceElsePhotos]) {
+                if ([self.photos[self.currentPage] asset] == nil) {
+                    thumbImage = [[weakSelf.dataSource photoBrowser:weakSelf photoAtIndexPath:[NSIndexPath indexPathForItem:page inSection:weakSelf.currentIndexPath.section]] thumbImage];
+                }else{
+                    thumbImage = [[weakSelf.dataSource photoBrowser:weakSelf photoAtIndexPath:[NSIndexPath indexPathForItem:page inSection:weakSelf.currentIndexPath.section]] photoImage];
+                }
+                
+            }else{
+                if ([weakSelf.photos[page] asset] == nil) {
+                    thumbImage = [weakSelf.photos[page] thumbImage];
+                }else{
+                    thumbImage = [weakSelf.photos[page] photoImage];
+                }
+            }
+            
+            ZLPhotoPickerBrowserPhoto *photo = weakSelf.photos[page];
+            if (thumbImage == nil) {
+                imageView.image = [(UIImageView *)[photo toView] image];
+            }
+            
+            CGRect ivFrame = [weakSelf setMaxMinZoomScalesForCurrentBounds:thumbImage];
+            if (!CGRectEqualToRect(ivFrame, CGRectZero)) {
+                imageView.frame = ivFrame;
+            }
         }
+        
         
         if (weakSelf.navigationHeight) {
             originalFrame.origin.y += weakSelf.navigationHeight;
@@ -583,6 +611,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
             self.currentPage--;
         }
         
+        self.status = UIViewAnimationAnimationStatusFade;
         UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:page inSection:self.currentIndexPath.section]];
         if (cell) {
             if([[[cell.contentView subviews] lastObject] isKindOfClass:[UIView class]]){
