@@ -151,13 +151,11 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     
     UIImageView *toImageView = nil;
     if(self.status == UIViewAnimationAnimationStatusZoom){
-        
         if ([self isDataSourceElsePhotos]) {
             toImageView = (UIImageView *)[[self.dataSource photoBrowser:self photoAtIndexPath:self.currentIndexPath] toView];
         }else{
             toImageView = (UIImageView *)[self.photos[self.currentIndexPath.row] toView];
         }
-        
     }
     
     if (![toImageView isKindOfClass:[UIImageView class]] && self.status != UIViewAnimationAnimationStatusFade) {
@@ -227,16 +225,22 @@ static NSString *_cellIdentifier = @"collectionViewCell";
                 }
                 
             }else{
-                if ([self.photos[page] asset] == nil) {
-                    thumbImage = [self.photos[page] thumbImage];
+                if ([weakSelf.photos[page] asset] == nil) {
+                    thumbImage = [weakSelf.photos[page] thumbImage];
                 }else{
-                    thumbImage = [self.photos[page] photoImage];
+                    thumbImage = [weakSelf.photos[page] photoImage];
                 }
             }
             
-            imageView.image = thumbImage;
-            imageView.frame = [weakSelf setMaxMinZoomScalesForCurrentBounds:thumbImage];
+            ZLPhotoPickerBrowserPhoto *photo = weakSelf.photos[page];
+            if (thumbImage == nil) {
+                imageView.image = [(UIImageView *)[photo toView] image];
+            }
             
+            CGRect ivFrame = [weakSelf setMaxMinZoomScalesForCurrentBounds:thumbImage];
+            if (!CGRectEqualToRect(ivFrame, CGRectZero)) {
+                imageView.frame = ivFrame;
+            }
             UIImageView *toImageView2 = nil;
             if ([weakSelf isDataSourceElsePhotos]) {
                 toImageView2 = (UIImageView *)[[weakSelf.dataSource photoBrowser:weakSelf photoAtIndexPath:[NSIndexPath indexPathForItem:page inSection:weakSelf.currentIndexPath.section]] toView];

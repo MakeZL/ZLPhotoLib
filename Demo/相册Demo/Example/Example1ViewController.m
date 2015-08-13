@@ -94,7 +94,6 @@
     ZLPhotoPickerBrowserPhoto *photo = self.photos[indexPath.row];
     [cell.imageview1 sd_setImageWithURL:photo.photoURL];
     photo.toView = cell.imageview1;
-    
     return cell;
 }
 
@@ -103,7 +102,6 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     // 点击cell 放大缩小图片
     Example1TableViewCell *cell = (Example1TableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
-    
     [self setupPhotoBrowser:cell];
 }
 
