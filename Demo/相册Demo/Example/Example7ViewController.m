@@ -7,6 +7,7 @@
 //
 
 #import "Example7ViewController.h"
+#import "UIImage+ZLPhotoLib.h"
 #import "ZLPhoto.h"
 
 @interface Example7ViewController () <ZLPhotoPickerBrowserViewControllerDataSource,ZLPhotoPickerBrowserViewControllerDelegate>
@@ -75,7 +76,7 @@
         // UIButton
         if (i == self.assets.count){
             // 最后一个Button
-            [btn setImage:[UIImage imageNamed:@"iconfont-tianjia"] forState:UIControlStateNormal];
+            [btn setImage:[UIImage ml_imageFromBundleNamed:@"iconfont-tianjia"] forState:UIControlStateNormal];
             [btn addTarget:self action:@selector(photoSelecte) forControlEvents:UIControlEventTouchUpInside];
         }else{
             // 如果是本地ZLPhotoAssets就从本地取，否则从网络取

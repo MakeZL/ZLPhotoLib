@@ -93,7 +93,7 @@
     // 判断类型来获取Image
     ZLPhotoAssets *asset = self.assets[indexPath.section][indexPath.item];
     if ([asset isKindOfClass:[ZLPhotoAssets class]]) {
-        cell.imageView.image = asset.originImage;
+        cell.imageView.image = asset.thumbImage;
     }else if ([asset isKindOfClass:[NSString class]]){
         [cell.imageView sd_setImageWithURL:[NSURL URLWithString:(NSString *)asset] placeholderImage:[UIImage imageNamed:@"pc_circle_placeholder"]];
     }else if([asset isKindOfClass:[UIImage class]]){
@@ -148,6 +148,9 @@
     // 包装下imageObj 成 ZLPhotoPickerBrowserPhoto 传给数据源
     Example2CollectionViewCell *cell = (Example2CollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
     // 缩略图
+    if ([imageObj isKindOfClass:[ZLPhotoAssets class]]) {
+        photo.asset = imageObj;
+    }
     photo.toView = cell.imageView;
     photo.thumbImage = cell.imageView.image;
     return photo;

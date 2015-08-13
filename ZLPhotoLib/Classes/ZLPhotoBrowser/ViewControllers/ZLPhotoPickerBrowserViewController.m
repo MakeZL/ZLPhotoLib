@@ -173,9 +173,17 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     
     UIImage *thumbImage = nil;
     if ([self isDataSourceElsePhotos]) {
-        thumbImage = [[self.dataSource photoBrowser:self photoAtIndexPath:self.currentIndexPath] thumbImage];
+        if ([self.photos[self.currentIndexPath.item] asset] == nil) {
+            thumbImage = [[self.dataSource photoBrowser:self photoAtIndexPath:self.currentIndexPath] thumbImage];
+        }else{
+            thumbImage = [[self.dataSource photoBrowser:self photoAtIndexPath:self.currentIndexPath] photoImage];
+        }
     }else{
-        thumbImage = toImageView.image;
+        if ([self.photos[self.currentPage] asset] == nil) {
+            thumbImage = [self.photos[self.currentIndexPath.item] thumbImage];
+        }else{
+            thumbImage = [self.photos[self.currentIndexPath.item] photoImage];
+        }
     }
     
     if (self.status == UIViewAnimationAnimationStatusFade){
@@ -212,13 +220,22 @@ static NSString *_cellIdentifier = @"collectionViewCell";
             UIImage *thumbImage = nil;
 
             if ([weakSelf isDataSourceElsePhotos]) {
-                thumbImage = [(UIImageView *)[[weakSelf.dataSource photoBrowser:weakSelf photoAtIndexPath:[NSIndexPath indexPathForItem:page inSection:weakSelf.currentIndexPath.section]] toView] image];
+                if ([self.photos[self.currentPage] asset] == nil) {
+                    thumbImage = [[weakSelf.dataSource photoBrowser:weakSelf photoAtIndexPath:[NSIndexPath indexPathForItem:page inSection:weakSelf.currentIndexPath.section]] thumbImage];
+                }else{
+                    thumbImage = [[weakSelf.dataSource photoBrowser:weakSelf photoAtIndexPath:[NSIndexPath indexPathForItem:page inSection:weakSelf.currentIndexPath.section]] photoImage];
+                }
+                
             }else{
-                thumbImage = [(UIImageView *)[weakSelf.photos[page] toView] image];
+                if ([self.photos[page] asset] == nil) {
+                    thumbImage = [self.photos[page] thumbImage];
+                }else{
+                    thumbImage = [self.photos[page] photoImage];
+                }
             }
             
             imageView.image = thumbImage;
-            imageView.frame = [weakSelf setMaxMinZoomScalesForCurrentBounds:imageView.image];
+            imageView.frame = [weakSelf setMaxMinZoomScalesForCurrentBounds:thumbImage];
             
             UIImageView *toImageView2 = nil;
             if ([weakSelf isDataSourceElsePhotos]) {
@@ -417,7 +434,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         ZLPhotoPickerBrowserPhoto *photo = nil;
         
         if ([self isDataSourceElsePhotos]) {
-            photo = [self.dataSource photoBrowser:self photoAtIndexPath:indexPath];
+            photo = [self.dataSource photoBrowser:self photoAtIndexPath:[NSIndexPath indexPathForItem:indexPath.item inSection:self.currentIndexPath.section]];
         }else{
             photo = self.photos[indexPath.item];
         }
