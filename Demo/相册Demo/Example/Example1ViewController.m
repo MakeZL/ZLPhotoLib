@@ -127,6 +127,9 @@
     [self presentViewController:pickerBrowser animated:NO completion:nil];
 }
 
+/**
+ *  @MakeZL:以下传数据源模式，同样可行
+ */
 #pragma mark - <ZLPhotoPickerBrowserViewControllerDataSource>
 //- (long)numberOfSectionInPhotosInPickerBrowser:(ZLPhotoPickerBrowserViewController *)pickerBrowser{
 //    return 1;
