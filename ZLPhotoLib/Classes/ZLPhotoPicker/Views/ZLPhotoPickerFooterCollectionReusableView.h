@@ -10,6 +10,6 @@
 
 @interface ZLPhotoPickerFooterCollectionReusableView : UICollectionReusableView
 
-@property (nonatomic , assign) long count;
+@property (nonatomic , assign) NSInteger count;
 
 @end

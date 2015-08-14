@@ -68,7 +68,7 @@
         }
     };
     
-    long type = ALAssetsGroupAll;
+    NSInteger type = ALAssetsGroupAll;
     
     [self.library enumerateGroupsWithTypes:type usingBlock:resultBlock failureBlock:nil];
 }

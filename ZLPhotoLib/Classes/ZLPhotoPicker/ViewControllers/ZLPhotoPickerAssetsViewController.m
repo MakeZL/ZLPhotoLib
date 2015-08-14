@@ -121,9 +121,9 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
     self.collectionView.lastDataArray = nil;
     self.collectionView.isRecoderSelectPicker = YES;
     self.collectionView.selectAssets = self.selectAssets;
-    long count = self.selectAssets.count;
+    NSInteger count = self.selectAssets.count;
     self.makeView.hidden = !count;
-    self.makeView.text = [NSString stringWithFormat:@"%ld",(long)count];
+    self.makeView.text = [NSString stringWithFormat:@"%ld",(NSInteger)count];
     self.doneBtn.enabled = (count > 0);
 }
 
@@ -266,9 +266,9 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
         [self.toolBarThumbCollectionView reloadData];
         [self.takePhotoImages addObject:image];
         
-        long count = self.selectAssets.count;
+        NSInteger count = self.selectAssets.count;
         self.makeView.hidden = !count;
-        self.makeView.text = [NSString stringWithFormat:@"%ld",(long)count];
+        self.makeView.text = [NSString stringWithFormat:@"%ld",(NSInteger)count];
         self.doneBtn.enabled = (count > 0);
         
         [picker dismissViewControllerAnimated:YES completion:nil];
@@ -300,7 +300,7 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
 }
 
 #pragma mark - setter
--(void)setMaxCount:(long)maxCount{
+-(void)setMaxCount:(NSInteger)maxCount{
     _maxCount = maxCount;
     
     if (!_privateTempMaxCount) {
@@ -340,9 +340,9 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
     
 //    self.selectAssets = [NSMutableArray arrayWithArray:[[NSSet setWithArray:self.selectAssets] allObjects]];
 
-    long count = self.selectAssets.count;
+    NSInteger count = self.selectAssets.count;
     self.makeView.hidden = !count;
-    self.makeView.text = [NSString stringWithFormat:@"%ld",(long)count];
+    self.makeView.text = [NSString stringWithFormat:@"%ld",(NSInteger)count];
     self.doneBtn.enabled = (count > 0);
     
     [self.toolBarThumbCollectionView reloadData];
@@ -353,8 +353,8 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
             asset = deleteAssets;
         }
         
-        long selectAssetsCurrentPage = -1;
-        for (long i = 0; i < self.selectAssets.count; i++) {
+        NSInteger selectAssetsCurrentPage = -1;
+        for (NSInteger i = 0; i < self.selectAssets.count; i++) {
             ZLPhotoAssets *photoAsset = self.selectAssets[i];
             if ([photoAsset isKindOfClass:[UIImage class]]) {
                 continue;
@@ -386,11 +386,11 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
 
 #pragma mark -
 #pragma mark - UICollectionViewDataSource
-- (long) numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
+- (NSInteger) numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
     return 1;
 }
 
-- (long) collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(long)section{
+- (NSInteger) collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
     return self.selectAssets.count;
 }
 
@@ -430,7 +430,7 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
     [self presentViewController:browserVc animated:NO completion:nil];
 }
 
-- (long)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser numberOfItemsInSection:(NSUInteger)section{
+- (NSInteger)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser numberOfItemsInSection:(NSUInteger)section{
     return self.selectAssets.count;
 }
 
@@ -456,8 +456,8 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
     
     // 删除选中的照片
     ALAsset *asset = self.selectAssets[indexPath.row];
-    long currentPage = indexPath.row;
-    for (long i = 0; i < self.collectionView.dataArray.count; i++) {
+    NSInteger currentPage = indexPath.row;
+    for (NSInteger i = 0; i < self.collectionView.dataArray.count; i++) {
         ALAsset *photoAsset = self.collectionView.dataArray[i];
         if ([photoAsset isKindOfClass:[ZLPhotoAssets class]] && [asset isKindOfClass:[ZLPhotoAssets class]]) {
                 ZLPhotoAssets *photoAssets = (ZLPhotoAssets *)photoAsset;

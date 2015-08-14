@@ -82,7 +82,7 @@
 }
 
 #pragma mark - <UITableViewDataSource>
-- (long) tableView:(UITableView *)tableView numberOfRowsInSection:(long)section{
+- (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return self.photos.count;
 }
 
@@ -131,11 +131,11 @@
  *  @MakeZL:以下传数据源模式，同样可行
  */
 #pragma mark - <ZLPhotoPickerBrowserViewControllerDataSource>
-//- (long)numberOfSectionInPhotosInPickerBrowser:(ZLPhotoPickerBrowserViewController *)pickerBrowser{
+//- (NSInteger)numberOfSectionInPhotosInPickerBrowser:(ZLPhotoPickerBrowserViewController *)pickerBrowser{
 //    return 1;
 //}
 //
-//- (long)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser numberOfItemsInSection:(NSUInteger)section{
+//- (NSInteger)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser numberOfItemsInSection:(NSUInteger)section{
 //    return self.assets.count;
 //}
 //

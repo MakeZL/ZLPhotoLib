@@ -78,11 +78,11 @@
 }
 
 #pragma mark - <UICollectionViewDataSource>
-- (long)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
     return self.assets.count;
 }
 
-- (long)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(long)section{
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
     return [self.assets[section] count];
 }
 
@@ -134,11 +134,11 @@
 }
 
 #pragma mark - <ZLPhotoPickerBrowserViewControllerDataSource>
-- (long)numberOfSectionInPhotosInPickerBrowser:(ZLPhotoPickerBrowserViewController *)pickerBrowser{
+- (NSInteger)numberOfSectionInPhotosInPickerBrowser:(ZLPhotoPickerBrowserViewController *)pickerBrowser{
     return self.assets.count;
 }
 
-- (long)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser numberOfItemsInSection:(NSUInteger)section{
+- (NSInteger)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser numberOfItemsInSection:(NSUInteger)section{
     return [self.assets[section] count];
 }
 
@@ -172,7 +172,7 @@
 }
 
 #pragma mark - ActionSheet Delegate
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(long)buttonIndex
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     switch (buttonIndex)
     {

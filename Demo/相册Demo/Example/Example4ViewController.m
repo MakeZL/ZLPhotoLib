@@ -56,10 +56,10 @@
     
     NSUInteger column = 3;
     CGFloat width = self.view.frame.size.width / column;
-    for (long i = 0; i < self.assets.count; i++) {
+    for (NSInteger i = 0; i < self.assets.count; i++) {
         
-        long row = i / column;
-        long col = i % column;
+        NSInteger row = i / column;
+        NSInteger col = i % column;
         
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
         btn.frame = CGRectMake(width * col, 64 + row * width, width, width);
@@ -91,11 +91,11 @@
 
 
 #pragma mark - <ZLPhotoPickerBrowserViewControllerDataSource>
-- (long)numberOfSectionInPhotosInPickerBrowser:(ZLPhotoPickerBrowserViewController *)pickerBrowser{
+- (NSInteger)numberOfSectionInPhotosInPickerBrowser:(ZLPhotoPickerBrowserViewController *)pickerBrowser{
     return 1;
 }
 
-- (long)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser numberOfItemsInSection:(NSUInteger)section{
+- (NSInteger)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser numberOfItemsInSection:(NSUInteger)section{
     return self.assets.count;
 }
 

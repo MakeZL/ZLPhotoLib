@@ -10,7 +10,7 @@
 #define ZLAssetsPickerDemo_PickerCommon_h
 
 // 点击销毁的block
-typedef void(^ZLPickerBrowserViewControllerTapDisMissBlock)(long);
+typedef void(^ZLPickerBrowserViewControllerTapDisMissBlock)(NSInteger);
 
 // 点击View执行的动画
 typedef NS_ENUM(NSUInteger, UIViewAnimationAnimationStatus) {
@@ -19,7 +19,7 @@ typedef NS_ENUM(NSUInteger, UIViewAnimationAnimationStatus) {
 };
 
 // 图片最多显示9张，超过9张取消单击事件
-static long const KPhotoShowMaxCount = 9;
+static NSInteger const KPhotoShowMaxCount = 9;
 
 #define iOS7gt ([[UIDevice currentDevice].systemVersion doubleValue] >= 7.0)
 
@@ -31,11 +31,11 @@ static CGFloat const ZLPickerScrollViewMaxZoomScale = 3.0;
 static CGFloat const ZLPickerScrollViewMinZoomScale = 1.0;
 
 // 进度条的宽度/高度
-static long const ZLPickerProgressViewW = 50;
-static long const ZLPickerProgressViewH = 50;
+static NSInteger const ZLPickerProgressViewW = 50;
+static NSInteger const ZLPickerProgressViewH = 50;
 
 // 分页控制器的高度
-static long const ZLPickerPageCtrlH = 25;
+static NSInteger const ZLPickerPageCtrlH = 25;
 
 // NSNotification
 static NSString *PICKER_TAKE_DONE = @"PICKER_TAKE_DONE";

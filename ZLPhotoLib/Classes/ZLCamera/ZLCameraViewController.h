@@ -18,7 +18,7 @@ typedef void(^ZLCameraCallBack)(id object);
 // 底部View
 @property (weak, nonatomic) UIView *controlView;
 // 拍照的个数限制
-@property (assign,nonatomic) long maxCount;
+@property (assign,nonatomic) NSInteger maxCount;
 // 完成后回调
 @property (copy, nonatomic) ZLCameraCallBack callback;
 

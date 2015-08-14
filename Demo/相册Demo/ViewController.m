@@ -65,7 +65,7 @@
 }
 
 #pragma mark - <UITableViewDataSource>
-- (long) tableView:(UITableView *)tableView numberOfRowsInSection:(long)section{
+- (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return self.examples.count;
 }
 
