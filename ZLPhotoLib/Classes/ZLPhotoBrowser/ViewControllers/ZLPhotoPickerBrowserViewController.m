@@ -32,6 +32,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 @property (nonatomic , copy) ZLPickerBrowserViewControllerTapDisMissBlock disMissBlock;
 // 当前提供的分页数
 @property (nonatomic , assign) NSInteger currentPage;
+@property (assign,nonatomic) BOOL isNowRotation;
 @end
 
 
@@ -527,6 +528,10 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 }
 #pragma mark - <UIScrollViewDelegate>
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    if (self.isNowRotation) {
+        self.isNowRotation = NO;
+        return;
+    }
     CGRect tempF = self.collectionView.frame;
     NSInteger currentPage = (NSInteger)((scrollView.contentOffset.x / scrollView.frame.size.width) + 0.5);
     if (tempF.size.width < [UIScreen mainScreen].bounds.size.width){
@@ -638,7 +643,6 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 }
 
 - (void)changeRotationDirection:(NSNotification *)noti{
-    
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
     flowLayout.minimumLineSpacing = ZLPickerColletionViewPadding;
     flowLayout.itemSize = self.view.size;
@@ -646,7 +650,13 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     
     self.collectionView.alpha = 0.0;
     [self.collectionView setCollectionViewLayout:flowLayout animated:YES];
+    self.isNowRotation = YES;
     
+    if ((self.currentPage < self.photos.count - 1) || self.photos.count == 1) {
+        self.collectionView.x = 0;
+    }else{
+        self.collectionView.x = -ZLPickerColletionViewPadding;
+    }
     self.collectionView.contentOffset = CGPointMake(self.currentPage * self.collectionView.width, 0);
     
     UICollectionViewCell *currentCell = [self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:self.currentPage inSection:0]];
@@ -658,11 +668,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
             [scrollView setMaxMinZoomScalesForCurrentBounds];
         }
     }
-    if ((self.currentPage < self.photos.count - 1) || self.photos.count == 1) {
-        self.collectionView.x = 0;
-    }else{
-        self.collectionView.x = -ZLPickerColletionViewPadding;
-    }
+    
     [UIView animateWithDuration:.5 animations:^{
         self.collectionView.alpha = 1.0;
     }];
