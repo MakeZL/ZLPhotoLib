@@ -177,7 +177,7 @@
     
 }
 
-- (CGRect )setMaxMinZoomScalesForCurrentBounds:(UIImageView *)imageView {
+- (CGRect)setMaxMinZoomScalesForCurrentBounds:(UIImageView *)imageView {
     // Sizes
     CGSize boundsSize = [UIScreen mainScreen].bounds.size;
     CGSize imageSize = imageView.image.size;
@@ -303,7 +303,7 @@
     _photoImageView.frame = CGRectMake(0, 0, _photoImageView.frame.size.width, _photoImageView.frame.size.height);
     
     // Sizes
-    CGSize boundsSize = self.bounds.size;
+    CGSize boundsSize = [UIScreen mainScreen].bounds.size;
     CGSize imageSize = _photoImageView.image.size;
     
     // Calculate Min

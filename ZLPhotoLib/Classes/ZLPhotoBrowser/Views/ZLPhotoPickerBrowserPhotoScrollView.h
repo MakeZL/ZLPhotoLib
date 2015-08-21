@@ -30,5 +30,5 @@ typedef void(^callBackBlock)(id obj);
 @property (strong,nonatomic) UIActionSheet *sheet;
 // 单击销毁的block
 @property (copy,nonatomic) callBackBlock callback;
-
+- (void)setMaxMinZoomScalesForCurrentBounds;
 @end

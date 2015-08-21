@@ -70,6 +70,8 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[_collectionView]-x-|" options:0 metrics:@{@"x":@(-20)} views:@{@"_collectionView":_collectionView}]];
         [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[_collectionView]-0-|" options:0 metrics:nil views:@{@"_collectionView":_collectionView}]];
         
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeRotationDirection:) name:UIDeviceOrientationDidChangeNotification object:nil];
+        
         self.pageLabel.hidden = NO;
         self.deleleBtn.hidden = !self.isEditing;
     }
@@ -455,13 +457,16 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     return self.photos.count;
 }
 
-- (UICollectionViewCell *) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:_cellIdentifier forIndexPath:indexPath];
-    
+
+    if (collectionView.isDragging) {
+        cell.hidden = NO;
+    }
     if (self.photos.count) {
-        cell.backgroundColor = [UIColor clearColor];
-        
+//        cell.backgroundColor = [UIColor clearColor];
+
         ZLPhotoPickerBrowserPhoto *photo = nil;
         
         if ([self isDataSourceElsePhotos]) {
@@ -474,16 +479,18 @@ static NSString *_cellIdentifier = @"collectionViewCell";
             [[cell.contentView.subviews lastObject] removeFromSuperview];
         }
         
+        CGRect tempF = [UIScreen mainScreen].bounds;
+        
         UIView *scrollBoxView = [[UIView alloc] init];
-        scrollBoxView.frame = [UIScreen mainScreen].bounds;
+        scrollBoxView.frame = tempF;
         scrollBoxView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         [cell.contentView addSubview:scrollBoxView];
-        
+
         ZLPhotoPickerBrowserPhotoScrollView *scrollView =  [[ZLPhotoPickerBrowserPhotoScrollView alloc] init];
         scrollView.sheet = self.sheet;
-        scrollView.backgroundColor = [UIColor clearColor];
         // 为了监听单击photoView事件
-        scrollView.frame = [UIScreen mainScreen].bounds;
+        scrollView.frame = tempF;
+        scrollView.tag = 101;
         scrollView.photoScrollViewDelegate = self;
         scrollView.photo = photo;
         __weak typeof(scrollBoxView)weakScrollBoxView = scrollBoxView;
@@ -493,7 +500,6 @@ static NSString *_cellIdentifier = @"collectionViewCell";
             scrollView.callback = ^(id obj){
                 [weakSelf.delegate photoBrowser:weakSelf photoDidSelectView:weakScrollBoxView atIndexPath:indexPath];
             };
-            
         }
         
         [scrollBoxView addSubview:scrollView];
@@ -630,6 +636,30 @@ static NSString *_cellIdentifier = @"collectionViewCell";
             [[UIApplication sharedApplication] setStatusBarHidden:NO];
         }
     }
+}
+
+- (void)changeRotationDirection:(NSNotification *)noti{
+    
+    UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
+    flowLayout.minimumLineSpacing = ZLPickerColletionViewPadding;
+    flowLayout.itemSize = self.view.size;
+    flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+    
+    self.collectionView.alpha = 0.0;
+    [self.collectionView setCollectionViewLayout:flowLayout animated:NO];
+    
+    [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:self.currentPage inSection:0] atScrollPosition:UICollectionViewScrollPositionLeft animated:NO];
+    
+    UICollectionViewCell *currentCell = [self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:self.currentPage inSection:0]];
+    for (UICollectionViewCell *cell in [self.collectionView visibleCells]) {
+        ZLPhotoPickerBrowserPhotoScrollView *scrollView = (ZLPhotoPickerBrowserPhotoScrollView *)[cell.contentView viewWithTag:101];
+        [scrollView setMaxMinZoomScalesForCurrentBounds];
+        cell.hidden = ![cell isEqual:currentCell];
+    }
+    
+    [UIView animateWithDuration:.5 animations:^{
+        self.collectionView.alpha = 1.0;
+    }];
 }
 
 #pragma mark - <PickerPhotoScrollViewDelegate>
