@@ -7,15 +7,9 @@
 //
 
 #import <AssetsLibrary/AssetsLibrary.h>
-#import <objc/runtime.h>
 #import "ZLPhotoPickerBrowserViewController.h"
-#import "ZLPhotoPickerBrowserPhoto.h"
-#import "ZLPhotoPickerDatas.h"
-#import "UIView+ZLExtension.h"
-#import "ZLPhotoPickerBrowserPhotoScrollView.h"
-#import "ZLPhotoPickerCommon.h"
-#import "ZLCollectionViewFlowLyout.h"
 #import "UIImage+ZLPhotoLib.h"
+#import "ZLPhotoRect.h"
 
 static NSString *_cellIdentifier = @"collectionViewCell";
 
@@ -32,9 +26,9 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 @property (nonatomic , copy) ZLPickerBrowserViewControllerTapDisMissBlock disMissBlock;
 // 当前提供的分页数
 @property (nonatomic , assign) NSInteger currentPage;
+// 当前是否在旋转
 @property (assign,nonatomic) BOOL isNowRotation;
 @end
-
 
 @implementation ZLPhotoPickerBrowserViewController
 
@@ -86,7 +80,6 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         UIButton *deleleBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         deleleBtn.translatesAutoresizingMaskIntoConstraints = NO;
         deleleBtn.titleLabel.font = [UIFont systemFontOfSize:15];
-        //        [deleleBtn setTitle:@"删除" forState:UIControlStateNormal];
         [deleleBtn setImage:[UIImage ml_imageFromBundleNamed:@"nav_delete_btn"] forState:UIControlStateNormal];
         
         // 设置阴影
@@ -94,11 +87,10 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         deleleBtn.layer.shadowOffset = CGSizeMake(0, 0);
         deleleBtn.layer.shadowRadius = 3;
         deleleBtn.layer.shadowOpacity = 1.0;
+        deleleBtn.hidden = YES;
         
         [deleleBtn addTarget:self action:@selector(delete) forControlEvents:UIControlEventTouchUpInside];
-        deleleBtn.hidden = YES;
-        [self.view addSubview:deleleBtn];
-        self.deleleBtn = deleleBtn;
+        [self.view addSubview:_deleleBtn = deleleBtn];
         
         NSString *widthVfl = @"H:[deleleBtn(deleteBtnWH)]-margin-|";
         NSString *heightVfl = @"V:|-margin-[deleleBtn(deleteBtnWH)]";
@@ -135,6 +127,20 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         
     }
     return _pageLabel;
+}
+
+#pragma mark getPhotos
+- (NSArray *)getPhotos{
+    NSMutableArray *photos = [NSMutableArray arrayWithArray:_photos];
+    if ([self isDataSourceElsePhotos]) {
+        NSInteger section = self.currentIndexPath.section;
+        NSInteger rows = [self.dataSource photoBrowser:self numberOfItemsInSection:section];
+        photos = [NSMutableArray arrayWithCapacity:rows];
+        for (NSInteger i = 0; i < rows; i++) {
+            [photos addObject:[self.dataSource photoBrowser:self photoAtIndexPath:[NSIndexPath indexPathForItem:i inSection:section]]];
+        }
+    }
+    return photos;
 }
 
 #pragma mark - Life cycle
@@ -203,7 +209,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     
     if (self.status == UIViewAnimationAnimationStatusFade){
         imageView.alpha = 0.0;
-        imageView.frame = [self setMaxMinZoomScalesForCurrentBounds:imageView.image];
+        imageView.frame = [ZLPhotoRect setMaxMinZoomScalesForCurrentBoundWithImage:imageView.image];
     }else if(self.status == UIViewAnimationAnimationStatusZoom){
         CGRect tempF = [toImageView.superview convertRect:toImageView.frame toView:[self getParsentView:toImageView]];
         if (self.navigationHeight) {
@@ -212,7 +218,6 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         imageView.frame = tempF;
     }
     
-    __block UIInterfaceOrientation orientation = self.interfaceOrientation;
     __weak typeof(self)weakSelf = self;
     self.disMissBlock = ^(NSInteger page){
         mainView.hidden = NO;
@@ -245,7 +250,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
                 imageView.image = thumbImage;
             }
             
-            CGRect ivFrame = [weakSelf setMaxMinZoomScalesForCurrentBounds:thumbImage];
+            CGRect ivFrame = [ZLPhotoRect setMaxMinZoomScalesForCurrentBoundWithImage:thumbImage];
             if (!CGRectEqualToRect(ivFrame, CGRectZero)) {
                 imageView.frame = ivFrame;
             }
@@ -281,7 +286,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
                 imageView.image = [(UIImageView *)[photo toView] image];
             }
             
-            CGRect ivFrame = [weakSelf setMaxMinZoomScalesForCurrentBounds:thumbImage];
+            CGRect ivFrame = [ZLPhotoRect setMaxMinZoomScalesForCurrentBoundWithImage:thumbImage];
             if (!CGRectEqualToRect(ivFrame, CGRectZero)) {
                 imageView.frame = ivFrame;
             }
@@ -313,64 +318,12 @@ static NSString *_cellIdentifier = @"collectionViewCell";
             // 淡入淡出
             imageView.alpha = 1.0;
         }else if(self.status == UIViewAnimationAnimationStatusZoom){
-            imageView.frame = [self setMaxMinZoomScalesForCurrentBounds:imageView.image];
+            imageView.frame = [ZLPhotoRect setMaxMinZoomScalesForCurrentBoundWithImage:imageView.image];
         }
     } completion:^(BOOL finished) {
         mainView.hidden = YES;
     }];
 }
-- (CGRect)setMaxMinZoomScalesForCurrentBounds:(UIImage *)image{
-    if (!([image isKindOfClass:[UIImage class]]) || image == nil) {
-        if (!([image isKindOfClass:[UIImage class]])) {
-            return CGRectZero;
-        }
-    }
-    
-    // Sizes
-    CGSize boundsSize = [UIScreen mainScreen].bounds.size;
-    CGSize imageSize = image.size;
-    if (imageSize.width == 0 && imageSize.height == 0) {
-        return CGRectZero;
-    }
-    
-    CGFloat xScale = boundsSize.width / imageSize.width;    // the scale needed to perfectly fit the image width-wise
-    CGFloat yScale = boundsSize.height / imageSize.height;  // the scale needed to perfectly fit the image height-wise
-    CGFloat minScale = MIN(xScale, yScale);
-//    CGFloat maxScale = MAX(xScale, yScale);
-    // use minimum of these to allow the image to become fully visible
-    // Image is smaller than screen so no zooming!
-    if (xScale >= 1 && yScale >= 1) {
-        minScale = MIN(xScale, yScale);
-    }
-    
-    CGRect frameToCenter = CGRectZero;
-//    if (xScale >= yScale) {
-//        frameToCenter = CGRectMake(0, 0, imageSize.width * maxScale, imageSize.height * maxScale);
-//        
-//    }else {
-        if (minScale >= 3) {
-            minScale = 3;
-        }
-        frameToCenter = CGRectMake(0, 0, imageSize.width * minScale, imageSize.height * minScale);
-//    }
-    
-    // Horizontally
-    if (frameToCenter.size.width < boundsSize.width) {
-        frameToCenter.origin.x = floorf((boundsSize.width - frameToCenter.size.width) / 2.0);
-    } else {
-        frameToCenter.origin.x = 0;
-    }
-    
-    // Vertically
-    if (frameToCenter.size.height < boundsSize.height) {
-        frameToCenter.origin.y = floorf((boundsSize.height - frameToCenter.size.height) / 2.0);
-    } else {
-        frameToCenter.origin.y = 0;
-    }
-    
-    return frameToCenter;
-}
-
 
 - (void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -381,20 +334,6 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     self.view.backgroundColor = [UIColor blackColor];
 }
 
-#pragma mark - Get
-#pragma mark getPhotos
-- (NSArray *)getPhotos{
-    NSMutableArray *photos = [NSMutableArray arrayWithArray:_photos];
-    if ([self isDataSourceElsePhotos]) {
-        NSInteger section = self.currentIndexPath.section;
-        NSInteger rows = [self.dataSource photoBrowser:self numberOfItemsInSection:section];
-        photos = [NSMutableArray arrayWithCapacity:rows];
-        for (NSInteger i = 0; i < rows; i++) {
-            [photos addObject:[self.dataSource photoBrowser:self photoAtIndexPath:[NSIndexPath indexPathForItem:i inSection:section]]];
-        }
-    }
-    return photos;
-}
 
 #pragma mark get Controller.view
 - (UIView *)getParsentView:(UIView *)view{
@@ -410,6 +349,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     }
     return [self getParsentViewController:view.superview];
 }
+
 
 #pragma mark - reloadData
 - (void)reloadData{
@@ -642,6 +582,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     }
 }
 
+#pragma mark - Rotation
 - (void)changeRotationDirection:(NSNotification *)noti{
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
     flowLayout.minimumLineSpacing = ZLPickerColletionViewPadding;
@@ -689,53 +630,11 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-#pragma mark - showHeadPortrait 放大缩小一张图片的情况下（查看头像）
 - (void)showHeadPortrait:(UIImageView *)toImageView{
-    [self showHeadPortrait:toImageView originUrl:nil];
+    
 }
 
 - (void)showHeadPortrait:(UIImageView *)toImageView originUrl:(NSString *)originUrl{
-    UIView *mainView = [[UIView alloc] init];
-    mainView.backgroundColor = [UIColor blackColor];
-    mainView.frame = [UIScreen mainScreen].bounds;
-    [[UIApplication sharedApplication].keyWindow addSubview:mainView];
     
-    CGRect tempF = [toImageView.superview convertRect:toImageView.frame toView:[self getParsentView:toImageView]];
-    UIImageView *imageView = [[UIImageView alloc] init];
-    imageView.userInteractionEnabled = YES;
-    imageView.frame = tempF;
-    imageView.image = toImageView.image;
-    imageView.contentMode = UIViewContentModeScaleAspectFit;
-    [mainView addSubview:imageView];
-    mainView.clipsToBounds = YES;
-    
-    [UIView animateWithDuration:.25 animations:^{
-        imageView.frame = [UIScreen mainScreen].bounds;
-    } completion:^(BOOL finished) {
-        imageView.hidden = YES;
-        
-        ZLPhotoPickerBrowserPhoto *photo = [[ZLPhotoPickerBrowserPhoto alloc] init];
-        photo.photoURL = [NSURL URLWithString:originUrl];
-        photo.photoImage = toImageView.image;
-        photo.thumbImage = toImageView.image;
-        
-        ZLPhotoPickerBrowserPhotoScrollView *scrollView = [[ZLPhotoPickerBrowserPhotoScrollView alloc] init];
-        
-        __weak typeof(ZLPhotoPickerBrowserPhotoScrollView *)weakScrollView = scrollView;
-        scrollView.callback = ^(id obj){
-            [weakScrollView removeFromSuperview];
-            mainView.backgroundColor = [UIColor clearColor];
-            imageView.hidden = NO;
-            [UIView animateWithDuration:.25 animations:^{
-                imageView.frame = tempF;
-            } completion:^(BOOL finished) {
-                [mainView removeFromSuperview];
-            }];
-        };
-        scrollView.frame = [UIScreen mainScreen].bounds;
-        scrollView.photo = photo;
-        [mainView addSubview:scrollView];
-    }];
 }
-
 @end

@@ -10,6 +10,7 @@
 #import "ZLPhotoPickerBrowserPhoto.h"
 #import "ZLPhotoPickerCommon.h"
 #import "ZLPhotoPickerCustomToolBarView.h"
+#import "ZLPhotoPickerBrowserPhotoScrollView.h"
 
 @class ZLPhotoPickerBrowserViewController;
 @protocol ZLPhotoPickerBrowserViewControllerDataSource <NSObject>
@@ -98,11 +99,16 @@
 // 放大缩小一张图片的情况下（查看头像）/ 缩略图是toImageView.image 原图URL
 - (void)showHeadPortrait:(UIImageView *)toImageView originUrl:(NSString *)originUrl;
 
-// 导航高度
+// 需要动态传导航高度 = 64
 @property (assign,nonatomic) CGFloat navigationHeight;
 // @function
 // 展示控制器
 - (void)showPickerVc:(UIViewController *)vc;
 // 刷新数据
 - (void)reloadData;
+
+// Category Functions.
+- (UIView *)getParsentView:(UIView *)view;
+- (id)getParsentViewController:(UIView *)view;
+
 @end
