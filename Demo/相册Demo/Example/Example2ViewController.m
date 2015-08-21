@@ -130,7 +130,7 @@
     // 传入组
     pickerBrowser.currentIndexPath = indexPath;
     // 展示控制器
-    [pickerBrowser show];
+    [pickerBrowser showPickerVc:self];
 }
 
 #pragma mark - <ZLPhotoPickerBrowserViewControllerDataSource>

@@ -10,6 +10,7 @@
 		10083559F05D5595479CA0FA /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E7E8E6BC8D7C7518D6BE3D4 /* libPods.a */; };
 		48068AE61AC453D8009A65FB /* Example6ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48068AE51AC453D8009A65FB /* Example6ViewController.m */; };
 		4806BC811AB283ED004B8AB0 /* Example4ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4806BC801AB283ED004B8AB0 /* Example4ViewController.m */; };
+		481E51FF1B7F349E00D92C4C /* ZLCollectionViewFlowLyout.m in Sources */ = {isa = PBXBuildFile; fileRef = 481E51FE1B7F349E00D92C4C /* ZLCollectionViewFlowLyout.m */; };
 		484014D01B73572300FBD485 /* ZLPhotoLib.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 484014CF1B73572300FBD485 /* ZLPhotoLib.bundle */; };
 		484015131B73574F00FBD485 /* UIImage+ZLPhotoLib.m in Sources */ = {isa = PBXBuildFile; fileRef = 484014D61B73574F00FBD485 /* UIImage+ZLPhotoLib.m */; };
 		484015141B73574F00FBD485 /* UIView+ZLExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 484014D81B73574F00FBD485 /* UIView+ZLExtension.m */; };
@@ -68,6 +69,8 @@
 		48068AE51AC453D8009A65FB /* Example6ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Example6ViewController.m; sourceTree = "<group>"; };
 		4806BC7F1AB283ED004B8AB0 /* Example4ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Example4ViewController.h; sourceTree = "<group>"; };
 		4806BC801AB283ED004B8AB0 /* Example4ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Example4ViewController.m; sourceTree = "<group>"; };
+		481E51FD1B7F349E00D92C4C /* ZLCollectionViewFlowLyout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLCollectionViewFlowLyout.h; sourceTree = "<group>"; };
+		481E51FE1B7F349E00D92C4C /* ZLCollectionViewFlowLyout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLCollectionViewFlowLyout.m; sourceTree = "<group>"; };
 		484014CF1B73572300FBD485 /* ZLPhotoLib.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = ZLPhotoLib.bundle; path = ../../ZLPhotoLib/ZLPhotoLib.bundle; sourceTree = "<group>"; };
 		484014D51B73574F00FBD485 /* UIImage+ZLPhotoLib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ZLPhotoLib.h"; sourceTree = "<group>"; };
 		484014D61B73574F00FBD485 /* UIImage+ZLPhotoLib.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ZLPhotoLib.m"; sourceTree = "<group>"; };
@@ -293,6 +296,8 @@
 				484014F31B73574F00FBD485 /* ZLPhotoPickerBrowserPhotoView.m */,
 				484014F41B73574F00FBD485 /* ZLPhotoPickerCustomToolBarView.h */,
 				484014F51B73574F00FBD485 /* ZLPhotoPickerCustomToolBarView.m */,
+				481E51FD1B7F349E00D92C4C /* ZLCollectionViewFlowLyout.h */,
+				481E51FE1B7F349E00D92C4C /* ZLCollectionViewFlowLyout.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -635,6 +640,7 @@
 				48B3E1761A11BABC0079F464 /* main.m in Sources */,
 				48B338A41AA469D800650D81 /* Example1TableViewCell.m in Sources */,
 				484015131B73574F00FBD485 /* UIImage+ZLPhotoLib.m in Sources */,
+				481E51FF1B7F349E00D92C4C /* ZLCollectionViewFlowLyout.m in Sources */,
 				484015241B73574F00FBD485 /* ZLPhotoPickerViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

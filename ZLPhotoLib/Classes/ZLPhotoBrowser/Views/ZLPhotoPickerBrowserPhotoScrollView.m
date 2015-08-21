@@ -56,7 +56,6 @@
         [self addGestureRecognizer:longGesture];
         
         DACircularProgressView *progressView = [[DACircularProgressView alloc] init];
-        
         progressView.frame = CGRectMake(0, 0, ZLPickerProgressViewW, ZLPickerProgressViewH);
         progressView.center = CGPointMake([UIScreen mainScreen].bounds.size.width * 0.5, [UIScreen mainScreen].bounds.size.height * 0.5);
         progressView.roundedCorners = YES;
@@ -154,7 +153,7 @@
             }
 
             // 网络URL
-            [_photoImageView sd_setImageWithURL:photo.photoURL placeholderImage:thumbImage options:SDWebImageRetryFailed progress:^(long receivedSize, long expectedSize) {
+            [_photoImageView sd_setImageWithURL:photo.photoURL placeholderImage:thumbImage options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize) {
                 [self setProgress:(double)receivedSize / expectedSize];
             } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
                 [self setProgress:1.0];
@@ -174,7 +173,6 @@
         self.isLoadingDone = YES;
         [self displayImage];
     }
-    
 }
 
 - (CGRect)setMaxMinZoomScalesForCurrentBounds:(UIImageView *)imageView {
@@ -222,7 +220,6 @@
     
     return frameToCenter;
 }
-
 
 #pragma mark - setProgress
 - (void)setProgress:(CGFloat)progress{
@@ -383,7 +380,6 @@
 
 #pragma mark - Tap Detection
 - (void)handleDoubleTap:(CGPoint)touchPoint {
-    
     // Zoom
     if (self.zoomScale != self.minimumZoomScale && self.zoomScale != [self initialZoomScaleWithMinScale]) {
         
@@ -399,7 +395,6 @@
             [self zoomToRect:CGRectMake(touchPoint.x - xsize/2, touchPoint.y - ysize/2, xsize, ysize) animated:YES];
         }
     }
-    
 }
 
 - (void)imageView:(UIImageView *)imageView singleTapDetected:(UITouch *)touch{

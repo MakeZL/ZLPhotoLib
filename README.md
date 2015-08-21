@@ -2,7 +2,8 @@
 This is a photo album multiple-choice / photo browser example
 --------------
 
-## 新改动:浏览器优化数据源，传入Photos即可
+#### 继承图片多选/图片浏览器/相机连拍的一套图片库
+#### 新特性:浏览器支持屏幕旋转、优化了数据源。
 
 
 ### About Detached in PhotoLib (抽离PhotoLib)
@@ -15,7 +16,7 @@ This is a photo album multiple-choice / photo browser example
 Browser Continued in ...
 
 ### Demo Show
-#### UICollectionView/UITableView/UIView
+![image](https://github.com/MakeZL/ZLAssetsPickerDemo/blob/master/Demo_4.gif)
 ![image](https://github.com/MakeZL/ZLAssetsPickerDemo/blob/master/Demo_1.gif)
 ![image](https://github.com/MakeZL/ZLAssetsPickerDemo/blob/master/Demo_2.gif)
 

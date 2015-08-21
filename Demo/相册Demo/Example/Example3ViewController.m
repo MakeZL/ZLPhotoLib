@@ -137,7 +137,7 @@
     // 当前选中的值
     pickerBrowser.currentIndexPath = [NSIndexPath indexPathForItem:indexPath.row inSection:0];
     // 展示控制器
-    [pickerBrowser show];
+    [pickerBrowser showPickerVc:self];
 }
 
 #pragma mark - <ZLPhotoPickerBrowserViewControllerDataSource>
