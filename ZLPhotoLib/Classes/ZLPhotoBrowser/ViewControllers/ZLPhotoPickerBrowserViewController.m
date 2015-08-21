@@ -411,7 +411,6 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 }
 
 #pragma mark - reloadData
-#pragma mark - reloadData
 - (void)reloadData{
     if (self.currentPage <= 0){
         self.currentPage = self.currentIndexPath.item;
@@ -456,7 +455,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     return [UIColor colorWithRed:arc4random_uniform(256)/255.0 green:arc4random_uniform(256)/255.0 blue:arc4random_uniform(256)/255.0 alpha:1.0];
 }
 
-- (NSInteger) collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
     if ([self isDataSourceElsePhotos]) {
         return [self.dataSource photoBrowser:self numberOfItemsInSection:self.currentIndexPath.section];
     }
@@ -646,17 +645,24 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
     
     self.collectionView.alpha = 0.0;
-    [self.collectionView setCollectionViewLayout:flowLayout animated:NO];
+    [self.collectionView setCollectionViewLayout:flowLayout animated:YES];
     
-    [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:self.currentPage inSection:0] atScrollPosition:UICollectionViewScrollPositionLeft animated:NO];
+    self.collectionView.contentOffset = CGPointMake(self.currentPage * self.collectionView.width, 0);
     
     UICollectionViewCell *currentCell = [self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:self.currentPage inSection:0]];
-    for (UICollectionViewCell *cell in [self.collectionView visibleCells]) {
-        ZLPhotoPickerBrowserPhotoScrollView *scrollView = (ZLPhotoPickerBrowserPhotoScrollView *)[cell.contentView viewWithTag:101];
-        [scrollView setMaxMinZoomScalesForCurrentBounds];
-        cell.hidden = ![cell isEqual:currentCell];
-    }
     
+    for (UICollectionViewCell *cell in [self.collectionView subviews]) {
+        if ([cell isKindOfClass:[UICollectionViewCell class]]) {
+            cell.hidden = ![cell isEqual:currentCell];
+            ZLPhotoPickerBrowserPhotoScrollView *scrollView = (ZLPhotoPickerBrowserPhotoScrollView *)[cell.contentView viewWithTag:101];
+            [scrollView setMaxMinZoomScalesForCurrentBounds];
+        }
+    }
+    if ((self.currentPage < self.photos.count - 1) || self.photos.count == 1) {
+        self.collectionView.x = 0;
+    }else{
+        self.collectionView.x = -ZLPickerColletionViewPadding;
+    }
     [UIView animateWithDuration:.5 animations:^{
         self.collectionView.alpha = 1.0;
     }];
