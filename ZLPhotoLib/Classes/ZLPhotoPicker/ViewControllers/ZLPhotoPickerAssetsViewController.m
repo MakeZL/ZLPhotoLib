@@ -423,11 +423,10 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
 - (void) collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     
     ZLPhotoPickerBrowserViewController *browserVc = [[ZLPhotoPickerBrowserViewController alloc] init];
-//    browserVc.toView = [cell.contentView.subviews lastObject];
     browserVc.delegate = self;
     browserVc.dataSource = self;
     browserVc.currentIndexPath = [NSIndexPath indexPathForItem:indexPath.item inSection:0];
-    [self presentViewController:browserVc animated:NO completion:nil];
+    [browserVc showPickerVc:self];
 }
 
 - (NSInteger)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser numberOfItemsInSection:(NSUInteger)section{
@@ -440,10 +439,9 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
     UIImageView *imageView = [cell.contentView.subviews lastObject];
     if (self.selectAssets.count && self.selectAssets.count - 1 >= indexPath.item) {
         ZLPhotoAssets *asset = self.selectAssets[indexPath.row];
-        //    imageView.image = asset.originImage;
         if ([asset isKindOfClass:[ZLPhotoAssets class]]) {
-            photo.thumbImage = asset.originImage;
-            photo.asset = self.selectAssets[indexPath.row];
+            photo.asset = asset;
+            photo.photoImage = asset.compressionImage;
         }else if ([asset isKindOfClass:[UIImage class]]){
             photo.thumbImage = (UIImage *)asset;
             photo.photoImage = (UIImage *)asset;

@@ -8,10 +8,21 @@
 
 #import "ZLPhotoAssets.h"
 
+static CGFloat saveOriginImageRadio = 0.0001;
+
 @implementation ZLPhotoAssets
 
 - (UIImage *)thumbImage{
     return [UIImage imageWithCGImage:[self.asset thumbnail]];
+}
+
+- (UIImage *)compressionImage{
+    UIImage *fullScreenImage = [UIImage imageWithCGImage:[[self.asset defaultRepresentation] fullScreenImage]];
+    NSData *data2 = UIImageJPEGRepresentation(fullScreenImage, 0.1);
+    UIImage *image = [UIImage imageWithData:data2];
+    fullScreenImage = nil;
+    data2 = nil;
+    return image;
 }
 
 - (UIImage *)originImage{

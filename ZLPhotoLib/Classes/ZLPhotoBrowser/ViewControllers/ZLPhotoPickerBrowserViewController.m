@@ -296,7 +296,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
             originalFrame.origin.y += weakSelf.navigationHeight;
         }
         
-        [UIView animateWithDuration:0.35 animations:^{
+        [UIView animateWithDuration:0.3 animations:^{
             if (weakSelf.status == UIViewAnimationAnimationStatusFade){
                 imageView.alpha = 0.0;
                 mainView.alpha = 0.0;
@@ -313,12 +313,12 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     };
     
     [weakSelf reloadData];
-    [UIView animateWithDuration:0.35 animations:^{
+    [UIView animateWithDuration:0.3 animations:^{
         if (self.status == UIViewAnimationAnimationStatusFade){
             // 淡入淡出
             imageView.alpha = 1.0;
         }else if(self.status == UIViewAnimationAnimationStatusZoom){
-            imageView.frame = [ZLPhotoRect setMaxMinZoomScalesForCurrentBoundWithImage:imageView.image];
+            imageView.frame = [ZLPhotoRect setMaxMinZoomScalesForCurrentBoundWithImageView:imageView];
         }
     } completion:^(BOOL finished) {
         mainView.hidden = YES;
@@ -326,12 +326,15 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 }
 
 - (void)dealloc{
+    [[UIApplication sharedApplication] setStatusBarHidden:NO];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     self.view.backgroundColor = [UIColor blackColor];
+    [[UIApplication sharedApplication] setStatusBarHidden:YES];
 }
 
 
