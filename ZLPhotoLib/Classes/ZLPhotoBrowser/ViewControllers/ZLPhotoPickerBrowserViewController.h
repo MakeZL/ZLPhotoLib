@@ -104,6 +104,7 @@
 // @function
 // 展示控制器
 - (void)showPickerVc:(UIViewController *)vc;
+- (void)showPushPickerVc:(UIViewController *)vc;
 // 刷新数据
 - (void)reloadData;
 

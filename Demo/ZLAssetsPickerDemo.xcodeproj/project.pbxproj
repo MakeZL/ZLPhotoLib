@@ -35,6 +35,7 @@
 		484015281B73574F00FBD485 /* ZLPhotoPickerGroupTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4840150D1B73574F00FBD485 /* ZLPhotoPickerGroupTableViewCell.m */; };
 		4840152A1B73574F00FBD485 /* ZLPhotoPickerImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 484015101B73574F00FBD485 /* ZLPhotoPickerImageView.m */; };
 		485F4E8C1A83182E00B6D448 /* Example3ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 485F4E8B1A83182E00B6D448 /* Example3ViewController.m */; };
+		489B32B21B8AB6750073DFB7 /* Example9ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 489B32B11B8AB6750073DFB7 /* Example9ViewController.m */; };
 		48B338A41AA469D800650D81 /* Example1TableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B338A31AA469D800650D81 /* Example1TableViewCell.m */; };
 		48B338A61AA469EB00650D81 /* Example1TableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48B338A51AA469EB00650D81 /* Example1TableViewCell.xib */; };
 		48B3E1761A11BABC0079F464 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B3E1751A11BABC0079F464 /* main.m */; };
@@ -121,6 +122,8 @@
 		484015111B73574F00FBD485 /* ZLPhotoPickerCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLPhotoPickerCommon.h; sourceTree = "<group>"; };
 		485F4E8A1A83182E00B6D448 /* Example3ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Example3ViewController.h; sourceTree = "<group>"; };
 		485F4E8B1A83182E00B6D448 /* Example3ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Example3ViewController.m; sourceTree = "<group>"; };
+		489B32B01B8AB6750073DFB7 /* Example9ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Example9ViewController.h; sourceTree = "<group>"; };
+		489B32B11B8AB6750073DFB7 /* Example9ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Example9ViewController.m; sourceTree = "<group>"; };
 		48B338A21AA469D800650D81 /* Example1TableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Example1TableViewCell.h; sourceTree = "<group>"; };
 		48B338A31AA469D800650D81 /* Example1TableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Example1TableViewCell.m; sourceTree = "<group>"; };
 		48B338A51AA469EB00650D81 /* Example1TableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Example1TableViewCell.xib; sourceTree = "<group>"; };
@@ -447,6 +450,8 @@
 				48B86C451B16BD3D00FA272A /* Example8ViewController.m */,
 				48CF6E811B7267A40094DEC4 /* Example0ViewController.h */,
 				48CF6E821B7267A40094DEC4 /* Example0ViewController.m */,
+				489B32B01B8AB6750073DFB7 /* Example9ViewController.h */,
+				489B32B11B8AB6750073DFB7 /* Example9ViewController.m */,
 			);
 			path = Example;
 			sourceTree = "<group>";
@@ -640,6 +645,7 @@
 				484015191B73574F00FBD485 /* ZLPhotoPickerBrowserPhoto.m in Sources */,
 				48ED22091A6D098C0008E783 /* Example1ViewController.m in Sources */,
 				48ED220C1A6D0E370008E783 /* Example2ViewController.m in Sources */,
+				489B32B21B8AB6750073DFB7 /* Example9ViewController.m in Sources */,
 				48BB24501ACE734B00B6592D /* Example7ViewController.m in Sources */,
 				48CF6E831B7267A40094DEC4 /* Example0ViewController.m in Sources */,
 				48F682EB1B872CE9004A06A4 /* ZLPhotoRect.m in Sources */,

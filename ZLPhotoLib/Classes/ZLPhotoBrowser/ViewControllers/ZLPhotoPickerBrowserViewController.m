@@ -28,6 +28,8 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 @property (nonatomic , assign) NSInteger currentPage;
 // 当前是否在旋转
 @property (assign,nonatomic) BOOL isNowRotation;
+// 是否是Push模式
+@property (assign,nonatomic) BOOL isPush;
 @end
 
 @implementation ZLPhotoPickerBrowserViewController
@@ -149,8 +151,43 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     if (self.photos.count == 0) {
         NSAssert(self.dataSource, @"你没成为数据源代理");
     }
-    // 初始化动画
-    [self showToView];
+    if (!self.isPush) {        
+        // 初始化动画
+        [self showToView];
+    }else{
+        if (self.currentPage >= 0) {
+            self.collectionView.contentOffset = CGPointMake(self.currentPage * self.collectionView.width, self.collectionView.contentOffset.y);
+            if (self.currentPage == self.photos.count - 1 && self.photos.count > 1) {
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(00.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    self.collectionView.contentOffset = CGPointMake(self.currentPage * self.collectionView.width - ZLPickerColletionViewPadding, self.collectionView.contentOffset.y);
+                });
+            }
+        }
+    }
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    
+    if (self.isPush) {
+        [self reloadData];
+        __weak typeof(self)weakSelf = self;
+        __block BOOL navigationisHidden = NO;
+        self.disMissBlock = ^(NSInteger page){
+            if (navigationisHidden) {
+                [UIView animateWithDuration:.25 animations:^{
+                    weakSelf.navigationController.navigationBar.alpha = 1.0;
+//                   weakSelf.navigationController.navigationBar.y = 20;
+                }];
+            }else{
+                [UIView animateWithDuration:.25 animations:^{
+                    weakSelf.navigationController.navigationBar.alpha = 0.0;
+//                    weakSelf.navigationController.navigationBar.y = -weakSelf.navigationController.navigationBar.height;
+                }];
+            }
+            navigationisHidden = !navigationisHidden;
+        };
+    }
 }
 
 - (void)showToView{
@@ -468,6 +505,9 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 
 -(void)setPageLabelPage:(NSInteger)page{
     self.pageLabel.text = [NSString stringWithFormat:@"%ld / %ld",page + 1, self.photos.count];
+    if (self.isPush) {
+        self.title = self.pageLabel.text;
+    }
 }
 #pragma mark - <UIScrollViewDelegate>
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
@@ -520,6 +560,14 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     __weak typeof(vc)weakVc = vc;
     if (weakVc != nil) {
         [weakVc presentViewController:self animated:NO completion:nil];
+    }
+}
+
+- (void)showPushPickerVc:(UIViewController *)vc{
+    self.isPush = YES;
+    __weak typeof(vc)weakVc = vc;
+    if (weakVc != nil) {
+        [weakVc.navigationController pushViewController:self animated:YES];
     }
 }
 
