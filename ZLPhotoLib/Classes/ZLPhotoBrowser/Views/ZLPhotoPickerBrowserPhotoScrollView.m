@@ -16,7 +16,6 @@
 // Private methods and properties
 @interface ZLPhotoPickerBrowserPhotoScrollView ()<UIActionSheetDelegate> {
     ZLPhotoPickerBrowserPhotoView *_tapView; // for background taps
-    ZLPhotoPickerBrowserPhotoImageView *_photoImageView;
 }
 
 @property (assign,nonatomic) CGFloat progress;

@@ -255,6 +255,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         imageView.frame = tempF;
     }
     
+    __block CGRect tempFrame = imageView.frame;
     __weak typeof(self)weakSelf = self;
     self.disMissBlock = ^(NSInteger page){
         mainView.hidden = NO;
@@ -287,6 +288,14 @@ static NSString *_cellIdentifier = @"collectionViewCell";
                 imageView.image = thumbImage;
             }
             
+            if (imageView.image == nil) {
+                UICollectionViewCell *cell = [weakSelf.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:page inSection:weakSelf.currentIndexPath.section]];
+                ZLPhotoPickerBrowserPhotoScrollView *scrollView = (ZLPhotoPickerBrowserPhotoScrollView *)[cell viewWithTag:101];
+                if ([scrollView isKindOfClass:[ZLPhotoPickerBrowserPhotoScrollView class]] && scrollView != nil) {
+                    imageView.image = scrollView.photoImageView.image;
+                }
+            }
+            
             CGRect ivFrame = [ZLPhotoRect setMaxMinZoomScalesForCurrentBoundWithImage:thumbImage];
             if (!CGRectEqualToRect(ivFrame, CGRectZero)) {
                 imageView.frame = ivFrame;
@@ -299,6 +308,10 @@ static NSString *_cellIdentifier = @"collectionViewCell";
             }
             
             originalFrame = [toImageView2.superview convertRect:toImageView2.frame toView:[weakSelf getParsentView:toImageView2]];
+            if (CGRectIsEmpty(originalFrame)) {
+                originalFrame = tempFrame;
+            }
+            
         }else{
             // 淡入淡出
             imageView.clipsToBounds = NO;

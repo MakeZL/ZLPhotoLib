@@ -25,6 +25,7 @@ typedef void(^callBackBlock)(id obj);
 @interface ZLPhotoPickerBrowserPhotoScrollView : UIScrollView <UIScrollViewDelegate, ZLPhotoPickerBrowserPhotoImageViewDelegate,ZLPhotoPickerBrowserPhotoViewDelegate>
 
 @property (nonatomic,strong) ZLPhotoPickerBrowserPhoto *photo;
+@property (strong,nonatomic) ZLPhotoPickerBrowserPhotoImageView *photoImageView;
 @property (nonatomic, weak) id <ZLPhotoPickerPhotoScrollViewDelegate> photoScrollViewDelegate;
 // 长按图片的操作，可以外面传入
 @property (strong,nonatomic) UIActionSheet *sheet;
