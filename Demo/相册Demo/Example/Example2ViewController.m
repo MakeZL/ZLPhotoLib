@@ -9,6 +9,7 @@
 #import "Example2ViewController.h"
 #import "Example2CollectionViewCell.h"
 #import "ZLPhoto.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 
 @interface Example2ViewController () <UICollectionViewDataSource,UICollectionViewDelegate,ZLPhotoPickerBrowserViewControllerDataSource,ZLPhotoPickerBrowserViewControllerDelegate,UIActionSheetDelegate>
 

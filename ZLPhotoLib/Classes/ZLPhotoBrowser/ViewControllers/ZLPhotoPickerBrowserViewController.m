@@ -376,7 +376,6 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 }
 
 - (void)dealloc{
-    [[UIApplication sharedApplication] setStatusBarHidden:NO];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -387,6 +386,11 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     [[UIApplication sharedApplication] setStatusBarHidden:YES];
 }
 
+- (void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    
+    [[UIApplication sharedApplication] setStatusBarHidden:NO];
+}
 
 #pragma mark get Controller.view
 - (UIView *)getParsentView:(UIView *)view{

@@ -9,6 +9,7 @@
 #import "Example9ViewController.h"
 #import "Example1TableViewCell.h"
 #import "ZLPhoto.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 
 @interface Example9ViewController () <UITableViewDataSource,UITableViewDelegate,ZLPhotoPickerBrowserViewControllerDelegate>
 

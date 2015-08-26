@@ -9,6 +9,7 @@
 #import "Example7ViewController.h"
 #import "UIImage+ZLPhotoLib.h"
 #import "ZLPhoto.h"
+#import <SDWebImage/UIButton+WebCache.h>
 
 @interface Example7ViewController () <ZLPhotoPickerBrowserViewControllerDataSource,ZLPhotoPickerBrowserViewControllerDelegate>
 
