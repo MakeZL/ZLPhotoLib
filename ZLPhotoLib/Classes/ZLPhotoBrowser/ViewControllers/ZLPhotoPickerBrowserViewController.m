@@ -67,7 +67,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         self.collectionView = collectionView;
         
         _collectionView.translatesAutoresizingMaskIntoConstraints = NO;
-        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[_collectionView]-x-|" options:0 metrics:@{@"x":@(-20)} views:@{@"_collectionView":_collectionView}]];
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[_collectionView]-x-|" options:0 metrics:@{@"x":@(-ZLPickerColletionViewPadding)} views:@{@"_collectionView":_collectionView}]];
         [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[_collectionView]-0-|" options:0 metrics:nil views:@{@"_collectionView":_collectionView}]];
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeRotationDirection:) name:UIDeviceOrientationDidChangeNotification object:nil];
@@ -220,7 +220,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     mainView.frame = [UIScreen mainScreen].bounds;
     [[UIApplication sharedApplication].keyWindow addSubview:mainView];
     
-    UIImageView *toImageView = nil;
+    __block UIImageView *toImageView = nil;
     if ([self isDataSourceElsePhotos]) {
         toImageView = (UIImageView *)[[self.dataSource photoBrowser:self photoAtIndexPath:self.currentIndexPath] toView];
     }else{
@@ -288,10 +288,10 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         [weakSelf dismissViewControllerAnimated:NO completion:nil];
         
         // 缩放动画
-        if(self.status == UIViewAnimationAnimationStatusZoom){
+        if(weakSelf.status == UIViewAnimationAnimationStatusZoom){
             UIImage *thumbImage = nil;
             if ([weakSelf isDataSourceElsePhotos]) {
-                if ([self.photos[self.currentPage] asset] == nil) {
+                if ([weakSelf.photos[weakSelf.currentPage] asset] == nil) {
                     thumbImage = [[weakSelf.dataSource photoBrowser:weakSelf photoAtIndexPath:[NSIndexPath indexPathForItem:page inSection:weakSelf.currentIndexPath.section]] thumbImage];
                 }else{
                     thumbImage = [[weakSelf.dataSource photoBrowser:weakSelf photoAtIndexPath:[NSIndexPath indexPathForItem:page inSection:weakSelf.currentIndexPath.section]] photoImage];
@@ -308,6 +308,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
             ZLPhotoPickerBrowserPhoto *photo = weakSelf.photos[page];
             if (thumbImage == nil) {
                 imageView.image = [(UIImageView *)[photo toView] image];
+                thumbImage = imageView.image;
             }else{
                 imageView.image = thumbImage;
             }
@@ -360,10 +361,10 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     
     [weakSelf reloadData];
     [UIView animateWithDuration:0.3 animations:^{
-        if (self.status == UIViewAnimationAnimationStatusFade){
+        if (weakSelf.status == UIViewAnimationAnimationStatusFade){
             // 淡入淡出
             imageView.alpha = 1.0;
-        }else if(self.status == UIViewAnimationAnimationStatusZoom){
+        }else if(weakSelf.status == UIViewAnimationAnimationStatusZoom){
             imageView.frame = [ZLPhotoRect setMaxMinZoomScalesForCurrentBoundWithImageView:imageView];
         }
     } completion:^(BOOL finished) {
@@ -435,7 +436,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     }
     
     [self setPageLabelPage:self.currentPage];
-//    [self setPageControlPage:self.currentPage];
+    //    [self setPageControlPage:self.currentPage];
     if (self.currentPage >= 0) {
         self.collectionView.contentOffset = CGPointMake(self.currentPage * self.collectionView.width, 0);
         if (self.currentPage == self.photos.count - 1 && self.photos.count > 1) {
@@ -575,7 +576,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     //    }
     self.currentPage = currentPage;
     [self setPageLabelPage:currentPage];
-//    [self setPageControlPage:currentPage];
+    //    [self setPageControlPage:currentPage];
     
     if ([self.delegate respondsToSelector:@selector(photoBrowser:didCurrentPage:)]) {
         [self.delegate photoBrowser:self didCurrentPage:self.currentPage];
@@ -670,6 +671,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 - (void)changeRotationDirection:(NSNotification *)noti{
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
     flowLayout.minimumLineSpacing = ZLPickerColletionViewPadding;
+    flowLayout.minimumLineSpacing = 0;
     flowLayout.itemSize = self.view.size;
     flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
     
