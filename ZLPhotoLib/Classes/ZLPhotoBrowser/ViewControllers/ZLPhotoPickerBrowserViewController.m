@@ -17,9 +17,12 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 
 // 控件
 @property (weak,nonatomic) UILabel          *pageLabel;
+@property (weak,nonatomic) UIPageControl    *pageControl;
 @property (weak,nonatomic) UIButton         *deleleBtn;
 @property (weak,nonatomic) UIButton         *backBtn;
 @property (weak,nonatomic) UICollectionView *collectionView;
+// 需要动态传导航高度 = 64
+@property (assign,nonatomic) CGFloat navigationHeight;
 
 // 数据相关
 // 单击时执行销毁的block
@@ -48,6 +51,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     if (!_collectionView) {
         UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
         flowLayout.minimumLineSpacing = ZLPickerColletionViewPadding;
+        flowLayout.minimumInteritemSpacing = 0;
         flowLayout.itemSize = self.view.size;
         flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
         
@@ -131,6 +135,26 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     return _pageLabel;
 }
 
+#pragma mark pageControl
+- (UIPageControl *)pageControl{
+    if (!_pageControl) {
+        UIPageControl *pageControl = [[UIPageControl alloc] init];
+        pageControl.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.view addSubview:pageControl];
+        self.pageControl = pageControl;
+        
+        NSString *widthVfl = @"H:|-0-[pageControl]-0-|";
+        NSString *heightVfl = @"V:[pageControl(ZLPickerPageCtrlH)]-20-|";
+        NSDictionary *views = NSDictionaryOfVariableBindings(pageControl);
+        NSDictionary *metrics = @{@"ZLPickerPageCtrlH":@(ZLPickerPageCtrlH)};
+        
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:widthVfl options:0 metrics:metrics views:views]];
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:heightVfl options:0 metrics:metrics views:views]];
+        
+    }
+    return _pageControl;
+}
+
 #pragma mark getPhotos
 - (NSArray *)getPhotos{
     NSMutableArray *photos = [NSMutableArray arrayWithArray:_photos];
@@ -151,7 +175,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     if (self.photos.count == 0) {
         NSAssert(self.dataSource, @"你没成为数据源代理");
     }
-    if (!self.isPush) {        
+    if (!self.isPush) {
         // 初始化动画
         [self showToView];
     }else{
@@ -177,12 +201,12 @@ static NSString *_cellIdentifier = @"collectionViewCell";
             if (navigationisHidden) {
                 [UIView animateWithDuration:.25 animations:^{
                     weakSelf.navigationController.navigationBar.alpha = 1.0;
-//                   weakSelf.navigationController.navigationBar.y = 20;
+                    //                   weakSelf.navigationController.navigationBar.y = 20;
                 }];
             }else{
                 [UIView animateWithDuration:.25 animations:^{
                     weakSelf.navigationController.navigationBar.alpha = 0.0;
-//                    weakSelf.navigationController.navigationBar.y = -weakSelf.navigationController.navigationBar.height;
+                    //                    weakSelf.navigationController.navigationBar.y = -weakSelf.navigationController.navigationBar.height;
                 }];
             }
             navigationisHidden = !navigationisHidden;
@@ -199,12 +223,10 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     [[UIApplication sharedApplication].keyWindow addSubview:mainView];
     
     UIImageView *toImageView = nil;
-    if(self.status == UIViewAnimationAnimationStatusZoom){
-        if ([self isDataSourceElsePhotos]) {
-            toImageView = (UIImageView *)[[self.dataSource photoBrowser:self photoAtIndexPath:self.currentIndexPath] toView];
-        }else{
-            toImageView = (UIImageView *)[self.photos[self.currentIndexPath.row] toView];
-        }
+    if ([self isDataSourceElsePhotos]) {
+        toImageView = (UIImageView *)[[self.dataSource photoBrowser:self photoAtIndexPath:self.currentIndexPath] toView];
+    }else{
+        toImageView = (UIImageView *)[self.photos[self.currentIndexPath.row] toView];
     }
     
     if (![toImageView isKindOfClass:[UIImageView class]] && self.status != UIViewAnimationAnimationStatusFade) {
@@ -232,6 +254,10 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         }else{
             thumbImage = [self.photos[self.currentIndexPath.item] photoImage];
         }
+    }
+    
+    if (thumbImage == nil) {
+        thumbImage = toImageView.image;
     }
     
     if (self.status == UIViewAnimationAnimationStatusFade){
@@ -314,32 +340,34 @@ static NSString *_cellIdentifier = @"collectionViewCell";
             
         }else{
             // 淡入淡出
-            imageView.clipsToBounds = NO;
-            UIImage *thumbImage = nil;
-            if ([weakSelf isDataSourceElsePhotos]) {
-                if ([self.photos[self.currentPage] asset] == nil) {
-                    thumbImage = [[weakSelf.dataSource photoBrowser:weakSelf photoAtIndexPath:[NSIndexPath indexPathForItem:page inSection:weakSelf.currentIndexPath.section]] thumbImage];
-                }else{
-                    thumbImage = [[weakSelf.dataSource photoBrowser:weakSelf photoAtIndexPath:[NSIndexPath indexPathForItem:page inSection:weakSelf.currentIndexPath.section]] photoImage];
-                }
-                
-            }else{
-                if ([weakSelf.photos[page] asset] == nil) {
-                    thumbImage = [weakSelf.photos[page] thumbImage];
-                }else{
-                    thumbImage = [weakSelf.photos[page] photoImage];
-                }
-            }
-            
-            ZLPhotoPickerBrowserPhoto *photo = weakSelf.photos[page];
-            if (thumbImage == nil && [(UIImageView *)[photo toView] image] != nil) {
-                imageView.image = [(UIImageView *)[photo toView] image];
-            }
-            
-            CGRect ivFrame = [ZLPhotoRect setMaxMinZoomScalesForCurrentBoundWithImage:thumbImage];
-            if (!CGRectEqualToRect(ivFrame, CGRectZero)) {
-                imageView.frame = ivFrame;
-            }
+            //            imageView.clipsToBounds = NO;
+            //            UIImage *thumbImage = nil;
+            //            if ([weakSelf isDataSourceElsePhotos]) {
+            //                if ([self.photos[self.currentPage] asset] == nil) {
+            //                    thumbImage = [[weakSelf.dataSource photoBrowser:weakSelf photoAtIndexPath:[NSIndexPath indexPathForItem:page inSection:weakSelf.currentIndexPath.section]] thumbImage];
+            //                }else{
+            //                    thumbImage = [[weakSelf.dataSource photoBrowser:weakSelf photoAtIndexPath:[NSIndexPath indexPathForItem:page inSection:weakSelf.currentIndexPath.section]] photoImage];
+            //                }
+            //
+            //            }else{
+            //                if ([weakSelf.photos[page] asset] == nil) {
+            //                    thumbImage = [weakSelf.photos[page] thumbImage];
+            //                }else{
+            //                    thumbImage = [weakSelf.photos[page] photoImage];
+            //                }
+            //            }
+            //
+            //            ZLPhotoPickerBrowserPhoto *photo = weakSelf.photos[page];
+            //            if (thumbImage == nil && [(UIImageView *)[photo toView] image] != nil) {
+            //                imageView.image = [(UIImageView *)[photo toView] image];
+            //                thumbImage = imageView.image;
+            //            }
+            //
+            //            CGRect ivFrame = [ZLPhotoRect setMaxMinZoomScalesForCurrentBoundWithImage:thumbImage];
+            //            if (!CGRectEqualToRect(ivFrame, CGRectZero)) {
+            //                imageView.frame = ivFrame;
+            //            }
+            imageView.alpha = 0.0;
         }
         
         if (weakSelf.navigationHeight) {
@@ -348,15 +376,12 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         
         [UIView animateWithDuration:0.3 animations:^{
             if (weakSelf.status == UIViewAnimationAnimationStatusFade){
-                imageView.alpha = 0.0;
                 mainView.alpha = 0.0;
             }else if(weakSelf.status == UIViewAnimationAnimationStatusZoom){
                 mainView.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
                 imageView.frame = originalFrame;
             }
         } completion:^(BOOL finished) {
-            imageView.alpha = 1.0;
-            mainView.alpha = 1.0;
             [mainView removeFromSuperview];
             [imageView removeFromSuperview];
         }];
@@ -438,7 +463,8 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         [self.view addSubview:toolBarView];
     }
     
-    [self setPageLabelPage:self.currentPage];
+    //    [self setPageLabelPage:self.currentPage];
+    [self setPageControlPage:self.currentPage];
     if (self.currentPage >= 0) {
         self.collectionView.contentOffset = CGPointMake(self.currentPage * self.collectionView.width, 0);
         if (self.currentPage == self.photos.count - 1 && self.photos.count > 1) {
@@ -526,6 +552,18 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         self.title = self.pageLabel.text;
     }
 }
+
+- (void)setPageControlPage:(long)page {
+    self.pageControl.numberOfPages = self.photos.count;
+    self.pageControl.currentPage = page;
+    if (self.pageControl.numberOfPages > 1) {
+        self.pageControl.hidden = NO;
+    } else {
+        self.pageControl.hidden = YES;
+    }
+    
+}
+
 #pragma mark - <UIScrollViewDelegate>
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
     if (self.isNowRotation) {
@@ -561,11 +599,12 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         currentPage = roundf((scrollView.contentOffset.x) / (scrollView.frame.size.width));
     }
     
-    if (currentPage == self.photos.count - 1 && currentPage != self.currentPage && [[[UIDevice currentDevice] systemVersion] doubleValue] >= 8.0) {
-        self.collectionView.contentOffset = CGPointMake(self.collectionView.contentOffset.x + ZLPickerColletionViewPadding, 0);
-    }
+    //    if (currentPage == self.photos.count - 1 && currentPage != self.currentPage && [[[UIDevice currentDevice] systemVersion] doubleValue] >= 8.0) {
+    //        self.collectionView.contentOffset = CGPointMake(self.collectionView.contentOffset.x + ZLPickerColletionViewPadding, 0);
+    //    }
     self.currentPage = currentPage;
-    [self setPageLabelPage:currentPage];
+    //    [self setPageLabelPage:currentPage];
+    [self setPageControlPage:currentPage];
     
     if ([self.delegate respondsToSelector:@selector(photoBrowser:didCurrentPage:)]) {
         [self.delegate photoBrowser:self didCurrentPage:self.currentPage];
@@ -576,6 +615,9 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 - (void)showPickerVc:(UIViewController *)vc{
     __weak typeof(vc)weakVc = vc;
     if (weakVc != nil) {
+        if (weakVc.navigationController != nil) {
+            self.navigationHeight = CGRectGetMaxY(weakVc.navigationController.navigationBar.frame);
+        }
         [weakVc presentViewController:self animated:NO completion:nil];
     }
 }
@@ -584,6 +626,9 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     self.isPush = YES;
     __weak typeof(vc)weakVc = vc;
     if (weakVc != nil) {
+        if (weakVc.navigationController != nil) {
+            self.navigationHeight = CGRectGetMaxY(weakVc.navigationController.navigationBar.frame);
+        }
         [weakVc.navigationController pushViewController:self animated:YES];
     }
 }
