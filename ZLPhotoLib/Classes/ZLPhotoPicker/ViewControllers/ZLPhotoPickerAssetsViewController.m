@@ -423,6 +423,7 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
 - (void) collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     
     ZLPhotoPickerBrowserViewController *browserVc = [[ZLPhotoPickerBrowserViewController alloc] init];
+    browserVc.navigationHeight = -1;
     browserVc.delegate = self;
     browserVc.dataSource = self;
     browserVc.currentIndexPath = [NSIndexPath indexPathForItem:indexPath.item inSection:0];

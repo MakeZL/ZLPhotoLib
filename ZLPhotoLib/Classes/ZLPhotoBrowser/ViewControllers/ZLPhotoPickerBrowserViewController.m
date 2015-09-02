@@ -21,8 +21,6 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 @property (weak,nonatomic) UIButton         *deleleBtn;
 @property (weak,nonatomic) UIButton         *backBtn;
 @property (weak,nonatomic) UICollectionView *collectionView;
-// 需要动态传导航高度 = 64
-@property (assign,nonatomic) CGFloat navigationHeight;
 
 // 数据相关
 // 单击时执行销毁的block
@@ -340,33 +338,6 @@ static NSString *_cellIdentifier = @"collectionViewCell";
             
         }else{
             // 淡入淡出
-            //            imageView.clipsToBounds = NO;
-            //            UIImage *thumbImage = nil;
-            //            if ([weakSelf isDataSourceElsePhotos]) {
-            //                if ([self.photos[self.currentPage] asset] == nil) {
-            //                    thumbImage = [[weakSelf.dataSource photoBrowser:weakSelf photoAtIndexPath:[NSIndexPath indexPathForItem:page inSection:weakSelf.currentIndexPath.section]] thumbImage];
-            //                }else{
-            //                    thumbImage = [[weakSelf.dataSource photoBrowser:weakSelf photoAtIndexPath:[NSIndexPath indexPathForItem:page inSection:weakSelf.currentIndexPath.section]] photoImage];
-            //                }
-            //
-            //            }else{
-            //                if ([weakSelf.photos[page] asset] == nil) {
-            //                    thumbImage = [weakSelf.photos[page] thumbImage];
-            //                }else{
-            //                    thumbImage = [weakSelf.photos[page] photoImage];
-            //                }
-            //            }
-            //
-            //            ZLPhotoPickerBrowserPhoto *photo = weakSelf.photos[page];
-            //            if (thumbImage == nil && [(UIImageView *)[photo toView] image] != nil) {
-            //                imageView.image = [(UIImageView *)[photo toView] image];
-            //                thumbImage = imageView.image;
-            //            }
-            //
-            //            CGRect ivFrame = [ZLPhotoRect setMaxMinZoomScalesForCurrentBoundWithImage:thumbImage];
-            //            if (!CGRectEqualToRect(ivFrame, CGRectZero)) {
-            //                imageView.frame = ivFrame;
-            //            }
             imageView.alpha = 0.0;
         }
         
@@ -463,8 +434,8 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         [self.view addSubview:toolBarView];
     }
     
-    //    [self setPageLabelPage:self.currentPage];
-    [self setPageControlPage:self.currentPage];
+    [self setPageLabelPage:self.currentPage];
+//    [self setPageControlPage:self.currentPage];
     if (self.currentPage >= 0) {
         self.collectionView.contentOffset = CGPointMake(self.currentPage * self.collectionView.width, 0);
         if (self.currentPage == self.photos.count - 1 && self.photos.count > 1) {
@@ -603,8 +574,8 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     //        self.collectionView.contentOffset = CGPointMake(self.collectionView.contentOffset.x + ZLPickerColletionViewPadding, 0);
     //    }
     self.currentPage = currentPage;
-    //    [self setPageLabelPage:currentPage];
-    [self setPageControlPage:currentPage];
+    [self setPageLabelPage:currentPage];
+//    [self setPageControlPage:currentPage];
     
     if ([self.delegate respondsToSelector:@selector(photoBrowser:didCurrentPage:)]) {
         [self.delegate photoBrowser:self didCurrentPage:self.currentPage];
@@ -615,7 +586,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 - (void)showPickerVc:(UIViewController *)vc{
     __weak typeof(vc)weakVc = vc;
     if (weakVc != nil) {
-        if (weakVc.navigationController != nil) {
+        if (weakVc.navigationController != nil && self.navigationHeight == 0) {
             self.navigationHeight = CGRectGetMaxY(weakVc.navigationController.navigationBar.frame);
         }
         [weakVc presentViewController:self animated:NO completion:nil];
@@ -626,7 +597,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     self.isPush = YES;
     __weak typeof(vc)weakVc = vc;
     if (weakVc != nil) {
-        if (weakVc.navigationController != nil) {
+        if (weakVc.navigationController != nil && self.navigationHeight == 0) {
             self.navigationHeight = CGRectGetMaxY(weakVc.navigationController.navigationBar.frame);
         }
         [weakVc.navigationController pushViewController:self animated:YES];

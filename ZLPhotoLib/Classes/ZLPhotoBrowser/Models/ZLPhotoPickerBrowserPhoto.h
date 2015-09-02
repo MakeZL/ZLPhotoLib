@@ -17,9 +17,9 @@
  */
 @property (nonatomic , strong) id photoObj;
 /**
- *  传入对应的View,记录坐标
+ *  传入对应的UIImageView,记录坐标
  */
-@property (strong,nonatomic) UIView *toView;
+@property (strong,nonatomic) UIImageView *toView;
 /**
  *  保存相册模型
  */
