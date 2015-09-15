@@ -220,6 +220,13 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     mainView.frame = [UIScreen mainScreen].bounds;
     [[UIApplication sharedApplication].keyWindow addSubview:mainView];
     
+    UIView *mainBgView = [[UIView alloc] init];
+    mainBgView.alpha = 0.0;
+    mainBgView.backgroundColor = [UIColor blackColor];
+    mainBgView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    mainBgView.frame = [UIScreen mainScreen].bounds;
+    [mainView addSubview:mainBgView];
+    
     __block UIImageView *toImageView = nil;
     if ([self isDataSourceElsePhotos]) {
         toImageView = (UIImageView *)[[self.dataSource photoBrowser:self photoAtIndexPath:self.currentIndexPath] toView];
@@ -236,7 +243,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     imageView.userInteractionEnabled = YES;
     imageView.contentMode = UIViewContentModeScaleAspectFill;
     imageView.clipsToBounds = YES;
-    [mainView addSubview:imageView];
+    [mainBgView addSubview:imageView];
     mainView.clipsToBounds = YES;
     
     UIImage *thumbImage = nil;
@@ -348,9 +355,11 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         
         [UIView animateWithDuration:0.3 animations:^{
             if (weakSelf.status == UIViewAnimationAnimationStatusFade){
+                mainBgView.alpha = 0.0;
                 mainView.alpha = 0.0;
             }else if(weakSelf.status == UIViewAnimationAnimationStatusZoom){
                 mainView.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
+                mainBgView.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
                 imageView.frame = originalFrame;
             }
         } completion:^(BOOL finished) {
@@ -365,6 +374,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
             // 淡入淡出
             imageView.alpha = 1.0;
         }else if(weakSelf.status == UIViewAnimationAnimationStatusZoom){
+            mainBgView.alpha = 1.0;
             imageView.frame = [ZLPhotoRect setMaxMinZoomScalesForCurrentBoundWithImageView:imageView];
         }
     } completion:^(BOOL finished) {
@@ -588,9 +598,9 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 - (void)showPickerVc:(UIViewController *)vc{
     __weak typeof(vc)weakVc = vc;
     if (weakVc != nil) {
-        if (weakVc.navigationController != nil && self.navigationHeight == 0) {
-            self.navigationHeight = CGRectGetMaxY(weakVc.navigationController.navigationBar.frame);
-        }
+//        if (weakVc.navigationController != nil && self.navigationHeight == 0) {
+//            self.navigationHeight = CGRectGetMaxY(weakVc.navigationController.navigationBar.frame);
+//        }
         [weakVc presentViewController:self animated:NO completion:nil];
     }
 }
