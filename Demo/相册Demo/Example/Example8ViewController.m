@@ -163,24 +163,8 @@
 }
 
 #pragma mark - 点击Cell通知拍照代理
-- (void)pickerCollectionViewSelectCamera:(ZLPhotoPickerViewController *)pickerVc{
-    UIImagePickerController *ctrl = [[UIImagePickerController alloc] init];
-    ctrl.delegate = self;
-    ctrl.sourceType = UIImagePickerControllerSourceTypeCamera;
-    [pickerVc presentViewController:ctrl animated:YES completion:nil];
-}
-
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
-    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        // 处理
-        UIImage *image = info[@"UIImagePickerControllerOriginalImage"];
-        [self.assets addObject:image];
-        [self.tableView reloadData];
-        
-        [picker dismissViewControllerAnimated:YES completion:nil];
-    }else{
-        NSLog(@"请在真机使用!");
-    }
+- (void)pickerCollectionViewSelectCamera:(ZLPhotoPickerViewController *)pickerVc withImage:(UIImage *)image{
+    NSLog(@" --- 拍照回调: %@",image);
 }
 
 #pragma mark - 每个组展示什么图片,需要包装下ZLPhotoPickerBrowserPhoto

@@ -28,7 +28,7 @@ typedef NS_ENUM(NSInteger , PickerViewShowStatus) {
  *  点击拍照
  */
 @optional
-- (void)pickerCollectionViewSelectCamera:(ZLPhotoPickerViewController *)pickerVc;
+- (void)pickerCollectionViewSelectCamera:(ZLPhotoPickerViewController *)pickerVc withImage:(UIImage *)image;
 @end
 
 @interface ZLPhotoPickerViewController : UIViewController

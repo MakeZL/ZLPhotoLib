@@ -243,16 +243,11 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
 
 - (void)pickerCollectionViewDidCameraSelect:(ZLPhotoPickerCollectionView *)pickerCollectionView{
     
-    
     UIImagePickerController *ctrl = [[UIImagePickerController alloc] init];
     ctrl.delegate = self;
     ctrl.sourceType = UIImagePickerControllerSourceTypeCamera;
     [self presentViewController:ctrl animated:YES completion:nil];
     
-    
-//    dispatch_async(dispatch_get_global_queue(0, 0), ^{
-//        [[NSNotificationCenter defaultCenter] postNotificationName:PICKER_TAKE_PHOTO object:nil];
-//    });
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
@@ -265,6 +260,10 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
         [self.selectAssets addObject:image];
         [self.toolBarThumbCollectionView reloadData];
         [self.takePhotoImages addObject:image];
+        
+        dispatch_async(dispatch_get_global_queue(0, 0), ^{
+            [[NSNotificationCenter defaultCenter] postNotificationName:PICKER_TAKE_PHOTO object:nil userInfo:@{@"image":image}];
+        });
         
         NSInteger count = self.selectAssets.count;
         self.makeView.hidden = !count;

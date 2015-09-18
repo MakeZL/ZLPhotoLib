@@ -239,7 +239,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         return;
     }
     
-    UIImageView *imageView = [[UIImageView alloc] init];
+    __block UIImageView *imageView = [[UIImageView alloc] init];
     imageView.userInteractionEnabled = YES;
     imageView.contentMode = UIViewContentModeScaleAspectFill;
     imageView.clipsToBounds = YES;
@@ -358,6 +358,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
                 mainBgView.alpha = 0.0;
                 mainView.alpha = 0.0;
             }else if(weakSelf.status == UIViewAnimationAnimationStatusZoom){
+                weakSelf.view.alpha = 0.0;
                 mainView.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
                 mainBgView.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
                 imageView.frame = originalFrame;
@@ -609,9 +610,9 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     self.isPush = YES;
     __weak typeof(vc)weakVc = vc;
     if (weakVc != nil) {
-        if (weakVc.navigationController != nil && self.navigationHeight == 0) {
-            self.navigationHeight = CGRectGetMaxY(weakVc.navigationController.navigationBar.frame);
-        }
+//        if (weakVc.navigationController != nil && self.navigationHeight == 0) {
+//            self.navigationHeight = CGRectGetMaxY(weakVc.navigationController.navigationBar.frame);
+//        }
         [weakVc.navigationController pushViewController:self animated:YES];
     }
 }

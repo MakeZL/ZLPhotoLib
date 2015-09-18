@@ -87,8 +87,8 @@
 #pragma mark - 监听点击第一个Cell进行拍照
 - (void)selectCamera:(NSNotification *)noti{
     dispatch_async(dispatch_get_main_queue(), ^{
-        if([self.delegate respondsToSelector:@selector(pickerCollectionViewSelectCamera:)]){
-            [self.delegate pickerCollectionViewSelectCamera:self];
+        if([self.delegate respondsToSelector:@selector(pickerCollectionViewSelectCamera:withImage:)]){
+            [self.delegate pickerCollectionViewSelectCamera:self withImage:noti.userInfo[@"image"]];
         }
     });
 }
