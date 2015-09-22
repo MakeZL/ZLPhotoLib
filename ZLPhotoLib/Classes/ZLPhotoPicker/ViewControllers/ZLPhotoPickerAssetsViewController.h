@@ -14,7 +14,7 @@
 
 @interface ZLPhotoPickerAssetsViewController : UIViewController
 
-@property (strong,nonatomic) ZLPhotoPickerGroupViewController *groupVc;
+@property (weak , nonatomic) ZLPhotoPickerGroupViewController *groupVc;
 @property (nonatomic , assign) PickerViewShowStatus status;
 @property (nonatomic , strong) ZLPhotoPickerGroup *assetsGroup;
 @property (nonatomic , assign) NSInteger maxCount;

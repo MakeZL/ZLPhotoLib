@@ -106,12 +106,6 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
     NSSet *set = [NSSet setWithArray:selectPickerAssets];
     _selectPickerAssets = [set allObjects];
     
-    if (!self.assets) {
-        self.assets = [NSMutableArray arrayWithArray:selectPickerAssets];
-    }else{
-        [self.assets addObjectsFromArray:selectPickerAssets];
-    }
-    
     for (ZLPhotoAssets *assets in selectPickerAssets) {
         if ([assets isKindOfClass:[ZLPhotoAssets class]] || [assets isKindOfClass:[UIImage class]]) {
             [self.selectAssets addObject:assets];
@@ -221,10 +215,7 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
 
 #pragma mark 初始化所有的组
 - (void) setupAssets{
-    if (!self.assets) {
-        self.assets = [NSMutableArray array];
-    }
-    
+
     __block NSMutableArray *assetsM = [NSMutableArray array];
     __weak typeof(self) weakSelf = self;
     
@@ -256,7 +247,6 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
         // 处理
         UIImage *image = info[@"UIImagePickerControllerOriginalImage"];
         
-        [self.assets addObject:image];
         [self.selectAssets addObject:image];
         [self.toolBarThumbCollectionView reloadData];
         [self.takePhotoImages addObject:image];

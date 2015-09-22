@@ -8,12 +8,10 @@
 
 #import "ZLPhotoAssets.h"
 
-static CGFloat saveOriginImageRadio = 0.0001;
-
 @implementation ZLPhotoAssets
 
 - (UIImage *)thumbImage{
-    return [UIImage imageWithCGImage:[self.asset thumbnail]];
+    return [UIImage imageWithCGImage:[self.asset aspectRatioThumbnail]];
 }
 
 - (UIImage *)compressionImage{

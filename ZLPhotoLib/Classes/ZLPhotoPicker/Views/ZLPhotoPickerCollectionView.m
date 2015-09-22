@@ -180,7 +180,6 @@
     
     pickerImageView.maskViewFlag = ([pickerImageView isKindOfClass:[ZLPhotoPickerImageView class]]) && !pickerImageView.isMaskViewFlag;
     
-    
 }
 
 #pragma mark 底部View
