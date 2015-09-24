@@ -29,7 +29,7 @@
  */
 @property (assign,nonatomic) BOOL isVideoType;
 /**
- *  获取相册的URL
+ *  获取图片的URL
  */
 - (NSURL *)assetURL;
 

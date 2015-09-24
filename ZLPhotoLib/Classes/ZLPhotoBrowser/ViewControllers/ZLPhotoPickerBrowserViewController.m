@@ -188,30 +188,6 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     }
 }
 
-- (void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:animated];
-    
-    if (self.isPush) {
-        [self reloadData];
-        __weak typeof(self)weakSelf = self;
-        __block BOOL navigationisHidden = NO;
-        self.disMissBlock = ^(NSInteger page){
-            if (navigationisHidden) {
-                [UIView animateWithDuration:.25 animations:^{
-                    weakSelf.navigationController.navigationBar.alpha = 1.0;
-                    //                   weakSelf.navigationController.navigationBar.y = 20;
-                }];
-            }else{
-                [UIView animateWithDuration:.25 animations:^{
-                    weakSelf.navigationController.navigationBar.alpha = 0.0;
-                    //                    weakSelf.navigationController.navigationBar.y = -weakSelf.navigationController.navigationBar.height;
-                }];
-            }
-            navigationisHidden = !navigationisHidden;
-        };
-    }
-}
-
 - (void)showToView{
     _photos = [_photos copy];
     UIView *mainView = [[UIView alloc] init];
@@ -390,6 +366,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    [self setupReload];
     self.view.backgroundColor = [UIColor blackColor];
     [[UIApplication sharedApplication] setStatusBarHidden:YES];
 }
@@ -397,7 +374,28 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 - (void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
     
+    self.navigationController.navigationBar.alpha = 1.0;
     [[UIApplication sharedApplication] setStatusBarHidden:NO];
+}
+
+- (void)setupReload{
+    if (self.isPush) {
+        [self reloadData];
+        __weak typeof(self)weakSelf = self;
+        __block BOOL navigationisHidden = NO;
+        self.disMissBlock = ^(NSInteger page){
+            if (navigationisHidden) {
+                [UIView animateWithDuration:.25 animations:^{
+                    weakSelf.navigationController.navigationBar.alpha = 1.0;
+                }];
+            }else{
+                [UIView animateWithDuration:.25 animations:^{
+                    weakSelf.navigationController.navigationBar.alpha = 0.0;
+                }];
+            }
+            navigationisHidden = !navigationisHidden;
+        };
+    }
 }
 
 #pragma mark get Controller.view
@@ -449,10 +447,10 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     [self setPageLabelPage:self.currentPage];
     //    [self setPageControlPage:self.currentPage];
     if (self.currentPage >= 0) {
-        self.collectionView.contentOffset = CGPointMake(self.currentPage * self.collectionView.width, 0);
+        self.collectionView.contentOffset = CGPointMake(self.currentPage * self.collectionView.width, self.collectionView.contentOffset.y);
         if (self.currentPage == self.photos.count - 1 && self.photos.count > 1) {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(00.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                self.collectionView.contentOffset = CGPointMake(self.currentPage * self.collectionView.width - ZLPickerColletionViewPadding, 0);
+                self.collectionView.contentOffset = CGPointMake(self.currentPage * self.collectionView.width - ZLPickerColletionViewPadding, self.collectionView.contentOffset.y);
             });
         }
     }
@@ -503,6 +501,9 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         // 为了监听单击photoView事件
         scrollView.frame = tempF;
         scrollView.tag = 101;
+        if (self.isPush) {
+            scrollView.y -= 32;
+        }
         scrollView.photoScrollViewDelegate = self;
         scrollView.photo = photo;
         __weak typeof(scrollBoxView)weakScrollBoxView = scrollBoxView;
