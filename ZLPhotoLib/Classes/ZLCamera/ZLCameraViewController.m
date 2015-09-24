@@ -335,8 +335,6 @@ static CGFloat BOTTOM_HEIGHT = 60;
          NSString *path = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:currentTimeStr];
          [UIImagePNGRepresentation(t_image) writeToFile:path atomically:YES];
          
-         
-         
          NSData *data = UIImageJPEGRepresentation(t_image, 0.3);
          ZLCamera *camera = [[ZLCamera alloc] init];
          camera.imagePath = path;
@@ -347,11 +345,6 @@ static CGFloat BOTTOM_HEIGHT = 60;
          [self.collectionView selectItemAtIndexPath:[NSIndexPath indexPathForItem:self.images.count - 1 inSection:0] animated:YES scrollPosition:UICollectionViewScrollPositionRight];
          
      }];
-}
-
--(void)CaptureStillImage
-{
-    [self  Captureimage];
 }
 
 - (AVCaptureDevice *)cameraWithPosition:(AVCaptureDevicePosition)position
@@ -446,17 +439,19 @@ static CGFloat BOTTOM_HEIGHT = 60;
         [alertView show];
         return ;
     }
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{        
+        [self Captureimage];
+        UIView *maskView = [[UIView alloc] init];
+        maskView.frame = self.view.bounds;
+        maskView.backgroundColor = [UIColor whiteColor];
+        [self.view addSubview:maskView];
+        [UIView animateWithDuration:.5 animations:^{
+            maskView.alpha = 0;
+        } completion:^(BOOL finished) {
+            [maskView removeFromSuperview];
+        }];
+    });
     
-    [self Captureimage];
-    UIView *maskView = [[UIView alloc] init];
-    maskView.frame = self.view.bounds;
-    maskView.backgroundColor = [UIColor whiteColor];
-    [self.view addSubview:maskView];
-    [UIView animateWithDuration:.5 animations:^{
-        maskView.alpha = 0;
-    } completion:^(BOOL finished) {
-        [maskView removeFromSuperview];
-    }];
 }
 
 - (BOOL)shouldAutorotate{
