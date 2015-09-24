@@ -17,10 +17,6 @@
  */
 - (UIImage *)thumbImage;
 /**
- *  压缩原图
- */
-- (UIImage *)compressionImage;
-/**
  *  原图
  */
 - (UIImage *)originImage;

@@ -431,10 +431,8 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
         ZLPhotoAssets *asset = self.selectAssets[indexPath.row];
         if ([asset isKindOfClass:[ZLPhotoAssets class]]) {
             photo.asset = asset;
-            photo.photoImage = asset.compressionImage;
         }else if ([asset isKindOfClass:[UIImage class]]){
             photo.thumbImage = (UIImage *)asset;
-            photo.photoImage = (UIImage *)asset;
         }
     }
     photo.toView = imageView;
