@@ -37,6 +37,13 @@
     return _photoImage;
 }
 
+- (UIImage *)aspectRatioImage{
+    if (!_aspectRatioImage) {
+        return [self.asset aspectRatioImage];
+    }
+    return _aspectRatioImage;
+}
+
 - (UIImage *)thumbImage{
     if (!_thumbImage) {
         if (self.asset) {

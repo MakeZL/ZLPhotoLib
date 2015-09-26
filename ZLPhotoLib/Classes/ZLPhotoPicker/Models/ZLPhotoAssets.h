@@ -12,6 +12,11 @@
 @interface ZLPhotoAssets : NSObject
 
 @property (strong,nonatomic) ALAsset *asset;
+
+/**
+ *  缩略图
+ */
+- (UIImage *)aspectRatioImage;
 /**
  *  缩略图
  */

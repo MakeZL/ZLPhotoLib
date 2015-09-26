@@ -102,8 +102,7 @@
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     // 点击cell 放大缩小图片
-    Example1TableViewCell *cell = (Example1TableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
-    [self setupPhotoBrowser:cell];
+    [self setupPhotoBrowser:indexPath];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -111,11 +110,9 @@
 }
 
 #pragma mark - setupCell click ZLPhotoPickerBrowserViewController
-- (void) setupPhotoBrowser:(Example1TableViewCell *) cell{
-    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+- (void) setupPhotoBrowser:(NSIndexPath *)indexPath{
     // 图片游览器
     ZLPhotoPickerBrowserViewController *pickerBrowser = [[ZLPhotoPickerBrowserViewController alloc] init];
-    // 动画方式
     // 数据源/delegate
     pickerBrowser.delegate = self;
     // 数据源可以不传，传photos数组 photos<里面是ZLPhotoPickerBrowserPhoto>
@@ -125,7 +122,7 @@
     // 当前选中的值
     pickerBrowser.currentIndexPath = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
     // 展示控制器
-    [self presentViewController:pickerBrowser animated:NO completion:nil];
+    [pickerBrowser showPickerVc:self];
 }
 
 /**

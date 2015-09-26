@@ -32,6 +32,7 @@
  *  原图
  */
 @property (nonatomic , strong) UIImage *photoImage;
+@property (strong,nonatomic)   UIImage *aspectRatioImage;
 /**
  *  缩略图
  */

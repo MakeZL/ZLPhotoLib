@@ -10,12 +10,16 @@
 
 @implementation ZLPhotoAssets
 
-- (UIImage *)thumbImage{
+- (UIImage *)aspectRatioImage{
     return [UIImage imageWithCGImage:[self.asset aspectRatioThumbnail]];
 }
 
+- (UIImage *)thumbImage{
+    return [UIImage imageWithCGImage:[self.asset thumbnail]];
+}
+
 - (UIImage *)originImage{
-    return [UIImage imageWithCGImage:[[self.asset defaultRepresentation] fullScreenImage]];
+    return [UIImage imageWithCGImage:[[self.asset defaultRepresentation] fullResolutionImage]];
 }
 
 - (BOOL)isVideoType{

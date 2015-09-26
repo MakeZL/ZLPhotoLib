@@ -227,7 +227,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         if ([self.photos[self.currentIndexPath.item] asset] == nil) {
             thumbImage = [[self.dataSource photoBrowser:self photoAtIndexPath:self.currentIndexPath] thumbImage];
         }else{
-            thumbImage = [[self.dataSource photoBrowser:self photoAtIndexPath:self.currentIndexPath] photoImage];
+            thumbImage = [[self.dataSource photoBrowser:self photoAtIndexPath:self.currentIndexPath] aspectRatioImage];
         }
     }else{
         if ([self.photos[self.currentPage] asset] == nil) {
