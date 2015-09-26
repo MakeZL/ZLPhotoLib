@@ -21,6 +21,8 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 @property (weak,nonatomic) UIButton         *deleleBtn;
 @property (weak,nonatomic) UIButton         *backBtn;
 @property (weak,nonatomic) UICollectionView *collectionView;
+// 需要增加的导航高度
+@property (assign,nonatomic) CGFloat navigationHeight;
 
 // 数据相关
 // 单击时执行销毁的block
@@ -329,7 +331,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
             originalFrame.origin.y += weakSelf.navigationHeight;
         }
         
-        [UIView animateWithDuration:0.3 animations:^{
+        [UIView animateWithDuration:0.35 animations:^{
             if (weakSelf.status == UIViewAnimationAnimationStatusFade){
                 mainBgView.alpha = 0.0;
                 mainView.alpha = 0.0;
@@ -346,7 +348,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     };
     
     [weakSelf reloadData];
-    [UIView animateWithDuration:0.3 animations:^{
+    [UIView animateWithDuration:0.35 animations:^{
         if (weakSelf.status == UIViewAnimationAnimationStatusFade){
             // 淡入淡出
             imageView.alpha = 1.0;
@@ -600,9 +602,9 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 - (void)showPickerVc:(UIViewController *)vc{
     __weak typeof(vc)weakVc = vc;
     if (weakVc != nil) {
-//        if (weakVc.navigationController != nil && self.navigationHeight == 0) {
-//            self.navigationHeight = CGRectGetMaxY(weakVc.navigationController.navigationBar.frame);
-//        }
+        if (([vc isKindOfClass:[UITableViewController class]] || [vc isKindOfClass:[UICollectionView class]]) && weakVc.navigationController != nil) {
+            self.navigationHeight = CGRectGetMaxY(weakVc.navigationController.navigationBar.frame);
+        }
         [weakVc presentViewController:self animated:NO completion:nil];
     }
 }
@@ -611,9 +613,9 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     self.isPush = YES;
     __weak typeof(vc)weakVc = vc;
     if (weakVc != nil) {
-//        if (weakVc.navigationController != nil && self.navigationHeight == 0) {
-//            self.navigationHeight = CGRectGetMaxY(weakVc.navigationController.navigationBar.frame);
-//        }
+        if (([vc isKindOfClass:[UITableViewController class]] || [vc isKindOfClass:[UICollectionView class]]) && weakVc.navigationController != nil) {
+            self.navigationHeight = CGRectGetMaxY(weakVc.navigationController.navigationBar.frame);
+        }
         [weakVc.navigationController pushViewController:self animated:YES];
     }
 }

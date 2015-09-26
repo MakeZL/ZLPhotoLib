@@ -94,8 +94,6 @@
 @property (assign,nonatomic) UIViewAnimationAnimationStatus status;
 // 长按保存图片会调用sheet
 @property (strong,nonatomic) UIActionSheet *sheet;
-// 需要增加的导航高度
-@property (assign,nonatomic) CGFloat navigationHeight;
 
 // 放大缩小一张图片的情况下（查看头像）
 - (void)showHeadPortrait:(UIImageView *)toImageView;
