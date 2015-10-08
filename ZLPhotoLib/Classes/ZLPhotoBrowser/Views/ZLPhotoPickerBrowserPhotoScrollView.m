@@ -156,7 +156,9 @@
             [_photoImageView sd_setImageWithURL:photo.photoURL placeholderImage:thumbImage options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize) {
                 [self setProgress:(double)receivedSize / expectedSize];
             } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                [self setProgress:1.0];
+                if (image) {
+                    [self setProgress:1.0];
+                }
                 self.isLoadingDone = YES;
                 if (image) {
                     _photoImageView.image = image;
@@ -177,16 +179,20 @@
 
 #pragma mark - setProgress
 - (void)setProgress:(CGFloat)progress{
-    _progress = progress;
-    
-    self.progressView.hidden = NO;
-    if (progress == 0) return ;
-    if (progress / 1.0 != 1.0) {
-        [self.progressView setProgress:progress animated:YES];
-    }else{
-        [self.progressView removeFromSuperview];
-        self.progressView = nil;
-    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        _progress = progress;
+        self.progressView.hidden = NO;
+        if (progress == 0) {
+            [self.progressView setProgress:0.01 animated:YES];
+            return;
+        }
+        if (progress / 1.0 != 1.0) {
+            [self.progressView setProgress:progress animated:YES];
+        }else{
+            [self.progressView removeFromSuperview];
+            self.progressView = nil;
+        }
+    });
 }
 
 

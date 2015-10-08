@@ -348,17 +348,24 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     };
     
     [weakSelf reloadData];
-    [UIView animateWithDuration:0.35 animations:^{
-        if (weakSelf.status == UIViewAnimationAnimationStatusFade){
-            // 淡入淡出
-            imageView.alpha = 1.0;
-        }else if(weakSelf.status == UIViewAnimationAnimationStatusZoom){
-            mainBgView.alpha = 1.0;
-            imageView.frame = [ZLPhotoRect setMaxMinZoomScalesForCurrentBoundWithImageView:imageView];
-        }
-    } completion:^(BOOL finished) {
+    
+    if (imageView.image == nil) {
+        weakSelf.status = UIViewAnimationAnimationStatusFade;
         mainView.hidden = YES;
-    }];
+    }else{
+        [UIView animateWithDuration:0.35 animations:^{
+            if (weakSelf.status == UIViewAnimationAnimationStatusFade){
+                // 淡入淡出
+                mainBgView.alpha = 1.0;
+                imageView.alpha = 1.0;
+            }else if(weakSelf.status == UIViewAnimationAnimationStatusZoom){
+                mainBgView.alpha = 1.0;
+                imageView.frame = [ZLPhotoRect setMaxMinZoomScalesForCurrentBoundWithImageView:imageView];
+            }
+        } completion:^(BOOL finished) {
+            mainView.hidden = YES;
+        }];
+    }
 }
 
 - (void)dealloc{
