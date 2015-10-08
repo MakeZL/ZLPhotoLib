@@ -50,6 +50,8 @@
             _thumbImage = [self.asset thumbImage];
         }else if (_photoImage){
             _thumbImage = _photoImage;
+        }else if ([_toView isKindOfClass:[UIImageView class]]){
+            _thumbImage = ((UIImageView *)_toView).image;
         }
     }
     return _thumbImage;
