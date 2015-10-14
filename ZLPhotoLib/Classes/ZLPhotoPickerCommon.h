@@ -24,7 +24,7 @@ static NSInteger const KPhotoShowMaxCount = 9;
 #define iOS7gt ([[UIDevice currentDevice].systemVersion doubleValue] >= 7.0)
 
 // ScrollView 滑动的间距
-static CGFloat const ZLPickerColletionViewPadding = 20;
+static CGFloat const ZLPickerColletionViewPadding = 10;
 
 // ScrollView拉伸的比例
 static CGFloat const ZLPickerScrollViewMaxZoomScale = 3.0;

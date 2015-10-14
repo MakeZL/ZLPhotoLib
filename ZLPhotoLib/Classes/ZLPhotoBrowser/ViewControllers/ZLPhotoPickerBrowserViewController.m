@@ -563,6 +563,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         self.isNowRotation = NO;
         return;
     }
+    
     CGRect tempF = self.collectionView.frame;
     NSInteger currentPage = (NSInteger)((scrollView.contentOffset.x / scrollView.frame.size.width) + 0.5);
     if (tempF.size.width < [UIScreen mainScreen].bounds.size.width){
@@ -693,7 +694,6 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 - (void)changeRotationDirection:(NSNotification *)noti{
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
     flowLayout.minimumLineSpacing = ZLPickerColletionViewPadding;
-    flowLayout.minimumLineSpacing = 0;
     flowLayout.itemSize = self.view.size;
     flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
     
