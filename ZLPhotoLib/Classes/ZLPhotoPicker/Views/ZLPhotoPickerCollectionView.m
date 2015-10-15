@@ -120,7 +120,7 @@
         ZLPhotoAssets *asset = self.dataArray[indexPath.item];
         cellImgView.isVideoType = asset.isVideoType;
         if ([asset isKindOfClass:[ZLPhotoAssets class]]) {
-            cellImgView.image = asset.aspectRatioImage;
+            cellImgView.image = asset.thumbImage;
         }
     }
     

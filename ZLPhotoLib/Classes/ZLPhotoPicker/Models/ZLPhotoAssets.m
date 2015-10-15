@@ -19,7 +19,7 @@
 }
 
 - (UIImage *)originImage{
-    return [UIImage imageWithCGImage:[[self.asset defaultRepresentation] fullResolutionImage]];
+    return [UIImage imageWithCGImage:[[self.asset defaultRepresentation] fullScreenImage]];
 }
 
 - (BOOL)isVideoType{
