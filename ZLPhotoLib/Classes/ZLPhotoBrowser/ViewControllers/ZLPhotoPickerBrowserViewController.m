@@ -706,7 +706,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     }else{
         self.collectionView.x = -ZLPickerColletionViewPadding;
     }
-    self.collectionView.contentOffset = CGPointMake(self.currentPage * self.collectionView.width, 0);
+    self.collectionView.contentOffset = CGPointMake(self.currentPage * self.collectionView.width, self.collectionView.contentOffset.y);
     
     UICollectionViewCell *currentCell = [self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:self.currentPage inSection:0]];
     
@@ -732,10 +732,9 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         }
         self.disMissBlock(self.currentPage);
     }else{
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
         [self dismissViewControllerAnimated:YES completion:nil];
     }
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)showHeadPortrait:(UIImageView *)toImageView{
