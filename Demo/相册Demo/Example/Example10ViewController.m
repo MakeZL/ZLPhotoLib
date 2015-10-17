@@ -51,8 +51,8 @@
 #pragma mark setup UI
 - (void)setupCollectionView{
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
-    flowLayout.itemSize = CGSizeMake(self.view.width, 250);
-    flowLayout.minimumInteritemSpacing = (self.view.height - 250 - 64) * 0.5;
+    flowLayout.itemSize = CGSizeMake(self.view.zl_width, 250);
+    flowLayout.minimumInteritemSpacing = (self.view.zl_height - 250 - 64) * 0.5;
     flowLayout.minimumLineSpacing = 0;
     flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
     flowLayout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0);

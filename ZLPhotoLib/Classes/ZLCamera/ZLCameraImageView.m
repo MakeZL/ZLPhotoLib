@@ -21,11 +21,11 @@
     if (!_deleBjView) {
         _deleBjView = [[UIImageView alloc] init];
         _deleBjView.image = [UIImage ml_imageFromBundleNamed:@"X"];
-        _deleBjView.width = 25;
-        _deleBjView.height = 25;
+        _deleBjView.zl_width = 25;
+        _deleBjView.zl_height = 25;
         _deleBjView.hidden = YES;
-        _deleBjView.x = 50;
-        _deleBjView.y = 0;
+        _deleBjView.zl_x = 50;
+        _deleBjView.zl_y = 0;
         _deleBjView.userInteractionEnabled = YES;
         [_deleBjView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(deleImage:)]];
         [self addSubview:_deleBjView];

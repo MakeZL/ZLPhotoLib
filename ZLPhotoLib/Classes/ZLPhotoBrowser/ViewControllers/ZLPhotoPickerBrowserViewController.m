@@ -52,10 +52,10 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
         flowLayout.minimumLineSpacing = ZLPickerColletionViewPadding;
         flowLayout.minimumInteritemSpacing = 0;
-        flowLayout.itemSize = self.view.size;
+        flowLayout.itemSize = self.view.zl_size;
         flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
         
-        UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, self.view.width + ZLPickerColletionViewPadding,self.view.height) collectionViewLayout:flowLayout];
+        UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, self.view.zl_width + ZLPickerColletionViewPadding,self.view.zl_height) collectionViewLayout:flowLayout];
         collectionView.showsHorizontalScrollIndicator = NO;
         collectionView.showsVerticalScrollIndicator = NO;
         collectionView.pagingEnabled = YES;
@@ -180,10 +180,10 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         [self showToView];
     }else{
         if (self.currentPage >= 0) {
-            self.collectionView.contentOffset = CGPointMake(self.currentPage * self.collectionView.width, self.collectionView.contentOffset.y);
+            self.collectionView.contentOffset = CGPointMake(self.currentPage * self.collectionView.zl_width, self.collectionView.contentOffset.y);
             if (self.currentPage == self.photos.count - 1 && self.photos.count > 1) {
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(00.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                    self.collectionView.contentOffset = CGPointMake(self.currentPage * self.collectionView.width - ZLPickerColletionViewPadding, self.collectionView.contentOffset.y);
+                    self.collectionView.contentOffset = CGPointMake(self.currentPage * self.collectionView.zl_width - ZLPickerColletionViewPadding, self.collectionView.contentOffset.y);
                 });
             }
         }
@@ -441,25 +441,25 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     if ([self.delegate respondsToSelector:@selector(photoBrowserShowToolBarViewWithphotoBrowser:)]) {
         UIView *toolBarView = [self.delegate photoBrowserShowToolBarViewWithphotoBrowser:self];
         toolBarView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-        CGFloat width = self.view.width;
-        CGFloat x = self.view.x;
-        if (toolBarView.width) {
-            width = toolBarView.width;
+        CGFloat width = self.view.zl_width;
+        CGFloat x = self.view.zl_x;
+        if (toolBarView.zl_width) {
+            width = toolBarView.zl_width;
         }
-        if (toolBarView.x) {
-            x = toolBarView.x;
+        if (toolBarView.zl_x) {
+            x = toolBarView.zl_x;
         }
-        toolBarView.frame = CGRectMake(x, self.view.height - 44, width, 44);
+        toolBarView.frame = CGRectMake(x, self.view.zl_height - 44, width, 44);
         [self.view addSubview:toolBarView];
     }
     
     [self setPageLabelPage:self.currentPage];
     //    [self setPageControlPage:self.currentPage];
     if (self.currentPage >= 0) {
-        self.collectionView.contentOffset = CGPointMake(self.currentPage * self.collectionView.width, self.collectionView.contentOffset.y);
+        self.collectionView.contentOffset = CGPointMake(self.currentPage * self.collectionView.zl_width, self.collectionView.contentOffset.y);
         if (self.currentPage == self.photos.count - 1 && self.photos.count > 1) {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(00.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                self.collectionView.contentOffset = CGPointMake(self.currentPage * self.collectionView.width - ZLPickerColletionViewPadding, self.collectionView.contentOffset.y);
+                self.collectionView.contentOffset = CGPointMake(self.currentPage * self.collectionView.zl_width - ZLPickerColletionViewPadding, self.collectionView.contentOffset.y);
             });
         }
     }
@@ -511,7 +511,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         scrollView.frame = tempF;
         scrollView.tag = 101;
         if (self.isPush) {
-            scrollView.y -= 32;
+            scrollView.zl_y -= 32;
         }
         scrollView.photoScrollViewDelegate = self;
         scrollView.photo = photo;
@@ -694,7 +694,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 - (void)changeRotationDirection:(NSNotification *)noti{
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
     flowLayout.minimumLineSpacing = ZLPickerColletionViewPadding;
-    flowLayout.itemSize = self.view.size;
+    flowLayout.itemSize = self.view.zl_size;
     flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
     
     self.collectionView.alpha = 0.0;
@@ -702,11 +702,11 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     self.isNowRotation = YES;
     
     if ((self.currentPage < self.photos.count - 1) || self.photos.count == 1) {
-        self.collectionView.x = 0;
+        self.collectionView.zl_x = 0;
     }else{
-        self.collectionView.x = -ZLPickerColletionViewPadding;
+        self.collectionView.zl_x = -ZLPickerColletionViewPadding;
     }
-    self.collectionView.contentOffset = CGPointMake(self.currentPage * self.collectionView.width, self.collectionView.contentOffset.y);
+    self.collectionView.contentOffset = CGPointMake(self.currentPage * self.collectionView.zl_width, self.collectionView.contentOffset.y);
     
     UICollectionViewCell *currentCell = [self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:self.currentPage inSection:0]];
     

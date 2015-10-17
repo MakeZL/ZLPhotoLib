@@ -89,7 +89,7 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
         flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
         
         // CGRectMake(0, 22, 300, 44)
-        UICollectionView *toolBarThumbCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(10, 0, self.view.width - 100, 44) collectionViewLayout:flowLayout];
+        UICollectionView *toolBarThumbCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(10, 0, self.view.zl_width - 100, 44) collectionViewLayout:flowLayout];
         toolBarThumbCollectionView.backgroundColor = [UIColor clearColor];
         toolBarThumbCollectionView.dataSource = self;
         toolBarThumbCollectionView.delegate = self;

@@ -10,12 +10,12 @@
 
 @interface UIView (ZLExtension)
 
-@property (nonatomic,assign) CGFloat x;
-@property (nonatomic,assign) CGFloat y;
-@property (nonatomic,assign) CGFloat centerX;
-@property (nonatomic,assign) CGFloat centerY;
-@property (nonatomic,assign) CGFloat width;
-@property (nonatomic,assign) CGFloat height;
-@property (nonatomic,assign) CGSize size;
+@property (nonatomic,assign) CGFloat zl_x;
+@property (nonatomic,assign) CGFloat zl_y;
+@property (nonatomic,assign) CGFloat zl_centerX;
+@property (nonatomic,assign) CGFloat zl_centerY;
+@property (nonatomic,assign) CGFloat zl_width;
+@property (nonatomic,assign) CGFloat zl_height;
+@property (nonatomic,assign) CGSize zl_size;
 
 @end
