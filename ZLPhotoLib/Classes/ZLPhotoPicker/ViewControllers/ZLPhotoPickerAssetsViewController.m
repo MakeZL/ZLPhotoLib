@@ -250,6 +250,7 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
         [self.selectAssets addObject:image];
         [self.toolBarThumbCollectionView reloadData];
         [self.takePhotoImages addObject:image];
+        self.collectionView.selectAssets = self.selectAssets;
         
         dispatch_async(dispatch_get_global_queue(0, 0), ^{
             [[NSNotificationCenter defaultCenter] postNotificationName:PICKER_TAKE_PHOTO object:nil userInfo:@{@"image":image}];
@@ -293,13 +294,21 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
     _maxCount = maxCount;
     
     if (!_privateTempMaxCount) {
-        _privateTempMaxCount = maxCount;
+        if (maxCount) {
+            _privateTempMaxCount = maxCount;
+        }else{
+            _privateTempMaxCount = KPhotoShowMaxCount;
+        }
     }
 
     if (self.selectAssets.count == maxCount){
         maxCount = 0;
     }else if (self.selectPickerAssets.count - self.selectAssets.count > 0) {
         maxCount = _privateTempMaxCount;
+    }
+    
+    if (!maxCount && !self.selectAssets.count && !self.selectPickerAssets.count) {
+        maxCount = KPhotoShowMaxCount;
     }
     
     self.collectionView.maxCount = maxCount;
@@ -325,7 +334,7 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
         [self.selectAssets addObject:[pickerCollectionView.selectAssets lastObject]];
     }
     
-    [self.selectAssets addObjectsFromArray:self.takePhotoImages];
+//    [self.selectAssets addObjectsFromArray:self.takePhotoImages];
     
 //    self.selectAssets = [NSMutableArray arrayWithArray:[[NSSet setWithArray:self.selectAssets] allObjects]];
 

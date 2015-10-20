@@ -63,8 +63,6 @@
     // 创建控制器
     ZLPhotoPickerViewController *pickerVc = [[ZLPhotoPickerViewController alloc] init];
     // 默认显示相册里面的内容SavePhotos
-    // 最多能选9张图片
-    pickerVc.maxCount = 20;
     pickerVc.status = PickerViewShowStatusCameraRoll;
     pickerVc.delegate = self;
     [pickerVc showPickerVc:self];
