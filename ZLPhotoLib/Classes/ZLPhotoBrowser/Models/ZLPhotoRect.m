@@ -31,9 +31,9 @@
     }
     
     CGRect frameToCenter = CGRectZero;
-    if (minScale >= 3) {
-        minScale = 3;
-    }
+//    if (minScale >= 3) {
+//        minScale = 3;
+//    }
     frameToCenter = CGRectMake(0, 0, imageSize.width * minScale, imageSize.height * minScale);
     
     // Horizontally
