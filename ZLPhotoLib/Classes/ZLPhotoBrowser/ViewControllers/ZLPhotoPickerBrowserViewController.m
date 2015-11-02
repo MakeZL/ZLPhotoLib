@@ -701,23 +701,18 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 #pragma mark - Rotation
 - (void)changeRotationDirection:(NSNotification *)noti{
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
-    flowLayout.minimumLineSpacing = ZLPickerColletionViewPadding;
-    flowLayout.itemSize = self.view.zl_size;
+    flowLayout.minimumLineSpacing = 0;
+    flowLayout.minimumInteritemSpacing = 0;
+    flowLayout.itemSize = CGSizeMake(self.view.zl_size.width + ZLPickerColletionViewPadding, self.view.zl_height);
     flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
     
     self.collectionView.alpha = 0.0;
     [self.collectionView setCollectionViewLayout:flowLayout animated:YES];
     self.isNowRotation = YES;
     
-    if ((self.currentPage < self.photos.count - 1) || self.photos.count == 1) {
-        self.collectionView.zl_x = 0;
-    }else{
-        self.collectionView.zl_x = -ZLPickerColletionViewPadding;
-    }
     self.collectionView.contentOffset = CGPointMake(self.currentPage * self.collectionView.zl_width, self.collectionView.contentOffset.y);
     
     UICollectionViewCell *currentCell = [self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:self.currentPage inSection:0]];
-    
     for (UICollectionViewCell *cell in [self.collectionView subviews]) {
         if ([cell isKindOfClass:[UICollectionViewCell class]]) {
             cell.hidden = ![cell isEqual:currentCell];
