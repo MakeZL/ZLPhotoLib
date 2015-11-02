@@ -33,6 +33,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 @property (assign,nonatomic) BOOL isNowRotation;
 // 是否是Push模式
 @property (assign,nonatomic) BOOL isPush;
+
 @end
 
 @implementation ZLPhotoPickerBrowserViewController
@@ -50,12 +51,12 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 - (UICollectionView *)collectionView{
     if (!_collectionView) {
         UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
-        flowLayout.minimumLineSpacing = ZLPickerColletionViewPadding;
+        flowLayout.minimumLineSpacing = 0;
         flowLayout.minimumInteritemSpacing = 0;
-        flowLayout.itemSize = self.view.zl_size;
+        flowLayout.itemSize = CGSizeMake(self.view.zl_width + ZLPickerColletionViewPadding, self.view.zl_height);
         flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
         
-        UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, self.view.zl_width + ZLPickerColletionViewPadding,self.view.zl_height) collectionViewLayout:flowLayout];
+        UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, self.view.zl_width,self.view.zl_height) collectionViewLayout:flowLayout];
         collectionView.showsHorizontalScrollIndicator = NO;
         collectionView.showsVerticalScrollIndicator = NO;
         collectionView.pagingEnabled = YES;
@@ -176,13 +177,12 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         NSAssert(self.dataSource, @"你没成为数据源代理");
     }
     if (!self.isPush) {
-        // 初始化动画
-        [self showToView];
+        
     }else{
         if (self.currentPage >= 0) {
             self.collectionView.contentOffset = CGPointMake(self.currentPage * self.collectionView.zl_width, self.collectionView.contentOffset.y);
             if (self.currentPage == self.photos.count - 1 && self.photos.count > 1) {
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(00.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                     self.collectionView.contentOffset = CGPointMake(self.currentPage * self.collectionView.zl_width - ZLPickerColletionViewPadding, self.collectionView.contentOffset.y);
                 });
             }
@@ -353,6 +353,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         weakSelf.status = UIViewAnimationAnimationStatusFade;
         mainView.hidden = YES;
     }else{
+        [UIView setAnimationsEnabled:YES];
         [UIView animateWithDuration:0.35 animations:^{
             if (weakSelf.status == UIViewAnimationAnimationStatusFade){
                 // 淡入淡出
@@ -374,6 +375,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     
     [self setupReload];
     self.view.backgroundColor = [UIColor blackColor];
@@ -404,6 +406,9 @@ static NSString *_cellIdentifier = @"collectionViewCell";
             }
             navigationisHidden = !navigationisHidden;
         };
+    }else{
+        // 初始化动画
+        [self showToView];
     }
 }
 
@@ -436,6 +441,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     }
     
     [self.collectionView reloadData];
+    [self.collectionView layoutIfNeeded];
     
     // 添加自定义View
     if ([self.delegate respondsToSelector:@selector(photoBrowserShowToolBarViewWithphotoBrowser:)]) {
@@ -457,11 +463,11 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     //    [self setPageControlPage:self.currentPage];
     if (self.currentPage >= 0) {
         self.collectionView.contentOffset = CGPointMake(self.currentPage * self.collectionView.zl_width, self.collectionView.contentOffset.y);
-        if (self.currentPage == self.photos.count - 1 && self.photos.count > 1) {
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(00.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                self.collectionView.contentOffset = CGPointMake(self.currentPage * self.collectionView.zl_width - ZLPickerColletionViewPadding, self.collectionView.contentOffset.y);
-            });
-        }
+        //        if (self.currentPage == self.photos.count - 1 && self.photos.count > 1) {
+        //            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(00.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        //                self.collectionView.contentOffset = CGPointMake(self.currentPage * self.collectionView.zl_width - ZLPickerColletionViewPadding, self.collectionView.contentOffset.y);
+        //            });
+        //        }
     }
 }
 
@@ -558,34 +564,36 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 }
 
 #pragma mark - <UIScrollViewDelegate>
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
-    if (self.isNowRotation) {
-        self.isNowRotation = NO;
-        return;
-    }
-    
-    CGRect tempF = self.collectionView.frame;
-    NSInteger currentPage = (NSInteger)((scrollView.contentOffset.x / scrollView.frame.size.width) + 0.5);
-    if (tempF.size.width < [UIScreen mainScreen].bounds.size.width){
-        tempF.size.width = [UIScreen mainScreen].bounds.size.width;
-    }
-    
-    if ([self isDataSourceElsePhotos]) {
-        if ((currentPage < [self.dataSource photoBrowser:self numberOfItemsInSection:self.currentIndexPath.section] - 1) || self.photos.count == 1) {
-            tempF.origin.x = 0;
-        }else{
-            tempF.origin.x = -ZLPickerColletionViewPadding;
-        }
-    }else{
-        if ((currentPage < self.photos.count - 1) || self.photos.count == 1) {
-            tempF.origin.x = 0;
-        }else{
-            tempF.origin.x = -ZLPickerColletionViewPadding;
-        }
-    }
-    
-    self.collectionView.frame = tempF;
-}
+//- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+//    if (self.isNowRotation) {
+//        self.isNowRotation = NO;
+//        return;
+//    }
+//
+//    CGRect tempF = self.collectionView.frame;
+//    NSInteger currentPage = (NSInteger)((scrollView.contentOffset.x / scrollView.frame.size.width) + 0.5);
+//    if (tempF.size.width < [UIScreen mainScreen].bounds.size.width){
+//        tempF.size.width = [UIScreen mainScreen].bounds.size.width;
+//    }
+//
+//
+//    if ([self isDataSourceElsePhotos]) {
+//        if ((currentPage < [self.dataSource photoBrowser:self numberOfItemsInSection:self.currentIndexPath.section] - 1) || self.photos.count == 1) {
+//            tempF.origin.x = 0;
+//        }else{
+//            tempF.origin.x = -ZLPickerColletionViewPadding;
+//        }
+//    }else{
+//        if ((currentPage < self.photos.count - 1) || self.photos.count == 1) {
+//            tempF.origin.x = 0;
+//        }else{
+//            tempF.origin.x = -ZLPickerColletionViewPadding;
+//        }
+//    }
+//
+//
+//    self.collectionView.frame = tempF;
+//}
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
     NSInteger currentPage = (NSInteger)(scrollView.contentOffset.x / (scrollView.frame.size.width));
@@ -593,9 +601,9 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         currentPage = roundf((scrollView.contentOffset.x) / (scrollView.frame.size.width));
     }
     
-    if (currentPage == self.photos.count - 1 && currentPage != self.currentPage && [[[UIDevice currentDevice] systemVersion] doubleValue] >= 8.0) {
-//        self.collectionView.contentOffset = CGPointMake(self.collectionView.contentOffset.x + ZLPickerColletionViewPadding, self.collectionView.contentOffset.y);
-    }
+    //    if (currentPage == self.photos.count - 1 && currentPage != self.currentPage && [[[UIDevice currentDevice] systemVersion] doubleValue] >= 8.0) {
+    //        self.collectionView.contentOffset = CGPointMake(self.collectionView.contentOffset.x + ZLPickerColletionViewPadding, self.collectionView.contentOffset.y);
+    //    }
     
     self.currentPage = currentPage;
     [self setPageLabelPage:currentPage];
