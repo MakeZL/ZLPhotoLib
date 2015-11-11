@@ -256,7 +256,6 @@
     // Bail if no image
     if (_photoImageView.image == nil) return;
     
-//    _photoImageView.frame = [ZLPhotoRect setMaxMinZoomScalesForCurrentBoundWithImageView:_photoImageView];
     // Reset position
     _photoImageView.frame = CGRectMake(0, 0, _photoImageView.frame.size.width, _photoImageView.frame.size.height);
     
@@ -279,11 +278,10 @@
     if (xScale < 1 && yScale < 1) {
         self.maximumZoomScale = maxScale;
         self.minimumZoomScale = minScale;
-
     }else if (xScale >= yScale * 2) {
         // Initial zoom
         self.maximumZoomScale = 1.0;
-        self.minimumZoomScale = maxScale;
+        self.minimumZoomScale = minScale;
     }else {
         self.maximumZoomScale = yScale;
         self.minimumZoomScale = xScale;
@@ -325,7 +323,7 @@
     } else {
         frameToCenter.origin.y = 0;
     }
-    
+
     // Center
     if (!CGRectEqualToRect(_photoImageView.frame, frameToCenter))
         _photoImageView.frame = frameToCenter;

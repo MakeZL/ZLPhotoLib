@@ -680,6 +680,10 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         return ;
     }
     
+    if (CGSizeEqualToSize(CGSizeMake([UIScreen mainScreen].bounds.size.width + ZLPickerColletionViewPadding, [UIScreen mainScreen].bounds.size.height), [(UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout itemSize])) {
+        return ;
+    }
+    
     self.lastDeviceOrientation = (UIDeviceOrientation)[noti.object orientation];
     
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
