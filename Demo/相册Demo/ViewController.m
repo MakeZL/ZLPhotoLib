@@ -23,8 +23,8 @@
     return @[
              @"Demo0 相册多选",
              @"Demo1 图片游览器",
-             @"Demo3 连拍+多选+游览器",
-             @"Demo4 多选(不重复选择照片)",
+             @"Demo2 连拍+多选+游览器",
+             @"Demo3 多选(不重复选择照片)",
              @"Demo4 游览器(自定义UIView)",
              @"Demo5 多选(选择视频)",
              @"Demo6 浏览器(查看头像)",
@@ -32,6 +32,10 @@
              @"Demo8 多选(倒序,类似新浪微博)",
              @"Demo9 图片游览器 -- push方式",
              @"Demo10 幻灯片",
+             @" --------- (>v<) ---------- ",
+             @"感谢您的App使用ZLPhotoLib",
+             @"我是MakeZL,会不断更新,谢谢您的使用.",
+             @"您不介意可以反馈到 QQ:120886865"
             ];
 }
 
@@ -85,11 +89,12 @@
 
 #pragma mark - <UITableViewDelegate>
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    NSString *exampleVc = [NSString stringWithFormat:@"Example%ldViewController",indexPath.row];
-    UIViewController *vc = [[NSClassFromString(exampleVc) alloc] init];
-    vc.title = self.examples[indexPath.row];
-    [self.navigationController pushViewController:vc animated:YES];
+    if (indexPath.row < 11) {
+        NSString *exampleVc = [NSString stringWithFormat:@"Example%ldViewController",indexPath.row];
+        UIViewController *vc = [[NSClassFromString(exampleVc) alloc] init];
+        vc.title = self.examples[indexPath.row];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 @end
