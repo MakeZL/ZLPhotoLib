@@ -10,4 +10,8 @@
 
 @interface UIImage (ZLPhotoLib)
 + (instancetype)ml_imageFromBundleNamed:(NSString *)name;
+- (UIImage *)scaleToSize:(CGSize)size;
+- (UIImage *)imageScaleAspectFillFromTop:(CGSize)frameSize;
+-(UIImage*)subImageInRect:(CGRect)rect;
+- (UIImage *)imageFillSize:(CGSize)viewsize;
 @end

@@ -24,6 +24,9 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 // 需要增加的导航高度
 @property (assign,nonatomic) CGFloat navigationHeight;
 
+// 上一次屏幕旋转的位置
+@property (assign,nonatomic) UIDeviceOrientation lastDeviceOrientation;
+
 // 数据相关
 // 单击时执行销毁的block
 @property (nonatomic , copy) ZLPickerBrowserViewControllerTapDisMissBlock disMissBlock;
@@ -74,6 +77,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[_collectionView]-0-|" options:0 metrics:nil views:@{@"_collectionView":_collectionView}]];
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeRotationDirection:) name:UIDeviceOrientationDidChangeNotification object:nil];
+        self.lastDeviceOrientation = [[UIDevice currentDevice] orientation];
         
         self.pageLabel.hidden = NO;
         self.deleleBtn.hidden = !self.isEditing;
@@ -361,6 +365,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
                 imageView.alpha = 1.0;
             }else if(weakSelf.status == UIViewAnimationAnimationStatusZoom){
                 mainBgView.alpha = 1.0;
+                imageView.alpha = 1.0;
                 imageView.frame = [ZLPhotoRect setMaxMinZoomScalesForCurrentBoundWithImageView:imageView];
             }
         } completion:^(BOOL finished) {
@@ -377,16 +382,21 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     [super viewDidLoad];
     
     
-    [self setupReload];
     self.view.backgroundColor = [UIColor blackColor];
-    [[UIApplication sharedApplication] setStatusBarHidden:YES];
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    
+    [self setupReload];
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
     
     self.navigationController.navigationBar.alpha = 1.0;
-    [[UIApplication sharedApplication] setStatusBarHidden:NO];
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
 }
 
 - (void)setupReload{
@@ -700,6 +710,14 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 
 #pragma mark - Rotation
 - (void)changeRotationDirection:(NSNotification *)noti{
+    
+    if ([noti.object isKindOfClass:[UIDevice class]] && (UIDeviceOrientation)[noti.object orientation] == self.lastDeviceOrientation) {
+        self.lastDeviceOrientation = (UIDeviceOrientation)[noti.object orientation];
+        return ;
+    }
+    
+    self.lastDeviceOrientation = (UIDeviceOrientation)[noti.object orientation];
+    
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
     flowLayout.minimumLineSpacing = 0;
     flowLayout.minimumInteritemSpacing = 0;

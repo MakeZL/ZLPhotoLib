@@ -276,7 +276,11 @@
         minScale = MIN(xScale, yScale);
     }
     
-    if (xScale >= yScale * 2) {
+    if (xScale < 1 && yScale < 1) {
+        self.maximumZoomScale = maxScale;
+        self.minimumZoomScale = minScale;
+
+    }else if (xScale >= yScale * 2) {
         // Initial zoom
         self.maximumZoomScale = 1.0;
         self.minimumZoomScale = maxScale;
