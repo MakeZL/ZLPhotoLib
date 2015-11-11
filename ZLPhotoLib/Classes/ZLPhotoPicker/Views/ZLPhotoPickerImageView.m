@@ -12,7 +12,7 @@
 @interface ZLPhotoPickerImageView ()
 
 @property (nonatomic , weak) UIView *maskView;
-@property (nonatomic , weak) UIImageView *tickImageView;
+@property (nonatomic , weak) UIButton *tickImageView;
 @property (nonatomic , weak) UIImageView *videoView;
 
 @end
@@ -22,6 +22,7 @@
 - (instancetype)initWithFrame:(CGRect)frame{
     if (self = [super initWithFrame:frame]) {
         self.contentMode = UIViewContentModeScaleAspectFill;
+        self.userInteractionEnabled = YES;
         self.clipsToBounds = YES;
     }
     return self;
@@ -50,12 +51,12 @@
     return _videoView;
 }
 
-- (UIImageView *)tickImageView{
+- (UIButton *)tickImageView{
     if (!_tickImageView) {
-        UIImageView *tickImageView = [[UIImageView alloc] init];
+        UIButton *tickImageView = [[UIButton alloc] init];
         tickImageView.frame = CGRectMake(self.bounds.size.width - 28, 5, 21, 21);
-        tickImageView.image = [UIImage ml_imageFromBundleNamed:@"icon_image_no"];
-        //        tickImageView.hidden = YES;
+//        [tickImageView addTarget:self action:@selector(clickTick) forControlEvents:UIControlEventTouchUpInside];
+        [tickImageView setImage:[UIImage ml_imageFromBundleNamed:@"icon_image_no"] forState:UIControlStateNormal];
         [self addSubview:tickImageView];
         self.tickImageView = tickImageView;
     }
@@ -70,13 +71,6 @@
 
 - (void)setMaskViewFlag:(BOOL)maskViewFlag{
     _maskViewFlag = maskViewFlag;
-    
-    if (!maskViewFlag){
-        // hidden
-        [self.tickImageView setImage:[UIImage ml_imageFromBundleNamed:@"icon_image_no"]];
-    }else{
-        [self.tickImageView setImage:[UIImage ml_imageFromBundleNamed:@"icon_image_yes"]];
-    }
     
     //    self.maskView.hidden = !maskViewFlag;
     self.animationRightTick = maskViewFlag;
@@ -96,6 +90,25 @@
 
 - (void)setAnimationRightTick:(BOOL)animationRightTick{
     _animationRightTick = animationRightTick;
-    //    self.tickImageView.hidden = !animationRightTick;
+
+    if (animationRightTick) {
+        [self.tickImageView setImage:[UIImage ml_imageFromBundleNamed:@"icon_image_yes"] forState:UIControlStateNormal];
+    }else{
+        [self.tickImageView setImage:[UIImage ml_imageFromBundleNamed:@"icon_image_no"] forState:UIControlStateNormal];
+    }
+    
+    CAKeyframeAnimation *scaoleAnimation = [CAKeyframeAnimation animationWithKeyPath:@"transform.scale"];
+    scaoleAnimation.duration = 0.25;
+    scaoleAnimation.autoreverses = YES;
+    scaoleAnimation.values = @[[NSNumber numberWithFloat:1.0],[NSNumber numberWithFloat:1.2],[NSNumber numberWithFloat:1.0]];
+    scaoleAnimation.fillMode = kCAFillModeForwards;
+    
+    if (self.isVideoType) {
+        [self.videoView.layer removeAllAnimations];
+        [self.videoView.layer addAnimation:scaoleAnimation forKey:@"transform.rotate"];
+    }else{
+        [self.tickImageView.layer removeAllAnimations];
+        [self.tickImageView.layer addAnimation:scaoleAnimation forKey:@"transform.rotate"];
+    }
 }
 @end
