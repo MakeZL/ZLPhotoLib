@@ -574,51 +574,15 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 }
 
 #pragma mark - <UIScrollViewDelegate>
-//- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
-//    if (self.isNowRotation) {
-//        self.isNowRotation = NO;
-//        return;
-//    }
-//
-//    CGRect tempF = self.collectionView.frame;
-//    NSInteger currentPage = (NSInteger)((scrollView.contentOffset.x / scrollView.frame.size.width) + 0.5);
-//    if (tempF.size.width < [UIScreen mainScreen].bounds.size.width){
-//        tempF.size.width = [UIScreen mainScreen].bounds.size.width;
-//    }
-//
-//
-//    if ([self isDataSourceElsePhotos]) {
-//        if ((currentPage < [self.dataSource photoBrowser:self numberOfItemsInSection:self.currentIndexPath.section] - 1) || self.photos.count == 1) {
-//            tempF.origin.x = 0;
-//        }else{
-//            tempF.origin.x = -ZLPickerColletionViewPadding;
-//        }
-//    }else{
-//        if ((currentPage < self.photos.count - 1) || self.photos.count == 1) {
-//            tempF.origin.x = 0;
-//        }else{
-//            tempF.origin.x = -ZLPickerColletionViewPadding;
-//        }
-//    }
-//
-//
-//    self.collectionView.frame = tempF;
-//}
-
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
     NSInteger currentPage = (NSInteger)(scrollView.contentOffset.x / (scrollView.frame.size.width));
     if (currentPage == self.photos.count - 2) {
         currentPage = roundf((scrollView.contentOffset.x) / (scrollView.frame.size.width));
     }
     
-    //    if (currentPage == self.photos.count - 1 && currentPage != self.currentPage && [[[UIDevice currentDevice] systemVersion] doubleValue] >= 8.0) {
-    //        self.collectionView.contentOffset = CGPointMake(self.collectionView.contentOffset.x + ZLPickerColletionViewPadding, self.collectionView.contentOffset.y);
-    //    }
-    
     self.currentPage = currentPage;
     [self setPageLabelPage:currentPage];
-    //    [self setPageControlPage:currentPage];
-    
+
     if ([self.delegate respondsToSelector:@selector(photoBrowser:didCurrentPage:)]) {
         [self.delegate photoBrowser:self didCurrentPage:self.currentPage];
     }
