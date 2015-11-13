@@ -213,7 +213,6 @@
 			isa = PBXGroup;
 			children = (
 				484014D41B73574F00FBD485 /* Category */,
-				484014D91B73574F00FBD485 /* Lib */,
 				484014DA1B73574F00FBD485 /* Resource */,
 				484014DB1B73574F00FBD485 /* Views */,
 			);
@@ -229,13 +228,6 @@
 				484014D81B73574F00FBD485 /* UIView+ZLExtension.m */,
 			);
 			path = Category;
-			sourceTree = "<group>";
-		};
-		484014D91B73574F00FBD485 /* Lib */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Lib;
 			sourceTree = "<group>";
 		};
 		484014DA1B73574F00FBD485 /* Resource */ = {

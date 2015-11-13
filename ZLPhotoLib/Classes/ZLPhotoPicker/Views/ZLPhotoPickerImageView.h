@@ -8,18 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@protocol ZLPhotoPickerImageViewDelegate <NSObject>
-
-@optional
-// 点击图片
-- (void)photoPickerClickImageView;
-// 点击右上角的按钮
-- (void)photoPickerClickTickButton:(UIButton *)tickButton;
-@end
-
 @interface ZLPhotoPickerImageView : UIImageView
-
-@property (weak,nonatomic) id <ZLPhotoPickerImageViewDelegate> delegate;
 /**
  *  是否有蒙版层
  */

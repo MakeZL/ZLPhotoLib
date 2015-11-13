@@ -257,6 +257,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         }
     }
     
+    
     if (self.status == UIViewAnimationAnimationStatusFade){
         imageView.alpha = 0.0;
         imageView.frame = [ZLPhotoRect setMaxMinZoomScalesForCurrentBoundWithImage:imageView.image];
@@ -267,6 +268,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         }
         imageView.frame = tempF;
     }
+    
     
     __block CGRect tempFrame = imageView.frame;
     __weak typeof(self)weakSelf = self;
@@ -351,11 +353,19 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         }];
     };
     
-    [weakSelf reloadData];
-    
+    [self reloadData];
     if (imageView.image == nil) {
-        weakSelf.status = UIViewAnimationAnimationStatusFade;
-        mainView.hidden = YES;
+        self.status = UIViewAnimationAnimationStatusFade;
+        
+        [UIView setAnimationsEnabled:YES];
+        [UIView animateWithDuration:0.35 animations:^{
+            // 淡入淡出
+            mainView.alpha = 0.0;
+        } completion:^(BOOL finished) {
+            mainView.alpha = 1.0;
+            mainView.hidden = YES;
+        }];
+        
     }else{
         [UIView setAnimationsEnabled:YES];
         [UIView animateWithDuration:0.35 animations:^{
@@ -582,7 +592,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     
     self.currentPage = currentPage;
     [self setPageLabelPage:currentPage];
-
+    
     if ([self.delegate respondsToSelector:@selector(photoBrowser:didCurrentPage:)]) {
         [self.delegate photoBrowser:self didCurrentPage:self.currentPage];
     }
@@ -675,8 +685,9 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 #pragma mark - Rotation
 - (void)changeRotationDirection:(NSNotification *)noti{
     
-    if ([noti.object isKindOfClass:[UIDevice class]] && (UIDeviceOrientation)[noti.object orientation] == self.lastDeviceOrientation) {
-        self.lastDeviceOrientation = (UIDeviceOrientation)[noti.object orientation];
+    UIDevice *obj = (UIDevice *)noti.object;
+    if ([obj isKindOfClass:[UIDevice class]] && (UIDeviceOrientation)[obj orientation] == self.lastDeviceOrientation) {
+        self.lastDeviceOrientation = (UIDeviceOrientation)[obj orientation];
         return ;
     }
     
@@ -684,7 +695,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         return ;
     }
     
-    self.lastDeviceOrientation = (UIDeviceOrientation)[noti.object orientation];
+    self.lastDeviceOrientation = (UIDeviceOrientation)[obj orientation];
     
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
     flowLayout.minimumLineSpacing = 0;
