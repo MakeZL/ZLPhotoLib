@@ -33,4 +33,5 @@
 
 @property (nonatomic , strong) ALAssetsGroup *group;
 
+@property (assign,nonatomic) BOOL isVideo;
 @end

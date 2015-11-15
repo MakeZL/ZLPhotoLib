@@ -10,6 +10,10 @@
 
 @class ZLPhotoPickerGroup;
 
+//typedef NS_ENUM(NSUInteger, ZLPhotoPhotosMode) {
+//    ZLPhotoPhotosMode
+//};
+
 // 回调
 typedef void(^callBackBlock)(id obj);
 
@@ -19,6 +23,11 @@ typedef void(^callBackBlock)(id obj);
  *  获取所有组
  */
 + (instancetype) defaultPicker;
+
+/**
+ * 获取所有组对应的图片与视频
+ */
+- (void) getAllGroupWithPhotosAndVideos : (callBackBlock ) callBack;
 
 /**
  * 获取所有组对应的图片

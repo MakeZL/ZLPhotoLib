@@ -57,6 +57,19 @@
     return _thumbImage;
 }
 
+- (BOOL)isVideo{
+    if ([self.asset isKindOfClass:[ZLPhotoAssets class]]) {
+        if ([[self.asset.asset valueForProperty:ALAssetPropertyType] isEqual:ALAssetTypeVideo]) {
+            return YES;
+        }
+    }else if ([self.asset isKindOfClass:[ALAsset class]]) {
+        if ([[(ALAsset *)self.asset valueForProperty:ALAssetPropertyType] isEqual:ALAssetTypeVideo]) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
 #pragma mark - 传入一个图片对象，可以是URL/UIImage/NSString，返回一个实例
 + (instancetype)photoAnyImageObjWith:(id)imageObj{
     ZLPhotoPickerBrowserPhoto *photo = [[self alloc] init];

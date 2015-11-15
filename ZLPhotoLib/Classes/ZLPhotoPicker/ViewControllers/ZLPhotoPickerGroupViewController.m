@@ -158,7 +158,7 @@
     __weak typeof(self) weakSelf = self;
     
     if (self.status == PickerViewShowStatusVideo){
-        // 获取所有的图片URLs
+        // 获取所有的视频URLs
         [datas getAllGroupWithVideos:^(NSArray *groups) {
             self.groups = groups;
             if (self.status) {
@@ -172,7 +172,7 @@
         
     }else{
         // 获取所有的图片URLs
-        [datas getAllGroupWithPhotos:^(NSArray *groups) {
+        [datas getAllGroupWithPhotosAndVideos:^(NSArray *groups) {
             self.groups = groups;
             if (self.status) {
                 [self jump2StatusVc];

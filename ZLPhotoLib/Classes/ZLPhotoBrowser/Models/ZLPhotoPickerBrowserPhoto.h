@@ -12,6 +12,7 @@
 
 @interface ZLPhotoPickerBrowserPhoto : NSObject
 
+@property (assign,nonatomic) BOOL isVideo;
 /**
  *  自动适配是不是以下几种数据
  */

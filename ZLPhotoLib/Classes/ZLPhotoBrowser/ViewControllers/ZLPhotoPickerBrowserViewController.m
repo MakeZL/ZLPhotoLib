@@ -10,6 +10,7 @@
 #import "ZLPhotoPickerBrowserViewController.h"
 #import "UIImage+ZLPhotoLib.h"
 #import "ZLPhotoRect.h"
+#import <MediaPlayer/MediaPlayer.h>
 
 static NSString *_cellIdentifier = @"collectionViewCell";
 
@@ -36,6 +37,8 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 @property (assign,nonatomic) BOOL isNowRotation;
 // 是否是Push模式
 @property (assign,nonatomic) BOOL isPush;
+// 是否是第一次加载
+@property (assign,nonatomic) BOOL isNotFirstLoad;
 
 @end
 
@@ -330,7 +333,17 @@ static NSString *_cellIdentifier = @"collectionViewCell";
             
         }else{
             // 淡入淡出
-            imageView.alpha = 0.0;
+            ZLPhotoPickerBrowserPhoto *photo = weakSelf.photos[page];
+            if (photo.photoImage) {
+                imageView.image = photo.photoImage;
+            }else if (photo.thumbImage) {
+                imageView.image = photo.thumbImage;
+            }
+            
+            imageView.frame = [ZLPhotoRect setMaxMinZoomScalesForCurrentBoundWithImageView:imageView];
+            
+            mainView.hidden = NO;
+            weakSelf.view.hidden = YES;
         }
         
         if (weakSelf.navigationHeight) {
@@ -339,23 +352,28 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         
         [UIView animateWithDuration:0.35 animations:^{
             if (weakSelf.status == UIViewAnimationAnimationStatusFade){
-                mainBgView.alpha = 0.0;
-                mainView.alpha = 0.0;
+                mainView.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
+                mainBgView.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
+                imageView.alpha = 0.0;
             }else if(weakSelf.status == UIViewAnimationAnimationStatusZoom){
-                weakSelf.view.alpha = 0.0;
                 mainView.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
                 mainBgView.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
                 imageView.frame = originalFrame;
             }
         } completion:^(BOOL finished) {
+            weakSelf.view.hidden = NO;
+            imageView.alpha = 1.0;
             [mainView removeFromSuperview];
-            [imageView removeFromSuperview];
+            [mainBgView removeFromSuperview];
+            
+            [[NSNotificationCenter defaultCenter] removeObserver:weakSelf];
+            [weakSelf dismissViewControllerAnimated:NO completion:nil];
         }];
     };
     
-    [self reloadData];
+    [weakSelf reloadData];
     if (imageView.image == nil) {
-        self.status = UIViewAnimationAnimationStatusFade;
+        weakSelf.status = UIViewAnimationAnimationStatusFade;
         
         [UIView setAnimationsEnabled:YES];
         [UIView animateWithDuration:0.35 animations:^{
@@ -398,7 +416,10 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
-    [self setupReload];
+    if (!self.isNotFirstLoad) {
+        [self setupReload];
+        self.isNotFirstLoad = YES;
+    }
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
 }
 
@@ -552,9 +573,60 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         
         [scrollBoxView addSubview:scrollView];
         scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+        
+        if (photo.isVideo) {
+            scrollView.scrollEnabled = NO;
+            UIButton *videoBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+            [videoBtn setImage:[UIImage ml_imageFromBundleNamed:@"video-play"] forState:UIControlStateNormal];
+            videoBtn.frame = CGRectMake(0, 0, 150, 150);
+            videoBtn.center = CGPointMake(scrollBoxView.zl_width * 0.5, scrollBoxView.zl_height * 0.5);
+            videoBtn.tag = indexPath.row;
+            videoBtn.imageView.contentMode = UIViewContentModeCenter;
+            [videoBtn addTarget:self action:@selector(playerVideo:) forControlEvents:UIControlEventTouchUpInside];
+            [scrollBoxView addSubview:videoBtn];
+        }else{
+            scrollView.scrollEnabled = YES;
+        }
     }
     
     return cell;
+}
+
+- (void)playerVideo:(UIButton *)btn{
+    
+    
+#if TARGET_IPHONE_SIMULATOR
+    [[[UIAlertView alloc] initWithTitle:@"提示" message:@"请在真机下测试视频" delegate:nil cancelButtonTitle:@"好的" otherButtonTitles:nil, nil] show];
+#elif TARGET_OS_IPHONE
+    ZLPhotoPickerBrowserPhoto *photo = self.photos[btn.tag];
+    if ([photo isKindOfClass:[ZLPhotoPickerBrowserPhoto class]]){
+        ZLPhotoAssets *asset = photo.asset;
+        // 设置视频播放器
+        MPMoviePlayerViewController *moviePlayer = [[MPMoviePlayerViewController alloc] initWithContentURL:asset.asset.defaultRepresentation.url];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playVideoFinished:) name:MPMoviePlayerPlaybackDidFinishNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playVideoFinished:) name:MPMoviePlayerWillExitFullscreenNotification object:nil];
+
+        [moviePlayer.moviePlayer prepareToPlay];
+        [self presentMoviePlayerViewControllerAnimated:moviePlayer];
+    }
+#endif
+}
+
+- (void)playVideoFinished:(NSNotification *)noti{
+    MPMoviePlayerController *player = noti.object;
+    [player stop];
+    
+    // 取消监听
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerPlaybackDidFinishNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerWillExitFullscreenNotification object:nil];
+
+    [self dismissMoviePlayerViewControllerAnimated];
+//    [UIView animateWithDuration:0.25 animations:^{
+//        player.view.alpha = 0.0;
+//    } completion:^(BOOL finished) {
+//        [player.view removeFromSuperview];
+//    }];
 }
 
 - (NSUInteger)getRealPhotosCount{
