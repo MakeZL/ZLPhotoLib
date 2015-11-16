@@ -10,7 +10,7 @@
 #import "ZLPhoto.h"
 #import "Example1TableViewCell.h"
 #import <MediaPlayer/MediaPlayer.h>
-#import <SDWebImage/UIImageView+WebCache.h>
+#import "UIImageView+WebCache.h"
 
 @interface Example5ViewController () <ZLPhotoPickerViewControllerDelegate,UITableViewDataSource,UITableViewDelegate>
 
