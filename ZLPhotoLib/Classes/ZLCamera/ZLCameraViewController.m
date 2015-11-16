@@ -10,6 +10,7 @@
 #import <ImageIO/ImageIO.h>
 #import <objc/message.h>
 #import "ZLCameraViewController.h"
+#import <CoreMotion/CoreMotion.h>
 #import "ZLCameraImageView.h"
 #import "ZLCameraView.h"
 #import "ZLPhoto.h"
@@ -40,6 +41,9 @@ static CGFloat BOTTOM_HEIGHT = 60;
 // Datas
 @property (strong, nonatomic) NSMutableArray *images;
 @property (strong, nonatomic) NSMutableDictionary *dictM;
+
+// 陀螺仪,检测屏幕方向
+@property (nonatomic, strong) CMMotionManager * motionManager;
 
 // AVFoundation
 @property (strong, nonatomic) AVCaptureSession *session;
@@ -93,6 +97,51 @@ static CGFloat BOTTOM_HEIGHT = 60;
         self.collectionView = collectionView;
     }
     return _collectionView;
+}
+
+
+- (void)startMotionManager{
+    if (_motionManager == nil) {
+        _motionManager = [[CMMotionManager alloc] init];
+    }
+    _motionManager.deviceMotionUpdateInterval = 1/15.0;
+    if (_motionManager.deviceMotionAvailable) {
+        NSLog(@"Device Motion Available");
+        [_motionManager startDeviceMotionUpdatesToQueue:[NSOperationQueue currentQueue]
+                                            withHandler: ^(CMDeviceMotion *motion, NSError *error){
+                                                [self performSelectorOnMainThread:@selector(handleDeviceMotion:) withObject:motion waitUntilDone:YES];
+                                                
+                                            }];
+    } else {
+        NSLog(@"No device motion on device.");
+        [self setMotionManager:nil];
+    }
+}
+
+- (void)handleDeviceMotion:(CMDeviceMotion *)deviceMotion{
+    double x = deviceMotion.gravity.x;
+    double y = deviceMotion.gravity.y;
+    NSNumber *value = nil;
+    if (fabs(y) >= fabs(x))
+    {
+        if (y >= 0){
+            value = [NSNumber numberWithInt:UIDeviceOrientationPortraitUpsideDown];
+        }
+        else{
+            value = [NSNumber numberWithInt:UIDeviceOrientationPortrait];
+        }
+    }
+    else
+    {
+        if (x >= 0){
+            value = [NSNumber numberWithInt:UIDeviceOrientationLandscapeRight];
+        }
+        else{
+            value = [NSNumber numberWithInt:UIDeviceOrientationLandscapeLeft];
+        }
+    }
+    [[UIDevice currentDevice] setValue:value forKey:@"orientation"];
+    [self gettingOrientation];
 }
 
 - (void) initialize
@@ -152,6 +201,8 @@ static CGFloat BOTTOM_HEIGHT = 60;
     
     [self initialize];
     [self setup];
+    // 开启陀螺仪
+    [self startMotionManager];
     if (self.session) {
         [self.session startRunning];
     }
@@ -467,9 +518,15 @@ static CGFloat BOTTOM_HEIGHT = 60;
     
 }
 
+- (void)dealloc{
+    [_motionManager stopDeviceMotionUpdates];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (BOOL)shouldAutorotate{
     return NO;
 }
+
 #pragma mark - 屏幕
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations{
     return UIInterfaceOrientationMaskAll;

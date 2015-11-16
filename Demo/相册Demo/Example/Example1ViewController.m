@@ -12,8 +12,6 @@
 #import "UIImageView+WebCache.h"
 
 @interface Example1ViewController() <UITableViewDataSource,UITableViewDelegate,ZLPhotoPickerBrowserViewControllerDelegate>
-
-//@property (weak,nonatomic) UITableView *tableView;
 @property (nonatomic , strong) NSMutableArray *photos;
 
 @end
@@ -48,29 +46,6 @@
     return _photos;
 }
 
-#pragma mark Get View
-//- (UITableView *)tableView{
-//    if (!_tableView) {
-//        UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
-//        tableView.backgroundColor = [UIColor whiteColor];
-//        tableView.dataSource = self;
-//        tableView.delegate = self;
-//        [self.view addSubview:tableView];
-//        self.tableView = tableView;
-//        
-//        [tableView registerNib:[UINib nibWithNibName:@"Example1TableViewCell" bundle:nil] forCellReuseIdentifier:@"cell"];
-//
-//        tableView.translatesAutoresizingMaskIntoConstraints = NO;
-//        
-//        NSString *vfl = @"V:|-0-[tableView]-20-|";
-//        NSDictionary *views = NSDictionaryOfVariableBindings(tableView);
-//        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:vfl options:0 metrics:nil views:views]];
-//        NSString *vfl2 = @"H:|-0-[tableView]-0-|";
-//        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:vfl2 options:0 metrics:nil views:views]];
-//    }
-//    return _tableView;
-//}
-
 - (void)viewDidLoad{
     [super viewDidLoad];
     
@@ -79,8 +54,6 @@
     
     [self.tableView registerNib:[UINib nibWithNibName:@"Example1TableViewCell" bundle:nil] forCellReuseIdentifier:@"cell"];
     self.view.backgroundColor = [UIColor whiteColor];
-    // 初始化UI
-//    [self tableView];
 }
 
 #pragma mark - <UITableViewDataSource>
