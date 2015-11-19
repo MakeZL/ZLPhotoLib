@@ -130,6 +130,8 @@
     assetsVc.groupVc = self;
     if (!self.maxCount) {
         assetsVc.maxCount = KPhotoShowMaxCount;
+    }else{
+        assetsVc.maxCount = self.maxCount;
     }
     [self.navigationController pushViewController:assetsVc animated:NO];
 }
@@ -146,6 +148,7 @@
     ZLPhotoPickerAssetsViewController *assetsVc = [[ZLPhotoPickerAssetsViewController alloc] init];
     assetsVc.selectPickerAssets = self.selectAsstes;
     assetsVc.groupVc = self;
+    assetsVc.maxCount = self.maxCount;
     assetsVc.assetsGroup = group;
     assetsVc.topShowPhotoPicker = self.topShowPhotoPicker;
     [self.navigationController pushViewController:assetsVc animated:YES];
