@@ -7,6 +7,7 @@
 //
 
 #import "ZLPhotoPickerViewController.h"
+#import "ZLNavigationController.h"
 #import "ZLPhoto.h"
 
 @interface ZLPhotoPickerViewController ()
@@ -29,7 +30,7 @@
 #pragma mark - init Action
 - (void) createNavigationController{
     ZLPhotoPickerGroupViewController *groupVc = [[ZLPhotoPickerGroupViewController alloc] init];
-    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:groupVc];
+    ZLNavigationController *nav = [[ZLNavigationController alloc] initWithRootViewController:groupVc];
     nav.view.frame = self.view.bounds;
     [self addChildViewController:nav];
     [self.view addSubview:nav.view];
