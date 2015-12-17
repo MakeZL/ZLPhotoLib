@@ -501,14 +501,8 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     }
     
     [self setPageLabelPage:self.currentPage];
-    //    [self setPageControlPage:self.currentPage];
     if (self.currentPage >= 0) {
         self.collectionView.contentOffset = CGPointMake(self.currentPage * ([UIScreen mainScreen].bounds.size.width + ZLPickerColletionViewPadding), self.collectionView.contentOffset.y);
-        //        if (self.currentPage == self.photos.count - 1 && self.photos.count > 1) {
-        //            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(00.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        //                self.collectionView.contentOffset = CGPointMake(self.currentPage * self.collectionView.zl_width - ZLPickerColletionViewPadding, self.collectionView.contentOffset.y);
-        //            });
-        //        }
     }
 }
 
@@ -531,10 +525,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         cell.hidden = NO;
     }
     if (self.photos.count) {
-        //        cell.backgroundColor = [UIColor clearColor];
-        
         ZLPhotoPickerBrowserPhoto *photo = nil;
-        
         if ([self isDataSourceElsePhotos]) {
             photo = [self.dataSource photoBrowser:self photoAtIndexPath:[NSIndexPath indexPathForItem:indexPath.item inSection:self.currentIndexPath.section]];
         }else{
@@ -622,11 +613,6 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     [[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerWillExitFullscreenNotification object:nil];
 
     [self dismissMoviePlayerViewControllerAnimated];
-//    [UIView animateWithDuration:0.25 animations:^{
-//        player.view.alpha = 0.0;
-//    } completion:^(BOOL finished) {
-//        [player.view removeFromSuperview];
-//    }];
 }
 
 - (NSUInteger)getRealPhotosCount{
