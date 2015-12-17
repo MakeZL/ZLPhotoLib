@@ -10,7 +10,6 @@
 #import "ZLPhotoPickerBrowserViewController.h"
 #import "UIImage+ZLPhotoLib.h"
 #import "ZLPhotoRect.h"
-#import <MediaPlayer/MediaPlayer.h>
 
 static NSString *_cellIdentifier = @"collectionViewCell";
 
@@ -37,8 +36,6 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 @property (assign,nonatomic) BOOL isNowRotation;
 // 是否是Push模式
 @property (assign,nonatomic) BOOL isPush;
-// 是否是第一次加载
-@property (assign,nonatomic) BOOL isNotFirstLoad;
 
 @end
 
@@ -180,9 +177,6 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 #pragma mark - Life cycle
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-    if (self.photos.count == 0) {
-        NSAssert(self.dataSource, @"你没成为数据源代理");
-    }
     if (!self.isPush) {
         
     }else{
@@ -356,6 +350,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
                 mainBgView.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
                 imageView.alpha = 0.0;
             }else if(weakSelf.status == UIViewAnimationAnimationStatusZoom){
+                weakSelf.collectionView.hidden = YES;
                 mainView.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
                 mainBgView.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
                 imageView.frame = originalFrame;
@@ -416,10 +411,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
-    if (!self.isNotFirstLoad) {
-        [self setupReload];
-        self.isNotFirstLoad = YES;
-    }
+    [self setupReload];
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
 }
 
@@ -449,7 +441,9 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         };
     }else{
         // 初始化动画
-        [self showToView];
+        if (self.photos.count){
+            [self showToView];
+        }
     }
 }
 
@@ -525,7 +519,10 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         cell.hidden = NO;
     }
     if (self.photos.count) {
+        //        cell.backgroundColor = [UIColor clearColor];
+        
         ZLPhotoPickerBrowserPhoto *photo = nil;
+        
         if ([self isDataSourceElsePhotos]) {
             photo = [self.dataSource photoBrowser:self photoAtIndexPath:[NSIndexPath indexPathForItem:indexPath.item inSection:self.currentIndexPath.section]];
         }else{
@@ -564,55 +561,9 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         
         [scrollBoxView addSubview:scrollView];
         scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-        
-        if (photo.isVideo) {
-            scrollView.scrollEnabled = NO;
-            UIButton *videoBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-            [videoBtn setImage:[UIImage ml_imageFromBundleNamed:@"video-play"] forState:UIControlStateNormal];
-            videoBtn.frame = CGRectMake(0, 0, 150, 150);
-            videoBtn.center = CGPointMake(scrollBoxView.zl_width * 0.5, scrollBoxView.zl_height * 0.5);
-            videoBtn.tag = indexPath.row;
-            videoBtn.imageView.contentMode = UIViewContentModeCenter;
-            [videoBtn addTarget:self action:@selector(playerVideo:) forControlEvents:UIControlEventTouchUpInside];
-            [scrollBoxView addSubview:videoBtn];
-        }else{
-            scrollView.scrollEnabled = YES;
-        }
     }
     
     return cell;
-}
-
-- (void)playerVideo:(UIButton *)btn{
-    
-    
-#if TARGET_IPHONE_SIMULATOR
-    [[[UIAlertView alloc] initWithTitle:@"提示" message:@"请在真机下测试视频" delegate:nil cancelButtonTitle:@"好的" otherButtonTitles:nil, nil] show];
-#elif TARGET_OS_IPHONE
-    ZLPhotoPickerBrowserPhoto *photo = self.photos[btn.tag];
-    if ([photo isKindOfClass:[ZLPhotoPickerBrowserPhoto class]]){
-        ZLPhotoAssets *asset = photo.asset;
-        // 设置视频播放器
-        MPMoviePlayerViewController *moviePlayer = [[MPMoviePlayerViewController alloc] initWithContentURL:asset.asset.defaultRepresentation.url];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playVideoFinished:) name:MPMoviePlayerPlaybackDidFinishNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playVideoFinished:) name:MPMoviePlayerWillExitFullscreenNotification object:nil];
-
-        [moviePlayer.moviePlayer prepareToPlay];
-        [self presentMoviePlayerViewControllerAnimated:moviePlayer];
-    }
-#endif
-}
-
-- (void)playVideoFinished:(NSNotification *)noti{
-    MPMoviePlayerController *player = noti.object;
-    [player stop];
-    
-    // 取消监听
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerPlaybackDidFinishNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerWillExitFullscreenNotification object:nil];
-
-    [self dismissMoviePlayerViewControllerAnimated];
 }
 
 - (NSUInteger)getRealPhotosCount{
@@ -658,6 +609,12 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 
 #pragma mark - 展示控制器
 - (void)showPickerVc:(UIViewController *)vc{
+    // 当没有数据的情况下
+    if (self.photos.count == 0 || self.photos.count <= self.currentIndexPath.row) {
+        NSLog(@"ZLPhotoLib提示: 您没有传photos数组");
+        return;
+    }
+    
     __weak typeof(vc)weakVc = vc;
     if (weakVc != nil) {
         if (([vc isKindOfClass:[UITableViewController class]] || [vc isKindOfClass:[UICollectionView class]]) && weakVc.navigationController != nil) {
