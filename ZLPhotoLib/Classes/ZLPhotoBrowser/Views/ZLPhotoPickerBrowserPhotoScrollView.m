@@ -147,11 +147,11 @@
             
             _photoImageView.contentMode = UIViewContentModeScaleAspectFit;
             _photoImageView.frame = [ZLPhotoRect setMaxMinZoomScalesForCurrentBoundWithImageView:_photoImageView];
-            
+
             if (_photoImageView.image == nil) {
                 [self setProgress:0.01];
             }
-
+            
             // 网络URL
             [_photoImageView sd_setImageWithURL:photo.photoURL placeholderImage:thumbImage options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize) {
                 [self setProgress:(double)receivedSize / expectedSize];
@@ -159,7 +159,7 @@
                 if (image) {
                     [self setProgress:1.0];
                 }
-                self.isLoadingDone = YES;
+                weakSelf.isLoadingDone = YES;
                 if (image) {
                     _photoImageView.image = image;
                     [weakSelf displayImage];
@@ -170,8 +170,11 @@
             
         }
         
-    }  else if (photo.photoImage){
+    }  else if (photo.photoImage || photo.thumbImage){
         _photoImageView.image = photo.photoImage;
+        if (!photo.photoImage) {
+            _photoImageView.image = photo.thumbImage;
+        }
         self.isLoadingDone = YES;
         [self displayImage];
     }
