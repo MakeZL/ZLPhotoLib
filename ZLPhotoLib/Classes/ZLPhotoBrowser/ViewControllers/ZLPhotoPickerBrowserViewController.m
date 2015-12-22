@@ -210,7 +210,10 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     if ([self isDataSourceElsePhotos]) {
         toImageView = (UIImageView *)[[self.dataSource photoBrowser:self photoAtIndexPath:self.currentIndexPath] toView];
     }else{
-        toImageView = (UIImageView *)[self.photos[self.currentIndexPath.row] toView];
+        if (self.currentIndexPath.row > self.photos.count) {
+            toImageView = (UIImageView *)[self.photos[self.currentIndexPath.row] toView];
+        }
+        //        toImageView = (UIImageView *)[self.photos[self.currentIndexPath.row] toView];
     }
     
     if (![toImageView isKindOfClass:[UIImageView class]] && self.status != UIViewAnimationAnimationStatusFade) {
