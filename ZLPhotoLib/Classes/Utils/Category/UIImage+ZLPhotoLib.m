@@ -10,7 +10,7 @@
 
 @implementation UIImage (ZLPhotoLib)
 + (instancetype)ml_imageFromBundleNamed:(NSString *)name{
-    return [UIImage imageNamed:[@"ZLPhotoLib.bundle" stringByAppendingPathComponent:name]];
+    return [UIImage imageNamed:[@"ZLPhotoLib.bundle" stringByAppendingPathComponent:[NSString stringWithFormat:@"zl_%@",name]]];
 }
 
 //等比例缩放
