@@ -210,15 +210,13 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     if ([self isDataSourceElsePhotos]) {
         toImageView = (UIImageView *)[[self.dataSource photoBrowser:self photoAtIndexPath:self.currentIndexPath] toView];
     }else{
-        if (self.currentIndexPath.row > self.photos.count) {
+        if (self.currentIndexPath.row < self.photos.count) {
             toImageView = (UIImageView *)[self.photos[self.currentIndexPath.row] toView];
         }
-        //        toImageView = (UIImageView *)[self.photos[self.currentIndexPath.row] toView];
     }
     
     if (![toImageView isKindOfClass:[UIImageView class]] && self.status != UIViewAnimationAnimationStatusFade) {
-        assert(@"error: need toView `UIImageView` class.");
-        return;
+        self.status = UIViewAnimationAnimationStatusFade;
     }
     
     __block UIImageView *imageView = [[UIImageView alloc] init];
@@ -501,10 +499,6 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     if (self.currentPage >= 0) {
         self.collectionView.contentOffset = CGPointMake(self.currentPage * ([UIScreen mainScreen].bounds.size.width + ZLPickerColletionViewPadding), self.collectionView.contentOffset.y);
     }
-}
-
-- (UIColor *)randomColor{
-    return [UIColor colorWithRed:arc4random_uniform(256)/255.0 green:arc4random_uniform(256)/255.0 blue:arc4random_uniform(256)/255.0 alpha:1.0];
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
