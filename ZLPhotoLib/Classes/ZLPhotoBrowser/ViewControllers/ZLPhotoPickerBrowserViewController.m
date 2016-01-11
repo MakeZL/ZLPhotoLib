@@ -168,7 +168,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         NSInteger rows = [self.dataSource photoBrowser:self numberOfItemsInSection:section];
         photos = [NSMutableArray arrayWithCapacity:rows];
         for (NSInteger i = 0; i < rows; i++) {
-            [photos addObject:[self.dataSource photoBrowser:self photoAtIndexPath:[NSIndexPath indexPathForItem:i inSection:section]]];
+            [photos addObject:[self.dataSource photoBrowser:self photoAtIndexPath:[NSIndexPath indexPathForItem:i inSection:section]].mutableCopy];
         }
     }
     return photos;
@@ -658,12 +658,12 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if (buttonIndex == 1) {
         NSInteger page = self.currentPage;
+        NSMutableArray *photos = [NSMutableArray arrayWithArray:self.photos];
         if ([self.delegate respondsToSelector:@selector(photoBrowser:removePhotoAtIndexPath:)]) {
             [self.delegate photoBrowser:self removePhotoAtIndexPath:[NSIndexPath indexPathForItem:page inSection:self.currentIndexPath.section]];
         }
         
         if (self.photos.count > self.currentPage || self.dataSource != nil) {
-            NSMutableArray *photos = [NSMutableArray arrayWithArray:self.photos];
             [photos removeObjectAtIndex:self.currentPage];
             self.photos = photos;
         }
@@ -696,6 +696,8 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 
 #pragma mark - Rotation
 - (void)changeRotationDirection:(NSNotification *)noti{
+    UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout *)[self.collectionView collectionViewLayout];
+    [layout invalidateLayout];
     
     UIDevice *obj = (UIDevice *)noti.object;
     if ([obj isKindOfClass:[UIDevice class]] && (UIDeviceOrientation)[obj orientation] == self.lastDeviceOrientation) {
@@ -717,6 +719,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     
     self.collectionView.alpha = 0.0;
     [self.collectionView setCollectionViewLayout:flowLayout animated:YES];
+
     self.isNowRotation = YES;
     
     self.collectionView.contentOffset = CGPointMake(self.currentPage * self.collectionView.zl_width, self.collectionView.contentOffset.y);

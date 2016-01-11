@@ -161,6 +161,7 @@
                 }
                 weakSelf.isLoadingDone = YES;
                 if (image) {
+                    photo.photoImage = image;
                     _photoImageView.image = image;
                     [weakSelf displayImage];
                 }else{
@@ -274,16 +275,18 @@
     CGFloat maxScale = MAX(xScale, yScale);
     // use minimum of these to allow the image to become fully visible
     // Image is smaller than screen so no zooming!
-    if (xScale >= 1 && yScale >= 1) {
+    if (xScale > 1 && yScale > 1) {
         minScale = MIN(xScale, yScale);
-    }
-    
-    if (xScale < 1 && yScale < 1) {
+    }else if (xScale < 1 && yScale < 1) {
         self.maximumZoomScale = maxScale;
         self.minimumZoomScale = minScale;
     }else if (xScale >= yScale * 2) {
         // Initial zoom
         self.maximumZoomScale = 1.0;
+        self.minimumZoomScale = minScale;
+    }else if (xScale == yScale) {
+        // Initial zoom
+        self.maximumZoomScale = maxScale + 0.3;
         self.minimumZoomScale = minScale;
     }else {
         self.maximumZoomScale = yScale;
