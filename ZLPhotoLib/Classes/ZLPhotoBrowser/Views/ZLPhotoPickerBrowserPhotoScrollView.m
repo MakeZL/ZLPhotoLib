@@ -147,11 +147,11 @@
             
             _photoImageView.contentMode = UIViewContentModeScaleAspectFit;
             _photoImageView.frame = [ZLPhotoRect setMaxMinZoomScalesForCurrentBoundWithImageView:_photoImageView];
-
+            
             if (_photoImageView.image == nil) {
                 [self setProgress:0.01];
             }
-            
+
             // 网络URL
             [_photoImageView sd_setImageWithURL:photo.photoURL placeholderImage:thumbImage options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize) {
                 [self setProgress:(double)receivedSize / expectedSize];
@@ -159,7 +159,7 @@
                 if (image) {
                     [self setProgress:1.0];
                 }
-                weakSelf.isLoadingDone = YES;
+                self.isLoadingDone = YES;
                 if (image) {
                     photo.photoImage = image;
                     _photoImageView.image = image;
@@ -171,11 +171,13 @@
             
         }
         
-    }  else if (photo.photoImage || photo.thumbImage){
+    } else if (photo.photoImage){
         _photoImageView.image = photo.photoImage;
-        if (!photo.photoImage) {
-            _photoImageView.image = photo.thumbImage;
-        }
+        self.isLoadingDone = YES;
+        [self displayImage];
+    } else if (photo.thumbImage){
+        photo.photoImage = photo.thumbImage;
+        _photoImageView.image = photo.thumbImage;
         self.isLoadingDone = YES;
         [self displayImage];
     }
@@ -260,6 +262,7 @@
     // Bail if no image
     if (_photoImageView.image == nil) return;
     
+//    _photoImageView.frame = [ZLPhotoRect setMaxMinZoomScalesForCurrentBoundWithImageView:_photoImageView];
     // Reset position
     _photoImageView.frame = CGRectMake(0, 0, _photoImageView.frame.size.width, _photoImageView.frame.size.height);
     
@@ -275,19 +278,14 @@
     CGFloat maxScale = MAX(xScale, yScale);
     // use minimum of these to allow the image to become fully visible
     // Image is smaller than screen so no zooming!
-    if (xScale > 1 && yScale > 1) {
+    if (xScale >= 1 && yScale >= 1) {
         minScale = MIN(xScale, yScale);
-    }else if (xScale < 1 && yScale < 1) {
-        self.maximumZoomScale = maxScale;
-        self.minimumZoomScale = minScale;
-    }else if (xScale >= yScale * 2) {
+    }
+    
+    if (xScale >= yScale * 2) {
         // Initial zoom
         self.maximumZoomScale = 1.0;
-        self.minimumZoomScale = minScale;
-    }else if (xScale == yScale) {
-        // Initial zoom
-        self.maximumZoomScale = maxScale + 0.3;
-        self.minimumZoomScale = minScale;
+        self.minimumZoomScale = maxScale;
     }else {
         self.maximumZoomScale = yScale;
         self.minimumZoomScale = xScale;
@@ -329,7 +327,7 @@
     } else {
         frameToCenter.origin.y = 0;
     }
-
+    
     // Center
     if (!CGRectEqualToRect(_photoImageView.frame, frameToCenter))
         _photoImageView.frame = frameToCenter;
