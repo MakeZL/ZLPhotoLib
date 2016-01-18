@@ -27,7 +27,7 @@
         
         // 测试数据啦
         ZLPhotoPickerBrowserPhoto *photo1 = [[ZLPhotoPickerBrowserPhoto alloc] init];
-        photo1.photoURL = [NSURL URLWithString:@"http://imgsrc.baidu.com/forum/w%3D580/sign=445a261ef01fbe091c5ec31c5b610c30/23064a90f603738d96e6154ab11bb051f819ec35.jpg"];
+        photo1.photoURL = [NSURL URLWithString:@"http://design.zaowu.net.cn/1012282/20160116/124ca58fdef32126cac5d64a8698c18355f81492"];
         [_photos addObject:photo1];
         
         ZLPhotoPickerBrowserPhoto *photo2 = [[ZLPhotoPickerBrowserPhoto alloc] init];

@@ -21,8 +21,6 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 @property (weak,nonatomic) UIButton         *deleleBtn;
 @property (weak,nonatomic) UIButton         *backBtn;
 @property (weak,nonatomic) UICollectionView *collectionView;
-// 需要增加的导航高度
-@property (assign,nonatomic) CGFloat navigationHeight;
 
 // 上一次屏幕旋转的位置
 @property (assign,nonatomic) UIDeviceOrientation lastDeviceOrientation;
@@ -331,8 +329,8 @@ static NSString *_cellIdentifier = @"collectionViewCell";
             }
             
             imageView.frame = [ZLPhotoRect setMaxMinZoomScalesForCurrentBoundWithImageView:imageView];
-            
-            mainView.hidden = NO;
+            imageView.alpha = 1.0;
+            [imageView superview].alpha = 1.0;
             weakSelf.view.hidden = YES;
         }
         
@@ -344,6 +342,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
             if (weakSelf.status == UIViewAnimationAnimationStatusFade){
                 mainView.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
                 mainBgView.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
+                
                 imageView.alpha = 0.0;
             }else if(weakSelf.status == UIViewAnimationAnimationStatusZoom){
                 weakSelf.collectionView.hidden = YES;
@@ -718,7 +717,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     
     self.collectionView.alpha = 0.0;
     [self.collectionView setCollectionViewLayout:flowLayout animated:YES];
-
+    
     self.isNowRotation = YES;
     
     self.collectionView.contentOffset = CGPointMake(self.currentPage * self.collectionView.zl_width, self.collectionView.contentOffset.y);
