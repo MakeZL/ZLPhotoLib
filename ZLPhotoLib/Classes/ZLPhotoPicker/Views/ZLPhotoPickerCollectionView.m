@@ -49,9 +49,10 @@
         for (ZLPhotoAssets *asset in self.selectAssets) {
             for (ZLPhotoAssets *asset2 in self.dataArray) {
                 
-                if ([asset isKindOfClass:[UIImage class]] || [asset2 isKindOfClass:[UIImage class]]) {
+                if (![asset isKindOfClass:[ZLPhotoAssets class]] || ![asset2 isKindOfClass:[ZLPhotoAssets class]]) {
                     continue;
                 }
+                
                 if ([asset.asset.defaultRepresentation.url isEqual:asset2.asset.defaultRepresentation.url]) {
                     [selectAssets addObject:asset2];
                     break;

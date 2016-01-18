@@ -608,7 +608,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     
     __weak typeof(vc)weakVc = vc;
     if (weakVc != nil) {
-        if (([vc isKindOfClass:[UITableViewController class]] || [vc isKindOfClass:[UICollectionView class]]) && weakVc.navigationController != nil) {
+        if (([vc isKindOfClass:[UITableViewController class]] || [vc isKindOfClass:[UICollectionView class]]) && weakVc.navigationController != nil && self.navigationHeight == 0) {
             self.navigationHeight = CGRectGetMaxY(weakVc.navigationController.navigationBar.frame);
         }
         [weakVc presentViewController:self animated:NO completion:nil];
@@ -619,7 +619,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     self.isPush = YES;
     __weak typeof(vc)weakVc = vc;
     if (weakVc != nil) {
-        if (([vc isKindOfClass:[UITableViewController class]] || [vc isKindOfClass:[UICollectionView class]]) && weakVc.navigationController != nil) {
+        if (([vc isKindOfClass:[UITableViewController class]] || [vc isKindOfClass:[UICollectionView class]]) && weakVc.navigationController != nil && self.navigationHeight == 0) {
             self.navigationHeight = CGRectGetMaxY(weakVc.navigationController.navigationBar.frame);
         }
         [weakVc.navigationController pushViewController:self animated:YES];

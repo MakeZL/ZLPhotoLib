@@ -234,6 +234,7 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
 
 - (void)pickerCollectionViewDidCameraSelect:(ZLPhotoPickerCollectionView *)pickerCollectionView{
     ZLCameraViewController *cameraVc = [[ZLCameraViewController alloc] init];
+    cameraVc.maxCount = self.maxCount - self.selectAssets.count;
     __weak typeof(self)weakSelf = self;
     __weak typeof(cameraVc)weakCameraVc = cameraVc;
     cameraVc.callback = ^(NSArray *camera){
@@ -242,13 +243,13 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
         [weakSelf.takePhotoImages addObjectsFromArray:camera];
         weakSelf.collectionView.selectAssets = weakSelf.selectAssets;
         
-        NSInteger count = self.selectAssets.count;
+        NSInteger count = weakSelf.selectAssets.count;
         weakSelf.makeView.hidden = !count;
         weakSelf.makeView.text = [NSString stringWithFormat:@"%ld",(NSInteger)count];
         weakSelf.doneBtn.enabled = (count > 0);
         [weakCameraVc dismissViewControllerAnimated:YES completion:nil];
     };
-    [cameraVc showPickerVc:self];
+    [cameraVc showPickerVc:weakSelf];
 //    UIImagePickerController *ctrl = [[UIImagePickerController alloc] init];
 //    ctrl.delegate = self;
 //    ctrl.sourceType = UIImagePickerControllerSourceTypeCamera;
