@@ -22,7 +22,7 @@ static CGFloat TOOLBAR_HEIGHT = 44;
 static NSString *const _cellIdentifier = @"cell";
 static NSString *const _footerIdentifier = @"FooterView";
 static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
-@interface ZLPhotoPickerAssetsViewController () <ZLPhotoPickerCollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,ZLPhotoPickerBrowserViewControllerDataSource,ZLPhotoPickerBrowserViewControllerDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate>
+@interface ZLPhotoPickerAssetsViewController () <ZLPhotoPickerCollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,ZLPhotoPickerBrowserViewControllerDataSource,ZLPhotoPickerBrowserViewControllerDelegate>
 
 // View
 // 相片View
@@ -233,51 +233,26 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
 }
 
 - (void)pickerCollectionViewDidCameraSelect:(ZLPhotoPickerCollectionView *)pickerCollectionView{
-    ZLCameraViewController *cameraVc = [[ZLCameraViewController alloc] init];
-    cameraVc.maxCount = self.maxCount - self.selectAssets.count;
-    __weak typeof(self)weakSelf = self;
-    __weak typeof(cameraVc)weakCameraVc = cameraVc;
-    cameraVc.callback = ^(NSArray *camera){
-        [weakSelf.selectAssets addObjectsFromArray:camera];
-        [weakSelf.toolBarThumbCollectionView reloadData];
-        [weakSelf.takePhotoImages addObjectsFromArray:camera];
-        weakSelf.collectionView.selectAssets = weakSelf.selectAssets;
-        
-        NSInteger count = weakSelf.selectAssets.count;
-        weakSelf.makeView.hidden = !count;
-        weakSelf.makeView.text = [NSString stringWithFormat:@"%ld",(NSInteger)count];
-        weakSelf.doneBtn.enabled = (count > 0);
-        [weakCameraVc dismissViewControllerAnimated:YES completion:nil];
-    };
-    [cameraVc showPickerVc:weakSelf];
-//    UIImagePickerController *ctrl = [[UIImagePickerController alloc] init];
-//    ctrl.delegate = self;
-//    ctrl.sourceType = UIImagePickerControllerSourceTypeCamera;
-//    [self presentViewController:ctrl animated:YES completion:nil];
-    
-}
-
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
     
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         // 处理
-        UIImage *image = info[@"UIImagePickerControllerOriginalImage"];
-        
-        [self.selectAssets addObject:image];
-        [self.toolBarThumbCollectionView reloadData];
-        [self.takePhotoImages addObject:image];
-        self.collectionView.selectAssets = self.selectAssets;
-        
-        dispatch_async(dispatch_get_global_queue(0, 0), ^{
-            [[NSNotificationCenter defaultCenter] postNotificationName:PICKER_TAKE_PHOTO object:nil userInfo:@{@"image":image}];
-        });
-        
-        NSInteger count = self.selectAssets.count;
-        self.makeView.hidden = !count;
-        self.makeView.text = [NSString stringWithFormat:@"%ld",(NSInteger)count];
-        self.doneBtn.enabled = (count > 0);
-        
-        [picker dismissViewControllerAnimated:YES completion:nil];
+        ZLCameraViewController *cameraVc = [[ZLCameraViewController alloc] init];
+        cameraVc.maxCount = self.maxCount - self.selectAssets.count;
+        __weak typeof(self)weakSelf = self;
+        __weak typeof(cameraVc)weakCameraVc = cameraVc;
+        cameraVc.callback = ^(NSArray *camera){
+            [weakSelf.selectAssets addObjectsFromArray:camera];
+            [weakSelf.toolBarThumbCollectionView reloadData];
+            [weakSelf.takePhotoImages addObjectsFromArray:camera];
+            weakSelf.collectionView.selectAssets = [NSMutableArray arrayWithArray:weakSelf.selectAssets];
+            
+            NSInteger count = weakSelf.selectAssets.count;
+            weakSelf.makeView.hidden = !count;
+            weakSelf.makeView.text = [NSString stringWithFormat:@"%ld",(NSInteger)count];
+            weakSelf.doneBtn.enabled = (count > 0);
+            [weakCameraVc dismissViewControllerAnimated:YES completion:nil];
+        };
+        [cameraVc showPickerVc:weakSelf];
     }else{
         NSLog(@"请在真机使用!");
     }
