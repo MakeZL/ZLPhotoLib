@@ -287,9 +287,10 @@
         self.maximumZoomScale = 1.0;
         self.minimumZoomScale = maxScale;
     }else {
-        self.maximumZoomScale = yScale;
+        self.maximumZoomScale = yScale * 1.2;
         self.minimumZoomScale = xScale;
     }
+    
     self.zoomScale = self.minimumZoomScale;
     
     // If we're zooming to fill then centralise
