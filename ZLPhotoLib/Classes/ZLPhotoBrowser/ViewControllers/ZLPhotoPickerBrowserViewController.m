@@ -22,6 +22,8 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 @property (weak,nonatomic) UIButton         *backBtn;
 @property (weak,nonatomic) UICollectionView *collectionView;
 
+@property (weak,nonatomic) UIScrollView *userScrollView;
+
 // 上一次屏幕旋转的位置
 @property (assign,nonatomic) UIDeviceOrientation lastDeviceOrientation;
 
@@ -160,7 +162,12 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 
 #pragma mark getPhotos
 - (NSArray *)getPhotos{
-    NSMutableArray *photos = [NSMutableArray arrayWithArray:_photos];
+    NSMutableArray *photos = [NSMutableArray arrayWithCapacity:_photos.count];
+    
+    for (ZLPhotoPickerBrowserPhoto *photo in _photos) {
+        photo.toView = [[photo toView] copy];
+        [photos addObject:photo];
+    }
     if ([self isDataSourceElsePhotos]) {
         NSInteger section = self.currentIndexPath.section;
         NSInteger rows = [self.dataSource photoBrowser:self numberOfItemsInSection:section];
@@ -257,6 +264,10 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         if (self.navigationHeight) {
             tempF.origin.y += self.navigationHeight;
         }
+        if (self.userScrollView && self.userScrollView.contentOffset.y >= 0) {
+            tempF.origin.y -= self.userScrollView.contentOffset.y + 64;
+        }
+        
         imageView.frame = tempF;
     }
     
@@ -315,6 +326,22 @@ static NSString *_cellIdentifier = @"collectionViewCell";
             }
             
             originalFrame = [toImageView2.superview convertRect:toImageView2.frame toView:[weakSelf getParsentView:toImageView2]];
+            if (self.userScrollView && self.userScrollView.contentOffset.y >= 0) {
+                weakSelf.status = UIViewAnimationAnimationStatusFade;
+                // 淡入淡出
+                ZLPhotoPickerBrowserPhoto *photo = weakSelf.photos[page];
+                if (photo.photoImage) {
+                    imageView.image = photo.photoImage;
+                }else if (photo.thumbImage) {
+                    imageView.image = photo.thumbImage;
+                }
+                
+                imageView.frame = [ZLPhotoRect setMaxMinZoomScalesForCurrentBoundWithImageView:imageView];
+                imageView.alpha = 1.0;
+                [imageView superview].alpha = 1.0;
+                weakSelf.view.hidden = YES;
+            }
+            
             if (CGRectIsEmpty(originalFrame)) {
                 originalFrame = tempFrame;
             }
@@ -444,6 +471,9 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 
 #pragma mark get Controller.view
 - (UIView *)getParsentView:(UIView *)view{
+    if ([view isKindOfClass:[UITableView class]] || [view isKindOfClass:[UICollectionView class]]) {
+        self.userScrollView = (UIScrollView *)view;
+    }
     if ([[view nextResponder] isKindOfClass:[UIViewController class]] || view == nil) {
         return view;
     }

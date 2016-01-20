@@ -40,7 +40,27 @@
         
         ZLPhotoPickerBrowserPhoto *photo4 = [[ZLPhotoPickerBrowserPhoto alloc] init];
         photo4.photoURL = [NSURL URLWithString:@"http://imgsrc.baidu.com/forum/pic/item/6c04738da9773912fcb7ae09fa198618377ae2c8.jpg"];
+        
+        ZLPhotoPickerBrowserPhoto *photo5 = [[ZLPhotoPickerBrowserPhoto alloc] init];
+        photo5.photoURL = [NSURL URLWithString:@"http://imgsrc.baidu.com/forum/pic/item/6c04738da9773912fcb7ae09fa198618377ae2c8.jpg"];
+        ZLPhotoPickerBrowserPhoto *photo6 = [[ZLPhotoPickerBrowserPhoto alloc] init];
+        photo6.photoURL = [NSURL URLWithString:@"http://imgsrc.baidu.com/forum/pic/item/6c04738da9773912fcb7ae09fa198618377ae2c8.jpg"];
+        ZLPhotoPickerBrowserPhoto *photo7 = [[ZLPhotoPickerBrowserPhoto alloc] init];
+        photo7.photoURL = [NSURL URLWithString:@"http://imgsrc.baidu.com/forum/pic/item/6c04738da9773912fcb7ae09fa198618377ae2c8.jpg"];
+        ZLPhotoPickerBrowserPhoto *photo8 = [[ZLPhotoPickerBrowserPhoto alloc] init];
+        photo8.photoURL = [NSURL URLWithString:@"http://imgsrc.baidu.com/forum/pic/item/6c04738da9773912fcb7ae09fa198618377ae2c8.jpg"];
+        ZLPhotoPickerBrowserPhoto *photo9 = [[ZLPhotoPickerBrowserPhoto alloc] init];
+        photo9.photoURL = [NSURL URLWithString:@"http://imgsrc.baidu.com/forum/pic/item/6c04738da9773912fcb7ae09fa198618377ae2c8.jpg"];
+        ZLPhotoPickerBrowserPhoto *photo10 = [[ZLPhotoPickerBrowserPhoto alloc] init];
+        photo10.photoURL = [NSURL URLWithString:@"http://imgsrc.baidu.com/forum/pic/item/6c04738da9773912fcb7ae09fa198618377ae2c8.jpg"];
+        
         [_photos addObject:photo4];
+        [_photos addObject:photo5];
+        [_photos addObject:photo6];
+        [_photos addObject:photo7];
+        [_photos addObject:photo8];
+        [_photos addObject:photo9];
+        [_photos addObject:photo10];
         
     }
     return _photos;
