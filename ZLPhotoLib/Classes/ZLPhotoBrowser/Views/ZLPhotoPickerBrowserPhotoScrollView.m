@@ -80,7 +80,7 @@
         if (!self.sheet) {
             self.sheet = [[UIActionSheet alloc] initWithTitle:@"提示" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"保存到相册" otherButtonTitles:nil, nil];
         }
-
+        
         [self.sheet showInView:self];
     }
 }
@@ -127,6 +127,13 @@
 - (void)setPhoto:(ZLPhotoPickerBrowserPhoto *)photo{
     _photo = photo;
     
+    if ([photo isKindOfClass:[UIImage class]]) {
+        _photoImageView.image = (UIImage *)photo;
+        self.isLoadingDone = YES;
+        [self displayImage];
+        return ;
+    }
+    
     __weak typeof(self) weakSelf = self;
     if (photo.photoURL.absoluteString.length) {
         // 本地相册
@@ -151,7 +158,21 @@
             if (_photoImageView.image == nil) {
                 [self setProgress:0.01];
             }
-
+            
+            //            [NSURLConnection sendAsynchronousRequest:[NSURLRequest requestWithURL:photo.photoURL] queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse * _Nullable response, NSData * _Nullable data, NSError * _Nullable connectionError) {
+            //                UIImage *image = [UIImage imageWithData:data];
+            //                if (image) {
+            //                    [self setProgress:1.0];
+            //                }
+            //                self.isLoadingDone = YES;
+            //                if (image) {
+            //                    photo.photoImage = image;
+            //                    _photoImageView.image = image;
+            //                    [weakSelf displayImage];
+            //                }else{
+            //                    [_photoImageView removeScaleBigTap];
+            //                }
+            //            }];
             // 网络URL
             [_photoImageView sd_setImageWithURL:photo.photoURL placeholderImage:thumbImage options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize) {
                 [self setProgress:(double)receivedSize / expectedSize];
@@ -244,7 +265,7 @@
         CGFloat boundsAR = boundsSize.width / boundsSize.height;
         CGFloat imageAR = imageSize.width / imageSize.height;
         CGFloat xScale = boundsSize.width / imageSize.width;
-
+        
         if (ABS(boundsAR - imageAR) < 0.17) {
             zoomScale = xScale;
         }
@@ -262,7 +283,7 @@
     // Bail if no image
     if (_photoImageView.image == nil) return;
     
-//    _photoImageView.frame = [ZLPhotoRect setMaxMinZoomScalesForCurrentBoundWithImageView:_photoImageView];
+    //    _photoImageView.frame = [ZLPhotoRect setMaxMinZoomScalesForCurrentBoundWithImageView:_photoImageView];
     // Reset position
     _photoImageView.frame = CGRectMake(0, 0, _photoImageView.frame.size.width, _photoImageView.frame.size.height);
     

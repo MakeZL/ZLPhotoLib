@@ -326,7 +326,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
             }
             
             originalFrame = [toImageView2.superview convertRect:toImageView2.frame toView:[weakSelf getParsentView:toImageView2]];
-            if (self.userScrollView && self.userScrollView.contentOffset.y >= 0) {
+            if (weakSelf.userScrollView && weakSelf.userScrollView.contentOffset.y >= 0) {
                 weakSelf.status = UIViewAnimationAnimationStatusFade;
                 // 淡入淡出
                 ZLPhotoPickerBrowserPhoto *photo = weakSelf.photos[page];

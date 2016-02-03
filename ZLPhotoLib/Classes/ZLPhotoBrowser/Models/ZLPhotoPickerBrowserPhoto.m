@@ -32,7 +32,11 @@
 
 - (UIImage *)photoImage{
     if (!_photoImage && self.asset) {
-        _photoImage = [self.asset originImage];
+        if ([self.asset isKindOfClass:[UIImage class]]) {
+            _photoImage = (UIImage *)self.asset;
+        }else if([self.asset isKindOfClass:[ZLPhotoAssets class]]){
+            _photoImage = [self.asset originImage];
+        }
     }
     return _photoImage;
 }
@@ -55,19 +59,6 @@
         }
     }
     return _thumbImage;
-}
-
-- (BOOL)isVideo{
-    if ([self.asset isKindOfClass:[ZLPhotoAssets class]]) {
-        if ([[self.asset.asset valueForProperty:ALAssetPropertyType] isEqual:ALAssetTypeVideo]) {
-            return YES;
-        }
-    }else if ([self.asset isKindOfClass:[ALAsset class]]) {
-        if ([[(ALAsset *)self.asset valueForProperty:ALAssetPropertyType] isEqual:ALAssetTypeVideo]) {
-            return YES;
-        }
-    }
-    return NO;
 }
 
 #pragma mark - 传入一个图片对象，可以是URL/UIImage/NSString，返回一个实例
