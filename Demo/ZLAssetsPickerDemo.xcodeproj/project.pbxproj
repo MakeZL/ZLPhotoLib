@@ -36,6 +36,7 @@
 		484015281B73574F00FBD485 /* ZLPhotoPickerGroupTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4840150D1B73574F00FBD485 /* ZLPhotoPickerGroupTableViewCell.m */; };
 		4840152A1B73574F00FBD485 /* ZLPhotoPickerImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 484015101B73574F00FBD485 /* ZLPhotoPickerImageView.m */; };
 		485F4E8C1A83182E00B6D448 /* Example3ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 485F4E8B1A83182E00B6D448 /* Example3ViewController.m */; };
+		4861264C1C62046300FF7F1D /* UIViewController+Alert.m in Sources */ = {isa = PBXBuildFile; fileRef = 4861264B1C62046300FF7F1D /* UIViewController+Alert.m */; };
 		489B32B21B8AB6750073DFB7 /* Example9ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 489B32B11B8AB6750073DFB7 /* Example9ViewController.m */; };
 		48B338A41AA469D800650D81 /* Example1TableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B338A31AA469D800650D81 /* Example1TableViewCell.m */; };
 		48B338A61AA469EB00650D81 /* Example1TableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48B338A51AA469EB00650D81 /* Example1TableViewCell.xib */; };
@@ -142,6 +143,8 @@
 		484015111B73574F00FBD485 /* ZLPhotoPickerCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLPhotoPickerCommon.h; sourceTree = "<group>"; };
 		485F4E8A1A83182E00B6D448 /* Example3ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Example3ViewController.h; sourceTree = "<group>"; };
 		485F4E8B1A83182E00B6D448 /* Example3ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Example3ViewController.m; sourceTree = "<group>"; };
+		4861264A1C62046300FF7F1D /* UIViewController+Alert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Alert.h"; sourceTree = "<group>"; };
+		4861264B1C62046300FF7F1D /* UIViewController+Alert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Alert.m"; sourceTree = "<group>"; };
 		489B32B01B8AB6750073DFB7 /* Example9ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Example9ViewController.h; sourceTree = "<group>"; };
 		489B32B11B8AB6750073DFB7 /* Example9ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Example9ViewController.m; sourceTree = "<group>"; };
 		48B338A21AA469D800650D81 /* Example1TableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Example1TableViewCell.h; sourceTree = "<group>"; };
@@ -390,6 +393,8 @@
 				484015041B73574F00FBD485 /* ZLPhotoPickerViewController.m */,
 				48FCA0931C05B69F00989DA7 /* ZLNavigationController.h */,
 				48FCA0941C05B69F00989DA7 /* ZLNavigationController.m */,
+				4861264A1C62046300FF7F1D /* UIViewController+Alert.h */,
+				4861264B1C62046300FF7F1D /* UIViewController+Alert.m */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -702,6 +707,7 @@
 				484015141B73574F00FBD485 /* UIView+ZLExtension.m in Sources */,
 				48FD83801BF98C5D0017FCAA /* DALabeledCircularProgressView.m in Sources */,
 				48FCA0951C05B69F00989DA7 /* ZLNavigationController.m in Sources */,
+				4861264C1C62046300FF7F1D /* UIViewController+Alert.m in Sources */,
 				484015281B73574F00FBD485 /* ZLPhotoPickerGroupTableViewCell.m in Sources */,
 				484015171B73574F00FBD485 /* ZLCameraView.m in Sources */,
 				48B86C461B16BD3D00FA272A /* Example8ViewController.m in Sources */,

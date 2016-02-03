@@ -29,5 +29,9 @@
  *  是否视频类型
  */
 @property (assign,nonatomic) BOOL isVideoType;
+/**
+ *  点击照片是否有动画
+ */
+@property (assign,nonatomic) BOOL isClickHaveAnimation;
 
 @end

@@ -96,6 +96,9 @@
         [self.tickImageView setImage:[UIImage ml_imageFromBundleNamed:@"icon_image_no"] forState:UIControlStateNormal];
     }
     
+    if (!self.isClickHaveAnimation) {
+        return;
+    }
     CAKeyframeAnimation *scaoleAnimation = [CAKeyframeAnimation animationWithKeyPath:@"transform.scale"];
     scaoleAnimation.duration = 0.25;
     scaoleAnimation.autoreverses = YES;

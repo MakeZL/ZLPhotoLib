@@ -103,8 +103,6 @@
         imageView.image = [UIImage ml_imageFromBundleNamed:@"camera"];
     }else{
         ZLPhotoPickerImageView *cellImgView = [[ZLPhotoPickerImageView alloc] initWithFrame:cell.bounds];
-        cellImgView.maskViewFlag = YES;
-        
         // 需要记录选中的值的数据
         if (self.isRecoderSelectPicker) {
             for (ZLPhotoAssets *asset in self.selectAssets) {
@@ -116,8 +114,8 @@
         
         [cell.contentView addSubview:cellImgView];
         
+        cellImgView.isClickHaveAnimation = NO;
         cellImgView.maskViewFlag = ([self.selectsIndexPath containsObject:@(indexPath.row)]);
-        
         ZLPhotoAssets *asset = self.dataArray[indexPath.item];
         cellImgView.isVideoType = asset.isVideoType;
         if ([asset isKindOfClass:[ZLPhotoAssets class]]) {
@@ -189,6 +187,7 @@
         }
     }
     
+    pickerImageView.isClickHaveAnimation = YES;
     pickerImageView.maskViewFlag = ([pickerImageView isKindOfClass:[ZLPhotoPickerImageView class]]) && !pickerImageView.isMaskViewFlag;
     
 }

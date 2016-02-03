@@ -13,8 +13,9 @@
 #import "ZLPhotoPickerGroup.h"
 #import "ZLPhotoPickerCollectionViewCell.h"
 #import "ZLPhotoPickerFooterCollectionReusableView.h"
+#import "UIViewController+Alert.h"
 
-static CGFloat CELL_ROW = 4;
+static CGFloat CELL_ROW = 3;
 static CGFloat CELL_MARGIN = 2;
 static CGFloat CELL_LINE_MARGIN = 2;
 static CGFloat TOOLBAR_HEIGHT = 44;
@@ -220,14 +221,13 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
     __weak typeof(self) weakSelf = self;
     
     [[ZLPhotoPickerDatas defaultPicker] getGroupPhotosWithGroup:self.assetsGroup finished:^(NSArray *assets) {
-        
         [assets enumerateObjectsUsingBlock:^(ALAsset *asset, NSUInteger idx, BOOL *stop) {
             __block ZLPhotoAssets *zlAsset = [[ZLPhotoAssets alloc] init];
             zlAsset.asset = asset;
             [assetsM addObject:zlAsset];
         }];
-        
         weakSelf.collectionView.dataArray = assetsM;
+        [weakSelf hideWaitingAnimation];
     }];
     
 }

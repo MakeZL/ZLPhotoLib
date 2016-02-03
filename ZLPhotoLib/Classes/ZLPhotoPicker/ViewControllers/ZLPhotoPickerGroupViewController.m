@@ -20,6 +20,7 @@
 #import "ZLPhotoPickerAssetsViewController.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "UIImage+ZLPhotoLib.h"
+#import "UIViewController+Alert.h"
 
 @interface ZLPhotoPickerGroupViewController () <UITableViewDataSource,UITableViewDelegate>
 @property (nonatomic , weak) ZLPhotoPickerAssetsViewController *collectionVc;
@@ -123,6 +124,7 @@
     
     if (!gp) return ;
     
+    [self showWaitingAnimationWithText:nil];
     ZLPhotoPickerAssetsViewController *assetsVc = [[ZLPhotoPickerAssetsViewController alloc] init];
     assetsVc.selectPickerAssets = self.selectAsstes;
     assetsVc.assetsGroup = gp;
@@ -143,6 +145,7 @@
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [self showWaitingAnimationWithText:nil];
     ZLPhotoPickerGroup *group = self.groups[indexPath.row];
     ZLPhotoPickerAssetsViewController *assetsVc = [[ZLPhotoPickerAssetsViewController alloc] init];
     assetsVc.selectPickerAssets = self.selectAsstes;
