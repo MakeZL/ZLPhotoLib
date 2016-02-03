@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
 s.name             = "ZLPhotoLib"
-s.version          = "1.0.0"
+s.version          = "1.0.1"
 s.summary          = "This is a photo album multiple-choice / photo browser example"
 s.homepage         = "https://github.com/MakeZL/ZLPhotoLib"
 s.license          = 'MIT'
