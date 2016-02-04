@@ -521,7 +521,7 @@ static CGFloat BOTTOM_HEIGHT = 60;
 
 #pragma mark - 屏幕
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations{
-    return UIInterfaceOrientationMaskAll;
+    return UIInterfaceOrientationMaskPortrait;
 }
 // 支持屏幕旋转
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation{
