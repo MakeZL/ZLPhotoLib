@@ -208,6 +208,14 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
     [self setupToorBar];
 }
 
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+- (BOOL)shouldAutorotate {
+    return NO;
+}
+
 #pragma mark - setter
 #pragma mark 初始化按钮
 - (void) setupButtons{

@@ -239,12 +239,9 @@ static CGFloat BOTTOM_HEIGHT = 60;
     UIButton *deviceBtn = [self setupButtonWithImageName:@"xiang" andX:self.view.zl_width - margin - width];
     [deviceBtn addTarget:self action:@selector(changeCameraDevice:) forControlEvents:UIControlEventTouchUpInside];
     
-    UIButton *flashBtn = [self setupButtonWithImageName:@"shanguangdeng" andX:10];
+    UIButton *flashBtn = [self setupButtonWithImageName:@"shanguangdeng2" andX:10];
+    [flashBtn setImage:[UIImage ml_imageFromBundleNamed:@"shanguangdeng"] forState:UIControlStateSelected];
     [flashBtn addTarget:self action:@selector(flashCameraDevice:) forControlEvents:UIControlEventTouchUpInside];
-    
-    UIButton *closeBtn = [self setupButtonWithImageName:@"shanguangdeng2" andX:60];
-    [closeBtn addTarget:self action:@selector(closeFlashlight:) forControlEvents:UIControlEventTouchUpInside];
-    
     
     // 底部View
     UIView *controlView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.zl_height-BOTTOM_HEIGHT, self.view.zl_width, BOTTOM_HEIGHT)];
@@ -464,16 +461,11 @@ static CGFloat BOTTOM_HEIGHT = 60;
     [self.session commitConfiguration];
     [self.session startRunning];
 }
-- (void) flashCameraDevice:(UIButton *)sender{
-    [self flashLightModel:^{
-        [self.device setTorchMode:AVCaptureTorchModeOn];
-    }];
-}
 
-- (void) closeFlashlight:(UIButton *)sender{
-    // self.device.torchMode == AVCaptureTorchModeOff 判断
+- (void) flashCameraDevice:(UIButton *)sender{
+    sender.selected = !sender.isSelected;
     [self flashLightModel:^{
-        [self.device setTorchMode:AVCaptureTorchModeOff];
+        [self.device setTorchMode:sender.isSelected ? AVCaptureTorchModeOn : AVCaptureTorchModeOff];
     }];
 }
 
@@ -529,7 +521,7 @@ static CGFloat BOTTOM_HEIGHT = 60;
 
 #pragma mark - 屏幕
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations{
-    return UIInterfaceOrientationMaskAll;
+    return UIInterfaceOrientationMaskPortrait;
 }
 // 支持屏幕旋转
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation{
