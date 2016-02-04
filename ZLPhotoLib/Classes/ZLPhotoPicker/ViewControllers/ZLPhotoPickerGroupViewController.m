@@ -36,7 +36,10 @@
     if (!_tableView) {
         UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
         tableView.translatesAutoresizingMaskIntoConstraints = NO;
+        tableView.rowHeight = 60;
         tableView.delegate = self;
+        tableView.tableFooterView = [[UIView alloc] init];
+        tableView.separatorInset = UIEdgeInsetsZero;
         [tableView registerClass:[ZLPhotoPickerGroupTableViewCell class] forCellReuseIdentifier:NSStringFromClass([ZLPhotoPickerGroupTableViewCell class])];
         [self.view addSubview:tableView];
         self.tableView = tableView;
@@ -138,9 +141,6 @@
 }
 
 #pragma mark -<UITableViewDelegate>
-- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 80;
-}
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
