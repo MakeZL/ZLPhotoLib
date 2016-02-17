@@ -264,9 +264,9 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         if (self.navigationHeight) {
             tempF.origin.y += self.navigationHeight;
         }
-        if (self.userScrollView && self.userScrollView.contentOffset.y >= 0) {
-            tempF.origin.y -= self.userScrollView.contentOffset.y + 64;
-        }
+        //        if (self.userScrollView && self.userScrollView.contentOffset.y >= 0) {
+        //            tempF.origin.y -= self.userScrollView.contentOffset.y + 64;
+        //        }
         
         imageView.frame = tempF;
     }
@@ -326,21 +326,21 @@ static NSString *_cellIdentifier = @"collectionViewCell";
             }
             
             originalFrame = [toImageView2.superview convertRect:toImageView2.frame toView:[weakSelf getParsentView:toImageView2]];
-            if (weakSelf.userScrollView && weakSelf.userScrollView.contentOffset.y >= 0) {
-                weakSelf.status = UIViewAnimationAnimationStatusFade;
-                // 淡入淡出
-                ZLPhotoPickerBrowserPhoto *photo = weakSelf.photos[page];
-                if (photo.photoImage) {
-                    imageView.image = photo.photoImage;
-                }else if (photo.thumbImage) {
-                    imageView.image = photo.thumbImage;
-                }
-                
-                imageView.frame = [ZLPhotoRect setMaxMinZoomScalesForCurrentBoundWithImageView:imageView];
-                imageView.alpha = 1.0;
-                [imageView superview].alpha = 1.0;
-                weakSelf.view.hidden = YES;
-            }
+            //            if (self.userScrollView && self.userScrollView.contentOffset.y >= 0) {
+            //                weakSelf.status = UIViewAnimationAnimationStatusFade;
+            //                // 淡入淡出
+            //                ZLPhotoPickerBrowserPhoto *photo = weakSelf.photos[page];
+            //                if (photo.photoImage) {
+            //                    imageView.image = photo.photoImage;
+            //                }else if (photo.thumbImage) {
+            //                    imageView.image = photo.thumbImage;
+            //                }
+            //
+            //                imageView.frame = [ZLPhotoRect setMaxMinZoomScalesForCurrentBoundWithImageView:imageView];
+            //                imageView.alpha = 1.0;
+            //                [imageView superview].alpha = 1.0;
+            //                weakSelf.view.hidden = YES;
+            //            }
             
             if (CGRectIsEmpty(originalFrame)) {
                 originalFrame = tempFrame;
