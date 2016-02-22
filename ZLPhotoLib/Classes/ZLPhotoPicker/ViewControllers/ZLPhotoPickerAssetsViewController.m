@@ -145,9 +145,10 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
 - (ZLPhotoPickerCollectionView *)collectionView{
     if (!_collectionView) {
         
-        CGFloat cellW = (self.view.frame.size.width - CELL_MARGIN * CELL_ROW + 1) / CELL_ROW;
+        NSInteger cellW = (self.view.frame.size.width - CELL_MARGIN * CELL_ROW + 1) / CELL_ROW;
         UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
         layout.itemSize = CGSizeMake(cellW, cellW);
+        layout.sectionInset = UIEdgeInsetsMake(0, 2, 0, 2);
         layout.minimumInteritemSpacing = 0;
         layout.minimumLineSpacing = CELL_LINE_MARGIN;
         layout.footerReferenceSize = CGSizeMake(self.view.frame.size.width, TOOLBAR_HEIGHT * 2);
