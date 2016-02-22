@@ -134,6 +134,7 @@
         self.maxCount = KPhotoShowMaxCount;
     }
     assetsVc.maxCount = self.maxCount;
+    [self hideWaitingAnimation];
     [self.navigationController pushViewController:assetsVc animated:NO];
 }
 
@@ -153,6 +154,7 @@
     assetsVc.maxCount = self.maxCount;
     assetsVc.assetsGroup = group;
     assetsVc.topShowPhotoPicker = self.topShowPhotoPicker;
+    [self hideWaitingAnimation];
     [self.navigationController pushViewController:assetsVc animated:YES];
 }
 

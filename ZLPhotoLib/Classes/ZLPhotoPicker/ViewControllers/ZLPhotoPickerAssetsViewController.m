@@ -227,7 +227,6 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
             [assetsM addObject:zlAsset];
         }];
         weakSelf.collectionView.dataArray = assetsM;
-        [weakSelf hideWaitingAnimation];
     }];
     
 }
