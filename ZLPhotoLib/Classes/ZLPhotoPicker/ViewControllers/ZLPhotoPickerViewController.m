@@ -9,6 +9,7 @@
 #import "ZLPhotoPickerViewController.h"
 #import "ZLNavigationController.h"
 #import "ZLPhoto.h"
+#import "UIViewController+Alert.h"
 
 @interface ZLPhotoPickerViewController ()
 @property (nonatomic , weak) ZLPhotoPickerGroupViewController *groupVc;
@@ -67,6 +68,14 @@
 
 #pragma mark - 展示控制器
 - (void)showPickerVc:(UIViewController *)vc{
+    ALAuthorizationStatus author = [ALAssetsLibrary authorizationStatus];
+    if (author == ALAuthorizationStatusRestricted || author ==ALAuthorizationStatusDenied) {
+        // denied
+        [vc hideWaitingAnimation];
+        [vc showWaitingAnimationWithText:@"用户没有开启相册权限 :("];
+        return ;
+    }
+    
     __weak typeof(vc)weakVc = vc;
     if (weakVc != nil) {
         [weakVc presentViewController:self animated:YES completion:nil];

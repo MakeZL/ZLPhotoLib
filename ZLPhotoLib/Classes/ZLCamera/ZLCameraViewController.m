@@ -15,6 +15,7 @@
 #import "ZLCameraView.h"
 #import "ZLPhoto.h"
 #import "UIImage+ZLPhotoLib.h"
+#import "UIViewController+Alert.h"
 
 typedef NS_ENUM(NSInteger, XGImageOrientation) {
     XGImageOrientationUp,            // default orientation
@@ -357,6 +358,14 @@ static CGFloat BOTTOM_HEIGHT = 60;
 }
 
 - (void)showPickerVc:(UIViewController *)vc{
+    AVAuthorizationStatus status = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
+    if(status == AVAuthorizationStatusDenied){
+        // denied
+        [vc hideWaitingAnimation];
+        [vc showWaitingAnimationWithText:@"用户没有开启拍照权限 :("];
+        return ;
+    }
+    
     __weak typeof(vc)weakVc = vc;
     if (weakVc != nil) {
         [weakVc presentViewController:self animated:YES completion:nil];
