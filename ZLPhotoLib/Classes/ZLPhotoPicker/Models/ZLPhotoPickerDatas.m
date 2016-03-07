@@ -75,11 +75,10 @@
     NSMutableArray *groups = [NSMutableArray array];
     ALAssetsLibraryGroupsEnumerationResultsBlock resultBlock = ^(ALAssetsGroup *group, BOOL *stop){
         if (group) {
-            
             // 包装一个模型来赋值
             ZLPhotoPickerGroup *pickerGroup = [[ZLPhotoPickerGroup alloc] init];
             if (allPhotos){
-                [group setAssetsFilter:[ALAssetsFilter allPhotos]];
+                [group setAssetsFilter:[ALAssetsFilter allAssets]];
             }else{
                 pickerGroup.isVideo = YES;
                 [group setAssetsFilter:[ALAssetsFilter allVideos]];
