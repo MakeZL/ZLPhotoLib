@@ -11,20 +11,21 @@
 
 @interface ZLPhotoAssets : NSObject
 
++ (instancetype)assetWithImage:(UIImage *)image;
 @property (strong,nonatomic) ALAsset *asset;
 
 /**
  *  缩略图
  */
-- (UIImage *)aspectRatioImage;
+@property (nonatomic, strong) UIImage *aspectRatioImage;
 /**
  *  缩略图
  */
-- (UIImage *)thumbImage;
+@property (nonatomic, strong) UIImage *thumbImage;
 /**
  *  原图
  */
-- (UIImage *)originImage;
+@property (nonatomic, strong) UIImage *originImage;
 /**
  *  获取是否是视频类型, Default = false
  */
