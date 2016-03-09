@@ -55,6 +55,11 @@
     self.groupVc.status = status;
 }
 
+- (void)setPhotoStatus:(PickerPhotoStatus)photoStatus{
+    _photoStatus = photoStatus;
+    self.groupVc.photoStatus = photoStatus;
+}
+
 - (void)setMaxCount:(NSInteger)maxCount{
     if (maxCount <= 0) return;
     _maxCount = maxCount;

@@ -13,6 +13,7 @@
 
 @property (nonatomic , weak) id<ZLPhotoPickerViewControllerDelegate> delegate;
 @property (nonatomic , assign) PickerViewShowStatus status;
+@property (nonatomic , assign) PickerPhotoStatus photoStatus;
 @property (nonatomic , assign) NSInteger maxCount;
 // 记录选中的值
 @property (strong,nonatomic) NSArray *selectAsstes;

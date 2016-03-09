@@ -48,6 +48,32 @@
 }
 
 /**
+ * 获取所有组对应的图片
+ */
+- (void) getAllGroupWithAllPhotos : (callBackBlock ) callBack{
+    NSMutableArray *groups = [NSMutableArray array];
+    ALAssetsLibraryGroupsEnumerationResultsBlock resultBlock = ^(ALAssetsGroup *group, BOOL *stop){
+        if (group) {
+            // 包装一个模型来赋值
+            ZLPhotoPickerGroup *pickerGroup = [[ZLPhotoPickerGroup alloc] init];
+            [group setAssetsFilter:[ALAssetsFilter allPhotos]];
+            pickerGroup.group = group;
+            pickerGroup.groupName = [group valueForProperty:@"ALAssetsGroupPropertyName"];
+            pickerGroup.thumbImage = [UIImage imageWithCGImage:[group posterImage]];
+            pickerGroup.assetsCount = [group numberOfAssets];
+            [groups addObject:pickerGroup];
+        }else{
+            callBack(groups);
+        }
+    };
+    
+    NSInteger type = ALAssetsGroupAll;
+    
+    [self.library enumerateGroupsWithTypes:type usingBlock:resultBlock failureBlock:nil];
+}
+
+
+/**
  * 获取所有组对应的图片与视频
  */
 - (void) getAllGroupWithPhotosAndVideos : (callBackBlock ) callBack{
