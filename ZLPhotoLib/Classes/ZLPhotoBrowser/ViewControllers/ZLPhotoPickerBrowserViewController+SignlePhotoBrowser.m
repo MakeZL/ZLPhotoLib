@@ -10,10 +10,15 @@
 
 @implementation ZLPhotoPickerBrowserViewController (SignlePhotoBrowser)
 #pragma mark - showHeadPortrait 放大缩小一张图片的情况下（查看头像）
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wobjc-protocol-method-implementation"
 - (void)showHeadPortrait:(UIImageView *)toImageView{
     [self showHeadPortrait:toImageView originUrl:nil];
 }
+#pragma clang diagnostic pop
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wobjc-protocol-method-implementation"
 - (void)showHeadPortrait:(UIImageView *)toImageView originUrl:(NSString *)originUrl{
     UIView *mainView = [[UIView alloc] init];
     mainView.backgroundColor = [UIColor blackColor];
@@ -57,5 +62,6 @@
         [mainView addSubview:scrollView];
     }];
 }
+#pragma clang diagnostic pop
 
 @end
