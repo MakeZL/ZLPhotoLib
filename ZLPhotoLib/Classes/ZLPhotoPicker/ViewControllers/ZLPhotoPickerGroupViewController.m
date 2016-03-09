@@ -138,6 +138,11 @@
     [self.navigationController pushViewController:assetsVc animated:NO];
 }
 
+- (void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    [self hideWaitingAnimation];
+}
+
 #pragma mark -<UITableViewDelegate>
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 80;

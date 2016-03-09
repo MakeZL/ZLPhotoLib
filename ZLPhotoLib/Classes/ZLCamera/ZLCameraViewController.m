@@ -33,7 +33,7 @@ static CGFloat ZLCameraColletionViewW = 80;
 static CGFloat ZLCameraColletionViewPadding = 20;
 static CGFloat BOTTOM_HEIGHT = 60;
 
-@interface ZLCameraViewController () <UIActionSheetDelegate,UICollectionViewDataSource,UICollectionViewDelegate,AVCaptureMetadataOutputObjectsDelegate,ZLCameraImageViewDelegate,ZLCameraViewDelegate,ZLPhotoPickerBrowserViewControllerDataSource,ZLPhotoPickerBrowserViewControllerDelegate>
+@interface ZLCameraViewController () <UIActionSheetDelegate,UICollectionViewDataSource,UICollectionViewDelegate,AVCaptureMetadataOutputObjectsDelegate,ZLCameraImageViewDelegate,ZLCameraViewDelegate,ZLPhotoPickerBrowserViewControllerDataSource,ZLPhotoPickerBrowserViewControllerDelegate,UIAlertViewDelegate>
 
 @property (weak,nonatomic) ZLCameraView *caramView;
 @property (strong, nonatomic) UICollectionView *collectionView;
@@ -361,9 +361,20 @@ static CGFloat BOTTOM_HEIGHT = 60;
     AVAuthorizationStatus status = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
     if(status == AVAuthorizationStatusDenied){
         // denied
-        [vc hideWaitingAnimation];
-        [vc showWaitingAnimationWithText:@"用户没有开启拍照权限 :("];
-        return ;
+        CGFloat kSystemMainVersion = [UIDevice currentDevice].systemVersion.floatValue;
+        NSString *title = nil;
+        NSString *msg = @"还没有开启相册权限~请在系统设置中开启";
+        NSString *cancelTitle = @"暂不";
+        NSString *otherButtonTitles = @"去设置";
+        
+        if (kSystemMainVersion < 8.0) {
+            title = @"相册权限未开启";
+            msg = @"请在系统设置中开启相机服务\n(设置>隐私>相册>开启)";
+            cancelTitle = @"知道了";
+            otherButtonTitles = nil;
+        }
+        
+        [[[UIAlertView alloc] initWithTitle:title message:msg delegate:self cancelButtonTitle:cancelTitle otherButtonTitles:otherButtonTitles, nil] show];
     }
     
     __weak typeof(vc)weakVc = vc;
@@ -706,7 +717,20 @@ static CGFloat BOTTOM_HEIGHT = 60;
     }
 }
 
-
+#pragma mark - <UIAlertDelegate>
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if (buttonIndex == 1) {
+        CGFloat kSystemMainVersion = [UIDevice currentDevice].systemVersion.floatValue;
+        if (kSystemMainVersion >= 8.0) { // ios8 以后支持跳转到设置
+            NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+            if ([[UIApplication sharedApplication] canOpenURL:url]) {
+                [[UIApplication sharedApplication] openURL:url];
+            }
+        }
+    }
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 //- (UIImage *)fixOrientation:(UIImage *)srcImg
 //{
 //    if (srcImg.imageOrientation == UIImageOrientationUp) return srcImg;

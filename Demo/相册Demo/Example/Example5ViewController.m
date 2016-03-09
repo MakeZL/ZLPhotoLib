@@ -128,7 +128,8 @@
     ZLPhotoAssets *asset = self.assets[indexPath.row];
     if ([asset isKindOfClass:[ZLPhotoAssets class]]){
         // 设置视频播放器
-        self.moviePlayer = [[MPMoviePlayerController alloc] initWithContentURL:asset.asset.defaultRepresentation.url];
+        self.moviePlayer = [[MPMoviePlayerController alloc] initWithContentURL:asset.assetURL];
+            
         self.moviePlayer.allowsAirPlay = YES;
         [self.moviePlayer.view setFrame:self.view.frame];
         
