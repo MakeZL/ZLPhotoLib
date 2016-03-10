@@ -43,14 +43,14 @@
 }
 
 #pragma mark -获取所有组
-- (void) getAllGroupWithPhotos : (callBackBlock ) callBack{
+- (void) getAllGroupWithPhotos : (callBackPhotoBlock ) callBack{
     [self getAllGroupAllPhotos:YES withResource:callBack];
 }
 
 /**
  * 获取所有组对应的图片
  */
-- (void) getAllGroupWithAllPhotos : (callBackBlock ) callBack{
+- (void) getAllGroupWithAllPhotos : (callBackPhotoBlock ) callBack{
     NSMutableArray *groups = [NSMutableArray array];
     ALAssetsLibraryGroupsEnumerationResultsBlock resultBlock = ^(ALAssetsGroup *group, BOOL *stop){
         if (group) {
@@ -76,7 +76,7 @@
 /**
  * 获取所有组对应的图片与视频
  */
-- (void) getAllGroupWithPhotosAndVideos : (callBackBlock ) callBack{
+- (void) getAllGroupWithPhotosAndVideos : (callBackPhotoBlock ) callBack{
     NSMutableArray *groups = [NSMutableArray array];
     ALAssetsLibraryGroupsEnumerationResultsBlock resultBlock = ^(ALAssetsGroup *group, BOOL *stop){
         if (group) {
@@ -97,7 +97,7 @@
     [self.library enumerateGroupsWithTypes:type usingBlock:resultBlock failureBlock:nil];
 }
 
-- (void) getAllGroupAllPhotos:(BOOL)allPhotos withResource : (callBackBlock ) callBack{
+- (void) getAllGroupAllPhotos:(BOOL)allPhotos withResource : (callBackPhotoBlock ) callBack{
     NSMutableArray *groups = [NSMutableArray array];
     ALAssetsLibraryGroupsEnumerationResultsBlock resultBlock = ^(ALAssetsGroup *group, BOOL *stop){
         if (group) {
@@ -127,12 +127,12 @@
 /**
  * 获取所有组对应的图片
  */
-- (void) getAllGroupWithVideos:(callBackBlock)callBack {    
+- (void) getAllGroupWithVideos:(callBackPhotoBlock)callBack {
     [self getAllGroupAllPhotos:NO withResource:callBack];
 }
 
 #pragma mark -传入一个组获取组里面的Asset
-- (void) getGroupPhotosWithGroup : (ZLPhotoPickerGroup *) pickerGroup finished : (callBackBlock ) callBack{
+- (void) getGroupPhotosWithGroup : (ZLPhotoPickerGroup *) pickerGroup finished : (callBackPhotoBlock ) callBack{
     
     NSMutableArray *assets = [NSMutableArray array];
     ALAssetsGroupEnumerationResultsBlock result = ^(ALAsset *asset , NSUInteger index , BOOL *stop){
@@ -147,7 +147,7 @@
 }
 
 #pragma mark -传入一个AssetsURL来获取UIImage
-- (void) getAssetsPhotoWithURLs:(NSURL *) url callBack:(callBackBlock ) callBack{
+- (void) getAssetsPhotoWithURLs:(NSURL *) url callBack:(callBackPhotoBlock ) callBack{
     [self.library assetForURL:url resultBlock:^(ALAsset *asset) {
         dispatch_async(dispatch_get_main_queue(), ^{
             callBack([UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]]);

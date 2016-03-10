@@ -1,20 +1,22 @@
 //
-//  Example3ViewController.m
+//  Example5ViewController.m
 //  ZLAssetsPickerDemo
 //
-//  Created by 张磊 on 15-2-5.
+//  Created by 张磊 on 15-3-25.
 //  Copyright (c) 2015年 com.zixue101.www. All rights reserved.
 //
 
 #import "Example3ViewController.h"
-#import "Example1TableViewCell.h"
 #import "ZLPhoto.h"
+#import "Example1TableViewCell.h"
+#import <MediaPlayer/MediaPlayer.h>
 #import "UIImageView+WebCache.h"
 
-@interface Example3ViewController() <UITableViewDataSource,UITableViewDelegate,ZLPhotoPickerBrowserViewControllerDataSource,ZLPhotoPickerBrowserViewControllerDelegate,ZLPhotoPickerViewControllerDelegate>
+@interface Example3ViewController () <ZLPhotoPickerViewControllerDelegate,UITableViewDataSource,UITableViewDelegate>
 
 @property (weak,nonatomic) UITableView *tableView;
 @property (nonatomic , strong) NSMutableArray *assets;
+@property (strong, nonatomic) MPMoviePlayerController *moviePlayer;
 
 @end
 
@@ -37,8 +39,9 @@
         [self.view addSubview:tableView];
         self.tableView = tableView;
         
-        tableView.translatesAutoresizingMaskIntoConstraints = NO;
         [tableView registerNib:[UINib nibWithNibName:@"Example1TableViewCell" bundle:nil] forCellReuseIdentifier:@"cell"];
+        
+        tableView.translatesAutoresizingMaskIntoConstraints = NO;
         
         NSString *vfl = @"V:|-0-[tableView]-20-|";
         NSDictionary *views = NSDictionaryOfVariableBindings(tableView);
@@ -49,7 +52,7 @@
     return _tableView;
 }
 
-- (void)viewDidLoad{
+- (void)viewDidLoad {
     [super viewDidLoad];
     
     self.view.backgroundColor = [UIColor whiteColor];
@@ -58,19 +61,25 @@
     [self tableView];
 }
 
-- (void) setupButtons{
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"选择照片" style:UIBarButtonItemStyleDone target:self action:@selector(selectPhotos)];
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
 }
+
+- (void) setupButtons{
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"选择视频" style:UIBarButtonItemStyleDone target:self action:@selector(selectPhotos)];
+}
+
 
 #pragma mark - select Photo Library
 - (void)selectPhotos {
     // 创建控制器
     ZLPhotoPickerViewController *pickerVc = [[ZLPhotoPickerViewController alloc] init];
     // 默认显示相册里面的内容SavePhotos
-    pickerVc.status = PickerViewShowStatusCameraRoll;
-    pickerVc.selectPickers = self.assets;
     // 最多能选9张图片
     pickerVc.maxCount = 9;
+    pickerVc.status = PickerViewShowStatusCameraRoll;
+    pickerVc.photoStatus = PickerPhotoStatusVideos;
     pickerVc.delegate = self;
     [pickerVc showPickerVc:self];
     /**
@@ -85,9 +94,10 @@
 }
 
 - (void)pickerViewControllerDoneAsstes:(NSArray *)assets{
-    self.assets = [NSMutableArray arrayWithArray:assets];
+    [self.assets addObjectsFromArray:assets];
     [self.tableView reloadData];
 }
+
 
 #pragma mark - <UITableViewDataSource>
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -107,8 +117,8 @@
     }else if([asset isKindOfClass:[UIImage class]]){
         cell.imageview1.image = (UIImage *)asset;
     }
-    return cell;
     
+    return cell;
 }
 
 
@@ -116,57 +126,35 @@
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    Example1TableViewCell *cell = (Example1TableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
-    
-    [self setupPhotoBrowser:cell];
+    ZLPhotoAssets *asset = self.assets[indexPath.row];
+    if ([asset isKindOfClass:[ZLPhotoAssets class]]){
+        // 设置视频播放器
+        self.moviePlayer = [[MPMoviePlayerController alloc] initWithContentURL:asset.assetURL];
+        
+        self.moviePlayer.allowsAirPlay = YES;
+        [self.moviePlayer.view setFrame:self.view.frame];
+        
+        // 将moviePlayer的视图添加到当前视图中
+        [self.view addSubview:self.moviePlayer.view];
+        // 播放完视频之后，MPMoviePlayerController 将发送
+        // MPMoviePlayerPlaybackDidFinishNotification 消息
+        // 登记该通知，接到该通知后，调用playVideoFinished:方法
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playVideoFinished:) name:MPMoviePlayerPlaybackDidFinishNotification object:self.moviePlayer];
+        
+        [self.moviePlayer play];
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 95;
 }
 
-#pragma mark - setupCell click ZLPhotoPickerBrowserViewController
-- (void) setupPhotoBrowser:(Example1TableViewCell *) cell{
-    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-    // 图片游览器
-    ZLPhotoPickerBrowserViewController *pickerBrowser = [[ZLPhotoPickerBrowserViewController alloc] init];
-    // 数据源/delegate
-    pickerBrowser.delegate = self;
-    pickerBrowser.dataSource = self;
-    // 是否可以删除照片
-    pickerBrowser.editing = YES;
-    // 当前选中的值
-    pickerBrowser.currentIndexPath = [NSIndexPath indexPathForItem:indexPath.row inSection:0];
-    // 展示控制器
-    [pickerBrowser showPickerVc:self];
-}
-
-#pragma mark - <ZLPhotoPickerBrowserViewControllerDataSource>
-- (long)numberOfSectionInPhotosInPickerBrowser:(ZLPhotoPickerBrowserViewController *)pickerBrowser{
-    return 1;
-}
-
-- (long)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser numberOfItemsInSection:(NSUInteger)section{
-    return self.assets.count;
-}
-
-#pragma mark - 每个组展示什么图片,需要包装下ZLPhotoPickerBrowserPhoto
-- (ZLPhotoPickerBrowserPhoto *) photoBrowser:(ZLPhotoPickerBrowserViewController *)pickerBrowser photoAtIndexPath:(NSIndexPath *)indexPath{
-    ZLPhotoAssets *imageObj = [self.assets objectAtIndex:indexPath.row];
-    // 包装下imageObj 成 ZLPhotoPickerBrowserPhoto 传给数据源
-    ZLPhotoPickerBrowserPhoto *photo = [ZLPhotoPickerBrowserPhoto photoAnyImageObjWith:imageObj];
-    Example1TableViewCell *cell = (Example1TableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-    photo.toView = cell.imageview1;
-    photo.thumbImage = cell.imageview1.image;
-    return photo;
-}
-
-#pragma mark - <ZLPhotoPickerBrowserViewControllerDelegate>
-#pragma mark 删除照片调用
-- (void)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser removePhotoAtIndexPath:(NSIndexPath *)indexPath{
-    if (indexPath.row > [self.assets count]) return;
-    [self.assets removeObjectAtIndex:indexPath.row];
-    [self.tableView reloadData];
+- (void)playVideoFinished:(NSNotification *)theNotification{
+    // 取消监听
+    [[NSNotificationCenter defaultCenter]
+     removeObserver:self name:MPMoviePlayerPlaybackDidFinishNotification object:self.moviePlayer];
+    // 将视频视图从父视图中删除
+    [self.moviePlayer.view removeFromSuperview];
 }
 
 @end

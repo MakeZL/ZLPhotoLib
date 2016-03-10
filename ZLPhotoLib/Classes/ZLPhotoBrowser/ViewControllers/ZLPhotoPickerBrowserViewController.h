@@ -13,26 +13,6 @@
 #import "ZLPhotoPickerBrowserPhotoScrollView.h"
 
 @class ZLPhotoPickerBrowserViewController;
-@protocol ZLPhotoPickerBrowserViewControllerDataSource <NSObject>
-
-@optional
-/**
- *  有多少组
- */
-- (NSInteger) numberOfSectionInPhotosInPickerBrowser:(ZLPhotoPickerBrowserViewController *) pickerBrowser;
-
-@required
-/**
- *  每个组多少个图片
- */
-- (NSInteger) photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser numberOfItemsInSection:(NSUInteger)section;
-/**
- *  每个对应的IndexPath展示什么内容
- */
-- (ZLPhotoPickerBrowserPhoto *)photoBrowser:(ZLPhotoPickerBrowserViewController *)pickerBrowser photoAtIndexPath:(NSIndexPath *)indexPath;
-
-
-@end
 
 @protocol ZLPhotoPickerBrowserViewControllerDelegate <NSObject>
 @optional
@@ -40,7 +20,7 @@
 /**
  *  点击每个Item时候调用
  */
-- (void)photoBrowser:(ZLPhotoPickerBrowserViewController *)pickerBrowser photoDidSelectView:(UIView *)scrollBoxView atIndexPath:(NSIndexPath *)indexPath;
+- (void)photoBrowser:(ZLPhotoPickerBrowserViewController *)pickerBrowser photoDidSelectView:(UIView *)scrollBoxView atIndex:(NSInteger)index;
 
 /**
  *  返回用户自定义的toolBarView(类似tableView FooterView)
@@ -53,13 +33,13 @@
  *
  *  @param index        要删除的索引值
  */
-- (BOOL)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser willRemovePhotoAtIndexPath:(NSIndexPath *)indexPath;
+- (BOOL)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser willRemovePhotoAtIndex:(NSInteger)index;
 /**
  *  删除indexPath对应索引的图片
  *
  *  @param indexPath        要删除的索引值
  */
-- (void)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser removePhotoAtIndexPath:(NSIndexPath *)indexPath;
+- (void)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser removePhotoAtIndex:(NSInteger)index;
 /**
  *  滑动结束的页数
  *
@@ -77,15 +57,13 @@
 
 @interface ZLPhotoPickerBrowserViewController : UIViewController
 
-// @require
 // 数据源/代理
-@property (nonatomic , weak) id<ZLPhotoPickerBrowserViewControllerDataSource> dataSource;
 @property (nonatomic , weak) id<ZLPhotoPickerBrowserViewControllerDelegate> delegate;
 
-// 展示的图片数组<ZLPhotoPickerBrowserPhoto> == [self.dataSource photoBrowser:photoAtIndexPath:]
-@property (strong,nonatomic) NSArray *photos;
+// 展示的图片数组<ZLPhotoPickerBrowserPhoto> == [self.dataSource photoBrowser:photoAtIndex:]
+@property (strong,nonatomic) NSArray<ZLPhotoPickerBrowserPhoto *> *photos;
 // 当前提供的组
-@property (strong,nonatomic) NSIndexPath *currentIndexPath;
+@property (assign,nonatomic) NSInteger currentIndex;
 
 // @optional
 // 是否可以编辑（删除照片）
@@ -106,11 +84,5 @@
 // 展示控制器
 - (void)showPickerVc:(UIViewController *)vc;
 - (void)showPushPickerVc:(UIViewController *)vc;
-// 刷新数据
-- (void)reloadData;
-
-// Category Functions.
-- (UIView *)getParsentView:(UIView *)view;
-- (id)getParsentViewController:(UIView *)view;
 
 @end

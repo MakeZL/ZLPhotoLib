@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+@class ZLPhotoAssets;
 // 回调
-typedef void(^callBackBlock)(id obj);
+typedef void(^callBackBlock)(NSArray<ZLPhotoAssets *> *assets);
 @class ZLPhotoPickerViewController;
 // 状态组
 typedef NS_ENUM(NSInteger , PickerViewShowStatus) {

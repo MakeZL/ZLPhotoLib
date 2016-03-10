@@ -22,7 +22,7 @@ static CGFloat TOOLBAR_HEIGHT = 44;
 static NSString *const _cellIdentifier = @"cell";
 static NSString *const _footerIdentifier = @"FooterView";
 static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
-@interface ZLPhotoPickerAssetsViewController () <ZLPhotoPickerCollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,ZLPhotoPickerBrowserViewControllerDataSource,ZLPhotoPickerBrowserViewControllerDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate>
+@interface ZLPhotoPickerAssetsViewController () <ZLPhotoPickerCollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,ZLPhotoPickerBrowserViewControllerDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate>
 
 // View
 // 相片View
@@ -442,8 +442,7 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
     
     ZLPhotoPickerBrowserViewController *browserVc = [[ZLPhotoPickerBrowserViewController alloc] init];
     browserVc.delegate = self;
-    browserVc.dataSource = self;
-    browserVc.currentIndexPath = [NSIndexPath indexPathForItem:indexPath.item inSection:0];
+    browserVc.currentIndex = indexPath.row;
     [browserVc showPickerVc:self];
 }
 
