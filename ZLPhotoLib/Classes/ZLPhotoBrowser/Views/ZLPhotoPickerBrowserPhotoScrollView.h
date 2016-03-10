@@ -13,7 +13,7 @@
 #import "ZLPhotoPickerBrowserPhoto.h"
 #import "ZLPhoto.h"
 
-typedef void(^callBackBlock)(id obj);
+typedef void(^callBackPhotoBlock)(id img);
 @class ZLPhotoPickerBrowserPhotoScrollView;
 
 @protocol ZLPhotoPickerPhotoScrollViewDelegate <NSObject>
@@ -30,6 +30,6 @@ typedef void(^callBackBlock)(id obj);
 // 长按图片的操作，可以外面传入
 @property (strong,nonatomic) UIActionSheet *sheet;
 // 单击销毁的block
-@property (copy,nonatomic) callBackBlock callback;
+@property (copy,nonatomic) callBackPhotoBlock callback;
 - (void)setMaxMinZoomScalesForCurrentBounds;
 @end

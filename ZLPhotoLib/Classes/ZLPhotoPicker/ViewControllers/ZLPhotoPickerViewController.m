@@ -62,7 +62,7 @@
 
 - (void)setMaxCount:(NSInteger)maxCount{
     _maxCount = maxCount <= 0 ? -1 : maxCount;
-    self.groupVc.maxCount = maxCount;
+    self.groupVc.maxCount = _maxCount;
 }
 
 - (void)setTopShowPhotoPicker:(BOOL)topShowPhotoPicker{

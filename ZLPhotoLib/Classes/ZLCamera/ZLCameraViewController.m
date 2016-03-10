@@ -33,7 +33,7 @@ static CGFloat ZLCameraColletionViewW = 80;
 static CGFloat ZLCameraColletionViewPadding = 20;
 static CGFloat BOTTOM_HEIGHT = 60;
 
-@interface ZLCameraViewController () <UIActionSheetDelegate,UICollectionViewDataSource,UICollectionViewDelegate,AVCaptureMetadataOutputObjectsDelegate,ZLCameraImageViewDelegate,ZLCameraViewDelegate,ZLPhotoPickerBrowserViewControllerDataSource,ZLPhotoPickerBrowserViewControllerDelegate,UIAlertViewDelegate>
+@interface ZLCameraViewController () <UIActionSheetDelegate,UICollectionViewDataSource,UICollectionViewDelegate,AVCaptureMetadataOutputObjectsDelegate,ZLCameraImageViewDelegate,ZLCameraViewDelegate,ZLPhotoPickerBrowserViewControllerDelegate,UIAlertViewDelegate>
 
 @property (weak,nonatomic) ZLCameraView *caramView;
 @property (strong, nonatomic) UICollectionView *collectionView;
@@ -319,9 +319,8 @@ static CGFloat BOTTOM_HEIGHT = 60;
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     
     ZLPhotoPickerBrowserViewController *browserVc = [[ZLPhotoPickerBrowserViewController alloc] init];
-    browserVc.dataSource = self;
     browserVc.delegate = self;
-    browserVc.currentIndexPath = [NSIndexPath indexPathForItem:indexPath.item inSection:0];
+    browserVc.currentIndex = indexPath.item;
     [self presentViewController:browserVc animated:NO completion:nil];
 }
 

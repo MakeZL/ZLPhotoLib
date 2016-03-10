@@ -15,7 +15,7 @@
 //};
 
 // 回调
-typedef void(^callBackBlock)(id obj);
+typedef void(^callBackPhotoBlock)(id obj);
 
 @interface ZLPhotoPickerDatas : NSObject
 
@@ -27,30 +27,30 @@ typedef void(^callBackBlock)(id obj);
 /**
  * 获取所有组对应的图片与视频
  */
-- (void) getAllGroupWithPhotosAndVideos : (callBackBlock ) callBack;
+- (void) getAllGroupWithPhotosAndVideos : (callBackPhotoBlock ) callBack;
 
 /**
  * 获取所有组对应的图片
  */
-- (void) getAllGroupWithPhotos : (callBackBlock ) callBack;
+- (void) getAllGroupWithPhotos : (callBackPhotoBlock ) callBack;
 
 /**
  * 获取所有组对应的图片
  */
-- (void) getAllGroupWithAllPhotos : (callBackBlock ) callBack;
+- (void) getAllGroupWithAllPhotos : (callBackPhotoBlock ) callBack;
 /**
  * 获取所有组对应的Videos
  */
-- (void) getAllGroupWithVideos : (callBackBlock ) callBack;
+- (void) getAllGroupWithVideos : (callBackPhotoBlock ) callBack;
 
 /**
  *  传入一个组获取组里面的Asset
  */
-- (void) getGroupPhotosWithGroup : (ZLPhotoPickerGroup *) pickerGroup finished : (callBackBlock ) callBack;
+- (void) getGroupPhotosWithGroup : (ZLPhotoPickerGroup *) pickerGroup finished : (callBackPhotoBlock ) callBack;
 
 /**
  *  传入一个AssetsURL来获取UIImage
  */
-- (void) getAssetsPhotoWithURLs:(NSURL *) url callBack:(callBackBlock ) callBack;
+- (void) getAssetsPhotoWithURLs:(NSURL *) url callBack:(callBackPhotoBlock ) callBack;
 
 @end
