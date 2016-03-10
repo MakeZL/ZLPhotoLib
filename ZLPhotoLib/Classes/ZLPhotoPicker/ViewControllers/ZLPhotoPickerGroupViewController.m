@@ -130,9 +130,6 @@
     assetsVc.assetsGroup = gp;
     assetsVc.topShowPhotoPicker = self.topShowPhotoPicker;
     assetsVc.groupVc = self;
-    if (!self.maxCount) {
-        self.maxCount = KPhotoShowMaxCount;
-    }
     assetsVc.maxCount = self.maxCount;
     [self hideWaitingAnimation];
     [self.navigationController pushViewController:assetsVc animated:NO];

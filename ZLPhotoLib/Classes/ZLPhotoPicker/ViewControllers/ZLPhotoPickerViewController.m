@@ -61,9 +61,8 @@
 }
 
 - (void)setMaxCount:(NSInteger)maxCount{
-    if (maxCount <= 0) return;
-    _maxCount = maxCount;
-    self.groupVc.maxCount = maxCount;
+    _maxCount = maxCount <= 0 ? -1 : maxCount;
+    self.groupVc.maxCount = _maxCount;
 }
 
 - (void)setTopShowPhotoPicker:(BOOL)topShowPhotoPicker{

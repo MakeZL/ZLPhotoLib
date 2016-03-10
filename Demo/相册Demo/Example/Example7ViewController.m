@@ -117,6 +117,7 @@
     // pickerBrowser.status = UIViewAnimationAnimationStatusFade;
 //    pickerBrowser.toView = btn;
     // 数据源/delegate
+    pickerBrowser.editing = YES;
     pickerBrowser.delegate = self;
     pickerBrowser.dataSource = self;
     // 当前选中的值
@@ -146,6 +147,10 @@
     // 缩略图
     photo.thumbImage = btn.imageView.image;
     return photo;
+}
+
+- (void)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser removePhotoAtIndexPath:(NSIndexPath *)indexPath{
+    
 }
 
 @end

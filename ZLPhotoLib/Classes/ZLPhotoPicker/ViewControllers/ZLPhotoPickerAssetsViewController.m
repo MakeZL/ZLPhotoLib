@@ -311,7 +311,7 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
 -(void)setMaxCount:(NSInteger)maxCount{
     _maxCount = maxCount;
     
-    if (!_privateTempMaxCount) {
+    if (!_privateTempMaxCount && maxCount >= 0) {
         if (maxCount) {
             _privateTempMaxCount = maxCount;
         }else{
