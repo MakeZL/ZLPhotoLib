@@ -15,8 +15,13 @@ typedef NS_ENUM(NSInteger , PickerViewShowStatus) {
     PickerViewShowStatusGroup = 0, // default groups .
     PickerViewShowStatusCameraRoll ,
     PickerViewShowStatusSavePhotos ,
-    PickerViewShowStatusPhotoStream ,
-    PickerViewShowStatusVideo,
+    PickerViewShowStatusPhotoStream
+};
+
+typedef NS_ENUM(NSInteger, PickerPhotoStatus) {
+    PickerPhotoStatusAllVideoAndPhotos = 0, // default Photos And Videos
+    PickerPhotoStatusVideos,
+    PickerPhotoStatusPhotos
 };
 
 @protocol ZLPhotoPickerViewControllerDelegate <NSObject>
@@ -37,6 +42,8 @@ typedef NS_ENUM(NSInteger , PickerViewShowStatus) {
 @property (nonatomic , weak) id<ZLPhotoPickerViewControllerDelegate>delegate;
 // 决定你是否需要push到内容控制器, 默认显示组
 @property (nonatomic , assign) PickerViewShowStatus status;
+// 决定显示的是图片，还是视频，还是图片加视频. 默认都显示
+@property (nonatomic , assign) PickerPhotoStatus photoStatus;
 // 可以用代理来返回值或者用block来返回值
 @property (nonatomic , copy) callBackBlock callBack;
 // 每次选择图片的最小数, 默认与最大数是9

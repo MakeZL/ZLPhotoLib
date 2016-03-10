@@ -113,7 +113,7 @@
     // 如果是相册
     ZLPhotoPickerGroup *gp = nil;
     for (ZLPhotoPickerGroup *group in self.groups) {
-        if ((self.status == PickerViewShowStatusCameraRoll || self.status == PickerViewShowStatusVideo) && ([group.groupName isEqualToString:@"Camera Roll"] || [group.groupName isEqualToString:@"相机胶卷"])) {
+        if (self.status == PickerViewShowStatusCameraRoll && ([group.groupName isEqualToString:@"Camera Roll"] || [group.groupName isEqualToString:@"相机胶卷"])) {
             gp = group;
             break;
         }else if (self.status == PickerViewShowStatusSavePhotos && ([group.groupName isEqualToString:@"Saved Photos"] || [group.groupName isEqualToString:@"保存相册"])){
@@ -133,12 +133,14 @@
     assetsVc.assetsGroup = gp;
     assetsVc.topShowPhotoPicker = self.topShowPhotoPicker;
     assetsVc.groupVc = self;
-    if (!self.maxCount) {
-        self.maxCount = KPhotoShowMaxCount;
-    }
     assetsVc.maxCount = self.maxCount;
     [self hideWaitingAnimation];
     [self.navigationController pushViewController:assetsVc animated:NO];
+}
+
+- (void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    [self hideWaitingAnimation];
 }
 
 #pragma mark -<UITableViewDelegate>
@@ -165,32 +167,36 @@
     
     __weak typeof(self) weakSelf = self;
     
-    if (self.status == PickerViewShowStatusVideo){
+    if (self.photoStatus == PickerPhotoStatusVideos){
         // 获取所有的视频URLs
         [datas getAllGroupWithVideos:^(NSArray *groups) {
             self.groups = groups;
             if (self.status) {
                 [self jump2StatusVc];
             }
-            
             weakSelf.tableView.dataSource = self;
             [weakSelf.tableView reloadData];
-            
         }];
-        
-    }else{
+    }else if(self.photoStatus == PickerPhotoStatusPhotos){
         // 获取所有的图片URLs
         [datas getAllGroupWithPhotosAndVideos:^(NSArray *groups) {
             self.groups = groups;
             if (self.status) {
                 [self jump2StatusVc];
             }
-            
             weakSelf.tableView.dataSource = self;
             [weakSelf.tableView reloadData];
-            
         }];
-
+    }else{
+        // 获取所有的图片及视频URLs
+        [datas getAllGroupWithPhotosAndVideos:^(NSArray *groups) {
+            self.groups = groups;
+            if (self.status) {
+                [self jump2StatusVc];
+            }
+            weakSelf.tableView.dataSource = self;
+            [weakSelf.tableView reloadData];
+        }];
     }
 }
 

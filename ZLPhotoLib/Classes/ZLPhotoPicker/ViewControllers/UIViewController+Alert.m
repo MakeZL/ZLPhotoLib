@@ -16,7 +16,7 @@
 }
 
 - (void)hideWaitingAnimation{
-    UILabel *alertLabel = [[UIApplication sharedApplication].keyWindow viewWithTag:'AlartText'];
+    UILabel *alertLabel = [[UIApplication sharedApplication].keyWindow viewWithTag:10001];
     [UIView animateWithDuration:1.0 animations:^{
         alertLabel.alpha = 0.0;
     } completion:^(BOOL finished) {
@@ -26,7 +26,7 @@
 
 - (void)showMessageWithText:(NSString *)text{
     UILabel *alertLabel = [[UILabel alloc] init];
-    alertLabel.tag = 'AlartText';
+    alertLabel.tag = 10001;
     alertLabel.font = [UIFont systemFontOfSize:15];
     alertLabel.text = text;
     alertLabel.textAlignment = NSTextAlignmentCenter;

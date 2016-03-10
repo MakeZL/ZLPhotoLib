@@ -78,7 +78,8 @@
     // 默认显示相册里面的内容SavePhotos
     // 最多能选9张图片
     pickerVc.maxCount = 9;
-    pickerVc.status = PickerViewShowStatusVideo;
+    pickerVc.status = PickerViewShowStatusCameraRoll;
+    pickerVc.photoStatus = PickerPhotoStatusPhotos;
     pickerVc.delegate = self;
     [pickerVc showPickerVc:self];
     /**
@@ -128,7 +129,8 @@
     ZLPhotoAssets *asset = self.assets[indexPath.row];
     if ([asset isKindOfClass:[ZLPhotoAssets class]]){
         // 设置视频播放器
-        self.moviePlayer = [[MPMoviePlayerController alloc] initWithContentURL:asset.asset.defaultRepresentation.url];
+        self.moviePlayer = [[MPMoviePlayerController alloc] initWithContentURL:asset.assetURL];
+            
         self.moviePlayer.allowsAirPlay = YES;
         [self.moviePlayer.view setFrame:self.view.frame];
         

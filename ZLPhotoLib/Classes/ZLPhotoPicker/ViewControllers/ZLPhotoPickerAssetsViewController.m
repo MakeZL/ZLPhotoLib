@@ -13,9 +13,8 @@
 #import "ZLPhotoPickerGroup.h"
 #import "ZLPhotoPickerCollectionViewCell.h"
 #import "ZLPhotoPickerFooterCollectionReusableView.h"
-#import "UIViewController+Alert.h"
 
-static CGFloat CELL_ROW = 3;
+static CGFloat CELL_ROW = 4;
 static CGFloat CELL_MARGIN = 2;
 static CGFloat CELL_LINE_MARGIN = 2;
 static CGFloat TOOLBAR_HEIGHT = 44;
@@ -23,7 +22,7 @@ static CGFloat TOOLBAR_HEIGHT = 44;
 static NSString *const _cellIdentifier = @"cell";
 static NSString *const _footerIdentifier = @"FooterView";
 static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
-@interface ZLPhotoPickerAssetsViewController () <ZLPhotoPickerCollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,ZLPhotoPickerBrowserViewControllerDataSource,ZLPhotoPickerBrowserViewControllerDelegate>
+@interface ZLPhotoPickerAssetsViewController () <ZLPhotoPickerCollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,ZLPhotoPickerBrowserViewControllerDataSource,ZLPhotoPickerBrowserViewControllerDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate>
 
 // View
 // 相片View
@@ -108,8 +107,11 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
     _selectPickerAssets = [set allObjects];
     
     for (ZLPhotoAssets *assets in selectPickerAssets) {
-        if ([assets isKindOfClass:[ZLPhotoAssets class]] || [assets isKindOfClass:[ZLCamera class]]) {
+        if ([assets isKindOfClass:[ZLPhotoAssets class]] || [assets isKindOfClass:[ZLCamera class]]
+            ) {
             [self.selectAssets addObject:assets];
+        }else if ([assets isKindOfClass:[UIImage class]]){
+            [self.selectAssets addObject:[ZLPhotoAssets assetWithImage:(UIImage *)assets]];
         }
     }
     
@@ -118,7 +120,7 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
     self.collectionView.selectAssets = self.selectAssets;
     NSInteger count = self.selectAssets.count;
     self.makeView.hidden = !count;
-    self.makeView.text = [NSString stringWithFormat:@"%ld",(NSInteger)count];
+    self.makeView.text = [NSString stringWithFormat:@"%ld",(long)count];
     self.doneBtn.enabled = (count > 0);
 }
 
@@ -222,37 +224,63 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
     __weak typeof(self) weakSelf = self;
     
     [[ZLPhotoPickerDatas defaultPicker] getGroupPhotosWithGroup:self.assetsGroup finished:^(NSArray *assets) {
+        
         [assets enumerateObjectsUsingBlock:^(ALAsset *asset, NSUInteger idx, BOOL *stop) {
             __block ZLPhotoAssets *zlAsset = [[ZLPhotoAssets alloc] init];
             zlAsset.asset = asset;
             [assetsM addObject:zlAsset];
         }];
+        
         weakSelf.collectionView.dataArray = assetsM;
     }];
     
 }
 
 - (void)pickerCollectionViewDidCameraSelect:(ZLPhotoPickerCollectionView *)pickerCollectionView{
+    ZLCameraViewController *cameraVc = [[ZLCameraViewController alloc] init];
+    __weak typeof(self)weakSelf = self;
+    __weak typeof(cameraVc)weakCameraVc = cameraVc;
+    cameraVc.callback = ^(NSArray *camera){
+        [weakSelf.selectAssets addObjectsFromArray:camera];
+        [weakSelf.toolBarThumbCollectionView reloadData];
+        [weakSelf.takePhotoImages addObjectsFromArray:camera];
+        weakSelf.collectionView.selectAssets = weakSelf.selectAssets;
+        
+        NSInteger count = self.selectAssets.count;
+        weakSelf.makeView.hidden = !count;
+        weakSelf.makeView.text = [NSString stringWithFormat:@"%ld",(long)count];
+        weakSelf.doneBtn.enabled = (count > 0);
+        [weakCameraVc dismissViewControllerAnimated:YES completion:nil];
+    };
+    [cameraVc showPickerVc:self];
+    //    UIImagePickerController *ctrl = [[UIImagePickerController alloc] init];
+    //    ctrl.delegate = self;
+    //    ctrl.sourceType = UIImagePickerControllerSourceTypeCamera;
+    //    [self presentViewController:ctrl animated:YES completion:nil];
+    
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
     
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         // 处理
-        ZLCameraViewController *cameraVc = [[ZLCameraViewController alloc] init];
-        cameraVc.maxCount = self.maxCount - self.selectAssets.count;
-        __weak typeof(self)weakSelf = self;
-        __weak typeof(cameraVc)weakCameraVc = cameraVc;
-        cameraVc.callback = ^(NSArray *camera){
-            [weakSelf.selectAssets addObjectsFromArray:camera];
-            [weakSelf.toolBarThumbCollectionView reloadData];
-            [weakSelf.takePhotoImages addObjectsFromArray:camera];
-            weakSelf.collectionView.selectAssets = [NSMutableArray arrayWithArray:weakSelf.selectAssets];
-            
-            NSInteger count = weakSelf.selectAssets.count;
-            weakSelf.makeView.hidden = !count;
-            weakSelf.makeView.text = [NSString stringWithFormat:@"%ld",(NSInteger)count];
-            weakSelf.doneBtn.enabled = (count > 0);
-            [weakCameraVc dismissViewControllerAnimated:YES completion:nil];
-        };
-        [cameraVc showPickerVc:weakSelf];
+        UIImage *image = info[@"UIImagePickerControllerOriginalImage"];
+        
+        [self.selectAssets addObject:image];
+        [self.toolBarThumbCollectionView reloadData];
+        [self.takePhotoImages addObject:image];
+        self.collectionView.selectAssets = self.selectAssets;
+        
+        dispatch_async(dispatch_get_global_queue(0, 0), ^{
+            [[NSNotificationCenter defaultCenter] postNotificationName:PICKER_TAKE_PHOTO object:nil userInfo:@{@"image":image}];
+        });
+        
+        NSInteger count = self.selectAssets.count;
+        self.makeView.hidden = !count;
+        self.makeView.text = [NSString stringWithFormat:@"%ld",(long)count];
+        self.doneBtn.enabled = (count > 0);
+        
+        [picker dismissViewControllerAnimated:YES completion:nil];
     }else{
         NSLog(@"请在真机使用!");
     }
@@ -284,7 +312,7 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
 -(void)setMaxCount:(NSInteger)maxCount{
     _maxCount = maxCount;
     
-    if (!_privateTempMaxCount) {
+    if (!_privateTempMaxCount && maxCount >= 0) {
         if (maxCount) {
             _privateTempMaxCount = maxCount;
         }else{
@@ -331,7 +359,7 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
     
     NSInteger count = self.selectAssets.count;
     self.makeView.hidden = !count;
-    self.makeView.text = [NSString stringWithFormat:@"%ld",(NSInteger)count];
+    self.makeView.text = [NSString stringWithFormat:@"%ld",(long)count];
     self.doneBtn.enabled = (count > 0);
     
     [self.toolBarThumbCollectionView reloadData];
@@ -366,7 +394,7 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
             [self.collectionView.selectsIndexPath removeObject:@(selectAssetsCurrentPage)];
             
             [self.toolBarThumbCollectionView reloadData];
-            self.makeView.text = [NSString stringWithFormat:@"%ld",self.selectAssets.count];
+            self.makeView.text = [NSString stringWithFormat:@"%ld",(unsigned long)self.selectAssets.count];
         }
         // 刷新下最小的页数
         self.maxCount = self.selectAssets.count + (_privateTempMaxCount - self.selectAssets.count);
@@ -465,7 +493,7 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
     [self.toolBarThumbCollectionView reloadData];
     [self.collectionView reloadData];
     
-    self.makeView.text = [NSString stringWithFormat:@"%ld",self.selectAssets.count];
+    self.makeView.text = [NSString stringWithFormat:@"%ld",(unsigned long)self.selectAssets.count];
 }
 
 #pragma mark -<Navigation Actions>

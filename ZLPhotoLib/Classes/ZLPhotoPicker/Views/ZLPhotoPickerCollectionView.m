@@ -127,9 +127,9 @@
 }
 
 - (BOOL)validatePhotoCount:(NSInteger)maxCount{
-    if (self.selectAssets.count >= maxCount) {
+    if (self.selectAssets.count >= maxCount || maxCount < 0) {
         NSString *format = [NSString stringWithFormat:@"最多只能选择%zd张图片",maxCount];
-        if (maxCount == 0) {
+        if (maxCount <= 0) {
             format = [NSString stringWithFormat:@"您已经选满了图片了."];
         }
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提醒" message:format delegate:self cancelButtonTitle:nil otherButtonTitles:@"好的", nil];
@@ -168,7 +168,7 @@
         [self.lastDataArray removeObject:asset];
     }else{
         // 1 判断图片数超过最大数或者小于0
-        NSUInteger maxCount = (self.maxCount < 0) ? KPhotoShowMaxCount :  self.maxCount;
+        NSInteger maxCount = (self.maxCount == 0) ? KPhotoShowMaxCount :  self.maxCount;
         if (![self validatePhotoCount:maxCount]){
             return ;
         }

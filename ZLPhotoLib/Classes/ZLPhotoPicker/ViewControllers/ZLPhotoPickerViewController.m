@@ -9,8 +9,9 @@
 #import "ZLPhotoPickerViewController.h"
 #import "ZLNavigationController.h"
 #import "ZLPhoto.h"
+#import "UIViewController+Alert.h"
 
-@interface ZLPhotoPickerViewController ()
+@interface ZLPhotoPickerViewController () <UIAlertViewDelegate>
 @property (nonatomic , weak) ZLPhotoPickerGroupViewController *groupVc;
 @end
 
@@ -54,10 +55,14 @@
     self.groupVc.status = status;
 }
 
+- (void)setPhotoStatus:(PickerPhotoStatus)photoStatus{
+    _photoStatus = photoStatus;
+    self.groupVc.photoStatus = photoStatus;
+}
+
 - (void)setMaxCount:(NSInteger)maxCount{
-    if (maxCount <= 0) return;
-    _maxCount = maxCount;
-    self.groupVc.maxCount = maxCount;
+    _maxCount = maxCount <= 0 ? -1 : maxCount;
+    self.groupVc.maxCount = _maxCount;
 }
 
 - (void)setTopShowPhotoPicker:(BOOL)topShowPhotoPicker{
@@ -65,8 +70,32 @@
     self.groupVc.topShowPhotoPicker = topShowPhotoPicker;
 }
 
+- (void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    [self hideWaitingAnimation];
+}
+
 #pragma mark - 展示控制器
 - (void)showPickerVc:(UIViewController *)vc{
+
+    ALAuthorizationStatus author = [ALAssetsLibrary authorizationStatus];
+    if (author == ALAuthorizationStatusRestricted || author ==ALAuthorizationStatusDenied) {
+        CGFloat kSystemMainVersion = [UIDevice currentDevice].systemVersion.floatValue;
+        NSString *title = nil;
+        NSString *msg = @"还没有开启相册权限~请在系统设置中开启";
+        NSString *cancelTitle = @"暂不";
+        NSString *otherButtonTitles = @"去设置";
+        
+        if (kSystemMainVersion < 8.0) {
+            title = @"相册权限未开启";
+            msg = @"请在系统设置中开启相机服务\n(设置>隐私>相册>开启)";
+            cancelTitle = @"知道了";
+            otherButtonTitles = nil;
+        }
+        
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title message:msg delegate:self cancelButtonTitle:cancelTitle otherButtonTitles:otherButtonTitles, nil];
+        [alertView show];
+    }
     __weak typeof(vc)weakVc = vc;
     if (weakVc != nil) {
         [weakVc presentViewController:self animated:YES completion:nil];
@@ -111,4 +140,18 @@
     _delegate = delegate;
     self.groupVc.delegate = delegate;
 }
+
+#pragma mark - <UIAlertDelegate>
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if (buttonIndex == 1) {
+        CGFloat kSystemMainVersion = [UIDevice currentDevice].systemVersion.floatValue;
+        if (kSystemMainVersion >= 8.0) { // ios8 以后支持跳转到设置
+            NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+            if ([[UIApplication sharedApplication] canOpenURL:url]) {
+                [[UIApplication sharedApplication] openURL:url];
+            }
+        }
+    }
+}
+
 @end

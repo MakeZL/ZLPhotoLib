@@ -63,7 +63,9 @@
     // 创建控制器
     ZLPhotoPickerViewController *pickerVc = [[ZLPhotoPickerViewController alloc] init];
     // 默认显示相册里面的内容SavePhotos
+    // PickerViewShowStatusAllPhotos获取所有的相片
     pickerVc.status = PickerViewShowStatusCameraRoll;
+    pickerVc.photoStatus = PickerPhotoStatusAllVideoAndPhotos;
     pickerVc.delegate = self;
     [pickerVc showPickerVc:self];
     /**
