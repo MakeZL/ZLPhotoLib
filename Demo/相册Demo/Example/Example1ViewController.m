@@ -132,7 +132,7 @@
             [photos addObject:photo];
         }
         
-        [self.assets addObjectsFromArray:photos];
+        self.assets = photos.mutableCopy;
         [self reloadScrollView];
     };
     [pickerVc showPickerVc:self];

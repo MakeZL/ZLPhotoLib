@@ -94,7 +94,7 @@
 }
 
 - (void)pickerViewControllerDoneAsstes:(NSArray *)assets{
-    [self.assets addObjectsFromArray:assets];
+    self.assets = assets.mutableCopy;
     [self.tableView reloadData];
 }
 

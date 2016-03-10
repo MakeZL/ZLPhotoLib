@@ -108,7 +108,7 @@
     pickerVc.topShowPhotoPicker = YES;
     // CallBack
     pickerVc.callBack = ^(NSArray<ZLPhotoAssets *> *status){
-        [self.assets addObjectsFromArray:status];
+        self.assets = status.mutableCopy;
         [self reloadScrollView];
     };
     [pickerVc showPickerVc:self];
