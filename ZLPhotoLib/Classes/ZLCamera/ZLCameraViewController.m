@@ -318,30 +318,26 @@ static CGFloat BOTTOM_HEIGHT = 60;
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     
+    NSMutableArray *photos = [NSMutableArray array];
+    for (id asset in self.images) {
+        ZLPhotoPickerBrowserPhoto *photo = [[ZLPhotoPickerBrowserPhoto alloc] init];
+        if ([asset isKindOfClass:[ZLPhotoAssets class]]) {
+            photo.asset = asset;
+        }else if ([asset isKindOfClass:[ZLCamera class]]){
+            ZLCamera *camera = (ZLCamera *)asset;
+            photo.thumbImage = [camera thumbImage];
+        }else if ([asset isKindOfClass:[UIImage class]]){
+            photo.thumbImage = (UIImage *)asset;
+            photo.photoImage = (UIImage *)asset;
+        }
+        [photos addObject:photo];
+    }
+    
     ZLPhotoPickerBrowserViewController *browserVc = [[ZLPhotoPickerBrowserViewController alloc] init];
+    browserVc.photos = photos;
     browserVc.delegate = self;
     browserVc.currentIndex = indexPath.item;
     [self presentViewController:browserVc animated:NO completion:nil];
-}
-
-
-#pragma mark - <ZLPhotoPickerBrowserViewControllerDataSource>
-- (NSInteger)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser numberOfItemsInSection:(NSUInteger)section{
-    return self.images.count;
-}
-
-- (ZLPhotoPickerBrowserPhoto *) photoBrowser:(ZLPhotoPickerBrowserViewController *)pickerBrowser photoAtIndexPath:(NSIndexPath *)indexPath{
-    
-    id imageObj = [[self.images objectAtIndex:indexPath.row] photoImage];
-    ZLPhotoPickerBrowserPhoto *photo = [ZLPhotoPickerBrowserPhoto photoAnyImageObjWith:imageObj];
-    
-    UICollectionViewCell *cell = (UICollectionViewCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:0]];
-    
-    UIImageView *imageView = [[cell.contentView subviews] lastObject];
-    photo.toView = imageView;
-//    photo.thumbImage = imageView.image;
-    
-    return photo;
 }
 
 - (void)deleteImageView:(ZLCameraImageView *)imageView{

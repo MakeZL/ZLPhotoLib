@@ -14,7 +14,7 @@
 #import "ZLPhotoPickerCollectionViewCell.h"
 #import "ZLPhotoPickerFooterCollectionReusableView.h"
 
-static CGFloat CELL_ROW = 4;
+static CGFloat CELL_ROW = 3;
 static CGFloat CELL_MARGIN = 2;
 static CGFloat CELL_LINE_MARGIN = 2;
 static CGFloat TOOLBAR_HEIGHT = 44;
@@ -440,32 +440,27 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
 #pragma makr UICollectionViewDelegate
 - (void) collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     
+    NSMutableArray *photos = [NSMutableArray array];
+    if (self.selectAssets.count && self.selectAssets.count - 1 >= indexPath.item) {
+        for (ZLPhotoAssets *asset in self.selectAssets) {
+            ZLPhotoPickerBrowserPhoto *photo = [[ZLPhotoPickerBrowserPhoto alloc] init];
+            if ([asset isKindOfClass:[ZLPhotoAssets class]]) {
+                photo.asset = asset;
+            }else if ([asset isKindOfClass:[ZLCamera class]]){
+                ZLCamera *camera = (ZLCamera *)asset;
+                photo.thumbImage = [camera thumbImage];
+            }
+            [photos addObject:photo];
+        }
+    }
+    
     ZLPhotoPickerBrowserViewController *browserVc = [[ZLPhotoPickerBrowserViewController alloc] init];
+    browserVc.photos = photos;
     browserVc.delegate = self;
     browserVc.currentIndex = indexPath.row;
     [browserVc showPickerVc:self];
 }
 
-- (NSInteger)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser numberOfItemsInSection:(NSUInteger)section{
-    return self.selectAssets.count;
-}
-
--  (ZLPhotoPickerBrowserPhoto *)photoBrowser:(ZLPhotoPickerBrowserViewController *)pickerBrowser photoAtIndexPath:(NSIndexPath *)indexPath{
-    ZLPhotoPickerBrowserPhoto *photo = [[ZLPhotoPickerBrowserPhoto alloc] init];
-    UICollectionViewCell *cell = [self.toolBarThumbCollectionView cellForItemAtIndexPath:indexPath];
-    UIImageView *imageView = [cell.contentView.subviews lastObject];
-    if (self.selectAssets.count && self.selectAssets.count - 1 >= indexPath.item) {
-        ZLPhotoAssets *asset = self.selectAssets[indexPath.row];
-        if ([asset isKindOfClass:[ZLPhotoAssets class]]) {
-            photo.asset = asset;
-        }else if ([asset isKindOfClass:[ZLCamera class]]){
-            ZLCamera *camera = (ZLCamera *)asset;
-            photo.thumbImage = [camera thumbImage];
-        }
-    }
-    photo.toView = imageView;
-    return photo;
-}
 - (void)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser removePhotoAtIndexPath:(NSIndexPath *)indexPath{
     
     // 删除选中的照片

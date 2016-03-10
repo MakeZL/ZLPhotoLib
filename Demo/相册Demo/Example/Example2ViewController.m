@@ -88,7 +88,9 @@
             [btn addTarget:self action:@selector(takeCamera) forControlEvents:UIControlEventTouchUpInside];
         }else{
             // 如果是本地ZLPhotoAssets就从本地取，否则从网络取
-            if ([[self.assets objectAtIndex:i] isKindOfClass:[ZLPhotoAssets class]]) {
+            if ([[self.assets objectAtIndex:i] isKindOfClass:[ZLCamera class]]) {
+                [btn setImage:[self.assets[i] thumbImage] forState:UIControlStateNormal];
+            }else if ([[self.assets objectAtIndex:i] isKindOfClass:[ZLPhotoAssets class]]) {
                 [btn setImage:[self.assets[i] thumbImage] forState:UIControlStateNormal];
             }else{
                 ZLPhotoPickerBrowserPhoto *photo = self.assets[i];
@@ -112,7 +114,7 @@
     cameraVc.maxCount = 9 - self.assets.count;
     // CallBack
     cameraVc.callback = ^(NSArray *status){
-        [self.assets addObjectsFromArray:status];
+        self.assets = status.mutableCopy;
         [self reloadScrollView];
     };
     [cameraVc showPickerVc:self];
