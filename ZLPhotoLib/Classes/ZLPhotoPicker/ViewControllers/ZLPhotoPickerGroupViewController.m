@@ -179,7 +179,7 @@
         }];
     }else if(self.photoStatus == PickerPhotoStatusPhotos){
         // 获取所有的图片URLs
-        [datas getAllGroupWithPhotosAndVideos:^(NSArray *groups) {
+        [datas getAllGroupWithAllPhotos:^(NSArray *groups) {
             self.groups = groups;
             if (self.status) {
                 [self jump2StatusVc];
