@@ -35,6 +35,10 @@ typedef void(^callBackBlock)(id obj);
 - (void) getAllGroupWithPhotos : (callBackBlock ) callBack;
 
 /**
+ * 获取所有组对应的图片
+ */
+- (void) getAllGroupWithAllPhotos : (callBackBlock ) callBack;
+/**
  * 获取所有组对应的Videos
  */
 - (void) getAllGroupWithVideos : (callBackBlock ) callBack;
