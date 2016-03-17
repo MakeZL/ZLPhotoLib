@@ -117,7 +117,7 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
     
     self.collectionView.lastDataArray = nil;
     self.collectionView.isRecoderSelectPicker = YES;
-    self.collectionView.selectAssets = self.selectAssets;
+    self.collectionView.selectAssets = [self.selectAssets mutableCopy];
     NSInteger count = self.selectAssets.count;
     self.makeView.hidden = !count;
     self.makeView.text = [NSString stringWithFormat:@"%ld",(long)count];
@@ -243,7 +243,7 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
         [weakSelf.selectAssets addObjectsFromArray:camera];
         [weakSelf.toolBarThumbCollectionView reloadData];
         [weakSelf.takePhotoImages addObjectsFromArray:camera];
-        weakSelf.collectionView.selectAssets = weakSelf.selectAssets;
+        weakSelf.collectionView.selectAssets = [weakSelf.selectAssets mutableCopy];
         
         NSInteger count = self.selectAssets.count;
         weakSelf.makeView.hidden = !count;
@@ -268,7 +268,7 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
         [self.selectAssets addObject:image];
         [self.toolBarThumbCollectionView reloadData];
         [self.takePhotoImages addObject:image];
-        self.collectionView.selectAssets = self.selectAssets;
+        self.collectionView.selectAssets = [self.selectAssets mutableCopy];
         
         dispatch_async(dispatch_get_global_queue(0, 0), ^{
             [[NSNotificationCenter defaultCenter] postNotificationName:PICKER_TAKE_PHOTO object:nil userInfo:@{@"image":image}];
@@ -320,7 +320,7 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
     }
     
     if (self.selectAssets.count == maxCount){
-        maxCount = 0;
+        maxCount = -1;
     }else if (self.selectPickerAssets.count - self.selectAssets.count > 0) {
         maxCount = _privateTempMaxCount;
     }

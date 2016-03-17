@@ -39,6 +39,11 @@
     return _selectsIndexPath;
 }
 
+- (void)setMaxCount:(NSInteger)maxCount{
+    _maxCount = maxCount;
+    
+}
+
 #pragma mark -setter
 - (void)setDataArray:(NSArray *)dataArray{
     _dataArray = dataArray;
@@ -143,7 +148,7 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
 
     if (self.topShowPhotoPicker && indexPath.item == 0) {
-        NSUInteger maxCount = (self.maxCount < 0) ? KPhotoShowMaxCount :  self.maxCount;
+        NSUInteger maxCount = (self.maxCount == 0) ? KPhotoShowMaxCount :  self.maxCount;
         if (![self validatePhotoCount:maxCount]){
             return ;
         }
