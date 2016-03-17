@@ -22,13 +22,7 @@
 
 - (NSMutableArray *)assets{
     if (!_assets) {
-        _assets = [NSMutableArray arrayWithArray:@[
-                                                   @"http://imgsrc.baidu.com/forum/w%3D580/sign=515dae6de7dde711e7d243fe97eecef4/6c236b600c3387446fc73114530fd9f9d72aa05b.jpg",
-                                                   @"http://imgsrc.baidu.com/forum/w%3D580/sign=1875d6474334970a47731027a5cbd1c0/51e876094b36acaf9e7b88947ed98d1000e99cc2.jpg",
-                                                   @"http://imgsrc.baidu.com/forum/w%3D580/sign=67ef9ea341166d223877159c76230945/e2f7f736afc3793138419f41e9c4b74543a911b7.jpg",
-                                                   @"http://imgsrc.baidu.com/forum/w%3D580/sign=a18485594e086e066aa83f4332087b5a/4a110924ab18972bcd1a19a2e4cd7b899e510ab8.jpg",
-                                                   @"http://imgsrc.baidu.com/forum/w%3D580/sign=42d17a169058d109c4e3a9bae159ccd0/61f5b2119313b07e550549600ed7912397dd8c21.jpg",
-                                                   ]];
+        _assets = [NSMutableArray array];
     }
     return _assets;
 }
@@ -81,8 +75,10 @@
             // 如果是本地ZLPhotoAssets就从本地取，否则从网络取
             if ([[self.assets objectAtIndex:i] isKindOfClass:[ZLPhotoAssets class]]) {
                 [btn setImage:[self.assets[i] thumbImage] forState:UIControlStateNormal];
-            }else{
-                [btn sd_setImageWithURL:[NSURL URLWithString:self.assets[i % (self.assets.count)]] forState:UIControlStateNormal];
+            }else if ([[self.assets objectAtIndex:i] isKindOfClass:[ZLCamera class]]){
+                [btn setImage:[self.assets[i] thumbImage] forState:UIControlStateNormal];
+            }else if ([[self.assets objectAtIndex:i] isKindOfClass:[NSString class]]){
+                [btn sd_setImageWithURL:[NSURL URLWithString:self.assets[i]] forState:UIControlStateNormal];
             }
             btn.tag = i;
         }
@@ -97,7 +93,7 @@
 - (void)photoSelectet{
     ZLPhotoPickerViewController *pickerVc = [[ZLPhotoPickerViewController alloc] init];
     // MaxCount, Default = 9
-    pickerVc.maxCount = 9 - self.assets.count;
+    pickerVc.maxCount = 9;
     // Jump AssetsVc
     pickerVc.status = PickerViewShowStatusCameraRoll;
     // Filter: PickerPhotoStatusAllVideoAndPhotos, PickerPhotoStatusVideos, PickerPhotoStatusPhotos.
