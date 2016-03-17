@@ -14,6 +14,7 @@
 @interface Example5ViewController () <ZLPhotoPickerBrowserViewControllerDelegate>
 
 @property (nonatomic , strong) NSMutableArray *assets;
+@property (nonatomic , strong) NSMutableArray *photos;
 @property (weak,nonatomic) UIScrollView *scrollView;
 
 @end
@@ -32,11 +33,12 @@
                           @"http://imgsrc.baidu.com/forum/w%3D580/sign=42d17a169058d109c4e3a9bae159ccd0/61f5b2119313b07e550549600ed7912397dd8c21.jpg",
                           ];
         
-        _assets = [NSMutableArray arrayWithCapacity:urls.count];
+        _assets = urls.mutableCopy;
+        
         for (NSString *url in urls) {
             ZLPhotoPickerBrowserPhoto *photo = [[ZLPhotoPickerBrowserPhoto alloc] init];
             photo.photoURL = [NSURL URLWithString:url];
-            [_assets addObject:photo];
+            [self.photos addObject:photo];
         }
     }
     return _assets;
@@ -47,6 +49,7 @@
     [super viewDidLoad];
     
     self.view.backgroundColor = [UIColor whiteColor];
+    self.photos = @[].mutableCopy;
     
     // 这个属性不能少
     self.automaticallyAdjustsScrollViewInsets = NO;
@@ -91,6 +94,8 @@
             // 如果是本地ZLPhotoAssets就从本地取，否则从网络取
             if ([[self.assets objectAtIndex:i] isKindOfClass:[ZLPhotoAssets class]]) {
                 [btn setImage:[self.assets[i] thumbImage] forState:UIControlStateNormal];
+            }else if ([[self.assets objectAtIndex:i] isKindOfClass:[ZLPhotoAssets class]]) {
+                [btn setImage:[self.assets[i] thumbImage] forState:UIControlStateNormal];
             }else{
                 ZLPhotoPickerBrowserPhoto *photo = self.assets[i];
                 photo.toView = btn.imageView;
@@ -121,8 +126,20 @@
     pickerVc.topShowPhotoPicker = YES;
     // CallBack
     pickerVc.callBack = ^(NSArray<ZLPhotoAssets *> *status){
+        
         self.assets = status.mutableCopy;
         [self reloadScrollView];
+        
+        for (ZLPhotoAssets *asset in status) {
+            ZLPhotoPickerBrowserPhoto *photo = [[ZLPhotoPickerBrowserPhoto alloc] init];
+            if ([asset isKindOfClass:[ZLPhotoAssets class]]) {
+                photo.asset = asset;
+            }else if ([asset isKindOfClass:[ZLCamera class]]){
+                ZLCamera *camera = (ZLCamera *)asset;
+                photo.thumbImage = [camera thumbImage];
+            }
+            [self.photos addObject:photo];
+        }
     };
     [pickerVc showPickerVc:self];
 }
@@ -135,7 +152,7 @@
     // pickerBrowser.status = UIViewAnimationAnimationStatusFade;
     // 数据源/delegate
     pickerBrowser.editing = YES;
-    pickerBrowser.photos = self.assets;
+    pickerBrowser.photos = self.photos;
     // 能够删除
     pickerBrowser.delegate = self;
     // 当前选中的值

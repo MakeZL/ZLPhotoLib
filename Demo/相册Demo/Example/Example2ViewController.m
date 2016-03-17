@@ -14,6 +14,8 @@
 @interface Example2ViewController () <ZLPhotoPickerBrowserViewControllerDelegate>
 
 @property (nonatomic , strong) NSMutableArray *assets;
+@property (nonatomic , strong) NSMutableArray *photos;
+
 @property (weak,nonatomic) UIScrollView *scrollView;
 
 @end
@@ -31,11 +33,12 @@
                           @"http://imgsrc.baidu.com/forum/w%3D580/sign=42d17a169058d109c4e3a9bae159ccd0/61f5b2119313b07e550549600ed7912397dd8c21.jpg",
                           ];
         
-        _assets = [NSMutableArray arrayWithCapacity:urls.count];
+        _assets = urls.mutableCopy;
+        
         for (NSString *url in urls) {
             ZLPhotoPickerBrowserPhoto *photo = [[ZLPhotoPickerBrowserPhoto alloc] init];
             photo.photoURL = [NSURL URLWithString:url];
-            [_assets addObject:photo];
+            [self.photos addObject:photo];
         }
     }
     return _assets;
@@ -45,8 +48,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.photos = @[].mutableCopy;
     self.view.backgroundColor = [UIColor whiteColor];
-    
     // 这个属性不能少
     self.automaticallyAdjustsScrollViewInsets = NO;
     
@@ -111,11 +114,22 @@
 - (void)takeCamera{
     ZLCameraViewController *cameraVc = [[ZLCameraViewController alloc] init];
     // MaxCount, Default = 9
-    cameraVc.maxCount = 9 - self.assets.count;
     // CallBack
     cameraVc.callback = ^(NSArray *status){
+        
         self.assets = status.mutableCopy;
         [self reloadScrollView];
+        
+        for (ZLPhotoAssets *asset in status) {
+            ZLPhotoPickerBrowserPhoto *photo = [[ZLPhotoPickerBrowserPhoto alloc] init];
+            if ([asset isKindOfClass:[ZLPhotoAssets class]]) {
+                photo.asset = asset;
+            }else if ([asset isKindOfClass:[ZLCamera class]]){
+                ZLCamera *camera = (ZLCamera *)asset;
+                photo.thumbImage = [camera thumbImage];
+            }
+            [self.photos addObject:photo];
+        }
     };
     [cameraVc showPickerVc:self];
 }
@@ -127,7 +141,7 @@
     // 淡入淡出效果
     // pickerBrowser.status = UIViewAnimationAnimationStatusFade;
     // 数据源/delegate
-    pickerBrowser.photos = self.assets;
+    pickerBrowser.photos = self.photos;
     // 能够删除
     pickerBrowser.delegate = self;
     // 当前选中的值
