@@ -96,11 +96,14 @@
                 [btn setImage:[self.assets[i] thumbImage] forState:UIControlStateNormal];
             }else if ([[self.assets objectAtIndex:i] isKindOfClass:[ZLPhotoAssets class]]) {
                 [btn setImage:[self.assets[i] thumbImage] forState:UIControlStateNormal];
-            }else{
+            }else if ([self.assets[i] isKindOfClass:[NSString class]]){
+                [btn sd_setImageWithURL:[NSURL URLWithString:self.assets[i]] forState:UIControlStateNormal];
+            }else if([self.assets[i] isKindOfClass:[ZLPhotoPickerBrowserPhoto class]]){
                 ZLPhotoPickerBrowserPhoto *photo = self.assets[i];
                 photo.toView = btn.imageView;
                 [btn sd_setImageWithURL:photo.photoURL forState:UIControlStateNormal];
             }
+
             btn.tag = i;
             [btn addTarget:self action:@selector(tapBrowser:) forControlEvents:UIControlEventTouchUpInside];
         }
