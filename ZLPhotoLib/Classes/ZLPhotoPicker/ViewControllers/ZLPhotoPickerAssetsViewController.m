@@ -133,10 +133,13 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
             [reSortArray addObject:obj];
         }
         
-        ZLPhotoAssets *zlAsset = [[ZLPhotoAssets alloc] init];
-        [reSortArray insertObject:zlAsset atIndex:0];
+        if (self.isShowCamera) {
+            ZLPhotoAssets *zlAsset = [[ZLPhotoAssets alloc] init];
+            [reSortArray insertObject:zlAsset atIndex:0];
+        }
         
         self.collectionView.status = ZLPickerCollectionViewShowOrderStatusTimeAsc;
+        self.collectionView.isShowCamera = self.isShowCamera;
         self.collectionView.topShowPhotoPicker = topShowPhotoPicker;
         self.collectionView.dataArray = reSortArray;
         [self.collectionView reloadData];

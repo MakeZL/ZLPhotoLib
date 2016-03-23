@@ -40,6 +40,8 @@ typedef NS_ENUM(NSUInteger, ZLPickerCollectionViewShowOrderStatus){
 @property (nonatomic , assign) NSInteger maxCount;
 // 置顶展示图片
 @property (assign,nonatomic) BOOL topShowPhotoPicker;
+// 显示拍照
+@property (assign,nonatomic) BOOL isShowCamera;
 // 选中的索引值，为了防止重用
 @property (nonatomic , strong) NSMutableArray *selectsIndexPath;
 // 记录选中的值
