@@ -53,7 +53,8 @@ typedef NS_ENUM(NSInteger, PickerPhotoStatus) {
 @property (strong,nonatomic) NSArray *selectPickers;
 // 置顶展示图片
 @property (assign,nonatomic) BOOL topShowPhotoPicker;
-
+// 是否显示Camera
+@property (assign,nonatomic) BOOL isShowCamera;
 // @function
 // 展示控制器
 - (void)showPickerVc:(UIViewController *)vc;

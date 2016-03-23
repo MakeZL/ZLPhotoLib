@@ -36,7 +36,10 @@
     if (!_tableView) {
         UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
         tableView.translatesAutoresizingMaskIntoConstraints = NO;
+        tableView.rowHeight = 80;
         tableView.delegate = self;
+        tableView.tableFooterView = [[UIView alloc] init];
+        tableView.separatorInset = UIEdgeInsetsZero;
         [tableView registerClass:[ZLPhotoPickerGroupTableViewCell class] forCellReuseIdentifier:NSStringFromClass([ZLPhotoPickerGroupTableViewCell class])];
         [self.view addSubview:tableView];
         self.tableView = tableView;
@@ -128,6 +131,7 @@
     ZLPhotoPickerAssetsViewController *assetsVc = [[ZLPhotoPickerAssetsViewController alloc] init];
     assetsVc.selectPickerAssets = self.selectAsstes;
     assetsVc.assetsGroup = gp;
+    assetsVc.isShowCamera = self.isShowCamera;
     assetsVc.topShowPhotoPicker = self.topShowPhotoPicker;
     assetsVc.groupVc = self;
     assetsVc.maxCount = self.maxCount;
@@ -141,9 +145,6 @@
 }
 
 #pragma mark -<UITableViewDelegate>
-- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 80;
-}
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
@@ -155,6 +156,7 @@
     assetsVc.groupVc = self;
     assetsVc.maxCount = self.maxCount;
     assetsVc.assetsGroup = group;
+    assetsVc.isShowCamera = self.isShowCamera;
     assetsVc.topShowPhotoPicker = self.topShowPhotoPicker;
     [self hideWaitingAnimation];
     [self.navigationController pushViewController:assetsVc animated:YES];

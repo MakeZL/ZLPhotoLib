@@ -19,5 +19,6 @@
 @property (strong,nonatomic) NSArray *selectAsstes;
 // 置顶展示图片
 @property (assign,nonatomic) BOOL topShowPhotoPicker;
-
+// 是否显示Camera
+@property (assign,nonatomic) BOOL isShowCamera;
 @end

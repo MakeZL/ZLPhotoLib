@@ -95,7 +95,7 @@
     ZLPhotoPickerCollectionViewCell *cell = [ZLPhotoPickerCollectionViewCell cellWithCollectionView:collectionView cellForItemAtIndexPath:indexPath];
     
     
-    if(indexPath.item == 0 && self.topShowPhotoPicker){
+    if(indexPath.item == 0 && self.topShowPhotoPicker && self.isShowCamera){
         UIImageView *imageView = [[cell.contentView subviews] lastObject];
         // 判断真实类型
         if (![imageView isKindOfClass:[UIImageView class]]) {
@@ -147,7 +147,7 @@
 #pragma mark - <UICollectionViewDelegate>
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
 
-    if (self.topShowPhotoPicker && indexPath.item == 0) {
+    if (self.topShowPhotoPicker && indexPath.item == 0 && self.isShowCamera) {
         NSUInteger maxCount = (self.maxCount == 0) ? KPhotoShowMaxCount :  self.maxCount;
         if (![self validatePhotoCount:maxCount]){
             return ;
