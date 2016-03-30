@@ -10,8 +10,5 @@
 
 @implementation ZLCamera
 
-- (UIImage *)photoImage{
-    return [UIImage imageWithContentsOfFile:self.imagePath];
-}
 
 @end

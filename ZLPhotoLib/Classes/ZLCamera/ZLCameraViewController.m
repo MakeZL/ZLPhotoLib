@@ -323,9 +323,6 @@ static CGFloat BOTTOM_HEIGHT = 60;
         ZLPhotoPickerBrowserPhoto *photo = [[ZLPhotoPickerBrowserPhoto alloc] init];
         if ([asset isKindOfClass:[ZLPhotoAssets class]]) {
             photo.asset = asset;
-        }else if ([asset isKindOfClass:[ZLCamera class]]){
-            ZLCamera *camera = (ZLCamera *)asset;
-            photo.thumbImage = [camera thumbImage];
         }else if ([asset isKindOfClass:[UIImage class]]){
             photo.thumbImage = (UIImage *)asset;
             photo.photoImage = (UIImage *)asset;
@@ -405,25 +402,25 @@ static CGFloat BOTTOM_HEIGHT = 60;
          NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageSampleBuffer];
          UIImage *t_image = [UIImage imageWithData:imageData];
          
-         NSDateFormatter *formater = [[NSDateFormatter alloc] init];
-         formater.dateFormat = @"yyyyMMddHHmmss";
-         NSString *currentTimeStr = [[formater stringFromDate:[NSDate date]] stringByAppendingFormat:@"_%d" ,arc4random_uniform(10000)];
-
-         t_image = [self fixOrientation:t_image];
-         
-         NSString *path = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:currentTimeStr];
-         [UIImagePNGRepresentation(t_image) writeToFile:path atomically:YES];
-         
-         NSData *data = UIImageJPEGRepresentation(t_image, 0.3);
-         ZLCamera *camera = [[ZLCamera alloc] init];
-         camera.imagePath = path;
-         camera.thumbImage = [UIImage imageWithData:data];
-         [self.images addObject:camera];
-         
-         [self.collectionView reloadData];
-         [self.collectionView selectItemAtIndexPath:[NSIndexPath indexPathForItem:self.images.count - 1 inSection:0] animated:YES scrollPosition:UICollectionViewScrollPositionRight];
-         
-     }];
+         ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+         // Request to save the image to camera roll
+         [library writeImageToSavedPhotosAlbum:[t_image CGImage] orientation:(ALAssetOrientation)[t_image imageOrientation] completionBlock:^(NSURL *assetURL, NSError *error){
+             if (error) {
+                 NSLog(@"error");
+             } else {
+                 UIImage * tblock_image = [self fixOrientation:t_image];
+                 NSData *data = UIImageJPEGRepresentation(tblock_image, 0.3);
+                 ZLCamera *camera = [[ZLCamera alloc] init];
+                 camera.assetURL = assetURL;
+                 camera.originImage = tblock_image;
+                 camera.thumbImage = [UIImage imageWithData:data];
+                 [self.images addObject:camera];
+                 
+                 [self.collectionView reloadData];
+                 [self.collectionView selectItemAtIndexPath:[NSIndexPath indexPathForItem:self.images.count - 1 inSection:0] animated:YES scrollPosition:UICollectionViewScrollPositionRight];
+                 
+             }
+         }];     }];
 }
 
 - (AVCaptureDevice *)cameraWithPosition:(AVCaptureDevicePosition)position
@@ -513,7 +510,7 @@ static CGFloat BOTTOM_HEIGHT = 60;
 - (void)stillImage:(id)sender
 {
     // 判断图片的限制个数
-    if (self.maxCount > 0 && self.images.count >= self.maxCount) {
+    if (self.images.count >= self.maxCount) {
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:[NSString stringWithFormat:@"拍照的个数不能超过%ld",self.maxCount]delegate:nil cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
         [alertView show];
         return ;

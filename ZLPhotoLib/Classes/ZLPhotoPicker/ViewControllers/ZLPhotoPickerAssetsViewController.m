@@ -376,10 +376,10 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
         NSInteger selectAssetsCurrentPage = -1;
         for (NSInteger i = 0; i < self.selectAssets.count; i++) {
             ZLPhotoAssets *photoAsset = self.selectAssets[i];
-            if ([photoAsset isKindOfClass:[ZLCamera class]]) {
+            if ([photoAsset isKindOfClass:[UIImage class]]) {
                 continue;
             }
-            if([[[[asset.asset defaultRepresentation] url] absoluteString] isEqualToString:[[[photoAsset.asset defaultRepresentation] url] absoluteString]]){
+            if([[[[asset.asset defaultRepresentation] url] absoluteString] isEqualToString:[[photoAsset assetURL] absoluteString]]){
                 selectAssetsCurrentPage = i;
                 break;
             }

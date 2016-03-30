@@ -34,6 +34,6 @@
 /**
  *  获取图片的URL
  */
-- (NSURL *)assetURL;
+@property (strong,nonatomic) NSURL *assetURL;
 
 @end

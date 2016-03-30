@@ -24,15 +24,15 @@
 }
 
 - (UIImage *)aspectRatioImage{
-    return self.isUIImage ? _aspectRatioImage : [UIImage imageWithCGImage:[self.asset aspectRatioThumbnail]];
+    return self.isUIImage||_aspectRatioImage ? _aspectRatioImage : [UIImage imageWithCGImage:[self.asset aspectRatioThumbnail]];
 }
 
 - (UIImage *)thumbImage{
-    return self.isUIImage ? _thumbImage : [UIImage imageWithCGImage:[self.asset thumbnail]];
+    return self.isUIImage||_thumbImage ? _thumbImage : [UIImage imageWithCGImage:[self.asset thumbnail]];
 }
 
 - (UIImage *)originImage{
-    return self.isUIImage ? _originImage : [UIImage imageWithCGImage:[[self.asset defaultRepresentation] fullScreenImage]];
+    return self.isUIImage||_originImage ? _originImage : [UIImage imageWithCGImage:[[self.asset defaultRepresentation] fullScreenImage]];
 }
 
 - (BOOL)isVideoType{
@@ -42,7 +42,7 @@
 }
 
 - (NSURL *)assetURL{
-    return [[self.asset defaultRepresentation] url];
+    return _assetURL ? _assetURL :[[self.asset defaultRepresentation] url];
 }
 
 @end
