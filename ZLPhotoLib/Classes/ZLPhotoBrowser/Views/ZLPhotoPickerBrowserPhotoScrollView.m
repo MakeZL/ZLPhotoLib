@@ -296,21 +296,15 @@
     CGFloat yScale = boundsSize.height / imageSize.height;  // the scale needed to perfectly fit the image height-wise
     
     CGFloat minScale = MIN(xScale, yScale);
-    CGFloat maxScale = MAX(xScale, yScale);
+    // CGFloat maxScale = MAX(xScale, yScale);
     // use minimum of these to allow the image to become fully visible
     // Image is smaller than screen so no zooming!
     if (xScale >= 1 && yScale >= 1) {
         minScale = MIN(xScale, yScale);
     }
     
-    if (xScale >= yScale * 2) {
-        // Initial zoom
-        self.maximumZoomScale = 1.0;
-        self.minimumZoomScale = maxScale;
-    }else {
-        self.maximumZoomScale = yScale * 1.2;
-        self.minimumZoomScale = xScale;
-    }
+    self.maximumZoomScale = xScale * 2;
+    self.minimumZoomScale = xScale;
     
     self.zoomScale = self.minimumZoomScale;
     
@@ -321,6 +315,8 @@
         }
     }
     
+    self.contentOffset = CGPointMake(0, 0);
+    self.contentSize = CGSizeMake(0, self.contentSize.height);
     // Layout
     [self setNeedsLayout];
     
@@ -374,7 +370,6 @@
         
         // Zoom out
         [self setZoomScale:self.minimumZoomScale animated:YES];
-        self.contentSize = CGSizeMake(self.frame.size.width, 0);
     } else {
         if (self.isLoadingDone) {
             // Zoom in to twice the size

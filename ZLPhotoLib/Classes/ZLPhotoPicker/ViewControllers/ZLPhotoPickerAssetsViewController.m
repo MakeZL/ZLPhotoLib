@@ -445,6 +445,8 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
     
     NSMutableArray *photos = [NSMutableArray array];
     if (self.selectAssets.count && self.selectAssets.count - 1 >= indexPath.item) {
+        UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
+        UIImageView *imageView = [[cell.contentView subviews] lastObject];
         for (ZLPhotoAssets *asset in self.selectAssets) {
             ZLPhotoPickerBrowserPhoto *photo = [[ZLPhotoPickerBrowserPhoto alloc] init];
             if ([asset isKindOfClass:[ZLPhotoAssets class]]) {
@@ -452,6 +454,9 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
             }else if ([asset isKindOfClass:[ZLCamera class]]){
                 ZLCamera *camera = (ZLCamera *)asset;
                 photo.thumbImage = [camera thumbImage];
+            }
+            if ([imageView isKindOfClass:[UIImageView class]]) {
+                photo.toView = imageView;
             }
             [photos addObject:photo];
         }

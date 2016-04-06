@@ -102,6 +102,7 @@
     pickerVc.selectPickers = self.assets;
     // Desc Show Photos, And Suppor Camera
     pickerVc.topShowPhotoPicker = YES;
+    pickerVc.isShowCamera = YES;
     // CallBack
     pickerVc.callBack = ^(NSArray<ZLPhotoAssets *> *status){
         self.assets = status.mutableCopy;

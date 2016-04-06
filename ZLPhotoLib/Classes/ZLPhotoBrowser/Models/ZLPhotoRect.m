@@ -28,6 +28,8 @@
     CGFloat minScale = MIN(xScale, yScale);
     if (xScale >= 1 && yScale >= 1) {
         minScale = MIN(xScale, yScale);
+    }else{
+        minScale = xScale;
     }
     
     CGRect frameToCenter = CGRectZero;

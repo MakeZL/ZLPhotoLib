@@ -45,6 +45,11 @@
     return self;
 }
 
+- (void)setIsShowCamera:(BOOL)isShowCamera{
+    _isShowCamera = isShowCamera;
+    self.groupVc.isShowCamera = isShowCamera;
+}
+
 - (void)setSelectPickers:(NSArray *)selectPickers{
     _selectPickers = selectPickers;
     self.groupVc.selectAsstes = selectPickers;
