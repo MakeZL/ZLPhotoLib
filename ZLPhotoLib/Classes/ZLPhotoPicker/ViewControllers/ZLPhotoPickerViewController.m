@@ -75,6 +75,12 @@
     self.groupVc.topShowPhotoPicker = topShowPhotoPicker;
 }
 
+- (void)setIsShowCamera:(BOOL)isShowCamera{
+    
+    _isShowCamera = isShowCamera;
+    self.groupVc.isShowCamera = isShowCamera;
+}
+
 - (void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
     [self hideWaitingAnimation];
