@@ -119,7 +119,7 @@
     // CallBack
     cameraVc.callback = ^(NSArray *status){
         
-        self.assets = status.mutableCopy;
+        [self.assets addObjectsFromArray:status];
         [self reloadScrollView];
         
         for (ZLPhotoAssets *asset in status) {

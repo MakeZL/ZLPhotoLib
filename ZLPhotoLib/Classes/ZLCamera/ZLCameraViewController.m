@@ -568,11 +568,11 @@ static CGFloat BOTTOM_HEIGHT = 60;
     
     if ([[UIDevice currentDevice] orientation] == UIDeviceOrientationLandscapeLeft ||
         [[UIDevice currentDevice] orientation] == UIDeviceOrientationLandscapeRight) {
-        width = srcImg.size.width;
-        height = srcImg.size.height * 0.35;
+        width = srcImg.size.height;
+        height = srcImg.size.width;
     }else{
-        width = [UIScreen mainScreen].bounds.size.width;
-        height = [UIScreen mainScreen].bounds.size.height;
+//        width = [UIScreen mainScreen].bounds.size.width;
+//        height = [UIScreen mainScreen].bounds.size.height;
     }
     
 //    CGFloat radiox = width / height;
