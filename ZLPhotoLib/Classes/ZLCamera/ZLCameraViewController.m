@@ -414,6 +414,15 @@ static CGFloat BOTTOM_HEIGHT = 60;
          NSString *path = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:currentTimeStr];
          [UIImagePNGRepresentation(t_image) writeToFile:path atomically:YES];
          
+         ALAssetsLibrary *assetsLibrary = [[ALAssetsLibrary alloc]init];
+         [assetsLibrary writeImageToSavedPhotosAlbum:[t_image CGImage] orientation:(ALAssetOrientation)t_image.imageOrientation completionBlock:^(NSURL *assetURL, NSError *error) {
+             if (error) {
+                 NSLog(@"Save image fail：%@",error);
+             }else{
+                 NSLog(@"Save image succeed.");
+             }  
+         }];
+         
          NSData *data = UIImageJPEGRepresentation(t_image, 0.3);
          ZLCamera *camera = [[ZLCamera alloc] init];
          camera.imagePath = path;

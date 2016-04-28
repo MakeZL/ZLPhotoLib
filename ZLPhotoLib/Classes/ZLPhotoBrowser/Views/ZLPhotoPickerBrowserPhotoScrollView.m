@@ -88,10 +88,14 @@
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(long)buttonIndex{
     if (buttonIndex == 0){
         if([UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypeSavedPhotosAlbum]) {
-            UIImageWriteToSavedPhotosAlbum(_photoImageView.image, nil, nil, nil);
-            if (_photoImageView.image) {
-                [self showMessageWithText:@"保存成功"];
-            }
+            ALAssetsLibrary *assetsLibrary = [[ALAssetsLibrary alloc]init];
+            [assetsLibrary writeImageToSavedPhotosAlbum:[_photoImageView.image CGImage] orientation:(ALAssetOrientation)_photoImageView.image.imageOrientation completionBlock:^(NSURL *assetURL, NSError *error) {
+                if (error) {
+                    NSLog(@"Save image fail：%@",error);
+                }else{
+                    NSLog(@"Save image succeed.");
+                }
+            }];
         }else{
             if (_photoImageView.image) {
                 [self showMessageWithText:@"没有用户权限,保存失败"];
