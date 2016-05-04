@@ -6,10 +6,6 @@
 //  Copyright (c) 2014年 com.zixue101.www. All rights reserved.
 //
 
-#define CELL_ROW 4
-#define CELL_MARGIN 5
-#define CELL_LINE_MARGIN 5
-
 
 #import "ZLPhotoPickerGroupViewController.h"
 #import "ZLPhotoPickerCollectionView.h"

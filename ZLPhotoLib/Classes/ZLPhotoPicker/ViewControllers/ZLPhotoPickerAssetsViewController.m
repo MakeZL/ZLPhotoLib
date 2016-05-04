@@ -14,11 +14,6 @@
 #import "ZLPhotoPickerCollectionViewCell.h"
 #import "ZLPhotoPickerFooterCollectionReusableView.h"
 
-static CGFloat CELL_ROW = 3;
-static CGFloat CELL_MARGIN = 2;
-static CGFloat CELL_LINE_MARGIN = 2;
-static CGFloat TOOLBAR_HEIGHT = 44;
-
 static NSString *const _cellIdentifier = @"cell";
 static NSString *const _footerIdentifier = @"FooterView";
 static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
