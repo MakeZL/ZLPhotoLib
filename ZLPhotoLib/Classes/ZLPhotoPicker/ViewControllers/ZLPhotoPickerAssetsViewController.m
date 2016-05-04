@@ -241,6 +241,7 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
 
 - (void)pickerCollectionViewDidCameraSelect:(ZLPhotoPickerCollectionView *)pickerCollectionView{
     ZLCameraViewController *cameraVc = [[ZLCameraViewController alloc] init];
+    cameraVc.maxCount = (self.maxCount - self.selectAssets.count > 0) ? (self.maxCount - self.selectAssets.count) : 0;
     __weak typeof(self)weakSelf = self;
     __weak typeof(cameraVc)weakCameraVc = cameraVc;
     cameraVc.callback = ^(NSArray *camera){
