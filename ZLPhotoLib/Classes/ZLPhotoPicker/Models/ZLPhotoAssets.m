@@ -30,16 +30,19 @@
 
 - (void)thumbImageCallBack:(callBackImage)callBack{
     UIImage *thumbImage = self.isUIImage ? _thumbImage : [UIImage imageWithCGImage:[self.asset thumbnail]];
-    if (thumbImage == nil && [[[UIDevice currentDevice] systemName] floatValue] >= 9.3) {
+    if (thumbImage == nil && [[[UIDevice currentDevice] systemVersion] floatValue] >= 9.3) {
         __weak typeof(self)weakSelf = self;
         dispatch_async(dispatch_get_global_queue(0, 0), ^{
-            UIImage *img = [weakSelf originImage];
-            CGFloat WH = [UIScreen mainScreen].bounds.size.width / (CELL_ROW-1);
-            img = [self imageCompressForWidth:img targetWidth:WH];
-            NSData *data = UIImageJPEGRepresentation(img, 1.0);
-            dispatch_async(dispatch_get_main_queue(), ^{
-                !callBack ?: callBack([UIImage imageWithData:data]);
-            });
+            @autoreleasepool {
+                UIImage *img = [weakSelf originImage];
+                CGFloat WH = [UIScreen mainScreen].bounds.size.width / (CELL_ROW-1);
+                img = [self imageCompressForWidth:img targetWidth:WH];
+                NSData *data = UIImageJPEGRepresentation(img, 0.5);
+                img = [UIImage imageWithData:data];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    !callBack ?: callBack(img);
+                });
+            }
         });
     }else{
         !callBack ?: callBack(thumbImage);

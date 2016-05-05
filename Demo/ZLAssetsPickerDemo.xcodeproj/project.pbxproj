@@ -853,7 +853,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "zixue101.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "c38deeb3-c442-454d-9fcf-671fc9090c69";
+				PROVISIONING_PROFILE = "db0abbae-c947-444b-97d9-4455f1ea3c5c";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -876,7 +876,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "zixue101.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "c38deeb3-c442-454d-9fcf-671fc9090c69";
+				PROVISIONING_PROFILE = "db0abbae-c947-444b-97d9-4455f1ea3c5c";
 			};
 			name = Release;
 		};
