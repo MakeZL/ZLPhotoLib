@@ -125,6 +125,7 @@
         cellImgView.isVideoType = asset.isVideoType;
         if ([asset isKindOfClass:[ZLPhotoAssets class]]) {
             [asset thumbImageCallBack:^(UIImage *image) {
+                asset.thumbImage = image;
                 cellImgView.image = image;
             }];
         }
