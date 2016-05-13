@@ -29,7 +29,7 @@
 }
 
 - (void)thumbImageCallBack:(callBackImage)callBack{
-    UIImage *thumbImage = self.isUIImage ? _thumbImage : [UIImage imageWithCGImage:[self.asset thumbnail]];
+    UIImage *thumbImage = self.isUIImage ? _thumbImage : self.aspectRatioImage;
     if (thumbImage == nil && [[[UIDevice currentDevice] systemVersion] floatValue] >= 9.3) {
         __weak typeof(self)weakSelf = self;
         dispatch_async(dispatch_get_global_queue(0, 0), ^{
