@@ -14,6 +14,7 @@
 @interface Example1ViewController () <ZLPhotoPickerBrowserViewControllerDelegate>
 
 @property (nonatomic , strong) NSMutableArray *assets;
+@property (nonatomic , strong) NSMutableArray *photos;
 @property (weak,nonatomic) UIScrollView *scrollView;
 
 @end
@@ -21,8 +22,8 @@
 @implementation Example1ViewController
 
 
-- (NSMutableArray *)assets{
-    if (!_assets) {
+- (NSMutableArray *)photos{
+    if (!_photos) {
         
         NSArray *urls = @[
                           @"http://imgsrc.baidu.com/forum/w%3D580/sign=515dae6de7dde711e7d243fe97eecef4/6c236b600c3387446fc73114530fd9f9d72aa05b.jpg",
@@ -32,15 +33,16 @@
                           @"http://imgsrc.baidu.com/forum/w%3D580/sign=42d17a169058d109c4e3a9bae159ccd0/61f5b2119313b07e550549600ed7912397dd8c21.jpg",
                           ];
         
-        _assets = [NSMutableArray arrayWithCapacity:urls.count];
+        _photos = [NSMutableArray arrayWithCapacity:urls.count];
         for (NSString *url in urls) {
             ZLPhotoPickerBrowserPhoto *photo = [[ZLPhotoPickerBrowserPhoto alloc] init];
             photo.photoURL = [NSURL URLWithString:url];
-            [_assets addObject:photo];
+            [_photos addObject:photo];
         }
         
+        _assets = _photos.mutableCopy;
     }
-    return _assets;
+    return _photos;
 }
 
 
@@ -112,8 +114,7 @@
 #pragma mark - 选择图片
 - (void)photoSelecte{
     ZLPhotoPickerViewController *pickerVc = [[ZLPhotoPickerViewController alloc] init];
-    // MaxCount, Default = 9
-    pickerVc.maxCount = 9 - self.assets.count;
+    pickerVc.maxCount = 9-self.photos.count;
     // Jump AssetsVc
     pickerVc.status = PickerViewShowStatusCameraRoll;
     // Recoder Select Assets
@@ -123,6 +124,7 @@
     // Desc Show Photos, And Suppor Camera
     pickerVc.topShowPhotoPicker = YES;
     // CallBack
+    __weak typeof(self)weakSelf = self;
     pickerVc.callBack = ^(NSArray<ZLPhotoAssets *> *status){
         
         NSMutableArray *photos = [NSMutableArray arrayWithCapacity:status.count];
@@ -132,8 +134,9 @@
             [photos addObject:photo];
         }
         
-        self.assets = photos.mutableCopy;
-        [self reloadScrollView];
+        weakSelf.assets = [NSMutableArray arrayWithArray:weakSelf.photos];
+        [weakSelf.assets addObjectsFromArray:photos];
+        [weakSelf reloadScrollView];
     };
     [pickerVc showPickerVc:self];
 }

@@ -51,8 +51,16 @@
 }
 
 - (void)setSelectPickers:(NSArray *)selectPickers{
-    _selectPickers = selectPickers;
-    self.groupVc.selectAsstes = selectPickers;
+    NSMutableArray *assets = [NSMutableArray arrayWithCapacity:selectPickers.count];
+    for (id asset in selectPickers) {
+        if ([asset isKindOfClass:[ZLPhotoAssets class]]) {
+            [assets addObject:asset];
+            continue;
+        }else if ([asset isKindOfClass:[ZLPhotoPickerBrowserPhoto class]]){
+            [assets addObject:[(ZLPhotoPickerBrowserPhoto *)asset asset]?:@""];
+        }
+    }
+    self.groupVc.selectAsstes = assets;
 }
 
 - (void)setStatus:(PickerViewShowStatus)status{
