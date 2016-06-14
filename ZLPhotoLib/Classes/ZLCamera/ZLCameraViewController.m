@@ -499,9 +499,12 @@ static CGFloat BOTTOM_HEIGHT = 60;
 
 - (void) setTorchOn:(BOOL)isOn
 {
-    [self.device lockForConfiguration:nil]; //you must lock before setting torch mode
-    [self.device setTorchMode:isOn ? AVCaptureTorchModeOn : AVCaptureTorchModeOff];
-    [self.device unlockForConfiguration];
+    if ([self.device isTorchModeSupported:AVCaptureTorchModeOn] ||
+        [self.device isTorchModeSupported:AVCaptureTorchModeOff]) {
+        [self.device lockForConfiguration:nil]; //you must lock before setting torch mode
+        [self.device setTorchMode:isOn ? AVCaptureTorchModeOn : AVCaptureTorchModeOff];
+        [self.device unlockForConfiguration];
+    }
 }
 
 - (void) closeFlashlight:(UIButton *)sender{
