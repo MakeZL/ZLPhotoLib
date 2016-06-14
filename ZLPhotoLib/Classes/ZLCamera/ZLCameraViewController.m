@@ -108,9 +108,10 @@ static CGFloat BOTTOM_HEIGHT = 60;
     _motionManager.deviceMotionUpdateInterval = 1/15.0;
     if (_motionManager.deviceMotionAvailable) {
         NSLog(@"Device Motion Available");
+        __weak typeof(self)weakSelf = self;
         [_motionManager startDeviceMotionUpdatesToQueue:[NSOperationQueue currentQueue]
                                             withHandler: ^(CMDeviceMotion *motion, NSError *error){
-                                                [self performSelectorOnMainThread:@selector(handleDeviceMotion:) withObject:motion waitUntilDone:YES];
+                                                [weakSelf performSelectorOnMainThread:@selector(handleDeviceMotion:) withObject:motion waitUntilDone:YES];
                                                 
                                             }];
     } else {
@@ -393,6 +394,7 @@ static CGFloat BOTTOM_HEIGHT = 60;
     }
     
     //get UIImage
+    __weak typeof(self)weakSelf = self;
     [self.captureOutput captureStillImageAsynchronouslyFromConnection:videoConnection completionHandler:
      ^(CMSampleBufferRef imageSampleBuffer, NSError *error) {
          CFDictionaryRef exifAttachments =
@@ -409,7 +411,7 @@ static CGFloat BOTTOM_HEIGHT = 60;
          formater.dateFormat = @"yyyyMMddHHmmss";
          NSString *currentTimeStr = [[formater stringFromDate:[NSDate date]] stringByAppendingFormat:@"_%d" ,arc4random_uniform(10000)];
 
-         t_image = [self fixOrientation:t_image];
+         t_image = [weakSelf fixOrientation:t_image];
          
          NSString *path = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:currentTimeStr];
          [UIImagePNGRepresentation(t_image) writeToFile:path atomically:YES];
@@ -427,10 +429,10 @@ static CGFloat BOTTOM_HEIGHT = 60;
          ZLCamera *camera = [[ZLCamera alloc] init];
          camera.imagePath = path;
          camera.thumbImage = [UIImage imageWithData:data];
-         [self.images addObject:camera];
+         [weakSelf.images addObject:camera];
          
-         [self.collectionView reloadData];
-         [self.collectionView selectItemAtIndexPath:[NSIndexPath indexPathForItem:self.images.count - 1 inSection:0] animated:YES scrollPosition:UICollectionViewScrollPositionRight];
+         [weakSelf.collectionView reloadData];
+         [weakSelf.collectionView selectItemAtIndexPath:[NSIndexPath indexPathForItem:weakSelf.images.count - 1 inSection:0] animated:YES scrollPosition:UICollectionViewScrollPositionRight];
          
      }];
 }
@@ -489,15 +491,24 @@ static CGFloat BOTTOM_HEIGHT = 60;
     [self.session startRunning];
 }
 - (void) flashCameraDevice:(UIButton *)sender{
+    __weak typeof(self)weakSelf = self;
     [self flashLightModel:^{
-        [self.device setTorchMode:AVCaptureTorchModeOn];
+        [weakSelf setTorchOn:YES];
     }];
+}
+
+- (void) setTorchOn:(BOOL)isOn
+{
+    [self.device lockForConfiguration:nil]; //you must lock before setting torch mode
+    [self.device setTorchMode:isOn ? AVCaptureTorchModeOn : AVCaptureTorchModeOff];
+    [self.device unlockForConfiguration];
 }
 
 - (void) closeFlashlight:(UIButton *)sender{
     // self.device.torchMode == AVCaptureTorchModeOff 判断
+    __weak typeof(self)weakSelf = self;
     [self flashLightModel:^{
-        [self.device setTorchMode:AVCaptureTorchModeOff];
+        [weakSelf setTorchOn:NO];
     }];
 }
 
@@ -506,7 +517,6 @@ static CGFloat BOTTOM_HEIGHT = 60;
     [[UIApplication sharedApplication] setStatusBarHidden:NO];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
-
 
 //完成、取消
 - (void)doneAction
@@ -543,6 +553,7 @@ static CGFloat BOTTOM_HEIGHT = 60;
 }
 
 - (void)dealloc{
+    [self setTorchOn:NO];
     [_motionManager stopDeviceMotionUpdates];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
