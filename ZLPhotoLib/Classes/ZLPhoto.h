@@ -9,7 +9,6 @@
 #ifndef ZLAssetsPickerDemo_ZLPicker_h
 #define ZLAssetsPickerDemo_ZLPicker_h
 
-#import "ZLCameraViewController.h"
 #import "ZLPhotoPickerBrowserViewController.h"
 #import "ZLPhotoPickerAssetsViewController.h"
 #import "ZLPhotoPickerViewController.h"

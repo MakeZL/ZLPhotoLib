@@ -13,10 +13,6 @@
 		484014D01B73572300FBD485 /* ZLPhotoLib.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 484014CF1B73572300FBD485 /* ZLPhotoLib.bundle */; };
 		484015131B73574F00FBD485 /* UIImage+ZLPhotoLib.m in Sources */ = {isa = PBXBuildFile; fileRef = 484014D61B73574F00FBD485 /* UIImage+ZLPhotoLib.m */; };
 		484015141B73574F00FBD485 /* UIView+ZLExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 484014D81B73574F00FBD485 /* UIView+ZLExtension.m */; };
-		484015151B73574F00FBD485 /* ZLCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = 484014DE1B73574F00FBD485 /* ZLCamera.m */; };
-		484015161B73574F00FBD485 /* ZLCameraImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 484014E01B73574F00FBD485 /* ZLCameraImageView.m */; };
-		484015171B73574F00FBD485 /* ZLCameraView.m in Sources */ = {isa = PBXBuildFile; fileRef = 484014E21B73574F00FBD485 /* ZLCameraView.m */; };
-		484015181B73574F00FBD485 /* ZLCameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 484014E41B73574F00FBD485 /* ZLCameraViewController.m */; };
 		484015191B73574F00FBD485 /* ZLPhotoPickerBrowserPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 484014E91B73574F00FBD485 /* ZLPhotoPickerBrowserPhoto.m */; };
 		4840151B1B73574F00FBD485 /* ZLPhotoPickerBrowserPhotoImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 484014EF1B73574F00FBD485 /* ZLPhotoPickerBrowserPhotoImageView.m */; };
 		4840151C1B73574F00FBD485 /* ZLPhotoPickerBrowserPhotoScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 484014F11B73574F00FBD485 /* ZLPhotoPickerBrowserPhotoScrollView.m */; };
@@ -44,9 +40,7 @@
 		48B3E1841A11BABC0079F464 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48B3E1821A11BABC0079F464 /* LaunchScreen.xib */; };
 		48B3E1901A11BABC0079F464 /* __DemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B3E18F1A11BABC0079F464 /* __DemoTests.m */; };
 		48CF6E831B7267A40094DEC4 /* Example0ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CF6E821B7267A40094DEC4 /* Example0ViewController.m */; };
-		48D0E4571AC261D20022C598 /* Example5ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D0E4561AC261D20022C598 /* Example5ViewController.m */; };
 		48ED22091A6D098C0008E783 /* Example1ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48ED22081A6D098C0008E783 /* Example1ViewController.m */; };
-		48ED220C1A6D0E370008E783 /* Example2ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48ED220B1A6D0E370008E783 /* Example2ViewController.m */; };
 		48ED22131A6D108C0008E783 /* Example2CollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 48ED22121A6D108C0008E783 /* Example2CollectionViewCell.m */; };
 		48ED22151A6D10960008E783 /* Example2CollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48ED22141A6D10960008E783 /* Example2CollectionViewCell.xib */; };
 		48F682EB1B872CE9004A06A4 /* ZLPhotoRect.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F682EA1B872CE9004A06A4 /* ZLPhotoRect.m */; };
@@ -88,14 +82,6 @@
 		484014D61B73574F00FBD485 /* UIImage+ZLPhotoLib.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ZLPhotoLib.m"; sourceTree = "<group>"; };
 		484014D71B73574F00FBD485 /* UIView+ZLExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+ZLExtension.h"; sourceTree = "<group>"; };
 		484014D81B73574F00FBD485 /* UIView+ZLExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+ZLExtension.m"; sourceTree = "<group>"; };
-		484014DD1B73574F00FBD485 /* ZLCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLCamera.h; sourceTree = "<group>"; };
-		484014DE1B73574F00FBD485 /* ZLCamera.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLCamera.m; sourceTree = "<group>"; };
-		484014DF1B73574F00FBD485 /* ZLCameraImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLCameraImageView.h; sourceTree = "<group>"; };
-		484014E01B73574F00FBD485 /* ZLCameraImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLCameraImageView.m; sourceTree = "<group>"; };
-		484014E11B73574F00FBD485 /* ZLCameraView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLCameraView.h; sourceTree = "<group>"; };
-		484014E21B73574F00FBD485 /* ZLCameraView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLCameraView.m; sourceTree = "<group>"; };
-		484014E31B73574F00FBD485 /* ZLCameraViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLCameraViewController.h; sourceTree = "<group>"; };
-		484014E41B73574F00FBD485 /* ZLCameraViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLCameraViewController.m; sourceTree = "<group>"; };
 		484014E51B73574F00FBD485 /* ZLPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLPhoto.h; sourceTree = "<group>"; };
 		484014E81B73574F00FBD485 /* ZLPhotoPickerBrowserPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLPhotoPickerBrowserPhoto.h; sourceTree = "<group>"; };
 		484014E91B73574F00FBD485 /* ZLPhotoPickerBrowserPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLPhotoPickerBrowserPhoto.m; sourceTree = "<group>"; };
@@ -153,12 +139,8 @@
 		48B3E18F1A11BABC0079F464 /* __DemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = __DemoTests.m; sourceTree = "<group>"; };
 		48CF6E811B7267A40094DEC4 /* Example0ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Example0ViewController.h; sourceTree = "<group>"; };
 		48CF6E821B7267A40094DEC4 /* Example0ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Example0ViewController.m; sourceTree = "<group>"; };
-		48D0E4551AC261D20022C598 /* Example5ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Example5ViewController.h; sourceTree = "<group>"; };
-		48D0E4561AC261D20022C598 /* Example5ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Example5ViewController.m; sourceTree = "<group>"; };
 		48ED22071A6D098C0008E783 /* Example1ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Example1ViewController.h; sourceTree = "<group>"; };
 		48ED22081A6D098C0008E783 /* Example1ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Example1ViewController.m; sourceTree = "<group>"; };
-		48ED220A1A6D0E370008E783 /* Example2ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Example2ViewController.h; sourceTree = "<group>"; };
-		48ED220B1A6D0E370008E783 /* Example2ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Example2ViewController.m; sourceTree = "<group>"; };
 		48ED22111A6D108C0008E783 /* Example2CollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Example2CollectionViewCell.h; sourceTree = "<group>"; };
 		48ED22121A6D108C0008E783 /* Example2CollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Example2CollectionViewCell.m; sourceTree = "<group>"; };
 		48ED22141A6D10960008E783 /* Example2CollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Example2CollectionViewCell.xib; sourceTree = "<group>"; };
@@ -237,7 +219,6 @@
 			isa = PBXGroup;
 			children = (
 				484014D31B73574F00FBD485 /* Utils */,
-				484014DC1B73574F00FBD485 /* ZLCamera */,
 				484014E51B73574F00FBD485 /* ZLPhoto.h */,
 				484014E61B73574F00FBD485 /* ZLPhotoBrowser */,
 				484014F61B73574F00FBD485 /* ZLPhotoPicker */,
@@ -280,21 +261,6 @@
 			children = (
 			);
 			path = Views;
-			sourceTree = "<group>";
-		};
-		484014DC1B73574F00FBD485 /* ZLCamera */ = {
-			isa = PBXGroup;
-			children = (
-				484014DD1B73574F00FBD485 /* ZLCamera.h */,
-				484014DE1B73574F00FBD485 /* ZLCamera.m */,
-				484014DF1B73574F00FBD485 /* ZLCameraImageView.h */,
-				484014E01B73574F00FBD485 /* ZLCameraImageView.m */,
-				484014E11B73574F00FBD485 /* ZLCameraView.h */,
-				484014E21B73574F00FBD485 /* ZLCameraView.m */,
-				484014E31B73574F00FBD485 /* ZLCameraViewController.h */,
-				484014E41B73574F00FBD485 /* ZLCameraViewController.m */,
-			);
-			path = ZLCamera;
 			sourceTree = "<group>";
 		};
 		484014E61B73574F00FBD485 /* ZLPhotoBrowser */ = {
@@ -475,12 +441,8 @@
 				485F4E8B1A83182E00B6D448 /* Example3ViewController.m */,
 				48ED22071A6D098C0008E783 /* Example1ViewController.h */,
 				48ED22081A6D098C0008E783 /* Example1ViewController.m */,
-				48ED220A1A6D0E370008E783 /* Example2ViewController.h */,
-				48ED220B1A6D0E370008E783 /* Example2ViewController.m */,
 				4806BC7F1AB283ED004B8AB0 /* Example4ViewController.h */,
 				4806BC801AB283ED004B8AB0 /* Example4ViewController.m */,
-				48D0E4551AC261D20022C598 /* Example5ViewController.h */,
-				48D0E4561AC261D20022C598 /* Example5ViewController.m */,
 				48CF6E811B7267A40094DEC4 /* Example0ViewController.h */,
 				48CF6E821B7267A40094DEC4 /* Example0ViewController.m */,
 			);
@@ -670,8 +632,6 @@
 				4840152A1B73574F00FBD485 /* ZLPhotoPickerImageView.m in Sources */,
 				4840151B1B73574F00FBD485 /* ZLPhotoPickerBrowserPhotoImageView.m in Sources */,
 				4840151C1B73574F00FBD485 /* ZLPhotoPickerBrowserPhotoScrollView.m in Sources */,
-				48D0E4571AC261D20022C598 /* Example5ViewController.m in Sources */,
-				484015181B73574F00FBD485 /* ZLCameraViewController.m in Sources */,
 				48B3E17C1A11BABC0079F464 /* ViewController.m in Sources */,
 				484015261B73574F00FBD485 /* ZLPhotoPickerCollectionViewCell.m in Sources */,
 				48FD83891BF98C5D0017FCAA /* UIButton+WebCache.m in Sources */,
@@ -683,7 +643,6 @@
 				48FCA0951C05B69F00989DA7 /* ZLNavigationController.m in Sources */,
 				4861264C1C62046300FF7F1D /* UIViewController+Alert.m in Sources */,
 				484015281B73574F00FBD485 /* ZLPhotoPickerGroupTableViewCell.m in Sources */,
-				484015171B73574F00FBD485 /* ZLCameraView.m in Sources */,
 				48FD838D1BF98C5D0017FCAA /* UIImageView+WebCache.m in Sources */,
 				48FD83871BF98C5D0017FCAA /* SDWebImageManager.m in Sources */,
 				4840151F1B73574F00FBD485 /* ZLPhotoAssets.m in Sources */,
@@ -700,17 +659,14 @@
 				4840151D1B73574F00FBD485 /* ZLPhotoPickerBrowserPhotoView.m in Sources */,
 				484015271B73574F00FBD485 /* ZLPhotoPickerFooterCollectionReusableView.m in Sources */,
 				484015211B73574F00FBD485 /* ZLPhotoPickerGroup.m in Sources */,
-				484015151B73574F00FBD485 /* ZLCamera.m in Sources */,
 				48B3E1791A11BABC0079F464 /* AppDelegate.m in Sources */,
 				48FD838B1BF98C5D0017FCAA /* UIImage+MultiFormat.m in Sources */,
 				48FD838A1BF98C5D0017FCAA /* UIImage+GIF.m in Sources */,
 				4840151E1B73574F00FBD485 /* ZLPhotoPickerCustomToolBarView.m in Sources */,
 				484015201B73574F00FBD485 /* ZLPhotoPickerDatas.m in Sources */,
-				484015161B73574F00FBD485 /* ZLCameraImageView.m in Sources */,
 				484015191B73574F00FBD485 /* ZLPhotoPickerBrowserPhoto.m in Sources */,
 				48FD838E1BF98C5D0017FCAA /* UIView+WebCacheOperation.m in Sources */,
 				48ED22091A6D098C0008E783 /* Example1ViewController.m in Sources */,
-				48ED220C1A6D0E370008E783 /* Example2ViewController.m in Sources */,
 				48FD83861BF98C5D0017FCAA /* SDWebImageDownloaderOperation.m in Sources */,
 				48FD83851BF98C5D0017FCAA /* SDWebImageDownloader.m in Sources */,
 				48CF6E831B7267A40094DEC4 /* Example0ViewController.m in Sources */,

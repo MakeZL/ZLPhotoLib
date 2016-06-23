@@ -2,16 +2,8 @@
 This is a photo album multiple-choice / photo browser example
 --------------
 
-#### 继承图片多选/图片浏览器/相机连拍的一套图片库
+#### 继承图片多选/图片浏览器一体
 #### 新特性:浏览器支持屏幕旋转、优化了数据源。
-
-
-### About Detached in PhotoLib (抽离PhotoLib)
-`MLCamera 自定义相机连拍`[MLCamera](https://github.com/MakeZL/MLCamera)
-
-`MLSelectPhoto 相册多选库` [MLSelectPhoto](https://github.com/MakeZL/MLSelectPhoto)
-
-`MLPhotoBrowser 图片浏览器` [MLPhotoBrowser](https://github.com/MakeZL/MLPhotoBrowser)
 
 Browser Continued in ...
 
@@ -22,9 +14,6 @@ Browser Continued in ...
 
 #### Recoder SelectedAssets/Limit SelectedAssets (记录/限制功能)
 ![image](https://github.com/MakeZL/ZLAssetsPickerDemo/blob/master/Demo_3.gif)
-
-#### Custom ZLCamera (自定义相机连拍)
-<img src="https://github.com/MakeZL/MLCamera/blob/master/screenshot.png" height="500" />
 
 #### Not Power没权限
 <img src="https://github.com/MakeZL/ZLAssetsPickerDemo/blob/master/DemoLock.png" height="500" />
@@ -73,21 +62,12 @@ ZLPhotoPickerBrowserViewController 图片游览器
     // 展示控制器
     [pickerBrowser show];
 
-
-ZLCameraViewController 自定义相机连拍
------------
-    ZLCameraViewController *cameraVc = [[ZLCameraViewController alloc] init];
-    [cameraVc startCameraOrPhotoFileWithViewController:self complate:^(id object) {
-        // to do.. 回调内容
-    }];
-    self.cameraVc = cameraVc;
-
 # Contact
 @weibo : [我的微博](http://weibo.com/makezl/)
 
 # License
 
-MLSelectPhoto is published under MIT License
+ZLPhotoLib is published under MIT License
 
     Copyright (c) 2015 MakeZL (@MakeZL)
     

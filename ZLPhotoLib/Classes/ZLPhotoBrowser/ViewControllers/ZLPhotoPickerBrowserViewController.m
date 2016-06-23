@@ -293,22 +293,8 @@ static NSString *_cellIdentifier = @"collectionViewCell";
             }
             UIImageView *toImageView2 = (UIImageView *)[weakSelf.photos[page] toView];
             
-            originalFrame = [toImageView2.superview convertRect:toImageView2.frame toView:[weakSelf getParsentView:toImageView2]];
-            //            if (self.userScrollView && self.userScrollView.contentOffset.y >= 0) {
-            //                weakSelf.status = UIViewAnimationAnimationStatusFade;
-            //                // 淡入淡出
-            //                ZLPhotoPickerBrowserPhoto *photo = weakSelf.photos[page];
-            //                if (photo.photoImage) {
-            //                    imageView.image = photo.photoImage;
-            //                }else if (photo.thumbImage) {
-            //                    imageView.image = photo.thumbImage;
-            //                }
-            //
-            //                imageView.frame = [ZLPhotoRect setMaxMinZoomScalesForCurrentBoundWithImageView:imageView];
-            //                imageView.alpha = 1.0;
-            //                [imageView superview].alpha = 1.0;
-            //                weakSelf.view.hidden = YES;
-            //            }
+            UIView *toView = [weakSelf getParsentView:toImageView2];
+            originalFrame = [toImageView2.superview convertRect:toImageView2.frame toView:toView];
             
             if (CGRectIsEmpty(originalFrame)) {
                 originalFrame = tempFrame;
