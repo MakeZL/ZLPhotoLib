@@ -2,6 +2,8 @@
 This is a photo album multiple-choice / photo browser example
 --------------
 
+更新: [正在写新的相册库,兼容iOS7+,效率更高~](https://github.com/MakeZL/MLPhotoLib)
+
 #### 继承图片多选/图片浏览器一体
 #### 新特性:浏览器支持屏幕旋转、优化了数据源。
 
