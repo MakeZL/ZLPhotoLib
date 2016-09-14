@@ -2,8 +2,9 @@
 This is a photo album multiple-choice / photo browser example
 --------------
 
-### 新库 MLPhotoLib: 
-正在写新的相册库,兼容iOS7+,效率更高~[MLPhotoLib](https://github.com/MakeZL/MLPhotoLib)
+## 新库 MLPhotoLib: 
+欢迎大家使用新的相册库(`MLPhotoLib`),兼容iOS7+,效率更高 效果更好~
+[MLPhotoLib](https://github.com/MakeZL/MLPhotoLib)
 
 ----------
 
