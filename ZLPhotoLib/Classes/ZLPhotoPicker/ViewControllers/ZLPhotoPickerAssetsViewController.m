@@ -353,7 +353,9 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
         NSInteger selectAssetsCurrentPage = -1;
         for (NSInteger i = 0; i < self.selectAssets.count; i++) {
             ZLPhotoAssets *photoAsset = self.selectAssets[i];
-            if (![photoAsset isKindOfClass:[ZLPhotoAssets class]]) {
+            
+            if (![photoAsset isKindOfClass:[ZLPhotoAssets class]] ||
+                ![asset isKindOfClass:[ZLPhotoAssets class]]) {
                 continue;
             }
             if([[[[asset.asset defaultRepresentation] url] absoluteString] isEqualToString:[[[photoAsset.asset defaultRepresentation] url] absoluteString]]){
@@ -437,38 +439,23 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
     
     ZLPhotoPickerBrowserViewController *browserVc = [[ZLPhotoPickerBrowserViewController alloc] init];
     browserVc.photos = photos;
+    browserVc.editing = YES;
     browserVc.delegate = self;
     browserVc.currentIndex = indexPath.row;
     [browserVc showPickerVc:self];
 }
 
-- (void)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser removePhotoAtIndexPath:(NSIndexPath *)indexPath{
-    
+- (void)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser removePhotoAtIndex:(NSInteger)index{
     // 删除选中的照片
-    ALAsset *asset = self.selectAssets[indexPath.row];
-    NSInteger currentPage = indexPath.row;
-    for (NSInteger i = 0; i < self.collectionView.dataArray.count; i++) {
-        ALAsset *photoAsset = self.collectionView.dataArray[i];
-        if ([photoAsset isKindOfClass:[ZLPhotoAssets class]] && [asset isKindOfClass:[ZLPhotoAssets class]]) {
-            ZLPhotoAssets *photoAssets = (ZLPhotoAssets *)photoAsset;
-            ZLPhotoAssets *assets = (ZLPhotoAssets *)asset;
-            if([[[[assets.asset defaultRepresentation] url] absoluteString] isEqualToString:[[[photoAssets.asset defaultRepresentation] url] absoluteString]]){
-                currentPage = i;
-                break;
-            }
-        }
-        else{
-            continue;
-            break;
+    ZLPhotoAssets *assets = self.selectAssets[index];
+    if ([assets isKindOfClass:[ZLPhotoAssets class]]) {
+        if (self.collectionView.selectsIndexPath.count > index) {
+            [self.collectionView.selectsIndexPath removeObjectAtIndex:index];
         }
     }
-    
-    [self.selectAssets removeObjectAtIndex:indexPath.row];
-    [self.collectionView.selectsIndexPath removeObject:@(currentPage)];
-    [self.toolBarThumbCollectionView reloadData];
+    [self.collectionView.selectAssets removeObjectAtIndex:index];
+    [self pickerCollectionViewDidSelected:self.collectionView deleteAsset:self.selectAssets[index]];
     [self.collectionView reloadData];
-    
-    self.makeView.text = [NSString stringWithFormat:@"%ld",(unsigned long)self.selectAssets.count];
 }
 
 #pragma mark -<Navigation Actions>
