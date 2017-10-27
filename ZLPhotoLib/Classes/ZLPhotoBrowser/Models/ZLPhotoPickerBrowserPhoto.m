@@ -7,7 +7,6 @@
 //
 
 #import "ZLPhotoPickerBrowserPhoto.h"
-#import "ZLCamera.h"
 
 @implementation ZLPhotoPickerBrowserPhoto
 
@@ -23,8 +22,11 @@
         self.photoImage = photoObj;
     }else if ([photoObj isKindOfClass:[NSString class]]){
         self.photoURL = [NSURL URLWithString:photoObj];
+<<<<<<< HEAD
     }else if ([photoObj isKindOfClass:[ZLCamera class]]){
         self.photoImage = (UIImage *)[photoObj originImage];
+=======
+>>>>>>> MakeZL/master
     }else{
         NSAssert(true == true, @"您传入的类型有问题");
     }

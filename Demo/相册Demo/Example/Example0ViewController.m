@@ -75,10 +75,8 @@
             // 如果是本地ZLPhotoAssets就从本地取，否则从网络取
             if ([[self.assets objectAtIndex:i] isKindOfClass:[ZLPhotoAssets class]]) {
                 [btn setImage:[self.assets[i] thumbImage] forState:UIControlStateNormal];
-            }else if ([[self.assets objectAtIndex:i] isKindOfClass:[ZLCamera class]]){
-                [btn setImage:[self.assets[i] thumbImage] forState:UIControlStateNormal];
-            }else if ([[self.assets objectAtIndex:i] isKindOfClass:[NSString class]]){
-                [btn sd_setImageWithURL:[NSURL URLWithString:self.assets[i]] forState:UIControlStateNormal];
+            }else if ([[self.assets objectAtIndex:i] isKindOfClass:[UIImage class]]){
+                [btn setImage:self.assets[i] forState:UIControlStateNormal];
             }
             btn.tag = i;
         }
@@ -102,6 +100,7 @@
     pickerVc.selectPickers = self.assets;
     // Desc Show Photos, And Suppor Camera
     pickerVc.topShowPhotoPicker = YES;
+    pickerVc.isShowCamera = YES;
     // CallBack
     pickerVc.callBack = ^(NSArray<ZLPhotoAssets *> *status){
         self.assets = status.mutableCopy;

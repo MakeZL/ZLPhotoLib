@@ -9,9 +9,12 @@
 #import <UIKit/UIKit.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 
+typedef void(^callBackImage)(UIImage *image);
 @interface ZLPhotoAssets : NSObject
 
 + (instancetype)assetWithImage:(UIImage *)image;
+// 获取缩略图
+- (void)thumbImageCallBack:(callBackImage)callBack;
 
 @property (strong,nonatomic) ALAsset *asset;
 /**

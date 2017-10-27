@@ -9,6 +9,13 @@
 #import "ViewController.h"
 #import "ZLPhoto.h"
 
+@interface MLCellInfo : NSObject
+@property (copy, nonatomic) NSString *name;
+@property (copy, nonatomic) NSString *vcName;
+@end
+
+@implementation MLCellInfo @end
+
 @interface ViewController () <UITableViewDataSource,UITableViewDelegate>
 
 @property (weak, nonatomic) UITableView *tableView;
@@ -20,7 +27,35 @@
 
 #pragma mark - getter
 - (NSArray *)examples{
+    
+    MLCellInfo *cellInfo0 = [[MLCellInfo alloc] init];
+    cellInfo0.name = @"Example0 相册多选";
+    cellInfo0.vcName = @"Example0ViewController";
+    
+    MLCellInfo *cellInfo1 = [[MLCellInfo alloc] init];
+    cellInfo1.name = @"Example1 图片浏览器";
+    cellInfo1.vcName = @"Example1ViewController";
+    
+    MLCellInfo *cellInfo2 = [[MLCellInfo alloc] init];
+    cellInfo2.name = @"Example3 选择视频";
+    cellInfo2.vcName = @"Example3ViewController";
+    
+    MLCellInfo *cellInfo3 = [[MLCellInfo alloc] init];
+    cellInfo3.name = @"Example4 放大查看头像";
+    cellInfo3.vcName = @"Example4ViewController";
+    
+    MLCellInfo *cellInfo4 = [[MLCellInfo alloc] init];
+    cellInfo4.name = @"Example5 图片游览器 -- push方式";
+    cellInfo4.vcName = @"Example5ViewController";
+    
+    MLCellInfo *cellInfo5 = [[MLCellInfo alloc] init];
+    cellInfo5.name = @"----- 感谢使用ZLPhotoLib -----";
+
+    MLCellInfo *cellInfo6 = [[MLCellInfo alloc] init];
+    cellInfo6.name = @"我是MakeZL,会不断维护,谢谢您的使用";
+    
     return @[
+<<<<<<< HEAD
              @"Example0 相册多选",
              @"Example1 图片游览器",
              @"Example2 自定义拍照",
@@ -32,6 +67,15 @@
              @"感谢您的App使用ZLPhotoLib",
              @"我是MakeZL,会不断维护,谢谢您的使用.",
              @"关于你的App名字，可以告诉我 :)"
+=======
+             cellInfo0,
+             cellInfo1,
+             cellInfo2,
+             cellInfo3,
+             cellInfo4,
+             cellInfo5,
+             cellInfo6
+>>>>>>> MakeZL/master
             ];
 }
 
@@ -73,10 +117,10 @@
 
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
+    MLCellInfo *cellInfo = self.examples[indexPath.row];
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
-    
     cell.backgroundColor = [UIColor clearColor];
-    cell.textLabel.text = self.examples[indexPath.row];
+    cell.textLabel.text = cellInfo.name;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
     return cell;
@@ -85,10 +129,12 @@
 
 #pragma mark - <UITableViewDelegate>
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (indexPath.row < 11) {
-        NSString *exampleVc = [NSString stringWithFormat:@"Example%ldViewController",indexPath.row];
-        UIViewController *vc = [[NSClassFromString(exampleVc) alloc] init];
-        vc.title = self.examples[indexPath.row];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    MLCellInfo *cellInfo = self.examples[indexPath.row];
+    if ([cellInfo.vcName length]) {
+        UIViewController *vc = [[NSClassFromString(cellInfo.vcName) alloc] init];
+        vc.title = cellInfo.name;
         [self.navigationController pushViewController:vc animated:YES];
     }
 }

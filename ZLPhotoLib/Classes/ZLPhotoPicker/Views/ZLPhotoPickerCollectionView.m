@@ -124,7 +124,10 @@
         ZLPhotoAssets *asset = self.dataArray[indexPath.item];
         cellImgView.isVideoType = asset.isVideoType;
         if ([asset isKindOfClass:[ZLPhotoAssets class]]) {
-            cellImgView.image = asset.aspectRatioImage;
+            [asset thumbImageCallBack:^(UIImage *image) {
+                asset.thumbImage = image;
+                cellImgView.image = image;
+            }];
         }
     }
     

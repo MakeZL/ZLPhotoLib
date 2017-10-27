@@ -38,10 +38,16 @@
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+    <key>NSCameraUsageDescription</key>
+    <string>打开才能拍照</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>打开才能获取地理位置</string>
+    <key>NSPhotoLibraryAddUsageDescription</key>
+    <string>App需要您的同意,才能保存图片到您的相册</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>打开才能选取相册中的图片</string>
 </dict>
 </plist>

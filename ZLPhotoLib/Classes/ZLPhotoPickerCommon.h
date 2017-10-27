@@ -43,4 +43,9 @@ static NSString *PICKER_TAKE_PHOTO = @"PICKER_TAKE_PHOTO";
 
 static NSString *PICKER_PowerBrowserPhotoLibirayText = @"您屏蔽了选择相册的权限，开启请去系统设置->隐私->我的App来打开权限";
 
+static CGFloat const CELL_ROW = 3;
+static CGFloat const CELL_MARGIN = 2;
+static CGFloat const CELL_LINE_MARGIN = 2;
+static CGFloat const TOOLBAR_HEIGHT = 44;
+
 #endif
