@@ -58,7 +58,7 @@
                     continue;
                 }
                 
-                if ([asset.asset.defaultRepresentation.url isEqual:asset2.asset.defaultRepresentation.url]) {
+                if ([asset.assetURL isEqual:asset2.asset.defaultRepresentation.url]) {
                     [selectAssets addObject:asset2];
                     break;
                 }
@@ -111,7 +111,7 @@
         // 需要记录选中的值的数据
         if (self.isRecoderSelectPicker) {
             for (ZLPhotoAssets *asset in self.selectAssets) {
-                if ([asset isKindOfClass:[ZLPhotoAssets class]] && [asset.asset.defaultRepresentation.url isEqual:[(ZLPhotoAssets *)self.dataArray[indexPath.item] asset].defaultRepresentation.url]) {
+                if ([asset isKindOfClass:[ZLPhotoAssets class]] && [[asset assetURL] isEqual:[(ZLPhotoAssets *)self.dataArray[indexPath.item] asset].defaultRepresentation.url]) {
                     [self.selectsIndexPath addObject:@(indexPath.row)];
                 }
             }

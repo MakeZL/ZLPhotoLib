@@ -353,12 +353,16 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
         NSInteger selectAssetsCurrentPage = -1;
         for (NSInteger i = 0; i < self.selectAssets.count; i++) {
             ZLPhotoAssets *photoAsset = self.selectAssets[i];
+<<<<<<< HEAD
+            if ([photoAsset isKindOfClass:[UIImage class]]) {
+=======
             
             if (![photoAsset isKindOfClass:[ZLPhotoAssets class]] ||
                 ![asset isKindOfClass:[ZLPhotoAssets class]]) {
+>>>>>>> MakeZL/master
                 continue;
             }
-            if([[[[asset.asset defaultRepresentation] url] absoluteString] isEqualToString:[[[photoAsset.asset defaultRepresentation] url] absoluteString]]){
+            if([[[[asset.asset defaultRepresentation] url] absoluteString] isEqualToString:[[photoAsset assetURL] absoluteString]]){
                 selectAssetsCurrentPage = i;
                 break;
             }

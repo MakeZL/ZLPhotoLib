@@ -11,7 +11,7 @@ s.platform         = :ios, '6.0'
 s.requires_arc     = true
 
 s.frameworks       = 'AssetsLibrary' , 'AVFoundation', 'MediaPlayer'
-s.source_files     = 'ZLPhotoLib/Classes/**/*'
+s.source_files     = 'ZLPhotoLib/Classes/*'
 s.resource         = "ZLPhotoLib/ZLPhotoLib.bundle"
 
 end

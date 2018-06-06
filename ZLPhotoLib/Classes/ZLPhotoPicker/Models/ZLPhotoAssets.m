@@ -25,9 +25,13 @@
 }
 
 - (UIImage *)aspectRatioImage{
-    return self.isUIImage ? _aspectRatioImage : [UIImage imageWithCGImage:[self.asset aspectRatioThumbnail]];
+    return self.isUIImage||_aspectRatioImage ? _aspectRatioImage : [UIImage imageWithCGImage:[self.asset aspectRatioThumbnail]];
 }
 
+<<<<<<< HEAD
+- (UIImage *)thumbImage{
+    return self.isUIImage||_thumbImage ? _thumbImage : [UIImage imageWithCGImage:[self.asset thumbnail]];
+=======
 - (void)thumbImageCallBack:(callBackImage)callBack{
     UIImage *thumbImage = self.isUIImage ? _thumbImage : self.aspectRatioImage;
     if (thumbImage == nil && [[[UIDevice currentDevice] systemVersion] floatValue] >= 9.3) {
@@ -105,10 +109,11 @@
     }
     UIGraphicsEndImageContext();
     return newImage;
+>>>>>>> MakeZL/master
 }
 
 - (UIImage *)originImage{
-    return self.isUIImage ? _originImage : [UIImage imageWithCGImage:[[self.asset defaultRepresentation] fullScreenImage]];
+    return self.isUIImage||_originImage ? _originImage : [UIImage imageWithCGImage:[[self.asset defaultRepresentation] fullScreenImage]];
 }
 
 - (BOOL)isVideoType{
@@ -118,7 +123,7 @@
 }
 
 - (NSURL *)assetURL{
-    return [[self.asset defaultRepresentation] url];
+    return _assetURL ? _assetURL :[[self.asset defaultRepresentation] url];
 }
 
 @end
