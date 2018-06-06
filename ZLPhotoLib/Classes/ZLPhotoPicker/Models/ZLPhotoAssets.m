@@ -28,10 +28,6 @@
     return self.isUIImage||_aspectRatioImage ? _aspectRatioImage : [UIImage imageWithCGImage:[self.asset aspectRatioThumbnail]];
 }
 
-<<<<<<< HEAD
-- (UIImage *)thumbImage{
-    return self.isUIImage||_thumbImage ? _thumbImage : [UIImage imageWithCGImage:[self.asset thumbnail]];
-=======
 - (void)thumbImageCallBack:(callBackImage)callBack{
     UIImage *thumbImage = self.isUIImage ? _thumbImage : self.aspectRatioImage;
     if (thumbImage == nil && [[[UIDevice currentDevice] systemVersion] floatValue] >= 9.3) {
@@ -109,7 +105,6 @@
     }
     UIGraphicsEndImageContext();
     return newImage;
->>>>>>> MakeZL/master
 }
 
 - (UIImage *)originImage{

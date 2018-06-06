@@ -55,19 +55,6 @@
     cellInfo6.name = @"我是MakeZL,会不断维护,谢谢您的使用";
     
     return @[
-<<<<<<< HEAD
-             @"Example0 相册多选",
-             @"Example1 图片游览器",
-             @"Example2 自定义拍照",
-             @"Example3 选择视频",
-             @"Example4 放大查看头像",
-             @"Example5 图片游览器 -- push方式",
-             @"Example6 相册/拍照",
-             @" --------- (>v<) ---------- ",
-             @"感谢您的App使用ZLPhotoLib",
-             @"我是MakeZL,会不断维护,谢谢您的使用.",
-             @"关于你的App名字，可以告诉我 :)"
-=======
              cellInfo0,
              cellInfo1,
              cellInfo2,
@@ -75,7 +62,6 @@
              cellInfo4,
              cellInfo5,
              cellInfo6
->>>>>>> MakeZL/master
             ];
 }
 

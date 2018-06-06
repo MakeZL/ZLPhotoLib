@@ -62,7 +62,6 @@
 		48FD838C1BF98C5D0017FCAA /* UIImageView+HighlightedWebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 48FD837A1BF98C5D0017FCAA /* UIImageView+HighlightedWebCache.m */; };
 		48FD838D1BF98C5D0017FCAA /* UIImageView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 48FD837C1BF98C5D0017FCAA /* UIImageView+WebCache.m */; };
 		48FD838E1BF98C5D0017FCAA /* UIView+WebCacheOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 48FD837E1BF98C5D0017FCAA /* UIView+WebCacheOperation.m */; };
-		CB24CD381CABCC60006C4812 /* Example6ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB24CD371CABCC60006C4812 /* Example6ViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -186,8 +185,6 @@
 		48FD837E1BF98C5D0017FCAA /* UIView+WebCacheOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+WebCacheOperation.m"; sourceTree = "<group>"; };
 		6AC615D3CA43C61D48AE87C4 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		9E7E8E6BC8D7C7518D6BE3D4 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		CB24CD361CABCC60006C4812 /* Example6ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Example6ViewController.h; sourceTree = "<group>"; };
-		CB24CD371CABCC60006C4812 /* Example6ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Example6ViewController.m; sourceTree = "<group>"; };
 		EFB8FAEC621DF203E65DF6AA /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -448,8 +445,6 @@
 				4806BC801AB283ED004B8AB0 /* Example4ViewController.m */,
 				48CF6E811B7267A40094DEC4 /* Example0ViewController.h */,
 				48CF6E821B7267A40094DEC4 /* Example0ViewController.m */,
-				CB24CD361CABCC60006C4812 /* Example6ViewController.h */,
-				CB24CD371CABCC60006C4812 /* Example6ViewController.m */,
 			);
 			path = Example;
 			sourceTree = "<group>";
@@ -580,7 +575,7 @@
 				TargetAttributes = {
 					48B3E16F1A11BABC0079F464 = {
 						CreatedOnToolsVersion = 6.1;
-						DevelopmentTeam = B3C9PH5883;
+						DevelopmentTeam = F7AWZH9HX8;
 						ProvisioningStyle = Automatic;
 					};
 					48B3E1881A11BABC0079F464 = {
@@ -636,7 +631,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				48F682EE1B872D7C004A06A4 /* ZLPhotoPickerBrowserViewController+SignlePhotoBrowser.m in Sources */,
-				CB24CD381CABCC60006C4812 /* Example6ViewController.m in Sources */,
 				4840152A1B73574F00FBD485 /* ZLPhotoPickerImageView.m in Sources */,
 				4840151B1B73574F00FBD485 /* ZLPhotoPickerBrowserPhotoImageView.m in Sources */,
 				4840151C1B73574F00FBD485 /* ZLPhotoPickerBrowserPhotoScrollView.m in Sources */,
@@ -808,7 +802,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Wei Feng Hou (D2ZAZ554Z4)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = B3C9PH5883;
+				DEVELOPMENT_TEAM = F7AWZH9HX8;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/相册Demo",
@@ -832,7 +826,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Wei Feng Hou (D2ZAZ554Z4)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = B3C9PH5883;
+				DEVELOPMENT_TEAM = F7AWZH9HX8;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/相册Demo",
